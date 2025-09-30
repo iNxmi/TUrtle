@@ -6,7 +6,11 @@ html{
 	--fg-2:#4d4d4d;
 	--link:#1c7ed4;
 	--link-hover:#3492e5;
-	--link-active:#176bb5
+	--link-active:#176bb5;
+	--sidebar:#fcd062;
+	--button:#33adff;
+	--special-button:#7caf29;
+	--special-button-highlight:#85bd2c;
 	}
 	
 html.dark{
@@ -18,7 +22,11 @@ html.dark{
 	--fg-3:#999;
 	--link:#73c1fc;
 	--link-hover:#91cefd;
-	--link-active:#4baffb
+	--link-active:#4baffb;
+	--sidebar:#ffc42f;
+	--button:#33adff;
+	--special-button:#9ad836;
+	--special-button-highlight:#acf13b;
 	}
 
 body{

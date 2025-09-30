@@ -1,11 +1,6 @@
-// src/routes/+page.server.js
-const api = process.env.API_BASE ?? 'http://backend:8000';
+import { redirect } from '@sveltejs/kit';
 
-export async function load({ fetch }) {
-    const res = await fetch(`${api}/api`);
-    const data = await res.json();
-
-    return {
-        message: data.message
-    };
+// redirect so that when users go to http://website they get redirected to http://website/csw/dashboard which should be the landing page
+export function load() {
+  throw redirect(303, '/csw/dashboard');
 }
