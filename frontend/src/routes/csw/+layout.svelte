@@ -19,13 +19,6 @@
     navItems.push({ label: "Admin Panel", href: "/csw/admin" });
   }
 
-  // automatic logout when user leaves the site or refreshes
-  onMount(() => {
-    window.addEventListener('beforeunload', () => {
-      navigator.sendBeacon('/api/logout');
-    });
-  });
-
   function handleLogout() {
     fetch("/api/logout", { method: "POST" }).then(() => {
       location.reload(); // refresh page to update user state
