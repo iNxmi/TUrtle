@@ -1,8 +1,10 @@
 services:
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
+      network: host
     container_name: frontend
-    restart: always
+    restart: no
     ports:
       - "3000:3000"
     networks:
@@ -15,9 +17,11 @@ services:
       - HOST_HEADER=x-forwarded-host
 
   backend:
-    build: ./backend
+    build: 
+      context: ./backend
+      network: host
     container_name: backend
-    restart: always
+    restart: no
     ports:
       - "8000:8000"
     env_file: .env
@@ -43,9 +47,11 @@ services:
   #    - webnet
 
   nginx:
-    build: ./nginx
+    build: 
+      context: ./nginx
+      network: host
     container_name: nginx
-    restart: always
+    restart: no
     ports:
       - "80:80"
     depends_on:
