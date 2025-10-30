@@ -9,24 +9,26 @@ All commands listed here are run in `/`
 
 ___
 
-# Backend (FastAPI, Python)
-This is the backend, base on FastAPI in Python  
+# Backend (Spring Boot, Kotlin)
+This is the backend, base on Spring Boot in Kotlin
 Name: **TUrtleAPI**
 
 ## Structure
 ```
-backend/
-    api/
-        v1/                     
-            models/             |   database tables in python format
-            repositories/       |   database inteface for models
-            routers/            |   endpoint declarations
-            schemas/            |   database model templates
-            services/           |   services, for example a JWTService for auth persistance
-    core/                       |   configs, security, other things
-    database/                   |   ?
-    main.py                     |   main entrypoint
-    requirements.txt            |   python dependencies for the backend
+TUrtle/backend/src/
+    main/
+        kotlin/com/csw/turtleapi/
+            api/
+                v1/                     |   1st version of the api
+                    config/             |   configs, security, other things
+                    controller/         |   endpoint declarations
+                    entity/             |   database tables in JPA format
+                    exception/          |
+                    repository/         |   CRUD operations for Entities
+                    service/            |   services, for example a JWTService for auth persistance
+            Application.kt              |   main entry point
+        resources/
+            application.yml                 |   Spring Boot main configuration, keep it secret
 ```
 
 ## Development
@@ -47,7 +49,7 @@ Name: **TUrtleView**
 
 ## Structure
 ```
-frontend/
+TUrtle/frontend/
     routes/     |   the different pages
     lib/        |   reusable components
 ```
