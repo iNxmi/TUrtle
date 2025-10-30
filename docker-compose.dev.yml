@@ -1,26 +1,22 @@
 services:
   database:
-    build:
-      context: ./database
-      network: host
-    container_name: postgres
+    image: postgres:16
+    container_name: database
     restart: always
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - database_volume:/var/lib/postgresql/data
     networks:
       - webnet
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=dummy_password
+      - POSTGRES_DB=database
 
   backend:
     build:
       context: ./backend
-      network: host
     container_name: backend
     restart: no
     ports:
@@ -34,7 +30,6 @@ services:
   frontend:
     build:
       context: ./frontend
-      network: host
     container_name: frontend
     restart: no
     ports:
@@ -53,7 +48,6 @@ services:
   nginx:
     build: 
       context: ./nginx
-      network: host
     container_name: nginx
     restart: no
     ports:
@@ -67,7 +61,7 @@ services:
       - webnet
 
 volumes:
-  postgres_data:
+  database_volume:
 
 networks:
   webnet:
