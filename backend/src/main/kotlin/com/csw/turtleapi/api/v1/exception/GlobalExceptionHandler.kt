@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception::class)
-    fun handleAllExceptions(_: Exception) = ResponseEntity.internalServerError().build<Any>()
+    fun handleAllExceptions(exception: Exception) = ResponseEntity.internalServerError().build<Any>()
 
 }
