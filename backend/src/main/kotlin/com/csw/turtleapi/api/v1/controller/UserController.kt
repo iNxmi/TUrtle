@@ -2,6 +2,8 @@ package com.csw.turtleapi.api.v1.controller
 
 import com.csw.turtleapi.api.v1.entity.User
 import com.csw.turtleapi.api.v1.repository.UserRepository
+import org.springframework.http.RequestEntity
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,15 +19,25 @@ class UserController(
 ) {
 
     @GetMapping
-    fun getAllUsers(): Set<User> = userRepository.findAll().toSet()
+    fun getAll(): ResponseEntity<Set<User>> {
+        val result = userRepository.findAll().toSet()
+        return ResponseEntity.ok(result)
+    }
 
     @GetMapping("/{username}")
-    fun getUserByUsername(@PathVariable username: String): User? = userRepository.findByUsername(username).orElse(null)
+    fun getByUsername(@PathVariable username: String): ResponseEntity<User> {
+        val result = userRepository.findByUsername(username).orElse(null)
+
+        if (result != null)
+            return ResponseEntity.ok(result)
+
+        return ResponseEntity.notFound().build()
+    }
 
     @PostMapping
-    fun createUser(@RequestBody user: User): User? = userRepository.save(user)
+    fun create(@RequestBody user: User): User? = userRepository.save(user)
 
-    @DeleteMapping("/{id}")
-    fun deleteUserById(@PathVariable id: Long) = userRepository.deleteById(id)
+    @DeleteMapping("/{username}")
+    fun deleteByUsername(@PathVariable username: String) = userRepository.deleteByUsername(username)
 
 }
