@@ -31,17 +31,6 @@ TUrtle/backend/src/
             application.yml                 |   Spring Boot main configuration, keep it secret
 ```
 
-## Development
-All commands listed here are run in `/backend`
-* Install the Dependencies
-  * `pip install -r requirements.txt`
-* Save currently installed dependencies into [requirements.txt](backend/requirements.txt)
-  * `pip freeze > requirements.txt`
-
-## Documentation
-* The TUrtleAPI documentation can be found when the server is running under
-  * `http://localhost:8000/docs`
-
 ___
 
 # Frontend (Svelte, JavaScript)
