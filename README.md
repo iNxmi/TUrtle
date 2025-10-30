@@ -18,15 +18,14 @@ Name: **TUrtleAPI**
 TUrtle/backend/src/
     main/
         kotlin/com/csw/turtleapi/
-            api/
-                v1/                     |   1st version of the api
-                    config/             |   configs, security, other things
-                    controller/         |   endpoint declarations
-                    entity/             |   database tables in JPA format
-                    exception/          |
-                    repository/         |   CRUD operations for Entities
-                    service/            |   services, for example a JWTService for auth persistance
-            Application.kt              |   main entry point
+            api/v1/                         |   1st version of the api
+                config/                     |   configs, security, other things
+                controller/                 |   endpoint declarations
+                entity/                     |   database tables in JPA format
+                exception/                  |
+                repository/                 |   CRUD operations for Entities
+                service/                    |   services, for example a JWTService for auth persistance
+            Application.kt                  |   main entry point
         resources/
             application.yml                 |   Spring Boot main configuration, keep it secret
 ```
