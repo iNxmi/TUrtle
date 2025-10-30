@@ -24,14 +24,12 @@ services:
     container_name: backend
     restart: no
     ports:
-      - "8000:8000"
-    env_file: .env.template
+      - "8080:8080"
+    env_file: .env
     depends_on:
       - database
     networks:
       - webnet
-    environment:
-      - EXPIRATION_TIME=31536000
 
   frontend:
     build:
@@ -43,7 +41,7 @@ services:
       - "3000:3000"
     depends_on:
       - backend
-    env_file: .env.template
+    env_file: .env
     networks:
       - webnet
     environment:
