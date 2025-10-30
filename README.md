@@ -10,7 +10,7 @@ All commands listed here are run in `/`
 ___
 
 # Backend (Spring Boot, Kotlin)
-This is the backend, base on Spring Boot in Kotlin
+This is the backend, based on Spring Boot in Kotlin
 Name: **TUrtleAPI**
 
 ## Structure
