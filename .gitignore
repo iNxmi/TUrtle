@@ -2,3 +2,5 @@ package-lock.json
 node_modules
 .svelte-kit
 .idea
+.env.template
+*.iml

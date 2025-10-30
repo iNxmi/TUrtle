@@ -7,7 +7,7 @@ services:
       - "3000:3000"
     networks:
       - webnet
-    env_file: .env
+    env_file: .env.template
     environment:
       - NODE_ENV=production
       - ORIGIN=http://localhost
@@ -20,7 +20,7 @@ services:
     restart: always
     ports:
       - "8000:8000"
-    env_file: .env
+    env_file: .env.template
     #depends_on:
     #  - db
     networks:
@@ -28,7 +28,7 @@ services:
     environment:
       - EXPIRATION_TIME=300   # timeout for login and cookies/jwt in seconds
 
-  #db:
+  #database:
   #  image: postgres:16
   #  container_name: postgres
   #  restart: always
