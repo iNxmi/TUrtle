@@ -16,9 +16,21 @@ spring:
       hibernate:
         format_sql: true
 
-  server:
-    port: 8080
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+      springdoc: DEBUG
+      springframework:
+        web: DEBUG
 
-  logging:
-    level:
-      org.hibernate.SQL: debug
+server:
+  port: 8080
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /docs
+    url: /api-docs
