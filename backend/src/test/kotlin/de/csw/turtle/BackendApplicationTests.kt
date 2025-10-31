@@ -1,4 +1,4 @@
-package com.csw.turtlebackend
+package de.csw.turtle
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

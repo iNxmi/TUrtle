@@ -1,4 +1,4 @@
-package com.csw.turtleapi
+package de.csw.turtle
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

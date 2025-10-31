@@ -1,6 +1,6 @@
-package com.csw.turtleapi.api.v1.repository
+package de.csw.turtle.v1.repository
 
-import com.csw.turtleapi.api.v1.entity.User
+import de.csw.turtle.v1.entity.User
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.Optional
 

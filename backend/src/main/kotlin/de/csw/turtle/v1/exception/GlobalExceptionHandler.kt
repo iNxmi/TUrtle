@@ -1,4 +1,4 @@
-package com.csw.turtleapi.api.v1.exception
+package de.csw.turtle.v1.exception
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -13,7 +13,10 @@ class GlobalExceptionHandler {
     fun userNotFound(exception: TUrtleException) = exception.responseEntity(exception.status)
 
     @ExceptionHandler(Exception::class)
-    fun generic(exception: Exception) = exception.responseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun generic(exception: Exception):ResponseEntity<Map<String, Any>>  {
+        exception.printStackTrace()
+        return exception.responseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+    }
 
     private fun Exception.responseEntity(status: HttpStatus): ResponseEntity<Map<String, Any>> {
         val body = mapOf(

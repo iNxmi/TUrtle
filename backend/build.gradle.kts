@@ -6,9 +6,9 @@ plugins {
     kotlin("plugin.jpa") version "1.9.25"
 }
 
-group = "com.csw"
+group = "de.csw"
 version = "0.0.1-SNAPSHOT"
-description = "backend"
+description = "TUrtleAPI"
 
 java {
     toolchain {
@@ -25,9 +25,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
+    implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     runtimeOnly("org.postgresql:postgresql")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework.security:spring-security-test")

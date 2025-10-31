@@ -1,4 +1,4 @@
-package com.csw.turtleapi.api.v1.entity
+package de.csw.turtle.v1.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -10,16 +10,25 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "users")
 data class User(
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Long = 0L,
-
     @Column(nullable = false, unique = true)
     var username: String,
+
+    @Column(nullable = false)
+    var firstname: String,
+
+    @Column(nullable = false)
+    var lastname: String,
 
     @Column(nullable = false, unique = true)
     var email: String,
 
+    @Column(nullable = false, unique = true)
+    var studentId: Long,
+
     @Column(nullable = false)
-    var password: String
+    var passwordHash: String,
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    val id: Long = 0L,
 )

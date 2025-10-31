@@ -32,6 +32,9 @@ TUrtle/backend/src/
             application.yml                 |   Spring Boot main configuration, keep it secret
 ```
 
+## Swagger UI
+When the TUrtleAPI is running, API endpoint documentation can be accessed and tested via [http://localhost:8080/docs](http://localhost:8080/docs).
+
 ___
 
 # Frontend (Svelte, JavaScript)

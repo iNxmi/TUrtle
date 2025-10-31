@@ -1,4 +1,4 @@
-package com.csw.turtleapi.api.v1.config
+package de.csw.turtle.v1.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
