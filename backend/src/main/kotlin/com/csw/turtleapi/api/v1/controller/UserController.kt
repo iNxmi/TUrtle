@@ -1,8 +1,8 @@
 package com.csw.turtleapi.api.v1.controller
 
 import com.csw.turtleapi.api.v1.entity.User
+import com.csw.turtleapi.api.v1.exception.UserNotFoundException
 import com.csw.turtleapi.api.v1.repository.UserRepository
-import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 class UserController(
     private val userRepository: UserRepository
 ) {
@@ -31,7 +31,7 @@ class UserController(
         if (result != null)
             return ResponseEntity.ok(result)
 
-        return ResponseEntity.notFound().build()
+        throw UserNotFoundException(username)
     }
 
     @PostMapping

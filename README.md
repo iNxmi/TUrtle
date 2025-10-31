@@ -13,6 +13,8 @@ ___
 This is the backend, based on Spring Boot in Kotlin
 Name: **TUrtleAPI**
 
+Based on REST:
+
 ## Structure
 ```
 TUrtle/backend/src/
