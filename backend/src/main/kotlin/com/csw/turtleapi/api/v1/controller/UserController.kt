@@ -26,12 +26,11 @@ class UserController(
 
     @GetMapping("/{username}")
     fun getByUsername(@PathVariable username: String): ResponseEntity<User> {
-        val result = userRepository.findByUsername(username).orElse(null)
+        val result = userRepository
+            .findByUsername(username)
+            .orElseThrow { UserNotFoundException(username) }
 
-        if (result != null)
-            return ResponseEntity.ok(result)
-
-        throw UserNotFoundException(username)
+        return ResponseEntity.ok(result)
     }
 
     @PostMapping
