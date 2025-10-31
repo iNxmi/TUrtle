@@ -19,20 +19,20 @@ Based on REST:
 ```
 TUrtle/backend/src/
     main/
-        kotlin/com/csw/turtleapi/
-            api/v1/                         |   1st version of the api
-                config/                     |   configs, security, other things
-                controller/                 |   endpoint declarations
-                entity/                     |   database tables in JPA format
-                exception/                  |
-                repository/                 |   CRUD operations for Entities
-                service/                    |   services, for example a JWTService for auth persistance
-            Application.kt                  |   main entry point
+        kotlin/de/csw/turtle/
+            v1/                     |   1st version of the api
+                config/             |   configs, security, other things
+                controller/         |   endpoint declarations
+                entity/             |   database tables in JPA format
+                exception/          |
+                repository/         |   CRUD operations for Entities
+                service/            |   services, for example a JWTService for auth persistance
+            Application.kt          |   main entry point
         resources/
-            application.yml                 |   Spring Boot main configuration, keep it secret
+            application.yml         |   Spring Boot main configuration, keep it secret
 ```
 
-## Swagger UI
+## Swagger UI / OpenAPI
 When the TUrtleAPI is running, API endpoint documentation can be accessed and tested via [http://localhost:8080/docs](http://localhost:8080/docs).
 
 ___
