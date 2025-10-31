@@ -24,10 +24,17 @@ class GlobalExceptionHandler {
         exception.responseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
 
     private fun Exception.responseEntity(status: HttpStatus): ResponseEntity<Map<String, Any>> {
-        val body = mutableMapOf<String, Any>()
-        body["exception"] = mapOf("type" to this.javaClass.simpleName, "message" to this.message)
-        body["status"] = mapOf("type" to status, "code" to status.value())
-        body["timestamp"] = Instant.now().toString()
+        val body = mapOf(
+            "exception" to mapOf(
+                "message" to this.message,
+                "type" to this::class.simpleName
+            ),
+            "status" to mapOf(
+                "code" to status.value(),
+                "type" to status
+            ),
+            "timestamp" to Instant.now().toString()
+        )
 
         return ResponseEntity.status(status).body(body)
     }
