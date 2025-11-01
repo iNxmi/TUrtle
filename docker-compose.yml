@@ -43,7 +43,7 @@ services:
   #    - webnet
 
   nginx:
-    build: ./nginx
+    build: proxy
     container_name: nginx
     restart: always
     ports:
