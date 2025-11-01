@@ -10,8 +10,9 @@ All commands listed here are run in `/`
 ___
 
 # Backend (Spring Boot, Kotlin)
-This is the backend, based on Spring Boot in Kotlin
-Name: **TUrtleAPI**
+This is the backend, based on Spring Boot in Kotlin  
+Name: **TUrtleAPI**  
+Port: 8080
 
 Based on REST:
 
@@ -38,7 +39,8 @@ When the TUrtleAPI is running, API endpoint documentation can be accessed and te
 ___
 
 # Frontend (Svelte, JavaScript)
-Name: **TUrtleView**
+Name: **TUrtleView**  
+Port: 3000
 
 ## Structure
 ```

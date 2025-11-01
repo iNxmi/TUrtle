@@ -1,9 +1,9 @@
-package de.csw.turtle.v1.controller
+package de.csw.turtle.api.v1.controller
 
-import de.csw.turtle.v1.entity.User
-import de.csw.turtle.v1.exception.UserNotFoundException
-import de.csw.turtle.v1.exception.UsernameAlreadyExistsException
-import de.csw.turtle.v1.repository.UserRepository
+import de.csw.turtle.api.v1.entity.UserEntity
+import de.csw.turtle.api.v1.exception.UserNotFoundException
+import de.csw.turtle.api.v1.exception.UsernameAlreadyExistsException
+import de.csw.turtle.api.v1.repository.UserRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.RestController
 import kotlin.collections.toSet
 
 @RestController
-@RequestMapping("/v1/users")
+@RequestMapping("/users")
 class UserController(
     private val repository: UserRepository
 ) {
 
     @GetMapping
-    fun getAll(): ResponseEntity<Set<User>> {
+    fun getAll(): ResponseEntity<Set<UserEntity>> {
         val users = repository.findAll().toSet()
         return ResponseEntity.ok(users)
     }
 
     @GetMapping("/{username}")
-    fun getByUsername(@PathVariable username: String): ResponseEntity<User> {
+    fun getByUsername(@PathVariable username: String): ResponseEntity<UserEntity> {
         val user = repository
             .findByUsername(username)
             .orElseThrow { UserNotFoundException(username) }
@@ -36,7 +36,7 @@ class UserController(
     }
 
     @PostMapping
-    fun create(@RequestBody user: User): ResponseEntity<User> {
+    fun create(@RequestBody user: UserEntity): ResponseEntity<UserEntity> {
         repository.findByUsername(user.username)
             .ifPresent { UsernameAlreadyExistsException(user.username) }
 

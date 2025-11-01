@@ -1,4 +1,4 @@
-package de.csw.turtle.v1.entity
+package de.csw.turtle.api.v1.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -9,7 +9,7 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "users")
-data class User(
+data class UserEntity(
     @Column(nullable = false, unique = true)
     var username: String,
 
@@ -30,5 +30,5 @@ data class User(
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Long = 0L,
+    val id: Long = 0L
 )
