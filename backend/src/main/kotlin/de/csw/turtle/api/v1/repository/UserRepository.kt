@@ -6,7 +6,9 @@ import java.util.Optional
 
 interface UserRepository : JpaRepository<UserEntity, Long> {
 
-    fun findByUsername(username: String): Optional<UserEntity>
+    fun findByUsername(username: String): UserEntity?
+    fun findByEmail(email: String): UserEntity?
+    fun findByStudentId(studentId: Long): UserEntity?
 
     fun deleteByUsername(username: String)
 

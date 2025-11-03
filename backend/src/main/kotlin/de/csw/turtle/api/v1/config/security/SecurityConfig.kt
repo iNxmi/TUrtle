@@ -20,18 +20,18 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
 
             .authorizeHttpRequests {
-                it.requestMatchers(
-                    "/docs",
-                    "/swagger-ui/**",
-                    "/swagger-ui.html",
-                    "/openapi/api-docs/**"
-                ).permitAll()
+//                it.requestMatchers(
+//                    "/docs",
+//                    "/swagger-ui/**",
+//                    "/swagger-ui.html",
+//                    "/openapi/api-docs/**"
+//                ).permitAll()
+//
+//                    .requestMatchers("/api/v1/auth/**")
+//                    .permitAll()
 
-                    .requestMatchers("/api/v1/auth/**")
+                    it.anyRequest()
                     .permitAll()
-
-                    .anyRequest()
-                    .authenticated()
             }
 
             .formLogin { it.disable() }

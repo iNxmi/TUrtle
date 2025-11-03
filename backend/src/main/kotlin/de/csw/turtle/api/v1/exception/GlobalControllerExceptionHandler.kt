@@ -1,13 +1,15 @@
 package de.csw.turtle.api.v1.exception
 
+import org.springframework.data.mapping.PropertyReferenceException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.resource.NoResourceFoundException
 import java.time.Instant
 
-@ControllerAdvice
+@RestControllerAdvice
 class GlobalControllerExceptionHandler {
 
     companion object {
@@ -29,6 +31,13 @@ class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(NoResourceFoundException::class)
     fun noResourceFound(exception: NoResourceFoundException) = exception.responseEntity(HttpStatus.NOT_FOUND)
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun validation(exception: MethodArgumentNotValidException) = exception.responseEntity(HttpStatus.BAD_REQUEST)
+
+    //TODO change name
+    @ExceptionHandler(PropertyReferenceException::class)
+    fun validationIDKIFORGOR(exception: PropertyReferenceException) = exception.responseEntity(HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(Exception::class)
     fun generic(exception: Exception): ResponseEntity<Map<String, Any>> {
