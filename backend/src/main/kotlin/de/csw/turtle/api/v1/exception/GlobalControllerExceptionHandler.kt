@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.servlet.resource.NoResourceFoundException
 import java.time.Instant
 
 @ControllerAdvice
@@ -24,7 +25,10 @@ class GlobalControllerExceptionHandler {
     }
 
     @ExceptionHandler(TUrtleException::class)
-    fun userNotFound(exception: TUrtleException) = exception.responseEntity(exception.status)
+    fun turtle(exception: TUrtleException) = exception.responseEntity(exception.status)
+
+    @ExceptionHandler(NoResourceFoundException::class)
+    fun noResourceFound(exception: NoResourceFoundException) = exception.responseEntity(HttpStatus.NOT_FOUND)
 
     @ExceptionHandler(Exception::class)
     fun generic(exception: Exception): ResponseEntity<Map<String, Any>> {

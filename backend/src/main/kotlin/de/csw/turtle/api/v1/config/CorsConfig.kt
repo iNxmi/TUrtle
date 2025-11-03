@@ -15,7 +15,7 @@ class CorsConfig {
             "http://localhost:8080",    //Dev Backend
             "http://localhost:3000",    //Dev Frontend
 
-            "http://frontend:3000"      //Prod Frontend
+            "http://frontend:3000"      //Production Frontend
         )
 
         val config = CorsConfiguration().apply {
