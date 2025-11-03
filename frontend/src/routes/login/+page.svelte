@@ -1,7 +1,7 @@
 <script>
     let message = "";
 
-    document.documentElement.classList.add("dark");
+    //document.documentElement.classList.add("dark");
 
     async function login(e) {
         e.preventDefault();
@@ -15,7 +15,7 @@
         }
 
         try {
-            const url = "http://localhost:8000/api/v1/auth/login";
+            const url = "http://backend:8080/api/v1/auth/login";
             const response = await fetch(url,
                 {
                     method: "POST",
@@ -31,7 +31,7 @@
                 return;
             }
 
-            window.location.href = "/csw/dashboard";
+            window.location.href = "/dashboard";
         } catch (error) {
             message = "Error: " + (error?.message ?? JSON.stringify(error));
         }

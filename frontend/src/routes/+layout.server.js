@@ -8,7 +8,7 @@ export async function load({ locals, url }) {
     );
 
     if (!isPublicPage && !url.pathname.startsWith("/terminal") && !locals.user) {
-        throw redirect(303, `/csw/dashboard`);
+        throw redirect(303, `/dashboard`);
     }
 
     return {
