@@ -1,3 +1,11 @@
+version: '1'
+
+volumes:
+  database_volume:
+
+networks:
+  network:
+
 services:
   database:
     image: postgres:16
@@ -15,8 +23,7 @@ services:
       - POSTGRES_DB=database
 
   backend:
-    build:
-      context: backend
+    build: backend
     container_name: backend
     restart: always
     ports:
@@ -28,8 +35,7 @@ services:
       - network
 
   frontend:
-    build:
-      context: frontend
+    build: frontend
     container_name: frontend
     restart: always
     ports:
@@ -46,12 +52,12 @@ services:
       - HOST_HEADER=x-forwarded-host
 
   proxy:
-    build: 
-      context: proxy
+    build: proxy
     container_name: proxy
     restart: always
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - frontend
       - backend
@@ -59,9 +65,3 @@ services:
     #  - ./proxy/default.conf:/etc/nginx/conf.d/default.conf
     networks:
       - network
-
-volumes:
-  database_volume:
-
-networks:
-  network:
