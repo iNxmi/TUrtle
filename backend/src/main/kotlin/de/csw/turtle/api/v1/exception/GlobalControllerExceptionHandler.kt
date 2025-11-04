@@ -1,5 +1,7 @@
 package de.csw.turtle.api.v1.exception
 
+import de.csw.turtle.api.v1.dto.response.ExceptionResponse
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.mapping.PropertyReferenceException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -12,42 +14,32 @@ import java.time.Instant
 @RestControllerAdvice
 class GlobalControllerExceptionHandler {
 
-    companion object {
-        fun payload(exception: Exception, status: HttpStatus) = mapOf(
-            "exception" to mapOf(
-                "message" to exception.message,
-                "type" to exception::class.simpleName
-            ),
-            "status" to mapOf(
-                "code" to status.value(),
-                "type" to status
-            ),
-            "timestamp" to Instant.now().toString()
-        )
-    }
-
     @ExceptionHandler(TUrtleException::class)
-    fun turtle(exception: TUrtleException) = exception.responseEntity(exception.status)
+    fun turtle(exception: TUrtleException, request: HttpServletRequest) =
+        exception.responseEntity(request.requestURI, exception.status)
 
     @ExceptionHandler(NoResourceFoundException::class)
-    fun noResourceFound(exception: NoResourceFoundException) = exception.responseEntity(HttpStatus.NOT_FOUND)
+    fun noResourceFound(exception: NoResourceFoundException, request: HttpServletRequest) =
+        exception.responseEntity(request.requestURI, HttpStatus.NOT_FOUND)
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun validation(exception: MethodArgumentNotValidException) = exception.responseEntity(HttpStatus.BAD_REQUEST)
+    fun validation(exception: MethodArgumentNotValidException, request: HttpServletRequest) =
+        exception.responseEntity(request.requestURI, HttpStatus.BAD_REQUEST)
 
     //TODO change name
     @ExceptionHandler(PropertyReferenceException::class)
-    fun validationIDKIFORGOR(exception: PropertyReferenceException) = exception.responseEntity(HttpStatus.BAD_REQUEST)
+    fun validationIDKIFORGOR(exception: PropertyReferenceException, request: HttpServletRequest) =
+        exception.responseEntity(request.requestURI, HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(Exception::class)
-    fun generic(exception: Exception): ResponseEntity<Map<String, Any>> {
+    fun generic(exception: Exception, request: HttpServletRequest): ResponseEntity<ExceptionResponse> {
         exception.printStackTrace()
-        return exception.responseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        return exception.responseEntity(request.requestURI, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
-    private fun Exception.responseEntity(status: HttpStatus): ResponseEntity<Map<String, Any>> {
-        val payload = payload(this, status)
-        return ResponseEntity.status(status).body(payload)
+    private fun Exception.responseEntity(path: String, status: HttpStatus): ResponseEntity<ExceptionResponse> {
+        val response = ExceptionResponse(path, this, status)
+        return ResponseEntity.status(status).body(response)
     }
 
 }

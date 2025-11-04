@@ -10,6 +10,7 @@ import de.csw.turtle.api.v1.exception.UsernameAlreadyExistsException
 import de.csw.turtle.api.v1.repository.UserRepository
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -22,22 +23,17 @@ import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 class UserController(
     private val repository: UserRepository
 ) {
 
     @GetMapping
-    fun getAll(pageable: Pageable): ResponseEntity<Page<GetUserResponse>> {
-        val page = repository.findAll(pageable).map {
-            GetUserResponse(
-                username = it.username,
-                firstName = it.firstName,
-                lastName = it.lastName,
-                email = it.email,
-                studentId = it.studentId
-            )
-        }
+    fun getAll(pageable: Pageable = PageRequest.of(0, 20)): ResponseEntity<Page<GetUserResponse>> {
+        val page = repository
+            .findAll(pageable)
+            .map { GetUserResponse(it) }
+
         return ResponseEntity.ok(page)
     }
 
@@ -46,15 +42,8 @@ class UserController(
         val user = repository.findByUsername(username)
             ?: throw UserNotFoundException(username)
 
-        val dto = GetUserResponse(
-            username = user.username,
-            firstName = user.firstName,
-            lastName = user.lastName,
-            email = user.email,
-            studentId = user.studentId
-        )
-
-        return ResponseEntity.ok(dto)
+        val response = GetUserResponse(user)
+        return ResponseEntity.ok(response)
     }
 
     @PostMapping
@@ -66,28 +55,12 @@ class UserController(
         if (repository.findByStudentId(request.studentId) != null)
             throw StudentIdAlreadyExistsException(request.studentId)
 
-        val user = UserEntity(
-            username = request.username,
-            firstName = request.firstName,
-            lastName = request.lastName,
-            email = request.email,
-            studentId = request.studentId,
-            passwordHash = request.password, // TODO needs to behashed
-        )
-
+        val user = request.create()
         repository.save(user)
 
-        val response = GetUserResponse(
-            username = user.username,
-            firstName = user.firstName,
-            lastName = user.lastName,
-            email = user.email,
-            studentId = user.studentId
-        )
-
         return ResponseEntity
-            .created(URI.create("/users/${user.username}"))
-            .body(response)
+            .created(URI.create("/api/v1/users/${user.username}"))
+            .body(GetUserResponse(user))
     }
 
     @DeleteMapping("/{username}")
