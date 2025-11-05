@@ -11,7 +11,9 @@
 		DesktopPcSolid,
 		UserHeadsetSolid,
 		CalendarMonthSolid,
-		CalendarEditSolid
+		CalendarEditSolid,
+		UserSettingsSolid,
+		NewspaperSolid
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/state';
 	import {
@@ -96,21 +98,33 @@
 			</SidebarGroup>
 			<SidebarGroup border borderClass="pt-2 mt-4 border-t border-primary dark:border-gray-700">
 				<span class="text-green-800 ml-1">Admin</span>
-				<SidebarItem label={m.manage_users()} {spanClass} href="/admin/users">
-					{#snippet icon()}
-						<UsersGroupSolid class="text-green-700 h-5 w-5 transition duration-75" />
-					{/snippet}
-				</SidebarItem>
-				<SidebarItem label={m.bookings()} href="/admin/bookings">
-					{#snippet icon()}
-						<CalendarEditSolid class="text-green-700 h-5 w-5 transition duration-75" />
-					{/snippet}
-				</SidebarItem>
-				<SidebarItem label={m.manage_support_tickets()} href="/admin/support">
-					{#snippet icon()}
-						<UserHeadsetSolid class="text-green-700 h-5 w-5 transition duration-75" />
-					{/snippet}
-				</SidebarItem>
+				<div class="space-y-2">
+					<SidebarItem label={m.manage_users()} {spanClass} href="/admin/users">
+						{#snippet icon()}
+							<UsersGroupSolid class="text-green-700 h-5 w-5 transition duration-75" />
+						{/snippet}
+					</SidebarItem>
+					<SidebarItem label={m.manage_bookings()} href="/admin/bookings">
+						{#snippet icon()}
+							<CalendarEditSolid class="text-green-700 h-5 w-5 transition duration-75" />
+						{/snippet}
+					</SidebarItem>
+					<SidebarItem label={m.manage_support_tickets()} href="/admin/support">
+						{#snippet icon()}
+							<UserHeadsetSolid class="text-green-700 h-5 w-5 transition duration-75" />
+						{/snippet}
+					</SidebarItem>
+					<SidebarItem label={m.manage_news()} href="/admin/news">
+						{#snippet icon()}
+							<NewspaperSolid class="text-green-700 h-5 w-5 transition duration-75" />
+						{/snippet}
+					</SidebarItem>
+					<SidebarItem label={m.admin_settings()} href="/admin/settings">
+						{#snippet icon()}
+							<UserSettingsSolid class="text-green-700 h-5 w-5 transition duration-75" />
+						{/snippet}
+					</SidebarItem>
+				</div>
 			</SidebarGroup>
 		</Sidebar>
 	</ThemeProvider>

@@ -15,5 +15,8 @@
 	"first_name": "Vorname",
 	"last_name": "Nachname",
 	"phone_number": "Telefonnummer",
-	"confirm": "Bestätigen"
+	"confirm": "Bestätigen",
+	"admin_settings": "Administrator Einstellungen",
+	"manage_bookings": "Buchungen verwalten",
+	"manage_news": "Neuigkeiten verwalten"
 }
