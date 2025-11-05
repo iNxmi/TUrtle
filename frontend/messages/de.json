@@ -14,5 +14,6 @@
 	"delete": "Löschen",
 	"first_name": "Vorname",
 	"last_name": "Nachname",
-	"phone_number": "Telefonnummer"
+	"phone_number": "Telefonnummer",
+	"confirm": "Bestätigen"
 }

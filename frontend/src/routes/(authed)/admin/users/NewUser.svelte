@@ -37,7 +37,7 @@
 			</div>
 		</div>
 		<div class="flex items-center pt-3 space-x-3 rtl:space-x-reverse rounded-b-lg shrink-0 ">
-			<Button class="bg-accent" type="submit">Log in</Button>
+			<Button class="bg-accent" type="submit">{m.new_user()}</Button>
 		</div>
 	</form>
 	<!-- {#snippet footer()}
