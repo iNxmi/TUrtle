@@ -55,3 +55,29 @@ All commands listed here are run in `/frontend`
     * `npm install`
 * Start the Server (i have not tested this yet, may be wrong)
     * `npm start`
+
+---
+
+# Adminbereich
+
+- Managen von Support tickets
+- Steuerung von Hardware (Tür, schränke) als override
+- Managen von ausgeliehenen Gegenständen (von anderen Usern) und Database
+- Managen von Veranstaltungskalender
+- Managen von User database (erstellen/editieren/löschen)
+- Anzeigen von Statistiken
+
+# Userbereich
+
+- Ausleihen von Gegenständen
+- Anfordern von Veranstaltungsterminen
+- Profil einsehen und bearbeiten
+- Informations/Help Seite anzeigen/lesen (event. außerhalb von login)
+- Emoji-Code zurücksetzen / Passwort zurücksetzen
+- Support tickets ausstellen
+
+# Door Terminal
+
+- terminal page für Door terminal
+- Variable resolution / auto scale
+- Support ticket button mit basic Auswahl

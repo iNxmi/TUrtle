@@ -46,23 +46,6 @@ class UserController(
         return ResponseEntity.ok(response)
     }
 
-    @PostMapping
-    fun create(@Valid @RequestBody request: CreateUserRequest): ResponseEntity<GetUserResponse> {
-        if (repository.findByUsername(request.username) != null)
-            throw UsernameAlreadyExistsException(request.username)
-        if (repository.findByEmail(request.email) != null)
-            throw EmailAlreadyExistsException(request.email)
-        if (repository.findByStudentId(request.studentId) != null)
-            throw StudentIdAlreadyExistsException(request.studentId)
-
-        val user = request.create()
-        repository.save(user)
-
-        return ResponseEntity
-            .created(URI.create("/api/v1/users/${user.username}"))
-            .body(GetUserResponse(user))
-    }
-
     @DeleteMapping("/{username}")
     fun deleteByUsername(@PathVariable username: String): ResponseEntity<Void> {
         val user = repository.findByUsername(username)
