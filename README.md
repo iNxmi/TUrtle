@@ -53,8 +53,8 @@ TUrtle/frontend/
 All commands listed here are run in `/frontend`
 * Initialize the frontend
     * `npm install`
-* Start the Server (i have not tested this yet, may be wrong)
-    * `npm start`
+* Start the Server
+    * `npm run dev`
 
 ---
 
