@@ -40,6 +40,8 @@ services:
     build: frontend
     container_name: frontend
     restart: no
+    ports:
+      - "3000:3000"
     depends_on:
       - backend
     env_file: .env
