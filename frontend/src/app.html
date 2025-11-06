@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="%paraglide.lang%">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
@@ -8,9 +8,9 @@
 		%sveltekit.head%
 
 		<!-- duplication with svelte.dev/static/shared.css needed, else styles aren't applied during local dev -->
-		<link rel="stylesheet" href="/shared.css" />
+		<!--link rel="stylesheet" href="/shared.css" /-->
 	</head>
-	<body>
+	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
 
 		<script>
