@@ -9,18 +9,18 @@ networks:
   network:
 
 services:
-  database:
+  postgres:
     image: postgres:16
-    container_name: database
+    container_name: postgres
     restart: no
     volumes:
       - database_volume:/var/lib/postgresql/data
     networks:
       - network
     environment:
+      POSTGRES_DB: database
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: dummy_password
-      POSTGRES_DB: database
 
   backend:
     build: backend
@@ -28,7 +28,7 @@ services:
     restart: no
     env_file: .env
     depends_on:
-      - database
+      - postgres
     networks:
       - network
 
@@ -42,14 +42,14 @@ services:
     networks:
       - network
     environment:
-      - NODE_ENV=production
-      - ORIGIN=http://localhost
-      - PROTOCOL_HEADER=x-forwarded-proto
-      - HOST_HEADER=x-forwarded-host
+      NODE_ENV: production
+      ORIGIN: http://localhost
+      PROTOCOL_HEADER: x-forwarded-proto
+      HOST_HEADER: x-forwarded-host
 
-  proxy:
+  nginx:
     image: nginx:latest
-    container_name: proxy
+    container_name: nginx
     restart: no
     ports:
       - "80:80"
@@ -58,7 +58,7 @@ services:
       - frontend
       - backend
     volumes:
-      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - certbot_etc:/etc/letsencrypt
       - certbot_etc:/var/lib/letsencrypt
     networks:
@@ -79,7 +79,7 @@ services:
     ports:
       - "8000:8080"
     depends_on:
-      - database
+      - postgres
     networks:
       - network
     environment:
