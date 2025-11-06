@@ -1,7 +1,7 @@
 package de.csw.turtle.api.v1.controller
 
-import de.csw.turtle.api.v1.dto.request.LoginRequest
-import de.csw.turtle.api.v1.dto.request.RegisterRequest
+import de.csw.turtle.api.v1.dto.request.LoginUserRequest
+import de.csw.turtle.api.v1.dto.request.RegisterUserRequest
 import de.csw.turtle.api.v1.dto.response.GetUserResponse
 import de.csw.turtle.api.v1.entity.UserEntity
 import de.csw.turtle.api.v1.exception.EmailAlreadyExistsException
@@ -30,11 +30,13 @@ class AuthController(
 ) {
 
     @PostMapping("/register")
-    fun register(@RequestBody request: RegisterRequest): ResponseEntity<GetUserResponse> {
+    fun register(@RequestBody request: RegisterUserRequest): ResponseEntity<GetUserResponse> {
         if (userRepository.findByUsername(request.username) != null)
             throw UsernameAlreadyExistsException(request.username)
+
         if (userRepository.findByEmail(request.email) != null)
             throw EmailAlreadyExistsException(request.email)
+
         if (userRepository.findByStudentId(request.studentId) != null)
             throw StudentIdAlreadyExistsException(request.studentId)
 
@@ -48,7 +50,7 @@ class AuthController(
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody request: LoginRequest): ResponseEntity<String> {
+    fun login(@RequestBody request: LoginUserRequest): ResponseEntity<String> {
         val user = userRepository.findByUsername(request.username)
             ?: throw UsernameOrPasswordInvalidException()
 

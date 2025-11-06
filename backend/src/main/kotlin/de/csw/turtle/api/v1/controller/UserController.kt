@@ -29,9 +29,10 @@ class UserController(
 ) {
 
     @GetMapping
-    fun getAll(pageable: Pageable = PageRequest.of(0, 20)): ResponseEntity<Page<GetUserResponse>> {
-        val page = repository
-            .findAll(pageable)
+    fun getPaginated(
+        pageable: Pageable = PageRequest.of(0, 20)
+    ): ResponseEntity<Page<GetUserResponse>> {
+        val page = repository.findAll(pageable)
             .map { GetUserResponse(it) }
 
         return ResponseEntity.ok(page)

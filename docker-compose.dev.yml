@@ -2,6 +2,7 @@ version: '3.8'
 
 volumes:
   database_volume:
+  backend_volume:
   certbot_etc:
   certbot_var:
 
@@ -26,11 +27,14 @@ services:
     build: backend
     container_name: backend
     restart: no
-    env_file: .env
+    ports:
+      - "8080:8080"
     depends_on:
       - postgres
     networks:
       - network
+    volumes:
+      - backend_volume:/var/lib/turtle/backend
 
   frontend:
     build: frontend

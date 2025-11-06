@@ -31,5 +31,14 @@ data class UserEntity(
     var passwordHash: String,
 
     @Column(nullable = false)
+    var role: Role = Role.STUDENT,
+
+    @Column(nullable = false, updatable = false)
     var createdAt: Instant = Instant.now()
-)
+) {
+
+    enum class Role {
+        STUDENT, ADMIN, PROFESSOR
+    }
+
+}
