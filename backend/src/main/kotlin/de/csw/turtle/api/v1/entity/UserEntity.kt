@@ -2,10 +2,10 @@ package de.csw.turtle.api.v1.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import java.time.Instant
 
 @Entity
@@ -28,17 +28,30 @@ data class UserEntity(
     var studentId: Long,
 
     @Column(nullable = false)
-    var passwordHash: String,
+    var password: String,
 
     @Column(nullable = false)
     var role: Role = Role.STUDENT,
 
     @Column(nullable = false, updatable = false)
     var createdAt: Instant = Instant.now()
-) {
+) : UserDetails {
 
-    enum class Role {
-        STUDENT, ADMIN, PROFESSOR
+    override fun getAuthorities(): Collection<GrantedAuthority> {
+        val authority = role.getGrantedAuthority()
+        return setOf(authority)
+    }
+
+    override fun getUsername() = username
+
+    override fun getPassword() = password
+
+    enum class Role(val id: String) {
+        STUDENT("ROLE_STUDENT"),
+        ADMIN("ROLE_ADMIN"),
+        PROFESSOR("ROLE_PROFESSOR");
+
+        fun getGrantedAuthority() = GrantedAuthority { id }
     }
 
 }

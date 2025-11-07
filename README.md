@@ -14,6 +14,14 @@ This is the backend, based on Spring Boot in Kotlin
 Name: **TUrtleAPI**  
 Port: 8080
 
+## application.yml
+```properties
+turtle.api.max_sessions=16
+# 30 * 24 * 60 * 60 = 2_592_000 -> 30 days in seconds
+turtle.api.session_duration_seconds=2_592_000
+turtle.api.session_key={some_super_secret_key}
+```
+
 ## Docker Environment
 ```
 DATASOURCE_SERVER: {ip:port}

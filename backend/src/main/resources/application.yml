@@ -8,6 +8,11 @@ spring:
     username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
 
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,3 +23,14 @@ springdoc:
   swagger-ui:
     url: /openapi/api-docs
     path: /docs
+
+server:
+  servlet:
+    session:
+      timeout: 30m
+
+turtle:
+  api:
+    max_sessions: 16
+    session_duration_seconds: 2592000
+    session_key: some_super_secret_key
