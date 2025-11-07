@@ -1,15 +1,19 @@
 package de.csw.turtle.api.v1.config.security
 
-import de.csw.turtle.api.v1.service.TUrtleUserDetailsService
+import de.csw.turtle.api.v1.service.CustomUserDetailsService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.ProviderManager
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository
 import javax.sql.DataSource
 
 @Configuration
@@ -17,8 +21,7 @@ import javax.sql.DataSource
 class SecurityConfig(
     private val authenticationEntryPoint: CustomAuthenticationEntryPoint,
     private val accessDeniedHandler: CustomAccessDeniedHandler,
-    private val dataSource: DataSource,
-    private val userDetailsService: TUrtleUserDetailsService
+    private val userDetailsService: CustomUserDetailsService
 ) {
 
     @Value("\${turtle.api.max_sessions}")
@@ -38,46 +41,53 @@ class SecurityConfig(
     fun passwordEncoder() = BCryptPasswordEncoder()
 
     @Bean
-    fun persistentTokenRepository(dataSource: DataSource): PersistentTokenRepository {
-        val repository = JdbcTokenRepositoryImpl()
-        repository.setDataSource(dataSource)
-        return repository
+    fun authenticationManager(
+        userDetailsService: UserDetailsService,
+        passwordEncoder: PasswordEncoder
+    ): AuthenticationManager {
+        val authenticationProvider = DaoAuthenticationProvider(userDetailsService)
+        authenticationProvider.setPasswordEncoder(passwordEncoder)
+
+        return ProviderManager(authenticationProvider)
     }
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { it.disable() }
 
-            .sessionManagement {
-                it.maximumSessions(maxSession)
-                    .maxSessionsPreventsLogin(false)
-            }
+//            .sessionManagement {
+//                it.maximumSessions(maxSession)
+//                    .maxSessionsPreventsLogin(false)
+//
+//                it.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+//            }
 
-            .rememberMe {
-                it.key(sessionKey)
-                    .userDetailsService(userDetailsService)
-                    .tokenRepository(persistentTokenRepository(dataSource))
-                    .tokenValiditySeconds(sessionDurationInSeconds)
-                    .alwaysRemember(false)
-            }
+//            .rememberMe {
+//                it.key(sessionKey)
+//                    .userDetailsService(userDetailsService)
+//                    .tokenRepository(persistentTokenRepository(dataSource))
+//                    .tokenValiditySeconds(sessionDurationInSeconds)
+//                    .alwaysRemember(false)
+//            }
 
             .authorizeHttpRequests {
-//                it.requestMatchers(
-//                    "/docs",
-//                    "/swagger-ui/**",
-//                    "/swagger-ui.html",
-//                    "/openapi/api-docs/**"
-//                ).permitAll()
-//
-//                    .requestMatchers("/api/v1/auth/**").permitAll()
-//
-//                    .anyRequest().authenticated()
+                it.requestMatchers(
+                    "/docs",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/openapi/api-docs/**"
+                ).permitAll()
 
-                it.anyRequest().permitAll()
+                    .requestMatchers(
+                        "/api/v1/auth/login",
+                        "/api/v1/auth/register"
+                    ).permitAll()
+
+                    .anyRequest().authenticated()
             }
 
-            .formLogin { it.loginProcessingUrl("/api/v1/auth/login").permitAll() }
-            .logout { it.logoutUrl("/api/v1/auth/logout").logoutSuccessUrl("/").permitAll() }
+            .formLogin { it.disable() }
+            .logout { it.disable() }
             .httpBasic { it.disable() }
 
             .exceptionHandling {
