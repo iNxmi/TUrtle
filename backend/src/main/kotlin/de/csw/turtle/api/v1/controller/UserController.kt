@@ -27,7 +27,7 @@ class UserController(
 
     @GetMapping("/{username}")
     fun getByUsername(@PathVariable username: String): ResponseEntity<GetUserResponse> {
-        val user = repository.findByUsername(username)
+        val user = repository.findByUserName(username)
             ?: throw UserNotFoundException(username)
 
         val response = GetUserResponse(user)
@@ -36,7 +36,7 @@ class UserController(
 
     @DeleteMapping("/{username}")
     fun deleteByUsername(@PathVariable username: String): ResponseEntity<Void> {
-        val user = repository.findByUsername(username)
+        val user = repository.findByUserName(username)
             ?: throw UserNotFoundException(username)
 
         repository.delete(user)

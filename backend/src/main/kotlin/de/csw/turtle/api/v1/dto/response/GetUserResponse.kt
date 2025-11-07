@@ -11,7 +11,7 @@ data class GetUserResponse(
 ) {
 
     constructor(user: UserEntity) : this(
-        username = user.username,
+        username = user.userName,
         firstName = user.firstName,
         lastName = user.lastName,
         email = user.email,

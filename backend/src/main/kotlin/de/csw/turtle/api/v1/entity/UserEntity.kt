@@ -13,7 +13,7 @@ import java.time.Instant
 data class UserEntity(
     @Id
     @Column(nullable = false, unique = true)
-    var username: String,
+    var userName: String,
 
     @Column(nullable = false)
     var firstName: String,
@@ -28,7 +28,7 @@ data class UserEntity(
     var studentId: Long,
 
     @Column(nullable = false)
-    var password: String,
+    var passwordHash: String,
 
     @Column(nullable = false)
     var role: Role = Role.STUDENT,
@@ -42,9 +42,9 @@ data class UserEntity(
         return setOf(authority)
     }
 
-    override fun getUsername() = username
+    override fun getUsername() = userName
 
-    override fun getPassword() = password
+    override fun getPassword() = passwordHash
 
     enum class Role(val id: String) {
         STUDENT("ROLE_STUDENT"),

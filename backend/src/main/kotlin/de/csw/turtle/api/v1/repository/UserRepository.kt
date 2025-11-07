@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserRepository : JpaRepository<UserEntity, String> {
 
-    fun findByUsername(username: String): UserEntity?
+    fun findByUserName(username: String): UserEntity?
     fun findByEmail(email: String): UserEntity?
     fun findByStudentId(studentId: Long): UserEntity?
 
-    fun deleteByUsername(username: String)
+    fun deleteByUserName(username: String)
 
 }

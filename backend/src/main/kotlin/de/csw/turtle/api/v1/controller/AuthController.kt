@@ -24,7 +24,7 @@ class AuthController(
 
     @PostMapping("/register")
     fun register(@RequestBody request: RegisterUserRequest): ResponseEntity<GetUserResponse> {
-        if (userRepository.findByUsername(request.username) != null)
+        if (userRepository.findByUserName(request.username) != null)
             throw UsernameAlreadyExistsException(request.username)
 
         if (userRepository.findByEmail(request.email) != null)
@@ -38,7 +38,7 @@ class AuthController(
         userRepository.save(user)
 
         return ResponseEntity
-            .created(URI.create("/api/v1/users/${user.username}"))
+            .created(URI.create("/api/v1/users/${user.userName}"))
             .body(GetUserResponse(user))
     }
 

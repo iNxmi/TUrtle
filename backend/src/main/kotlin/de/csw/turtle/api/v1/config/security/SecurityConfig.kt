@@ -1,10 +1,9 @@
 package de.csw.turtle.api.v1.config.security
 
+import de.csw.turtle.api.v1.service.TUrtleUserDetailsService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -18,7 +17,8 @@ import javax.sql.DataSource
 class SecurityConfig(
     private val authenticationEntryPoint: CustomAuthenticationEntryPoint,
     private val accessDeniedHandler: CustomAccessDeniedHandler,
-    private val dataSource: DataSource
+    private val dataSource: DataSource,
+    private val userDetailsService: TUrtleUserDetailsService
 ) {
 
     @Value("\${turtle.api.max_sessions}")
@@ -39,10 +39,9 @@ class SecurityConfig(
 
     @Bean
     fun persistentTokenRepository(dataSource: DataSource): PersistentTokenRepository {
-        val repo = JdbcTokenRepositoryImpl()
-        repo.setDataSource(dataSource)
-        repo.setCreateTableOnStartup(true)
-        return repo
+        val repository = JdbcTokenRepositoryImpl()
+        repository.setDataSource(dataSource)
+        return repository
     }
 
     @Bean
@@ -56,6 +55,7 @@ class SecurityConfig(
 
             .rememberMe {
                 it.key(sessionKey)
+                    .userDetailsService(userDetailsService)
                     .tokenRepository(persistentTokenRepository(dataSource))
                     .tokenValiditySeconds(sessionDurationInSeconds)
                     .alwaysRemember(false)
@@ -87,8 +87,5 @@ class SecurityConfig(
 
         return http.build()
     }
-
-    @Bean
-    fun authenticationManager(config: AuthenticationConfiguration): AuthenticationManager = config.authenticationManager
 
 }
