@@ -3,10 +3,10 @@ spring:
     name: TUrtleAPI
 
   datasource:
-    url: jdbc:postgresql://postgres:5432/postgres
-    username: postgres
-    password: dummy_password
     driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DATASOURCE_SERVER}/${DATASOURCE_DATABASE}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
 
   jpa:
     hibernate:

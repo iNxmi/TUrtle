@@ -5,7 +5,7 @@ This is the official [TUrtle](https://exmaple.com) repository
 [Docker](https://www.docker.com/) has to be installed in order to run the full application stack.  
 All commands listed here are run in `/`  
 * Start the Docker Development stack
-    * `docker compose -f docker-compose.dev.yml up --build`
+    * `docker compose up --build`
 
 ___
 
@@ -13,6 +13,14 @@ ___
 This is the backend, based on Spring Boot in Kotlin  
 Name: **TUrtleAPI**  
 Port: 8080
+
+## Docker Environment
+```
+DATASOURCE_SERVER: {ip:port}
+DATASOURCE_DATABASE: {database}
+DATASOURCE_USERNAME: {username}
+DATASOURCE_PASSWORD: {password}
+```
 
 Based on REST:
 
