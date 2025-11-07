@@ -12,7 +12,7 @@ RUN ./gradlew dependencies --no-daemon || return 0
 
 COPY src src
 
-RUN ./gradlew bootJar --no-daemon -x test
+RUN chmod +x ./gradlew && ./gradlew bootJar --no-daemon -x test
 
 # Run the application
 
