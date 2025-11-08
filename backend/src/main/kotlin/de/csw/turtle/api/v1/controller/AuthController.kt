@@ -13,12 +13,15 @@ import de.csw.turtle.api.v1.exception.UsernameAlreadyExistsException
 import de.csw.turtle.api.v1.exception.UsernameOrPasswordInvalidException
 import de.csw.turtle.api.v1.repository.UserRepository
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -90,6 +93,18 @@ class AuthController(
 
         val getUserResponse = GetUserResponse(user)
         return ResponseEntity.ok(getUserResponse)
+    }
+
+    @GetMapping("/logout")
+    fun logout(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        authentication: Authentication
+    ): ResponseEntity<GetUserResponse> {
+        val logoutHandler = SecurityContextLogoutHandler()
+        logoutHandler.logout(request, response, authentication)
+
+        return ResponseEntity.noContent().build()
     }
 
     @GetMapping("/me")
