@@ -46,12 +46,12 @@ data class UserEntity(
 
     override fun getPassword() = passwordHash
 
-    enum class Role(val id: String) {
-        STUDENT("ROLE_STUDENT"),
-        ADMIN("ROLE_ADMIN"),
-        PROFESSOR("ROLE_PROFESSOR");
+    enum class Role() {
+        STUDENT,
+        ADMIN,
+        PROFESSOR;
 
-        fun getGrantedAuthority() = GrantedAuthority { id }
+        fun getGrantedAuthority() = GrantedAuthority { name }
     }
 
 }

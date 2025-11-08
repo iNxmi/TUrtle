@@ -10,12 +10,15 @@ import de.csw.turtle.api.v1.exception.StudentIdAlreadyExistsException
 import de.csw.turtle.api.v1.exception.UnauthorizedException
 import de.csw.turtle.api.v1.exception.UserNotFoundException
 import de.csw.turtle.api.v1.exception.UsernameAlreadyExistsException
+import de.csw.turtle.api.v1.exception.UsernameOrPasswordInvalidException
 import de.csw.turtle.api.v1.repository.UserRepository
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -62,10 +65,14 @@ class AuthController(
 
     @PostMapping("/login")
     fun login(
-        @RequestBody loginUserRequest: LoginUserRequest
+        @RequestBody loginUserRequest: LoginUserRequest,
+        httpRequest: HttpServletRequest
     ): ResponseEntity<GetUserResponse> {
         val user = userRepository.findByUserName(loginUserRequest.username)
-            ?: throw UserNotFoundException(loginUserRequest.username)
+            ?: throw UsernameOrPasswordInvalidException()
+
+        if (!passwordEncoder.matches(loginUserRequest.password, user.password))
+            throw UsernameOrPasswordInvalidException()
 
         val authenticationToken = UsernamePasswordAuthenticationToken.unauthenticated(
             loginUserRequest.username,
@@ -74,6 +81,11 @@ class AuthController(
 
         val authentication = authenticationManager.authenticate(authenticationToken)
         SecurityContextHolder.getContext().authentication = authentication
+
+        httpRequest.getSession(true).setAttribute(
+            HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+            SecurityContextHolder.getContext()
+        )
 
         val getUserResponse = GetUserResponse(user)
         return ResponseEntity.ok(getUserResponse)

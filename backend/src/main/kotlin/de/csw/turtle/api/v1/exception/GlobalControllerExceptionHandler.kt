@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.mapping.PropertyReferenceException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -29,6 +30,10 @@ class GlobalControllerExceptionHandler {
     @ExceptionHandler(PropertyReferenceException::class)
     fun validationIDKIFORGOR(exception: PropertyReferenceException, request: HttpServletRequest) =
         exception.responseEntity(request.requestURI, HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
+    fun generic(exception: HttpRequestMethodNotSupportedException, request: HttpServletRequest) =
+        exception.responseEntity(request.requestURI, HttpStatus.METHOD_NOT_ALLOWED)
 
     @ExceptionHandler(Exception::class)
     fun generic(exception: Exception, request: HttpServletRequest): ResponseEntity<ExceptionResponse> {

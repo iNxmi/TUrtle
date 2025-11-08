@@ -55,6 +55,8 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { it.disable() }
 
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) }
+
 //            .sessionManagement {
 //                it.maximumSessions(maxSession)
 //                    .maxSessionsPreventsLogin(false)
