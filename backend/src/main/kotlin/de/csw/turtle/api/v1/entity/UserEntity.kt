@@ -12,7 +12,7 @@ import java.time.Instant
 @Table(name = "users")
 data class UserEntity(
     @Id
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     var userName: String,
 
     @Column(nullable = false)

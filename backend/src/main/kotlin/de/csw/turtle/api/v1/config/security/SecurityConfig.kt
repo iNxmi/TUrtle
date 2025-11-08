@@ -1,6 +1,7 @@
 package de.csw.turtle.api.v1.config.security
 
 import de.csw.turtle.api.v1.service.CustomUserDetailsService
+import de.csw.turtle.api.v1.service.PasswordEncoderService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -21,7 +23,8 @@ import javax.sql.DataSource
 class SecurityConfig(
     private val authenticationEntryPoint: CustomAuthenticationEntryPoint,
     private val accessDeniedHandler: CustomAccessDeniedHandler,
-    private val userDetailsService: CustomUserDetailsService
+    private val sessionRegistry: SessionRegistry,
+    private val passwordEncoderService: PasswordEncoderService
 ) {
 
     @Value("\${turtle.api.max_sessions}")
@@ -38,15 +41,11 @@ class SecurityConfig(
     private lateinit var sessionKey: String
 
     @Bean
-    fun passwordEncoder() = BCryptPasswordEncoder()
-
-    @Bean
     fun authenticationManager(
-        userDetailsService: UserDetailsService,
-        passwordEncoder: PasswordEncoder
+        userDetailsService: UserDetailsService
     ): AuthenticationManager {
         val authenticationProvider = DaoAuthenticationProvider(userDetailsService)
-        authenticationProvider.setPasswordEncoder(passwordEncoder)
+        authenticationProvider.setPasswordEncoder(passwordEncoderService.encoder)
 
         return ProviderManager(authenticationProvider)
     }
@@ -55,7 +54,13 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { it.disable() }
 
-            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) }
+            .sessionManagement {
+                it.maximumSessions(maxSession)
+                    .sessionRegistry(sessionRegistry)
+                    .maxSessionsPreventsLogin(false)
+
+                it.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+            }
 
 //            .sessionManagement {
 //                it.maximumSessions(maxSession)
@@ -80,12 +85,12 @@ class SecurityConfig(
                     "/openapi/api-docs/**"
                 ).permitAll()
 
-                    .requestMatchers(
-                        "/api/v1/auth/login",
-                        "/api/v1/auth/register"
-                    ).permitAll()
+                it.requestMatchers(
+                    "/api/v1/auth/login",
+                    "/api/v1/auth/register"
+                ).permitAll()
 
-                    .anyRequest().authenticated()
+                it.anyRequest().authenticated()
             }
 
             .formLogin { it.disable() }
@@ -94,7 +99,7 @@ class SecurityConfig(
 
             .exceptionHandling {
                 it.authenticationEntryPoint(authenticationEntryPoint)
-                    .accessDeniedHandler(accessDeniedHandler)
+                it.accessDeniedHandler(accessDeniedHandler)
             }
 
         return http.build()

@@ -12,6 +12,7 @@ import de.csw.turtle.api.v1.exception.UserNotFoundException
 import de.csw.turtle.api.v1.exception.UsernameAlreadyExistsException
 import de.csw.turtle.api.v1.exception.UsernameOrPasswordInvalidException
 import de.csw.turtle.api.v1.repository.UserRepository
+import de.csw.turtle.api.v1.service.PasswordEncoderService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
@@ -34,7 +35,7 @@ import java.net.URI
 @RequestMapping("/api/v1/auth")
 class AuthController(
     val userRepository: UserRepository,
-    val passwordEncoder: PasswordEncoder,
+    val passwordEncoderService: PasswordEncoderService,
     val authenticationManager: AuthenticationManager
 ) {
 
@@ -51,7 +52,7 @@ class AuthController(
         if (userRepository.findByStudentId(request.studentId) != null)
             throw StudentIdAlreadyExistsException(request.studentId)
 
-        val passwordHash = passwordEncoder.encode(request.password)
+        val passwordHash = passwordEncoderService.encode(request.password)
         val user = UserEntity(
             request.username,
             request.firstName,
@@ -75,7 +76,7 @@ class AuthController(
         val user = userRepository.findByUserName(loginUserRequest.username)
             ?: throw UsernameOrPasswordInvalidException()
 
-        if (!passwordEncoder.matches(loginUserRequest.password, user.password))
+        if (!passwordEncoderService.matches(loginUserRequest.password, user.password))
             throw UsernameOrPasswordInvalidException()
 
         val authenticationToken = UsernamePasswordAuthenticationToken.unauthenticated(
