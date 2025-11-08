@@ -4,13 +4,10 @@ import de.csw.turtle.api.v1.dto.request.LoginUserRequest
 import de.csw.turtle.api.v1.dto.request.RegisterUserRequest
 import de.csw.turtle.api.v1.dto.response.GetUserResponse
 import de.csw.turtle.api.v1.entity.UserEntity
-import de.csw.turtle.api.v1.exception.CorruptAuthenticationException
-import de.csw.turtle.api.v1.exception.EmailAlreadyExistsException
-import de.csw.turtle.api.v1.exception.StudentIdAlreadyExistsException
-import de.csw.turtle.api.v1.exception.UnauthorizedException
-import de.csw.turtle.api.v1.exception.UserNotFoundException
-import de.csw.turtle.api.v1.exception.UsernameAlreadyExistsException
-import de.csw.turtle.api.v1.exception.UsernameOrPasswordInvalidException
+import de.csw.turtle.api.v1.exception.exceptions.EmailAlreadyExistsException
+import de.csw.turtle.api.v1.exception.exceptions.StudentIdAlreadyExistsException
+import de.csw.turtle.api.v1.exception.exceptions.UsernameAlreadyExistsException
+import de.csw.turtle.api.v1.exception.exceptions.UsernameOrPasswordInvalidException
 import de.csw.turtle.api.v1.repository.UserRepository
 import de.csw.turtle.api.v1.service.PasswordEncoderService
 import jakarta.servlet.http.HttpServletRequest
@@ -21,7 +18,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository
 import org.springframework.web.bind.annotation.GetMapping

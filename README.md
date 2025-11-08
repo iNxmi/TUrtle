@@ -75,7 +75,6 @@ All commands listed here are run in `/frontend`
 ---
 
 # Adminbereich
-
 - Managen von Support tickets
 - Steuerung von Hardware (Tür, schränke) als override
 - Managen von ausgeliehenen Gegenständen (von anderen Usern) und Database
@@ -84,7 +83,6 @@ All commands listed here are run in `/frontend`
 - Anzeigen von Statistiken
 
 # Userbereich
-
 - Ausleihen von Gegenständen
 - Anfordern von Veranstaltungsterminen
 - Profil einsehen und bearbeiten
@@ -93,7 +91,6 @@ All commands listed here are run in `/frontend`
 - Support tickets ausstellen
 
 # Door Terminal
-
 - terminal page für Door terminal
 - Variable resolution / auto scale
 - Support ticket button mit basic Auswahl
