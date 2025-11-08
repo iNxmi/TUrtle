@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository
@@ -92,14 +93,7 @@ class AuthController(
     }
 
     @GetMapping("/me")
-    fun me(): ResponseEntity<GetUserResponse> {
-        val authentication = SecurityContextHolder.getContext().authentication
-        if (authentication == null || !authentication.isAuthenticated)
-            throw UnauthorizedException()
-
-        val principal = authentication.principal
-        val user = principal as? UserEntity ?: throw CorruptAuthenticationException(principal)
-
+    fun me(@AuthenticationPrincipal user: UserEntity): ResponseEntity<GetUserResponse> {
         val getUserResponse = GetUserResponse(user)
         return ResponseEntity.ok(getUserResponse)
     }

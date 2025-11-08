@@ -3,6 +3,8 @@ package de.csw.turtle.api.v1.controller
 import de.csw.turtle.api.v1.dto.response.GetUserResponse
 import de.csw.turtle.api.v1.exception.UserNotFoundException
 import de.csw.turtle.api.v1.repository.UserRepository
+import io.swagger.v3.oas.annotations.enums.ParameterIn
+import org.hibernate.annotations.Parameter
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -17,8 +19,11 @@ class UserController(
 
     @GetMapping
     fun getPaginated(
-        pageable: Pageable = PageRequest.of(0, 20)
+        @RequestParam(required = false, defaultValue = "0") page: Int,
+        @RequestParam(required = false, defaultValue = "20") size: Int
     ): ResponseEntity<Page<GetUserResponse>> {
+        val pageable = PageRequest.of(page, size)
+
         val page = repository.findAll(pageable)
             .map { GetUserResponse(it) }
 
