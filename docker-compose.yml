@@ -1,6 +1,5 @@
 volumes:
   database_volume:
-  backend_volume:
   certbot_etc:
   certbot_var:
 
@@ -31,8 +30,6 @@ services:
       - postgres
     networks:
       - network
-    volumes:
-      - backend_volume:/var/lib/turtle/backend
     environment:
       DATASOURCE_SERVER: postgres:5432
       DATASOURCE_DATABASE: ${DATABASE_NAME}
