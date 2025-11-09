@@ -67,12 +67,13 @@
 			position="absolute"
 			class="h-full border-r border-table-dark"
 		>
+			<div class="flex border mb-3 border-dashed h-30 w-57 items-center justify-center">
+				<p>LOGO</p>
+			</div>
 			<SidebarGroup>
 				<SidebarItem label="Dashboard" href="/">
 					{#snippet icon()}
-						<ChartOutline
-							class="h-5 w-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-						/>
+						<NewspaperSolid class="text-green-700 h-5 w-5 transition duration-75" />
 					{/snippet}
 				</SidebarItem>
 				<SidebarItem label={m.profile()} href="/profile">
@@ -97,7 +98,9 @@
 				</SidebarItem>
 			</SidebarGroup>
 			<SidebarGroup border borderClass="pt-2 mt-4 border-t border-primary dark:border-gray-700">
-				<span class="text-green-800 ml-1">Admin</span>
+				<div class="mb-1">
+					<span class="text-green-800 ml-1">Admin</span>
+				</div>
 				<div class="space-y-2">
 					<SidebarItem label={m.manage_users()} {spanClass} href="/admin/users">
 						{#snippet icon()}
