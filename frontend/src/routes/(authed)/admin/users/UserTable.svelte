@@ -60,7 +60,7 @@
 					? 'bg-table-dark hover:bg-table-dark'
 					: 'bg-secondary hover:bg-table-dark'}
 			>
-			
+
 				<TableBodyCell>{user.studentId}</TableBodyCell>
 				<TableBodyCell>{user.lastName}</TableBodyCell>
 				<TableBodyCell>{user.firstName}</TableBodyCell>
@@ -80,7 +80,6 @@
 
 							data = data.filter((db_user) => db_user !== user);
 
-							console.log(data);
 						}}>{m.delete()}</button
 					></TableBodyCell
 				>
