@@ -67,8 +67,8 @@
                 position="absolute"
                 class="h-full border-r border-table-dark"
         >
-            <div class="flex border mb-3 border-dashed h-30 w-57 items-center justify-center">
-                <img src="favicon.png" alt="csw icon">
+            <div class="flex mb-3 h-30 w-57 items-center justify-center">
+                <img src="csw_cropped.png" alt="csw icon">
             </div>
             <SidebarGroup>
                 <SidebarItem label="Dashboard" href="/">
