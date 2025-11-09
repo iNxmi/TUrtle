@@ -1,22 +1,26 @@
 import { json } from '@sveltejs/kit';
+import { dev } from '$app/environment';
 export async function POST({ request, fetch }) {
-	const body = await request.json();
-	const response = await fetch('http://backend:8080/api/v1/auth/login', {
-		method: 'POST',
-		body: JSON.stringify(body),
-		headers: {
-			'Content-Type': 'application/json'
-		}
-	});
+	if (dev) {
+		const username = 'Test';
 
-	const setCookie = response.headers.getSetCookie();
+		return json({ username });
+	} else {
+		const body = await request.json();
+		const response = await fetch('http://backend:8080/api/v1/auth/login', {
+			method: 'POST',
+			body: JSON.stringify(body),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
 
-	const loginData = await response.text();
+		const setCookie = response.headers.getSetCookie();
 
-	console.log(response.url);
-	console.log(response.headers);
-	console.log(loginData);
-	const username = loginData.username;
+		const loginData = await response.json();
 
-	return json({ username }, { headers: response.headers, status: 201 });
+		username = loginData.username;
+
+		return json({ username }, { headers: response.headers, status: 201 });
+	}
 }

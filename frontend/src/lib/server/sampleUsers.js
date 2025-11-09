@@ -1,42 +1,72 @@
 export const data = [
 	{
-		name: 'Alice Johnson',
-		email: 'alice.johnson@example.com'
+		firstName: 'Olivia',
+		lastName: 'Martin',
+		email: 'olivia.m@example.edu',
+		studentId: 'S001001',
+		username: 'omartin'
 	},
 	{
-		name: 'Bob Smith',
-		email: 'bob.smith@example.com'
+		firstName: 'Liam',
+		lastName: 'Garcia',
+		email: 'liam.garcia@example.edu',
+		studentId: 'S001002',
+		username: 'liam.g'
 	},
 	{
-		name: 'Charlie Brown',
-		email: 'charlie.brown@example.com'
+		firstName: 'Sophia',
+		lastName: 'Rodriguez',
+		email: 'sophia.rod@example.edu',
+		studentId: 'S001003',
+		username: 'srodriguez'
 	},
 	{
-		name: 'Diana Prince',
-		email: 'diana.prince@example.com'
+		firstName: 'Noah',
+		lastName: 'Miller',
+		email: 'noah.miller@example.edu',
+		studentId: 'S001004',
+		username: 'nmiller04'
 	},
 	{
-		name: 'Ethan Hunt',
-		email: 'ethan.hunt@example.com'
+		firstName: 'Emma',
+		lastName: 'Martinez',
+		email: 'emma.martinez@example.edu',
+		studentId: 'S001005',
+		username: 'emartinez'
 	},
 	{
-		name: 'Fiona Glenanne',
-		email: 'fiona.glenanne@example.com'
+		firstName: 'Jackson',
+		lastName: 'Hernandez',
+		email: 'jackson.h@example.edu',
+		studentId: 'S001006',
+		username: 'jhernandez'
 	},
 	{
-		name: 'George Kirk',
-		email: 'george.kirk@example.com'
+		firstName: 'Ava',
+		lastName: 'Lopez',
+		email: 'ava.lopez@example.edu',
+		studentId: 'S001007',
+		username: 'alopez'
 	},
 	{
-		name: 'Hannah Wells',
-		email: 'hannah.wells@example.com'
+		firstName: 'Lucas',
+		lastName: 'Gonzales',
+		email: 'lucas.gon@example.edu',
+		studentId: 'S001008',
+		username: 'lgonsales'
 	},
 	{
-		name: 'Ivan Drago',
-		email: 'ivan.drago@example.com'
+		firstName: 'Isabella',
+		lastName: 'Wilson',
+		email: 'isabella.w@example.edu',
+		studentId: 'S001009',
+		username: 'isawilson'
 	},
 	{
-		name: 'Jasmine Chen',
-		email: 'jasmine.chen@example.com'
+		firstName: 'Ethan',
+		lastName: 'Anderson',
+		email: 'ethan.a@example.edu',
+		studentId: 'S001010',
+		username: 'ethan.a'
 	}
 ];

@@ -1,6 +1,4 @@
 <script>
-	import { log } from "console";
-
 
     let logins = $state(false);
    

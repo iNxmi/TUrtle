@@ -4,7 +4,15 @@ import SimpleDB from './SimpleDB.js';
 export const db = new SimpleDB();
 
 function seedDatabase() {
-	data.forEach((user) => db.create('users', { name: user.name, email: user.email }));
+	data.forEach((user) =>
+		db.create('users', {
+			firstName: user.firstName,
+			lastName: user.lastName,
+			studentId: user.studentId,
+			username: user.username,
+			email: user.email
+		})
+	);
 }
 seedDatabase();
 
