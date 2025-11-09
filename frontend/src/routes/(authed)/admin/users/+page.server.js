@@ -1,7 +1,7 @@
 import * as db from '$lib/server/UserDatabase.js';
 
 export async function load({ fetch }) {
-	const response = await fetch('/api/v1/users');
+	const response = await fetch('/api/users');
 
 	const data = await response.json();
 

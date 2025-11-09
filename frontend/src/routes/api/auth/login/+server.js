@@ -7,7 +7,7 @@ export async function POST({ request, fetch }) {
 		return json({ username });
 	} else {
 		const body = await request.json();
-		const response = await fetch('http://backend:8080/api/v1/auth/login', {
+		const response = await fetch('http://backend:8080/api/auth/login', {
 			method: 'POST',
 			body: JSON.stringify(body),
 			headers: {

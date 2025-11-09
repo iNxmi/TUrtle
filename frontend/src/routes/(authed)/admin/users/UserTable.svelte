@@ -74,7 +74,7 @@
 					<button
 						class="text-red-600 font-medium hover:underline hover:cursor-pointer"
 						onclick={async (e) => {
-							await fetch(`/api/v1/users/${user.id}`, {
+							await fetch(`/api/users/${user.id}`, {
 								method: 'DELETE'
 							});
 

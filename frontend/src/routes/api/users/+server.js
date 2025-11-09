@@ -9,7 +9,7 @@ export async function GET({ request }) {
 	} else {
 		const headers = request.headers.get('cookie');
 
-		const response = await fetch('http://backend:8080/api/v1/users?page=0&size=20', {
+		const response = await fetch('http://backend:8080/api/users', {
 			headers: {
 				Cookie: headers
 			}

@@ -1,26 +1,32 @@
 <script>
+    let apiResponse = $state(null);
 
-    let logins = $state(false);
-   
-    async function login(){
-        const response = await fetch('/api/v1/auth/login', {
-           method: 'POST',
-           body: JSON.stringify({username: 'Twitchi', password: 'eosc2d'}),
-           headers: {
-            'Content-Type': 'application/json'
-           }
+    async function login(event) {
+        event.preventDefault();
+
+        const username = document.getElementById("input_username").value;
+        const password = document.getElementById("input_password").value;
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({username: username, password: password}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
 
-        const { username } = await response.json();
-        if(username) {
-            logins = true;
-        }
+        apiResponse = await response.json();
     }
 </script>
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
-<button onclick={login}>Login</button>
-{#if logins}
-    <p>Login successful!</p>
+<div>
+    <form onsubmit={login}>
+        <input id="input_username" type="text" placeholder="Username" value="Twitchi" required>
+        <input id="input_password" type="password" placeholder="Password" value="eosc2d" required>
+
+        <input type="submit" value="Login">
+    </form>
+</div>
+
+{#if apiResponse}
+    <p class="whitespace-pre">{JSON.stringify(apiResponse, null, 2)}</p>
 {/if}
