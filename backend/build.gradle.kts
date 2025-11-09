@@ -37,6 +37,8 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
+    implementation("io.github.serpro69:kotlin-faker:1.16.0")
+
     //implementation("com.twelvemonkeys.imageio:imageio-core:3.10.1")
     //implementation("com.twelvemonkeys.imageio:imageio-webp:3.10.1")
 
