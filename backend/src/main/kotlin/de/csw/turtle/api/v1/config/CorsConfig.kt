@@ -13,11 +13,11 @@ class CorsConfig {
     fun corsConfigurationSource(): CorsConfigurationSource {
         val origins = listOf(
             "http://localhost:8080",    //Dev Backend
-            "http://localhost:3000",    //Dev Frontend
+            "http://localhost",    //Dev Frontend
 
             "http://frontend:3000"      //Production Frontend
         )
-
+        
         val config = CorsConfiguration().apply {
             allowedOrigins = origins
             allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")

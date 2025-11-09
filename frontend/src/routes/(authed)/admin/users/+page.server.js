@@ -1,10 +1,11 @@
 import * as db from '$lib/server/UserDatabase.js';
-import { getegid } from 'process';
 
-export async function load() {
-	const users = db.getUsers();
+export async function load({ fetch }) {
+	const response = await fetch('/api/v1/users');
 
-	return { users };
+	const data = await response.json();
+
+	return { data };
 }
 export const actions = {
 	default: async ({ cookies, request }) => {

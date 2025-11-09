@@ -43,8 +43,10 @@
 </div>
 <Table class="table-fixed" border={false} bind:inputValue={searchTerm}>
 	<TableHead>
-		<TableHeadCell class="bg-secondary">ID</TableHeadCell>
-		<TableHeadCell class="bg-secondary">Name</TableHeadCell>
+		<TableHeadCell class="bg-secondary">TU-ID</TableHeadCell>
+		<TableHeadCell class="bg-secondary">Nachmame</TableHeadCell>
+		<TableHeadCell class="bg-secondary">Vorname</TableHeadCell>
+		<TableHeadCell class="bg-secondary">Nutzername</TableHeadCell>
 		<TableHeadCell class="bg-secondary">E-Mail</TableHeadCell>
 		<TableHeadCell class="bg-secondary">
 			<span class="sr-only">Delete</span>
@@ -58,8 +60,11 @@
 					? 'bg-table-dark hover:bg-table-dark'
 					: 'bg-secondary hover:bg-table-dark'}
 			>
-				<TableBodyCell>{user.id}</TableBodyCell>
-				<TableBodyCell>{user.name}</TableBodyCell>
+			
+				<TableBodyCell>{user.studentId}</TableBodyCell>
+				<TableBodyCell>{user.lastName}</TableBodyCell>
+				<TableBodyCell>{user.firstName}</TableBodyCell>
+				<TableBodyCell>{user.username}</TableBodyCell>
 				<TableBodyCell>{user.email}</TableBodyCell>
 				<TableBodyCell
 					><a
