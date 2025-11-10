@@ -16,6 +16,7 @@
   "sidebar_manage_bookings": "Manage Bookings",
   "sidebar_manage_news": "Manage News",
   "sidebar_dashboard": "Dashboard",
+  "sidebar_logout": "Logout",
 
   "login__title": "Login to TUrtle",
   "login__username_or_email_label": "Username or Email",

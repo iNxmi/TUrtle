@@ -26,12 +26,12 @@
     <form class="flex flex-col gap-5" onsubmit={login}>
         <div class="flex flex-col">
             <label for="usernameOrEmail">{m.login__username_or_email_label()}</label>
-            <input id="usernameOrEmail" type="text" value="Twitchi" required/>
+            <input id="usernameOrEmail" class="form-input" type="text" value="Twitchi" required/>
         </div>
 
         <div class="flex flex-col">
             <label for="password">{m.login__password_label()}</label>
-            <input id="password" type="password"  value="eosc2d" required/>
+            <input id="password" type="password" value="eosc2d" required/>
         </div>
 
         <div class="border border-dashed">

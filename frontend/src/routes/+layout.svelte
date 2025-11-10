@@ -91,6 +91,11 @@
                         <UserSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                     {/snippet}
                 </SidebarItem>
+                <SidebarItem label={m.sidebar_logout()} href="/logout">
+                    {#snippet icon()}
+                        <UserSolid class="text-green-700 h-5 w-5 transition duration-75"/>
+                    {/snippet}
+                </SidebarItem>
                 <SidebarItem label={m.sidebar_register()} href="/register">
                     {#snippet icon()}
                         <UserSolid class="text-green-700 h-5 w-5 transition duration-75"/>
