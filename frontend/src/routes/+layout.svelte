@@ -201,11 +201,6 @@
                         </AccordionItem>
                     </Accordion>
 
-                    <div class="flex flex-col gap-10">
-
-
-                    </div>
-
                     <div class="flex absolute inset-x-0 bottom-0 m-3">
                         <select id="language" class="flex-1" onchange={updateLanguage}>
                             <option value="en" selected>English</option>
