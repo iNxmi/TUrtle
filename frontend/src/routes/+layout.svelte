@@ -3,14 +3,20 @@
     import favicon from '$lib/assets/favicon.svg';
 
     import {m} from '$lib/paraglide/messages.js';
-    import {setLocale} from '$lib/paraglide/runtime.js';
 
-    setLocale("de");
+    import {setLocale} from '$lib/paraglide/runtime.js';
+    let language = $state("en");
+
+    function updateLanguage(event) {
+        event.preventDefault()
+
+        const select = document.getElementById("language");
+        language =  select.options[select.selectedIndex].value;
+
+        setLocale(language);
+    }
 
     import {
-        ChartOutline,
-        GridSolid,
-        MailBoxSolid,
         UserSolid,
         UsersGroupSolid,
         DesktopPcSolid,
@@ -73,7 +79,7 @@
                 class="h-full border-r border-table-dark"
         >
             <div class="flex mb-3 h-30 w-57 items-center justify-center">
-                <img src="csw_cropped.png" alt="csw icon">
+                <img src="csw_cropped.png" alt="CSW Icon">
             </div>
 
             <SidebarGroup>
@@ -107,12 +113,12 @@
                 </SidebarItem>
                 <SidebarItem label={m.sidebar_profile()} href="/profile">
                     {#snippet icon()}
-                        <UserSolid class="text-green-700 h-5 w-5 transition duration-75 "/>
+                        <UserSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                     {/snippet}
                 </SidebarItem>
                 <SidebarItem label={m.sidebar_reservations()} href="/reservation">
                     {#snippet icon()}
-                        <DesktopPcSolid class="text-green-700 h-5 w-5 transition duration-75 "/>
+                        <DesktopPcSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                     {/snippet}
                 </SidebarItem>
                 <SidebarItem label={m.sidebar_bookings()} href="/bookings">
@@ -153,6 +159,15 @@
                     </SidebarItem>
                 </div>
             </SidebarGroup>
+
+            <div class="flex absolute inset-x-0 bottom-0 m-3">
+                <select id="language" class="flex-1" onchange={updateLanguage}>
+                    <option value="en" selected>English</option>
+                    <option value="de">Deutsch</option>
+                    <option value="ja">日本語</option>
+                </select>
+            </div>
+
         </Sidebar>
     </ThemeProvider>
     <main class="overflow-auto px-4 md:ml-64 bg-background-50 min-h-screen">
