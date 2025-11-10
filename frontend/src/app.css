@@ -11,7 +11,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: "inter";
+  --font-sans: "Inter";
 
   --color-primary-50: #fff5f2;
   --color-primary-100: #fff1ee;
@@ -48,7 +48,7 @@
 
 .dark {
 
-  --font-sans: "inter";
+  --font-sans: "Inter";
   --color-primary-50: #071308;
   --color-primary-100: #0d260f;
   --color-primary-200: #1a4c1e;
