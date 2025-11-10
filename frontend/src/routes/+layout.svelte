@@ -68,6 +68,8 @@
     const nonActiveClass =
         'flex items-center p-2 text-base font-normal text-green-900 rounded-lg dark:text-white hover:bg-green-100 dark:hover:bg-green-700';
 
+    import {Accordion, AccordionItem} from 'flowbite-svelte';
+
     let {children} = $props();
 
     function toggleDarkMode() {
@@ -114,83 +116,94 @@
                         <img id="logo" src="csw_cropped.png" alt="CSW Icon"/>
                     </button>
 
+                    <Accordion multiple class="border-none">
+                        <AccordionItem open={true}>
+                            {#snippet header()}{m.sidebar_category_public()}{/snippet}
+                            <SidebarGroup>
+                                <SidebarItem label={m.sidebar_login()} href="/login">
+                                    {#snippet icon()}
+                                        <UserSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                                <SidebarItem label={m.sidebar_logout()} href="/logout">
+                                    {#snippet icon()}
+                                        <UserSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                                <SidebarItem label={m.sidebar_register()} href="/register">
+                                    {#snippet icon()}
+                                        <UserSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                                <SidebarItem label={m.sidebar_support()} href="/support">
+                                    {#snippet icon()}
+                                        <UserHeadsetSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                            </SidebarGroup>
+                        </AccordionItem>
+
+                        <AccordionItem open={true}>
+                            {#snippet header()}{m.sidebar_category_user()}{/snippet}
+                            <SidebarGroup>
+                                <SidebarItem label={m.sidebar_dashboard()} href="/">
+                                    {#snippet icon()}
+                                        <NewspaperSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                                <SidebarItem label={m.sidebar_profile()} href="/profile">
+                                    {#snippet icon()}
+                                        <UserSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                                <SidebarItem label={m.sidebar_reservations()} href="/reservation">
+                                    {#snippet icon()}
+                                        <DesktopPcSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                                <SidebarItem label={m.sidebar_bookings()} href="/bookings">
+                                    {#snippet icon()}
+                                        <CalendarMonthSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                            </SidebarGroup>
+                        </AccordionItem>
+
+                        <AccordionItem open={true}>
+                            {#snippet header()}{m.sidebar_category_admin()}{/snippet}
+                            <SidebarGroup>
+                                <SidebarItem label={m.sidebar_manage_users()} {spanClass} href="/admin/users">
+                                    {#snippet icon()}
+                                        <UsersGroupSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                                <SidebarItem label={m.sidebar_manage_bookings()} href="/admin/bookings">
+                                    {#snippet icon()}
+                                        <CalendarEditSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                                <SidebarItem label={m.sidebar_manage_support_tickets()} href="/admin/support">
+                                    {#snippet icon()}
+                                        <UserHeadsetSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                                <SidebarItem label={m.sidebar_manage_news()} href="/admin/news">
+                                    {#snippet icon()}
+                                        <NewspaperSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                                <SidebarItem label={m.sidebar_admin_settings()} href="/admin/settings">
+                                    {#snippet icon()}
+                                        <UserSettingsSolid class="text-green-700 h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarItem>
+                            </SidebarGroup>
+                        </AccordionItem>
+                    </Accordion>
+
                     <div class="flex flex-col gap-10">
-                        <SidebarGroup>
-                            <p class="font-bold text-green-800">{m.sidebar_category_public()}</p>
-                            <SidebarItem label={m.sidebar_login()} href="/login">
-                                {#snippet icon()}
-                                    <UserSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                            <SidebarItem label={m.sidebar_logout()} href="/logout">
-                                {#snippet icon()}
-                                    <UserSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                            <SidebarItem label={m.sidebar_register()} href="/register">
-                                {#snippet icon()}
-                                    <UserSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                            <SidebarItem label={m.sidebar_support()} href="/support">
-                                {#snippet icon()}
-                                    <UserHeadsetSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                        </SidebarGroup>
 
-                        <SidebarGroup>
-                            <p class="font-bold text-green-800">{m.sidebar_category_user()}</p>
-                            <SidebarItem label={m.sidebar_dashboard()} href="/">
-                                {#snippet icon()}
-                                    <NewspaperSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                            <SidebarItem label={m.sidebar_profile()} href="/profile">
-                                {#snippet icon()}
-                                    <UserSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                            <SidebarItem label={m.sidebar_reservations()} href="/reservation">
-                                {#snippet icon()}
-                                    <DesktopPcSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                            <SidebarItem label={m.sidebar_bookings()} href="/bookings">
-                                {#snippet icon()}
-                                    <CalendarMonthSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                        </SidebarGroup>
 
-                        <SidebarGroup>
-                            <p class="font-bold text-green-800">{m.sidebar_category_admin()}</p>
-                            <SidebarItem label={m.sidebar_manage_users()} {spanClass} href="/admin/users">
-                                {#snippet icon()}
-                                    <UsersGroupSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                            <SidebarItem label={m.sidebar_manage_bookings()} href="/admin/bookings">
-                                {#snippet icon()}
-                                    <CalendarEditSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                            <SidebarItem label={m.sidebar_manage_support_tickets()} href="/admin/support">
-                                {#snippet icon()}
-                                    <UserHeadsetSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                            <SidebarItem label={m.sidebar_manage_news()} href="/admin/news">
-                                {#snippet icon()}
-                                    <NewspaperSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                            <SidebarItem label={m.sidebar_admin_settings()} href="/admin/settings">
-                                {#snippet icon()}
-                                    <UserSettingsSolid class="text-green-700 h-5 w-5"/>
-                                {/snippet}
-                            </SidebarItem>
-                        </SidebarGroup>
                     </div>
 
                     <div class="flex absolute inset-x-0 bottom-0 m-3">
