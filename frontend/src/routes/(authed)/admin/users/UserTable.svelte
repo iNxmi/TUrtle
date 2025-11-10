@@ -18,15 +18,17 @@
 	let searchTerm = $state('');
 	let defaultModal = $state(false);
 
-	let filteredUsers = $derived.by(() =>
+	let filteredUsers = $derived.by(() => {
 		data.filter(
 			(user) =>
 				!searchTerm ||
-				user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				user.id.includes(searchTerm.toLowerCase())
-		)
-	);
+				user.studentId.toLowerCase().includes(searchTerm.toLowerCase())
+		);
+	});
 	const handleClick = () => {
 		defaultModal = true;
 	};
