@@ -15,27 +15,32 @@
 	import NewUser from './NewUser.svelte';
 
 	let { data } = $props();
+
 	let searchTerm = $state('');
 	let defaultModal = $state(false);
 
-	let filteredUsers = $derived.by(() => {
+	let filteredUsers = $derived.by(() =>
 		data.filter(
 			(user) =>
 				!searchTerm ||
-				user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				user.studentId.toLowerCase().includes(searchTerm.toLowerCase())
-		);
-	});
+		)
+	);
+
 	const handleClick = () => {
 		defaultModal = true;
 	};
 </script>
 
 <div class="flex">
-	<Input class="max-w-1/5 m-3" placeholder={m.admin_users__search_user()} bind:value={searchTerm}
+	<Input
+		class="max-w-1/5 m-3 dark:bg-background-50"
+		placeholder={m.admin_users__search_user()}
+		bind:value={searchTerm}
 	></Input>
 	<Button
 		onclick={handleClick}
@@ -58,7 +63,9 @@
 	</TableHead>
 
 	<TableBody>
-		{#each filteredUsers as user, i (user.id)}
+		{@debug data}
+		{@debug filteredUsers}
+		{#each filteredUsers as user, i (user.studentId)}
 			<TableBodyRow
 				class={i % 2 == 0
 					? 'bg-table-dark dark:bg-table-dark hover:bg-table-dark'
