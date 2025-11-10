@@ -128,7 +128,7 @@
                         <img id="logo" src="csw_cropped.png" alt="CSW Icon"/>
                     </button>
 
-                    <SidebarDropdownWrapper spanClass="font-bold" isOpen={true} label={m.sidebar_category_public()}>
+                    <SidebarDropdownWrapper classes={{ span: "font-bold" }} isOpen={true} label={m.sidebar_category_public()}>
                         <SidebarDropdownItem label={m.sidebar_login()} href="/login">
                             {#snippet icon()}
                                 <UserSolid class="text-green-700 h-5 w-5"/>
@@ -151,7 +151,7 @@
                         </SidebarDropdownItem>
                     </SidebarDropdownWrapper>
 
-                    <SidebarDropdownWrapper spanClass="font-bold" isOpen={true} label={m.sidebar_category_user()}>
+                    <SidebarDropdownWrapper classes={{ span: "font-bold" }} isOpen={true} label={m.sidebar_category_user()}>
                         <SidebarDropdownItem label={m.sidebar_dashboard()} href="/">
                             {#snippet icon()}
                                 <NewspaperSolid class="text-green-700 h-5 w-5"/>
@@ -174,7 +174,7 @@
                         </SidebarDropdownItem>
                     </SidebarDropdownWrapper>
 
-                    <SidebarDropdownWrapper spanClass="font-bold" isOpen={true} label={m.sidebar_category_admin()}>
+                    <SidebarDropdownWrapper classes={{ span: "font-bold" }} isOpen={true} label={m.sidebar_category_admin()}>
                         <SidebarDropdownItem label={m.sidebar_manage_users()} {spanClass} href="/admin/users">
                             {#snippet icon()}
                                 <UsersGroupSolid class="text-green-700 h-5 w-5"/>
@@ -201,7 +201,6 @@
                             {/snippet}
                         </SidebarDropdownItem>
                     </SidebarDropdownWrapper>
-
 
                     <div class="flex absolute inset-x-0 bottom-0 m-3">
                         <select id="language" class="flex-1" onchange={updateLanguage}>
