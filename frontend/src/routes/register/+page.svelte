@@ -30,11 +30,11 @@
         </div>
 
         <div class="flex gap-5">
-            <div class="flex-1 flex-col">
+            <div class="flex flex-1 flex-col">
                 <label for="first_name">{m.register__first_name_label()}</label>
                 <input id="first_name" type="text" required/>
             </div>
-            <div class="flex-1 flex-col">
+            <div class="flex flex-1 flex-col">
                 <label for="last_name">{m.register__last_name_label()}</label>
                 <input id="last_name" type="text" required/>
             </div>

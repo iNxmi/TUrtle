@@ -12,14 +12,14 @@
 
     <form class="flex flex-col gap-5" onsubmit={send}>
         <div class="flex gap-5">
-            <div class="flex flex-col">
+            <div class="flex flex-1 flex-col">
                 <label for="urgency">{m.support__urgency_label()}</label>
                 <select id="urgency" required>
                     <option value="urgent">{m.support__urgency_urgent()}</option>
                     <option value="not so urgent">{m.support__urgency_not_urgent()}</option>
                 </select>
             </div>
-            <div class="flex flex-col">
+            <div class="flex flex-1 flex-col">
                 <label for="category">{m.support__category_label()}</label>
                 <select id="category" required>
                     <option value="login">{m.support__category_login()}</option>
