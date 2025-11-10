@@ -36,10 +36,15 @@
         SidebarGroup,
         SidebarItem,
         SidebarButton,
+        SidebarDropdownWrapper,
+        SidebarDropdownItem,
+        SidebarBrand,
         uiHelpers,
         ThemeProvider,
         sidebar,
         divider
+        ,
+
     } from 'flowbite-svelte';
 
     let activeUrl = $state(page.url.pathname);
@@ -87,6 +92,12 @@
             element.classList.remove(animation);
         }, 1000);
     }
+
+    const site = {
+        name: "Flowbite Svelte",
+        href: "/",
+        img: "/images/flowbite-svelte-icon-logo.svg"
+    };
 </script>
 
 <svelte:head>
@@ -104,6 +115,7 @@
                 <Sidebar
                         alwaysOpen
                         {activeUrl}
+                        isSingle={false}
                         backdrop={false}
                         isOpen={isDemoOpen}
                         closeSidebar={closeDemoSidebar}
@@ -116,90 +128,80 @@
                         <img id="logo" src="csw_cropped.png" alt="CSW Icon"/>
                     </button>
 
-                    <Accordion multiple class="border-none">
-                        <AccordionItem open={true}>
-                            {#snippet header()}{m.sidebar_category_public()}{/snippet}
-                            <SidebarGroup>
-                                <SidebarItem label={m.sidebar_login()} href="/login">
-                                    {#snippet icon()}
-                                        <UserSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                                <SidebarItem label={m.sidebar_logout()} href="/logout">
-                                    {#snippet icon()}
-                                        <UserSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                                <SidebarItem label={m.sidebar_register()} href="/register">
-                                    {#snippet icon()}
-                                        <UserSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                                <SidebarItem label={m.sidebar_support()} href="/support">
-                                    {#snippet icon()}
-                                        <UserHeadsetSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                            </SidebarGroup>
-                        </AccordionItem>
+                    <SidebarDropdownWrapper spanClass="font-bold" isOpen={true} label={m.sidebar_category_public()}>
+                        <SidebarDropdownItem label={m.sidebar_login()} href="/login">
+                            {#snippet icon()}
+                                <UserSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                        <SidebarDropdownItem label={m.sidebar_logout()} href="/logout">
+                            {#snippet icon()}
+                                <UserSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                        <SidebarDropdownItem label={m.sidebar_register()} href="/register">
+                            {#snippet icon()}
+                                <UserSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                        <SidebarDropdownItem label={m.sidebar_support()} href="/support">
+                            {#snippet icon()}
+                                <UserHeadsetSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                    </SidebarDropdownWrapper>
 
-                        <AccordionItem open={true}>
-                            {#snippet header()}{m.sidebar_category_user()}{/snippet}
-                            <SidebarGroup>
-                                <SidebarItem label={m.sidebar_dashboard()} href="/">
-                                    {#snippet icon()}
-                                        <NewspaperSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                                <SidebarItem label={m.sidebar_profile()} href="/profile">
-                                    {#snippet icon()}
-                                        <UserSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                                <SidebarItem label={m.sidebar_reservations()} href="/reservation">
-                                    {#snippet icon()}
-                                        <DesktopPcSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                                <SidebarItem label={m.sidebar_bookings()} href="/bookings">
-                                    {#snippet icon()}
-                                        <CalendarMonthSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                            </SidebarGroup>
-                        </AccordionItem>
+                    <SidebarDropdownWrapper spanClass="font-bold" isOpen={true} label={m.sidebar_category_user()}>
+                        <SidebarDropdownItem label={m.sidebar_dashboard()} href="/">
+                            {#snippet icon()}
+                                <NewspaperSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                        <SidebarDropdownItem label={m.sidebar_profile()} href="/profile">
+                            {#snippet icon()}
+                                <UserSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                        <SidebarDropdownItem label={m.sidebar_reservations()} href="/reservation">
+                            {#snippet icon()}
+                                <DesktopPcSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                        <SidebarDropdownItem label={m.sidebar_bookings()} href="/bookings">
+                            {#snippet icon()}
+                                <CalendarMonthSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                    </SidebarDropdownWrapper>
 
-                        <AccordionItem open={true}>
-                            {#snippet header()}{m.sidebar_category_admin()}{/snippet}
-                            <SidebarGroup>
-                                <SidebarItem label={m.sidebar_manage_users()} {spanClass} href="/admin/users">
-                                    {#snippet icon()}
-                                        <UsersGroupSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                                <SidebarItem label={m.sidebar_manage_bookings()} href="/admin/bookings">
-                                    {#snippet icon()}
-                                        <CalendarEditSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                                <SidebarItem label={m.sidebar_manage_support_tickets()} href="/admin/support">
-                                    {#snippet icon()}
-                                        <UserHeadsetSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                                <SidebarItem label={m.sidebar_manage_news()} href="/admin/news">
-                                    {#snippet icon()}
-                                        <NewspaperSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                                <SidebarItem label={m.sidebar_admin_settings()} href="/admin/settings">
-                                    {#snippet icon()}
-                                        <UserSettingsSolid class="text-green-700 h-5 w-5"/>
-                                    {/snippet}
-                                </SidebarItem>
-                            </SidebarGroup>
-                        </AccordionItem>
-                    </Accordion>
+                    <SidebarDropdownWrapper spanClass="font-bold" isOpen={true} label={m.sidebar_category_admin()}>
+                        <SidebarDropdownItem label={m.sidebar_manage_users()} {spanClass} href="/admin/users">
+                            {#snippet icon()}
+                                <UsersGroupSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                        <SidebarDropdownItem label={m.sidebar_manage_bookings()} href="/admin/bookings">
+                            {#snippet icon()}
+                                <CalendarEditSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                        <SidebarDropdownItem label={m.sidebar_manage_support_tickets()} href="/admin/support">
+                            {#snippet icon()}
+                                <UserHeadsetSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                        <SidebarDropdownItem label={m.sidebar_manage_news()} href="/admin/news">
+                            {#snippet icon()}
+                                <NewspaperSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                        <SidebarDropdownItem label={m.sidebar_admin_settings()} href="/admin/settings">
+                            {#snippet icon()}
+                                <UserSettingsSolid class="text-green-700 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                    </SidebarDropdownWrapper>
+
 
                     <div class="flex absolute inset-x-0 bottom-0 m-3">
                         <select id="language" class="flex-1" onchange={updateLanguage}>
