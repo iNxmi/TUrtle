@@ -48,6 +48,8 @@
   "support__subject_label": "Subject",
   "support__description_label": "Describe your issue",
   "support__button": "Submit Ticket",
+  "support__i_agree_to_tos": "I agree to the TOS",
+  "support__faq_title": "Frequently Asked Questions",
 
   "admin_users__title": "User Management",
   "admin_users__first_name": "First Name",

@@ -165,6 +165,9 @@
                     <option value="en" selected>English</option>
                     <option value="de">Deutsch</option>
                     <option value="ja">日本語</option>
+                    <option value="ar">_arabic</option>
+                    <option value="ru">_russian</option>
+                    <option value="vi">_vietnamese</option>
                 </select>
             </div>
 
