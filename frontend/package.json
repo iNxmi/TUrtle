@@ -1,19 +1,43 @@
 {
-  "name": "frontend",
-  "version": "0.0.2",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "jsonwebtoken": "^9.0.0"
-  },
-  "devDependencies": {
-    "vite": "^6.0.0",
-    "svelte": "^5.1.0",
-    "@sveltejs/kit": "^2.22.2",
-    "@sveltejs/adapter-node": "^5.2.13"
-  }
+	"name": "frontend",
+	"version": "0.0.2",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"lint": "eslint . && prettier --check .",
+		"format": "prettier --write ."
+	},
+	"dependencies": {
+		"jsonwebtoken": "^9.0.0"
+	},
+	"devDependencies": {
+		"@eslint/compat": "^1.4.0",
+		"@eslint/js": "^9.36.0",
+		"@flowbite-svelte-plugins/datatable": "^0.4.1",
+		"@inlang/paraglide-js": "2.4.0",
+		"@sveltejs/adapter-node": "^5.3.2",
+		"@sveltejs/kit": "^2.43.2",
+		"@sveltejs/vite-plugin-svelte": "^6.2.0",
+		"@tailwindcss/forms": "^0.5.10",
+		"@tailwindcss/typography": "^0.5.18",
+		"@tailwindcss/vite": "^4.1.13",
+		"@types/node": "^24",
+		"eslint": "^9.36.0",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-prettier": "^5.5.4",
+		"eslint-plugin-svelte": "^3.12.4",
+		"flowbite": "^3.1.2",
+		"flowbite-svelte": "^1.20.1",
+		"flowbite-svelte-icons": "^3.0.0",
+		"globals": "^16.4.0",
+		"prettier": "3.6.2",
+		"prettier-plugin-svelte": "^3.4.0",
+		"svelte": "^5.39.5",
+		"tailwindcss": "^4.1.13",
+		"vite": "^7.1.7",
+		"vite-plugin-devtools-json": "^1.0.0"
+	}
 }
