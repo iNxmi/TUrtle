@@ -1,4 +1,5 @@
 <script>
+    import {Button, Checkbox, Label, Input} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
 
     let apiResponse = $state(null);
@@ -24,40 +25,53 @@
     <h1 class="text-center">{m.register__title()}</h1>
 
     <form class="flex flex-col gap-5" onsubmit={login}>
-        <div class="flex flex-col">
-            <label for="username">{m.register__username_label()}</label>
-            <input id="username" type="text" required/>
-        </div>
+        <Label>
+            <span>{m.register__username_label()}</span>
+            <Input name="username" type="text" required/>
+        </Label>
 
         <div class="flex gap-5">
-            <div class="flex flex-1 flex-col">
-                <label for="first_name">{m.register__first_name_label()}</label>
-                <input id="first_name" type="text" required/>
-            </div>
-            <div class="flex flex-1 flex-col">
-                <label for="last_name">{m.register__last_name_label()}</label>
-                <input id="last_name" type="text" required/>
-            </div>
+            <Label class="flex-1">
+                <span>{m.register__first_name_label()}</span>
+                <Input name="first_name" type="text" required/>
+            </Label>
+            <Label class="flex-1">
+                <span>{m.register__last_name_label()}</span>
+                <Input name="last_name" type="text" required/>
+            </Label>
         </div>
 
-        <div class="flex flex-col">
-            <label for="password">{m.register__password_label()}</label>
-            <input id="password" type="password" required/>
-        </div>
+        <Label>
+            <span>{m.register__email_label()}</span>
+            <Input name="email" type="email" required/>
+        </Label>
+
+        <Label>
+            <span>{m.register__student_id_label()}</span>
+            <Input name="student_id" type="text" required/>
+        </Label>
 
         <div class="flex gap-5">
-            <input type="checkbox" required>
-            <p>{m.register__i_agree_to_tos()}</p>
+            <Label class="flex-1">
+                <span>{m.register__password_label()}</span>
+                <Input name="password" type="password" required/>
+            </Label>
+            <Label class="flex-1">
+                <span>{m.register__password_repeat_label()}</span>
+                <Input name="password_repeat" type="password" required/>
+            </Label>
         </div>
+
+        <Checkbox>{m.register__i_agree_to_tos()}</Checkbox>
 
         <div class="border border-dashed">
             <h1 class="text-center m-8">I am not a Robot ✅</h1>
         </div>
 
-        <input type="submit" value={m.register__button()}/>
-    </form>
+        <Button type="submit" class="w-full1">{m.register__button()}</Button>
 
-    <a class="text-center" href="/login">{m.register__already_have_a_account()}</a>
+        <a href="/login" class="text-sm text-blue-700 hover:underline dark:text-blue-500">{m.register__already_have_a_account()}</a>
+    </form>
 </div>
 
 {#if apiResponse}

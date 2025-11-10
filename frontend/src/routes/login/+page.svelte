@@ -1,52 +1,55 @@
 <script>
-	import { m } from '$lib/paraglide/messages.js';
+    import {Button, Checkbox, Label, Input} from "flowbite-svelte";
+    import {m} from '$lib/paraglide/messages.js';
 
-	let apiResponse = $state(null);
+    let apiResponse = $state(null);
 
-	async function login(event) {
-		event.preventDefault();
+    async function login(event) {
+        event.preventDefault();
 
-		const username = document.getElementById('usernameOrEmail').value;
-		const password = document.getElementById('password').value;
-		const response = await fetch('/api/auth/login', {
-			method: 'POST',
-			body: JSON.stringify({ username: username, password: password }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
+        const username = document.getElementById('usernameOrEmail').value;
+        const password = document.getElementById('password').value;
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({username: username, password: password}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
-		apiResponse = await response.json();
-	}
+        apiResponse = await response.json();
+    }
 </script>
 
 <div>
-	<h1 class="text-center">{m.login__title()}</h1>
+    <h1 class="text-center">{m.login__title()}</h1>
 
-	<form class="flex flex-col gap-5" onsubmit={login}>
-		<div class="flex flex-col">
-			<label for="usernameOrEmail">{m.login__username_or_email_label()}</label>
-			<input id="usernameOrEmail" type="text" value="Twitchi" required />
-		</div>
+    <form class="flex flex-col gap-5" onsubmit={login}>
+        <Label>
+            <span>{m.login__username_or_email_label()}</span>
+            <Input name="usernameOrEmail" type="text" required/>
+        </Label>
 
-		<div class="flex flex-col">
-			<label for="password">{m.login__password_label()}</label>
-			<input id="password" type="password" value="eosc2d" required />
-		</div>
+        <Label>
+            <span>{m.login__password_label()}</span>
+            <Input name="password" type="password" required/>
+        </Label>
 
-		<div class="border border-dashed">
-			<h1 class="text-center m-8">I am not a Robot ✅</h1>
-		</div>
+        <Checkbox>_remember_me_text</Checkbox>
 
-		<input type="submit" value={m.login__button()} />
-	</form>
+        <div class="border border-dashed">
+            <h1 class="text-center m-8">I am not a Robot ✅</h1>
+        </div>
 
-	<div class="flex gap-5 justify-center">
-		<a class="text-center" href="/">{m.login__forgot_password()}</a>
-		<a class="text-center" href="/register">{m.login__no_account()}</a>
-	</div>
+        <Button type="submit" class="w-full1">{m.login__button()}</Button>
+
+        <div class="flex gap-5 justify-between">
+            <a href="/register" class="text-sm text-blue-700 hover:underline dark:text-blue-500">{m.login__no_account()}</a>
+            <a href="/" class="text-sm text-blue-700 hover:underline dark:text-blue-500">{m.login__forgot_password()}</a>
+        </div>
+    </form>
 </div>
 
 {#if apiResponse}
-	<p class="whitespace-pre">{JSON.stringify(apiResponse, null, 2)}</p>
+    <p class="whitespace-pre">{JSON.stringify(apiResponse, null, 2)}</p>
 {/if}
