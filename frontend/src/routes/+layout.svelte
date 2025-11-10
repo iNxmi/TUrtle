@@ -115,7 +115,7 @@
                     </button>
 
                     <SidebarGroup>
-                        <p class="text-green-800">{m.sidebar_category_public()}</p>
+                        <p class="font-bold text-green-800">{m.sidebar_category_public()}</p>
                         <SidebarItem label={m.sidebar_login()} href="/login">
                             {#snippet icon()}
                                 <UserSolid class="text-green-700 h-5 w-5"/>
@@ -141,7 +141,7 @@
                     <hr class="m-5">
 
                     <SidebarGroup>
-                        <p class="text-green-800">{m.sidebar_category_user()}</p>
+                        <p class="font-bold text-green-800">{m.sidebar_category_user()}</p>
                         <SidebarItem label={m.sidebar_dashboard()} href="/">
                             {#snippet icon()}
                                 <NewspaperSolid class="text-green-700 h-5 w-5"/>
@@ -167,7 +167,7 @@
                     <hr class="m-5">
 
                     <SidebarGroup>
-                        <p class="text-green-800">{m.sidebar_category_admin()}</p>
+                        <p class="font-bold text-green-800">{m.sidebar_category_admin()}</p>
                         <SidebarItem label={m.sidebar_manage_users()} {spanClass} href="/admin/users">
                             {#snippet icon()}
                                 <UsersGroupSolid class="text-green-700 h-5 w-5"/>
