@@ -45,7 +45,7 @@
             <textarea id="description" type="text" required></textarea>
         </div>
 
-        <div class="border">
+        <div class="border border-dashed">
             <h1 class="text-center m-10">Captcha</h1>
         </div>
 
