@@ -1,7 +1,11 @@
 <script>
     import '../app.css';
     import favicon from '$lib/assets/favicon.svg';
+
     import {m} from '$lib/paraglide/messages.js';
+    import {setLocale} from '$lib/paraglide/runtime.js';
+    setLocale("de");
+
     import {
         ChartOutline,
         GridSolid,
@@ -71,27 +75,32 @@
                 <img src="csw_cropped.png" alt="csw icon">
             </div>
             <SidebarGroup>
-                <SidebarItem label="Dashboard" href="/">
+                <SidebarItem label={m.sidebar_login()} href="/login">
+                    {#snippet icon()}
+                        <UserSolid class="text-green-700 h-5 w-5 transition duration-75"/>
+                    {/snippet}
+                </SidebarItem>
+                <SidebarItem label={m.sidebar_dashboard()} href="/">
                     {#snippet icon()}
                         <NewspaperSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                     {/snippet}
                 </SidebarItem>
-                <SidebarItem label={m.profile()} href="/profile">
+                <SidebarItem label={m.sidebar_profile()} href="/profile">
                     {#snippet icon()}
                         <UserSolid class="text-green-700 h-5 w-5 transition duration-75 "/>
                     {/snippet}
                 </SidebarItem>
-                <SidebarItem label={m.reservations()} href="/reservation">
+                <SidebarItem label={m.sidebar_reservations()} href="/reservation">
                     {#snippet icon()}
                         <DesktopPcSolid class="text-green-700 h-5 w-5 transition duration-75 "/>
                     {/snippet}
                 </SidebarItem>
-                <SidebarItem label={m.bookings()} href="/bookings">
+                <SidebarItem label={m.sidebar_bookings()} href="/bookings">
                     {#snippet icon()}
                         <CalendarMonthSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                     {/snippet}
                 </SidebarItem>
-                <SidebarItem label={m.support()} href="/support">
+                <SidebarItem label={m.sidebar_support()} href="/support">
                     {#snippet icon()}
                         <UserHeadsetSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                     {/snippet}
@@ -102,27 +111,27 @@
                     <span class="text-green-800 ml-1">Admin</span>
                 </div>
                 <div class="space-y-2">
-                    <SidebarItem label={m.manage_users()} {spanClass} href="/admin/users">
+                    <SidebarItem label={m.sidebar_manage_users()} {spanClass} href="/admin/users">
                         {#snippet icon()}
                             <UsersGroupSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                         {/snippet}
                     </SidebarItem>
-                    <SidebarItem label={m.manage_bookings()} href="/admin/bookings">
+                    <SidebarItem label={m.sidebar_manage_bookings()} href="/admin/bookings">
                         {#snippet icon()}
                             <CalendarEditSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                         {/snippet}
                     </SidebarItem>
-                    <SidebarItem label={m.manage_support_tickets()} href="/admin/support">
+                    <SidebarItem label={m.sidebar_manage_support_tickets()} href="/admin/support">
                         {#snippet icon()}
                             <UserHeadsetSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                         {/snippet}
                     </SidebarItem>
-                    <SidebarItem label={m.manage_news()} href="/admin/news">
+                    <SidebarItem label={m.sidebar_manage_news()} href="/admin/news">
                         {#snippet icon()}
                             <NewspaperSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                         {/snippet}
                     </SidebarItem>
-                    <SidebarItem label={m.admin_settings()} href="/admin/settings">
+                    <SidebarItem label={m.sidebar_admin_settings()} href="/admin/settings">
                         {#snippet icon()}
                             <UserSettingsSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                         {/snippet}

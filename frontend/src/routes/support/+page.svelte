@@ -1,54 +1,53 @@
 <script>
-    let {data} = $props();
+    import {m} from '$lib/paraglide/messages.js';
 
     function send(event) {
         event.preventDefault();
+        alert("TODO: Implement ticket submission!");
     }
-
 </script>
 
 <div>
-    <h1 class="text-center">Create a support ticket</h1>
+    <h1 class="text-center">{m.support__title()}</h1>
 
     <form class="flex flex-col gap-5" onsubmit={send}>
-
         <div class="flex gap-5">
             <div class="flex flex-col">
-                <label for="urgency">Urgency</label>
+                <label for="urgency">{m.support__urgency_label()}</label>
                 <select id="urgency" required>
-                    <option value="urgent">Urgent</option>
-                    <option value="not so urgent">Not so Urgent</option>
+                    <option value="urgent">{m.support__urgency_urgent()}</option>
+                    <option value="not so urgent">{m.support__urgency_not_urgent()}</option>
                 </select>
             </div>
             <div class="flex flex-col">
-                <label for="category">Category</label>
+                <label for="category">{m.support__category_label()}</label>
                 <select id="category" required>
-                    <option value="login">Login</option>
-                    <option value="registration">Registration</option>
-                    <option value="other">Other</option>
+                    <option value="login">{m.support__category_login()}</option>
+                    <option value="registration">{m.support__category_register()}</option>
+                    <option value="other">{m.support__category_other()}</option>
                 </select>
             </div>
         </div>
 
         <div class="flex flex-col">
-            <label for="email">E-Mail</label>
+            <label for="email">{m.support__email_label()}</label>
             <input id="email" type="email" required/>
         </div>
 
         <div class="flex flex-col">
-            <label for="title">Title</label>
-            <input id="title" type="text" required/>
+            <label for="subject">{m.support__subject_label()}</label>
+            <input id="subject" type="text" required/>
         </div>
 
         <div class="flex flex-col">
-            <label for="description">Describe your problem</label>
+            <label for="description">{m.support__description_label()}</label>
             <textarea id="description" type="text" required></textarea>
         </div>
 
         <div class="border border-dashed">
-            <h1 class="text-center m-10">Captcha</h1>
+            <h1 class="text-center m-8">I am not a Robot ✅</h1>
         </div>
 
-        <input type="submit" value="Submit Ticket"/>
+        <input type="submit" value={m.support__button()}/>
     </form>
 </div>
