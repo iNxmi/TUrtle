@@ -4,6 +4,7 @@
 
     import {m} from '$lib/paraglide/messages.js';
     import {setLocale} from '$lib/paraglide/runtime.js';
+
     setLocale("de");
 
     import {
@@ -74,12 +75,31 @@
             <div class="flex mb-3 h-30 w-57 items-center justify-center">
                 <img src="csw_cropped.png" alt="csw icon">
             </div>
+
             <SidebarGroup>
+                <div class="mb-1">
+                    <span class="text-green-800 ml-1">{m.sidebar_category_public()}</span>
+                </div>
                 <SidebarItem label={m.sidebar_login()} href="/login">
                     {#snippet icon()}
                         <UserSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                     {/snippet}
                 </SidebarItem>
+                <SidebarItem label={m.sidebar_register()} href="/register">
+                    {#snippet icon()}
+                        <UserSolid class="text-green-700 h-5 w-5 transition duration-75"/>
+                    {/snippet}
+                </SidebarItem>
+                <SidebarItem label={m.sidebar_support()} href="/support">
+                    {#snippet icon()}
+                        <UserHeadsetSolid class="text-green-700 h-5 w-5 transition duration-75"/>
+                    {/snippet}
+                </SidebarItem>
+            </SidebarGroup>
+            <SidebarGroup border borderClass="pt-2 mt-4 border-t border-primary dark:border-gray-700">
+                <div class="mb-1">
+                    <span class="text-green-800 ml-1">{m.sidebar_category_user()}</span>
+                </div>
                 <SidebarItem label={m.sidebar_dashboard()} href="/">
                     {#snippet icon()}
                         <NewspaperSolid class="text-green-700 h-5 w-5 transition duration-75"/>
@@ -100,15 +120,10 @@
                         <CalendarMonthSolid class="text-green-700 h-5 w-5 transition duration-75"/>
                     {/snippet}
                 </SidebarItem>
-                <SidebarItem label={m.sidebar_support()} href="/support">
-                    {#snippet icon()}
-                        <UserHeadsetSolid class="text-green-700 h-5 w-5 transition duration-75"/>
-                    {/snippet}
-                </SidebarItem>
             </SidebarGroup>
             <SidebarGroup border borderClass="pt-2 mt-4 border-t border-primary dark:border-gray-700">
                 <div class="mb-1">
-                    <span class="text-green-800 ml-1">Admin</span>
+                    <span class="text-green-800 ml-1">{m.sidebar_category_admin()}</span>
                 </div>
                 <div class="space-y-2">
                     <SidebarItem label={m.sidebar_manage_users()} {spanClass} href="/admin/users">

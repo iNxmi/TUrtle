@@ -70,7 +70,7 @@
                 <TableBodyCell
                 ><a
                         href="users/{user.id}"
-                        class="text-orange-600 hover:underline hover:cursor-pointer p-2">{m.admin_users__email()}</a
+                        class="text-orange-600 hover:underline hover:cursor-pointer p-2">{m.admin_users__edit_user()}</a
                 >
                     <button
                             class="text-red-600 font-medium hover:underline hover:cursor-pointer"

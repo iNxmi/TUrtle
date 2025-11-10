@@ -1,11 +1,15 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
 
+  "sidebar_category_public": "Öffentlich",
+  "sidebar_category_user": "Benutzer",
+  "sidebar_category_admin": "Administrator",
   "sidebar_bookings": "Buchungen",
   "sidebar_login": "Login",
   "sidebar_manage_users": "Nutzerverwaltung",
   "sidebar_manage_support_tickets": "Support Tickets",
   "sidebar_profile": "Profil",
+  "sidebar_register": "Registrieren",
   "sidebar_reservations": "Geräte ausleihen",
   "sidebar_support": "Hilfe",
   "sidebar_admin_settings": "Administrator Einstellungen",
