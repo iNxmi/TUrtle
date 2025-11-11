@@ -81,15 +81,14 @@
 
   --color-table-dark: #053105;
   --color-accent: #00c20d;
-
 }
 
 @font-face {
-  font-family: 'inter';
+  font-family: 'Inter';
   font-display: swap;
   font-weight: 100 900;
   font-style: italic;
-  src: url(../src/lib/assets/Inter-VariableFont_opsz\,wght.ttf);
+  src: url("/fonts/Inter-VariableFont_opsz,wght.ttf");
 }
 
 .datatable-pagination .datatable-active a,
