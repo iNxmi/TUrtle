@@ -1,6 +1,6 @@
 <script>
     import '../app.css';
-    import {Sidebar, SidebarDropdownWrapper, SidebarDropdownItem} from 'flowbite-svelte';
+    import {Sidebar, SidebarDropdownWrapper, SidebarDropdownItem, Heading, Span} from 'flowbite-svelte';
 
     import {Select, Toggle} from 'flowbite-svelte';
 
@@ -44,6 +44,7 @@
     });
 
     import {onMount} from 'svelte';
+
     let darkmode = $state(false);
     onMount(() => {
         if (document.documentElement.className === 'dark')
@@ -105,9 +106,18 @@
             class="min-w-64"
     >
         <div class="flex flex-col gap-3">
-            <button class="flex items-center m-5" onclick={rotateLogo}>
-                <img id="logo" src="/csw_cropped.png" alt="CSW Icon" class="z-50"/>
-            </button>
+            <!--            <button class="flex items-center m-5" onclick={rotateLogo}>-->
+            <!--                <img id="logo" src="/csw_cropped.png" alt="CSW Icon" class="z-50"/>-->
+            <!--            </button>-->
+
+            <div class="flex flex-col">
+                <Heading class="text-center">
+                    <Span class="text-7xl" gradient="redToYellow">CSW</Span>
+                </Heading>
+                <Heading class="text-center text-2xl tracking-[.35em]">
+                    <Span class="text-orange-400">TUrtle</Span>
+                </Heading>
+            </div>
 
             <hr>
 
