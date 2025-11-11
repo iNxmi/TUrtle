@@ -105,7 +105,7 @@
 
             <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
                                     label={m.sidebar_category_public()}>
-                <SidebarDropdownItem label="_home" href="/">
+                <SidebarDropdownItem label={m.sidebar_home()} href="/">
                     {#snippet icon()}
                         <HomeSolid class="text-orange-400 h-5 w-5"/>
                     {/snippet}
@@ -125,7 +125,7 @@
                         <UserHeadsetSolid class="text-orange-400 h-5 w-5"/>
                     {/snippet}
                 </SidebarDropdownItem>
-                <SidebarDropdownItem label="_about" href="/about">
+                <SidebarDropdownItem label={m.sidebar_about()} href="/about">
                     {#snippet icon()}
                         <InfoCircleSolid class="text-orange-400 h-5 w-5"/>
                     {/snippet}
@@ -191,7 +191,7 @@
             </SidebarDropdownWrapper>
 
             <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
-                                    label=_settings>
+                                    label={m.sidebar_category_settings()}>
                 <Select items={languages} bind:value={language} onchange={updateLanguage}/>
                 <Toggle onchange={toggleDarkMode}>_toggle_darkmode</Toggle>
             </SidebarDropdownWrapper>

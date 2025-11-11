@@ -34,7 +34,7 @@
         <Input name="password" type="password" required/>
     </Label>
 
-    <Checkbox>_remember_me_text</Checkbox>
+    <Checkbox>{m.login__remember_me({days: 30})}</Checkbox>
 
     <div class="border border-dashed">
         <P class="text-center m-8">I am not a Robot ✅</P>
