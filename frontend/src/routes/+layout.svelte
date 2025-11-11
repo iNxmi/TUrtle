@@ -137,7 +137,7 @@
 
             <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
                                     label={m.sidebar_category_user()}>
-                <SidebarDropdownItem label={m.sidebar_dashboard()} href="/">
+                <SidebarDropdownItem label={m.sidebar_dashboard()} href="/dashboard">
                     {#snippet icon()}
                         <NewspaperSolid class="text-orange-400 h-5 w-5"/>
                     {/snippet}

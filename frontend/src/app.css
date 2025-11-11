@@ -8,6 +8,7 @@
 
 @source "../node_modules/simple-datatables/dist";
 @source "../node_modules/@flowbite-svelte-plugins/datatable/dist";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
