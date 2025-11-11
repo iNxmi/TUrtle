@@ -66,9 +66,9 @@
 
     let {children} = $props();
 
-    function rotateLogo() {
+    function rotateLogo(event) {
         const animation = "animate-spin";
-        const element = document.getElementById("logo")
+        const element = event.currentTarget;
 
         element.classList.add(animation);
         setTimeout(() => {
@@ -107,18 +107,15 @@
             class="min-w-64"
     >
         <div class="flex flex-col gap-3">
-            <!--            <button class="flex items-center m-5" onclick={rotateLogo}>-->
-            <!--                <img id="logo" src="/csw_cropped.png" alt="CSW Icon" class="z-50"/>-->
-            <!--            </button>-->
 
-            <div class="flex flex-col">
+            <button class="flex flex-col select-none" onclick={rotateLogo}>
                 <Heading class="text-center">
                     <Span class="text-7xl" gradient="redToYellow">CSW</Span>
                 </Heading>
                 <Heading class="text-center text-2xl tracking-[.35em]">
                     <Span class="text-orange-400">TUrtle</Span>
                 </Heading>
-            </div>
+            </button>
 
             <hr>
 
