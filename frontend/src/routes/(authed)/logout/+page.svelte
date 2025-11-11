@@ -1,11 +1,9 @@
 <script>
-
     let apiResponse = $state(null)
 
     function logout() {
         apiResponse = fetch("api/auth/logout")
     }
-
 </script>
 
 <div>

@@ -9,7 +9,8 @@
         TableBodyCell,
         TableBodyRow,
         TableHead,
-        TableHeadCell
+        TableHeadCell,
+        Heading
     } from 'flowbite-svelte';
     import {PlusOutline} from 'flowbite-svelte-icons';
     import NewUser from './NewUser.svelte';
@@ -29,9 +30,7 @@
 </script>
 
 <div>
-    <div class="space-y-0.5 mb-8 md:mb-8">
-        <h2 class="text-2xl font-bold text-text ml-2">{m.admin_users__title()}</h2>
-    </div>
+    <Heading tag="h3">{m.admin_users__title()}</Heading>
 
     {#if page}
         <div class="flex">
