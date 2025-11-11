@@ -1,11 +1,13 @@
 <script>
     import '../app.css';
-    import {Sidebar, SidebarDropdownWrapper, SidebarDropdownItem, Heading, Span} from 'flowbite-svelte';
+    import {Sidebar, SidebarDropdownWrapper, SidebarDropdownItem, Hr} from 'flowbite-svelte';
 
     import {Select, Toggle} from 'flowbite-svelte';
 
     import {m} from '$lib/paraglide/messages.js';
     import {setLocale} from '$lib/paraglide/runtime.js';
+
+    import TUrtleLogo from "../components/TUrtleLogo.svelte";
 
     const languages = [
         {value: "en", name: "English"},
@@ -65,16 +67,6 @@
     };
 
     let {children} = $props();
-
-    function rotateLogo(event) {
-        const animation = "animate-spin";
-        const element = event.currentTarget;
-
-        element.classList.add(animation);
-        setTimeout(() => {
-            element.classList.remove(animation);
-        }, 1000);
-    }
 </script>
 
 <!--<div class="absolute top-0 left-0 right-0 z-50 hidden md:block">-->
@@ -107,17 +99,9 @@
             class="min-w-64"
     >
         <div class="flex flex-col gap-3">
+            <TUrtleLogo/>
 
-            <button class="flex flex-col select-none" onclick={rotateLogo}>
-                <Heading class="text-center">
-                    <Span class="text-7xl" gradient="redToYellow">CSW</Span>
-                </Heading>
-                <Heading class="text-center text-2xl tracking-[.35em]">
-                    <Span class="text-orange-400">TUrtle</Span>
-                </Heading>
-            </button>
-
-            <hr>
+            <Hr class="m-0 p-0"/>
 
             <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
                                     label={m.sidebar_category_public()}>
