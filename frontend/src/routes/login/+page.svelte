@@ -27,7 +27,7 @@
     <form class="flex flex-col gap-5" onsubmit={login}>
         <Label>
             <span>{m.login__username_or_email_label()}</span>
-            <Input name="usernameOrEmail" type="text" required/>
+            <Input name="username_or_email" type="text" required/>
         </Label>
 
         <Label>

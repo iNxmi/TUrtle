@@ -3,18 +3,24 @@
     import {onMount} from 'svelte';
     import favicon from '$lib/assets/favicon.svg';
 
+    import {Select, Button} from 'flowbite-svelte';
+
     import {m} from '$lib/paraglide/messages.js';
 
     import {setLocale} from '$lib/paraglide/runtime.js';
 
-    let language = $state('en');
+    const languages = [
+        {value: "en", name: "English"},
+        {value: "de", name: "Deutsch"},
+        {value: "ja", name: "日本語"},
+        {value: "ar", name: "_arabic"},
+        {value: "ru", name: "_russian"},
+        {value: "vi", name: "_vietnamese"}
+    ];
+    let language = "en";
 
     function updateLanguage(event) {
         event.preventDefault();
-
-        const select = document.getElementById('language');
-        language = select.options[select.selectedIndex].value;
-
         setLocale(language);
     }
 
@@ -103,8 +109,6 @@
 <div class="h-full flex flex-col">
     <div class="flex-1 overflow-auto">
         <div class="h-screen overflow-hidden">
-            <SidebarButton onclick={demoSidebarUi.toggle} class="mb-2"/>
-
             <ThemeProvider {theme}>
                 <Sidebar
                         alwaysOpen
@@ -121,6 +125,8 @@
                     <button class="flex items-center m-5" onclick={rotateLogo}>
                         <img id="logo" src="csw_cropped.png" alt="CSW Icon"/>
                     </button>
+
+                    <Select items={languages} bind:value={language} onchange={updateLanguage}/>
 
                     <SidebarDropdownWrapper classes={{ span: "font-bold" }} isOpen={true}
                                             label={m.sidebar_category_public()}>
@@ -198,18 +204,6 @@
                             {/snippet}
                         </SidebarDropdownItem>
                     </SidebarDropdownWrapper>
-
-                    <div class="flex absolute inset-x-0 bottom-0 m-3">
-                        <select id="language" class="flex-1" onchange={updateLanguage}>
-                            <option value="en" selected>English</option>
-                            <option value="de">Deutsch</option>
-                            <option value="ja">日本語</option>
-                            <option value="ar">_arabic</option>
-                            <option value="ru">_russian</option>
-                            <option value="vi">_vietnamese</option>
-                        </select>
-                    </div>
-
                 </Sidebar>
             </ThemeProvider>
 
