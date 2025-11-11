@@ -11,6 +11,7 @@
 		"format": "prettier --write ."
 	},
 	"dependencies": {
+		"html-to-image": "^1.11.13",
 		"jsonwebtoken": "^9.0.0"
 	},
 	"devDependencies": {

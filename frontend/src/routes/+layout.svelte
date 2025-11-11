@@ -98,7 +98,7 @@
             position="static"
             class="min-w-64"
     >
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col align-baseline gap-3">
             <TUrtleLogo/>
 
             <Hr class="m-0 p-0"/>
