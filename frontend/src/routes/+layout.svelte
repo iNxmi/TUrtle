@@ -8,6 +8,7 @@
     import {setLocale} from '$lib/paraglide/runtime.js';
 
     import TUrtleLogo from "../components/TUrtleLogo.svelte";
+    import Footer from "../components/Footer.svelte";
 
     const languages = [
         {value: "en", name: "English"},
@@ -205,3 +206,5 @@
     </div>
 
 </div>
+
+<Footer/>
