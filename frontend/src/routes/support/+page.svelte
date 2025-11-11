@@ -1,10 +1,22 @@
 <script>
+    import {Input, Label, Button, Select, Textarea, Checkbox} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
 
     function send(event) {
         event.preventDefault();
         alert("TODO: Implement ticket submission!");
     }
+
+    const urgencies = [
+        {value: "urgent", name: m.support__urgency_urgent()},
+        {value: "not_urgent", name: m.support__urgency_not_urgent()}
+    ];
+
+    const categories = [
+        {value: "login", name: m.support__category_login()},
+        {value: "registration", name: m.support__category_register()},
+        {value: "other", name: m.support__category_other()}
+    ];
 </script>
 
 <div class="flex flex-col gap-10">
@@ -55,48 +67,38 @@
 
         <form class="flex flex-col gap-5" onsubmit={send}>
             <div class="flex gap-5">
-                <div class="flex flex-1 flex-col">
-                    <label for="urgency">{m.support__urgency_label()}</label>
-                    <select id="urgency" required>
-                        <option value="urgent">{m.support__urgency_urgent()}</option>
-                        <option value="not so urgent">{m.support__urgency_not_urgent()}</option>
-                    </select>
-                </div>
-                <div class="flex flex-1 flex-col">
-                    <label for="category">{m.support__category_label()}</label>
-                    <select id="category" required>
-                        <option value="login">{m.support__category_login()}</option>
-                        <option value="registration">{m.support__category_register()}</option>
-                        <option value="other">{m.support__category_other()}</option>
-                    </select>
-                </div>
+                <Label class="flex flex-1 flex-col">
+                    <span>{m.support__urgency_label()}</span>
+                    <Select name="category" items={urgencies} required/>
+                </Label>
+                <Label class="flex flex-1 flex-col">
+                    <span>{m.support__category_label()}</span>
+                    <Select name="category" items={categories} required/>
+                </Label>
             </div>
 
-            <div class="flex flex-col">
-                <label for="email">{m.support__email_label()}</label>
-                <input id="email" type="email" required/>
-            </div>
+            <Label>
+                <span>{m.support__email_label()}</span>
+                <Input name="email" type="email" required/>
+            </Label>
 
-            <div class="flex flex-col">
-                <label for="subject">{m.support__subject_label()}</label>
-                <input id="subject" type="text" required/>
-            </div>
+            <Label>
+                <span>{m.support__subject_label()}</span>
+                <Input name="subject" type="text" required/>
+            </Label>
 
-            <div class="flex flex-col">
-                <label for="description">{m.support__description_label()}</label>
-                <textarea id="description" type="text" required></textarea>
-            </div>
+            <Label>
+                <span>{m.support__description_label()}</span>
+                <Textarea class="w-full" name="description" placeholder="_describe_your_issue" required/>
+            </Label>
 
-            <div class="flex gap-5">
-                <input type="checkbox" required>
-                <p>{m.support__i_agree_to_tos()}</p>
-            </div>
+            <Checkbox name="agree_tos">{m.support__i_agree_to_tos()}</Checkbox>
 
             <div class="border border-dashed">
-                <h1 class="text-center m-8">I am not a Robot ✅</h1>
+                <p class="text-center m-8">I am not a Robot ✅</p>
             </div>
 
-            <input type="submit" value={m.support__button()}/>
+            <Button type="submit">{m.support__button()}</Button>
         </form>
     </div>
 </div>

@@ -41,7 +41,7 @@
             <h1 class="text-center m-8">I am not a Robot ✅</h1>
         </div>
 
-        <Button type="submit" class="w-full1">{m.login__button()}</Button>
+        <Button type="submit">{m.login__button()}</Button>
 
         <div class="flex gap-5 justify-between">
             <a href="/register" class="text-sm text-blue-700 hover:underline dark:text-blue-500">{m.login__no_account()}</a>

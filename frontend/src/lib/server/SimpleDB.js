@@ -13,7 +13,7 @@ export default class SimpleDB {
 		this._ensureCollection(collectionName);
 		const collection = this.collections.get(collectionName);
 		const newRecord = {
-			id: Math.random().toString(36).substr(2, 9),
+			id: Math.random().toString(36).substring(2, 9),
 			...data
 		};
 		collection.push(newRecord);
