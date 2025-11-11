@@ -1,17 +1,21 @@
 <script>
+    import {Button, Modal, P} from "flowbite-svelte";
 
     let apiResponse = $state(null)
+    let modal = $state(false)
 
     function logout() {
         apiResponse = fetch("api/auth/logout")
+        modal = true;
     }
-
 </script>
 
 <div>
-    <button onclick={logout}>Logout</button>
-</div>
+    <Button color="orange" onclick={logout}>Logout</Button>
 
-{#if apiResponse}
-    <p class="whitespace-pre">{JSON.stringify(apiResponse, null, 2)}</p>
-{/if}
+    <Modal title="API Response" form bind:open={modal}>
+        {#if apiResponse}
+            <P class="whitespace-pre">{JSON.stringify(apiResponse, null, 2)}</P>
+        {/if}
+    </Modal>
+</div>

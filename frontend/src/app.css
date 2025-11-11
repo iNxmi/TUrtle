@@ -8,6 +8,7 @@
 
 @source "../node_modules/simple-datatables/dist";
 @source "../node_modules/@flowbite-svelte-plugins/datatable/dist";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -47,8 +48,8 @@
 }
 
 .dark {
-
   --font-sans: "Inter";
+
   --color-primary-50: #071308;
   --color-primary-100: #0d260f;
   --color-primary-200: #1a4c1e;
@@ -80,15 +81,15 @@
 
   --color-table-dark: #053105;
   --color-accent: #00c20d;
-
 }
 
 @font-face {
-  font-family: 'inter';
-  font-display: swap;
-  font-weight: 100 900;
-  font-style: italic;
-  src: url(../src/lib/assets/Inter-VariableFont_opsz\,wght.ttf);
+    font-family: 'Inter';
+    src: url('/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-stretch: 75% 125%;
+    font-style: normal;
+    font-display: swap;
 }
 
 .datatable-pagination .datatable-active a,
