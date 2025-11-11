@@ -35,9 +35,7 @@
         UserSettingsSolid,
         NewspaperSolid,
         HomeSolid,
-        InfoCircleSolid,
-        SunSolid,
-        MoonSolid
+        InfoCircleSolid
     } from 'flowbite-svelte-icons';
 
     import {page} from '$app/state';
@@ -69,25 +67,6 @@
 
     let {children} = $props();
 </script>
-
-<!--<div class="absolute top-0 left-0 right-0 z-50 hidden md:block">-->
-<!--    <div class="absolute inset-0 bg-background/86 backdrop-blur-sm">-->
-<!--        <div class="container mx-auto max-w-full p-8">-->
-<!--            <div class="h-16 flex justify-end">-->
-<!--                <button-->
-<!--                        onclick={toggleDarkMode}-->
-<!--                        class="cursor-pointer inline-flex items-center justify-center whitespace-nowrap"-->
-<!--                >-->
-<!--                    {#if darkmode}-->
-<!--                        <SunSolid class="text-accent h-10 w-10 transition duration-75"/>-->
-<!--                    {:else}-->
-<!--                        <MoonSolid class="text-accent h-10 w-10 transition duration-75"/>-->
-<!--                    {/if}-->
-<!--                </button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 
 <div class="flex h-full">
     <Sidebar
