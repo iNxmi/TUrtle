@@ -22,6 +22,8 @@
 		"@eslint/js": "^9.36.0",
 		"@flowbite-svelte-plugins/datatable": "^0.4.1",
 		"@inlang/paraglide-js": "2.4.0",
+		"@skeletonlabs/skeleton": "^4.3.2",
+		"@skeletonlabs/skeleton-svelte": "^4.3.2",
 		"@sveltejs/adapter-node": "^5.3.2",
 		"@sveltejs/kit": "^2.43.2",
 		"@sveltejs/vite-plugin-svelte": "^6.2.0",

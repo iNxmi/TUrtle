@@ -1,11 +1,15 @@
 @import 'tailwindcss';
+
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton-svelte';
+@import '@skeletonlabs/skeleton/themes/cerberus';
+
 @plugin 'flowbite/plugin';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
 @source "../node_modules/flowbite-svelte/dist";
 @source "../node_modules/flowbite-svelte-icons/dist";
-
 @source "../node_modules/simple-datatables/dist";
 @source "../node_modules/@flowbite-svelte-plugins/datatable/dist";
 
