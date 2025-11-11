@@ -1,6 +1,7 @@
 <script>
     import {Button, Checkbox, Label, Input, Heading, A, P, Modal} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
+    import ReCAPTCHA from '../../components/ReCAPTCHA.svelte';
 
     let apiResponse = $state(null);
     let modal = $state(false);
@@ -71,10 +72,9 @@
             </Label>
         </div>
 
-        <Checkbox id="agree_tos">{m.register__i_agree_to_tos()}</Checkbox>
-
-        <div class="border border-dashed">
-            <h1 class="text-center m-8">I am not a Robot ✅</h1>
+        <div class="flex items-start gap-5 justify-between">
+            <Checkbox id="agree_tos">{m.register__i_agree_to_tos()}</Checkbox>
+            <ReCAPTCHA/>
         </div>
 
         <Button type="submit" class="w-full1">{m.register__button()}</Button>
