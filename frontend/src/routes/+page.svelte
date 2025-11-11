@@ -2,4 +2,6 @@
     import {Heading, Span} from 'flowbite-svelte';
 </script>
 
-<Heading tag="h3" class="text-center">Welcome to <Span gradient="redToYellow">TUrtle</Span></Heading>
+<Heading tag="h3" class="text-center">
+    Welcome to <Span class="text-orange-400">TUrtle</Span>
+</Heading>

@@ -32,6 +32,7 @@
         UserSettingsSolid,
         NewspaperSolid,
         HomeSolid,
+        InfoCircleSolid,
         SunSolid,
         MoonSolid
     } from 'flowbite-svelte-icons';
@@ -141,6 +142,11 @@
                 <SidebarDropdownItem label={m.sidebar_support()} href="/support">
                     {#snippet icon()}
                         <UserHeadsetSolid class="text-orange-400 h-5 w-5"/>
+                    {/snippet}
+                </SidebarDropdownItem>
+                <SidebarDropdownItem label="_about" href="/about">
+                    {#snippet icon()}
+                        <InfoCircleSolid class="text-orange-400 h-5 w-5"/>
                     {/snippet}
                 </SidebarDropdownItem>
             </SidebarDropdownWrapper>
