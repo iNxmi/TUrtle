@@ -2,6 +2,7 @@
     import {Button, Label, Input, Modal,Heading, P} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
     let changePassword = $state(false);
+    let changeOTA = $state(false);
 
     let apiResponse = $state(null);
 </script>
@@ -53,7 +54,7 @@
 
     <div class="flex gap-5">
         <Button class="flex-1" onclick={() => changePassword = true}>_profile__password_change</Button>
-        <Modal title="Change Password" form bind:open={changePassword} onaction={({ action }) => alert(`Handle "${action}"`)}>
+        <Modal title="__profile_password_change_title" form bind:open={changePassword} onaction={({ action }) => alert(`Handle "${action}"`)}>
             <Label>
                 <span>_profile__password_change__current_password</span>
                 <Input name="current_password" type="password" value="" required/>
@@ -68,10 +69,13 @@
             </Label>
 
             {#snippet footer()}
-                <Button type="submit" value="success">I accept</Button>
+                <Button type="submit" value="success">__profile__password_change_submit</Button>
             {/snippet}
         </Modal>
-        <Button class="flex-1">_profile__new_OTA</Button>
+        <Button class="flex-1" onclick={() => changeOTA = true} >_profile__new_OTA</Button>
+        <Modal title="__profile_password_change_title" form bind:open={changeOTA} onaction={({ action }) => alert(`Handle "${action}"`)}>
+            //TODO
+        </Modal>
     </div>
 
 </form>
