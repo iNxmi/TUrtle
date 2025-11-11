@@ -6,5 +6,3 @@
 <Heading tag="h3" class="text-center">
     Welcome to <Span class="text-orange-400">TUrtle</Span>
 </Heading>
-
-<TUrtleLogo/>
