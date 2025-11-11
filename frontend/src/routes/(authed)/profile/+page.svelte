@@ -73,9 +73,6 @@
             {/snippet}
         </Modal>
         <Button class="flex-1" onclick={() => changeOTA = true} >_profile__new_OTA</Button>
-        <Modal title="__profile_password_change_title" form bind:open={changeOTA} onaction={({ action }) => alert(`Handle "${action}"`)}>
-            //TODO
-        </Modal>
     </div>
 
 </form>
