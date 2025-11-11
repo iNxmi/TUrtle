@@ -10,26 +10,51 @@
 
     <Label>
         <span>_profile__username</span>
-        <Input name="username_or_email" type="text" value="MaxMusterMannHD" required disabled/>
+        <Input name="username" type="text" value="MaxMusterMannHD" required disabled/>
+    </Label>
+
+    <div class="flex gap-5">
+        <Label class="flex-1">
+            <span>_profile__name</span>
+            <Input name="name" type="text" value="Mustermann" required disabled/>
+        </Label>
+
+        <Label class="flex-1">
+            <span>_profile__surname</span>
+            <Input name="surname" type="text" value="Max" required disabled/>
+        </Label>
+    </div>
+
+    <Label>
+        <span>_profile__usergroup</span>
+        <Input name="usergroup" type="text" value="Admin" required disabled/>
     </Label>
 
     <Label>
-        <span>_profile__name</span>
-        <Input name="password" type="text" required/>
+        <span>_profile__email</span>
+        <Input name="email" type="email" value="MaxMusterMann@Mustermail.io" required disabled/>
     </Label>
 
-    <Checkbox>_remember_me_text</Checkbox>
+    <Label>
+        <span>_profile__study_field</span>
+        <Input name="study_field" type="text" value="BWL" required disabled/>
+    </Label>
 
-    <div class="border border-dashed">
-        <P class="text-center m-8">I am not a Robot ✅</P>
+    <Label>
+        <span>_profile__department</span>
+        <Input name="department" type="text" value="67" required disabled/>
+    </Label>
+
+    <Label>
+        <span>_profile__studentID</span>
+        <Input name="studentID" type="text" value="06069" required disabled/>
+    </Label>
+
+    <div class="flex gap-5">
+        <Button class="flex-1" type="button">_profile__password_change</Button>
+        <Button class="flex-1" type="button">_profile__new_OTA</Button>
     </div>
 
-    <Button type="submit">{m.login__button()}</Button>
-
-    <div class="flex gap-5 justify-between">
-        <A href="/register" class="text-sm text-blue-700 hover:underline dark:text-blue-500">{m.login__no_account()}</A>
-        <A href="/" class="text-sm text-blue-700 hover:underline dark:text-blue-500">{m.login__forgot_password()}</A>
-    </div>
 </form>
 
 {#if apiResponse}
