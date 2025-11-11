@@ -7,7 +7,7 @@
     let apiResponse = $state(null);
 </script>
 
-<form class="flex flex-col gap-5" onsubmit={login}>
+<form class="flex flex-col gap-5">
     <Heading tag="h3" class="text-center">{m.login__title()}</Heading>
 
     <Label>
