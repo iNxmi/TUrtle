@@ -3,6 +3,7 @@ package de.csw.turtle.api.dto.response
 import de.csw.turtle.api.entity.SupportTicketEntity
 
 data class GetSupportTicketResponse(
+    val id: Long,
     val urgency: SupportTicketEntity.Urgency,
     val category: SupportTicketEntity.Category,
     val email: String,
@@ -11,6 +12,7 @@ data class GetSupportTicketResponse(
 ) {
 
     constructor(entity: SupportTicketEntity) : this(
+        id = entity.id,
         urgency = entity.urgency,
         category = entity.category,
         email = entity.email,

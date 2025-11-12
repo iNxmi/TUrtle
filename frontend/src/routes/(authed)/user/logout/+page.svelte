@@ -5,7 +5,7 @@
     let modal = $state(false)
 
     function logout() {
-        apiResponse = fetch("api/auth/logout")
+        apiResponse = fetch("/api/auth/logout")
         modal = true;
     }
 </script>

@@ -98,27 +98,27 @@
     const itemsUser = [
         {
             label: m.sidebar_dashboard(),
-            href: '/dashboard',
+            href: '/user/dashboard',
             icon: NewspaperSolid
         },
         {
             label: m.sidebar_profile(),
-            href: '/profile',
+            href: '/user/profile',
             icon: UserSolid
         },
         {
             label: m.sidebar_reservations(),
-            href: '/reservation',
+            href: '/user/reservation',
             icon: DesktopPcSolid
         },
         {
             label: m.sidebar_bookings(),
-            href: '/bookings',
+            href: '/user/bookings',
             icon: CalendarMonthSolid
         },
         {
             label: m.sidebar_logout(),
-            href: '/logout',
+            href: '/user/logout',
             icon: UserSolid
         }
     ];

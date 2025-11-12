@@ -29,12 +29,16 @@ class GlobalControllerExceptionHandler {
 
     //TODO change name
     @ExceptionHandler(PropertyReferenceException::class)
-    fun validationIDKIFORGOR(exception: PropertyReferenceException, request: HttpServletRequest) =
+    fun propertyReference(exception: PropertyReferenceException, request: HttpServletRequest) =
         exception.responseEntity(request.requestURI, HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
-    fun generic(exception: HttpRequestMethodNotSupportedException, request: HttpServletRequest) =
+    fun httpRequestMethodNotSupported(exception: HttpRequestMethodNotSupportedException, request: HttpServletRequest) =
         exception.responseEntity(request.requestURI, HttpStatus.METHOD_NOT_ALLOWED)
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
+    fun methodArgumentTypeMismatch(exception: HttpRequestMethodNotSupportedException, request: HttpServletRequest) =
+        exception.responseEntity(request.requestURI, HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(Exception::class)
     fun generic(exception: Exception, request: HttpServletRequest): ResponseEntity<ExceptionResponse> {
