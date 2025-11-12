@@ -1,7 +1,6 @@
 <script>
     import {Button, Label, Input, Modal, Heading} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
-    import {onMount} from "svelte";
 
     let changePassword = $state(false);
     let changeOTA = $state(false);
