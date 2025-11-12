@@ -3,8 +3,8 @@ package de.csw.turtle.api.service
 import de.csw.turtle.api.dto.request.CreateUserRequest
 import de.csw.turtle.api.dto.request.UpdateUserRequest
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.exceptions.UserNotFoundException
-import de.csw.turtle.api.exception.exceptions.UsernameAlreadyExistsException
+import de.csw.turtle.api.exception.exceptions.user.UserNotFoundException
+import de.csw.turtle.api.exception.exceptions.user.UsernameAlreadyExistsException
 import de.csw.turtle.api.repository.UserRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.security.core.session.SessionRegistry

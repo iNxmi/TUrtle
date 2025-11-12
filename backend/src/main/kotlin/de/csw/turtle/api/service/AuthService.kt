@@ -4,7 +4,7 @@ import de.csw.turtle.api.dto.request.CreateUserRequest
 import de.csw.turtle.api.dto.request.LoginUserRequest
 import de.csw.turtle.api.dto.request.RegisterUserRequest
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.exceptions.UsernameOrPasswordInvalidException
+import de.csw.turtle.api.exception.exceptions.user.UsernameOrPasswordInvalidException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.AuthenticationManager

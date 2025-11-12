@@ -3,11 +3,10 @@ package de.csw.turtle.api.controller
 import de.csw.turtle.api.dto.request.CreateUserRequest
 import de.csw.turtle.api.dto.request.UpdateUserRequest
 import de.csw.turtle.api.dto.response.GetUserResponse
-import de.csw.turtle.api.exception.exceptions.UserNotFoundException
+import de.csw.turtle.api.exception.exceptions.user.UserNotFoundException
 import de.csw.turtle.api.service.UserService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.data.domain.Sort.Direction
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
