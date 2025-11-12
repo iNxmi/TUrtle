@@ -6,8 +6,7 @@
     let changeOTA = $state(false);
 
     let {data} = $props();
-    const user = data.user
-
+    const user = data.user;
 </script>
 
 <form class="flex flex-col gap-5">
@@ -53,6 +52,11 @@
     <Label>
         <span>{m.profile__student_id_label()}</span>
         <Input name="studentID" type="text" value={user.studentId} disabled/>
+    </Label>
+
+    <Label>
+        <span>{m.profile__created_at_label()}</span>
+        <Input type="text" value={(new Date(user.createdAt)).toLocaleString()} disabled/>
     </Label>
 
     <div class="flex gap-5">

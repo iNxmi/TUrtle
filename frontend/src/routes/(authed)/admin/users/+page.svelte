@@ -1,8 +1,6 @@
 <script>
     import {m} from '$lib/paraglide/messages';
     import {
-        Input,
-        Button,
         Table,
         TableBody,
         TableBodyCell,
@@ -11,71 +9,35 @@
         TableHeadCell,
         Heading
     } from 'flowbite-svelte';
-    import {PlusOutline} from 'flowbite-svelte-icons';
-    import NewUser from './NewUser.svelte';
-
-    let searchTerm = $state('');
-    let defaultModal = $state(false);
 
     let {data} = $props();
-    const page = data.page
-
-    const handleSearch = () => {
-        defaultModal = true;
-    };
+    const page = data.page;
 </script>
 
 <div>
     <Heading tag="h3">{m.admin_users__title()}</Heading>
 
-    <div class="flex">
-        <Input class="max-w-1/5 m-3" placeholder={m.admin_users__search_user()} bind:value={searchTerm}/>
-        <Button onclick={handleSearch}
-                class=" absolute right-20 m-3 bg-accent text-accent-dark hover:cursor-pointer">
-            <PlusOutline class="text-green-700 h-5 w-5 transition duration-75"/>
-            {m.admin_users__create_user()}
-        </Button>
-    </div>
-
-    <Table bind:inputValue={searchTerm} hoverable={true}>
+    <Table hoverable={true}>
         <TableHead>
-            <TableHeadCell class="bg-secondary">{m.admin_users__student_id()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_users__last_name()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_users__first_name()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_users__username()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_users__email()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_users__edit_user()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_users__delete_user()}</TableHeadCell>
+            <TableHeadCell class="bg-secondary">{m.admin_users__student_id_label()}</TableHeadCell>
+            <TableHeadCell class="bg-secondary">{m.admin_users__username_label()}</TableHeadCell>
+            <TableHeadCell class="bg-secondary">{m.admin_users__last_name_label()}</TableHeadCell>
+            <TableHeadCell class="bg-secondary">{m.admin_users__first_name_label()}</TableHeadCell>
+            <TableHeadCell class="bg-secondary">{m.admin_users__email_label()}</TableHeadCell>
+            <TableHeadCell class="bg-secondary">{m.admin_users__created_at_label()}</TableHeadCell>
         </TableHead>
 
         <TableBody>
             {#each page.content as user}
-                <TableBodyRow>
+                <TableBodyRow onclick={() => window.location.href = `/admin/users/${user.userName}`} class="hover:cursor-pointer">
                     <TableBodyCell>{user.studentId}</TableBodyCell>
-                    <TableBodyCell>{user.lastName}</TableBodyCell>
-                    <TableBodyCell>{user.firstName}</TableBodyCell>
                     <TableBodyCell>{user.userName}</TableBodyCell>
+                    <TableBodyCell>{user.firstName}</TableBodyCell>
+                    <TableBodyCell>{user.lastName}</TableBodyCell>
                     <TableBodyCell>{user.email}</TableBodyCell>
-                    <TableBodyCell>
-                        <Button color="orange"
-                                onclick={() =>{window.location.replace(`/admin/users/${user.userName}`) }}>
-                            {m.admin_users__edit_user()}
-                        </Button>
-                    </TableBodyCell>
-                    <TableBodyCell>
-                        <Button color="red" onclick={async (e) => {
-                                alert(`/api/users/${user.userName}`);
-                                await fetch(`/api/users/${user.userName}`, {method: 'DELETE'});
-
-                                window.location.reload();
-                            }}>
-                            {m.admin_users__delete_user()}
-                        </Button>
-                    </TableBodyCell>
+                    <TableBodyCell>{(new Date(user.createdAt)).toLocaleString()}</TableBodyCell>
                 </TableBodyRow>
             {/each}
         </TableBody>
     </Table>
-
-    <NewUser bind:open={defaultModal}></NewUser>
 </div>

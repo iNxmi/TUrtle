@@ -24,16 +24,18 @@
             <TableHeadCell class="bg-secondary">{m.admin_support__category_label()}</TableHeadCell>
             <TableHeadCell class="bg-secondary">{m.admin_support__subject_label()}</TableHeadCell>
             <TableHeadCell class="bg-secondary">{m.admin_support__email_label()}</TableHeadCell>
+            <TableHeadCell class="bg-secondary">{m.admin_support__created_at_label()}</TableHeadCell>
         </TableHead>
 
         <TableBody>
             {#each page.content as ticket}
-                <TableBodyRow>
+                <TableBodyRow onclick={() => window.location.href = `/admin/support/${ticket.id}`} class="hover:cursor-pointer">
                     <TableBodyCell>{ticket.id}</TableBodyCell>
                     <TableBodyCell>{ticket.urgency}</TableBodyCell>
                     <TableBodyCell>{ticket.category}</TableBodyCell>
                     <TableBodyCell>{ticket.subject}</TableBodyCell>
                     <TableBodyCell>{ticket.email}</TableBodyCell>
+                    <TableBodyCell>{(new Date(ticket.createdAt)).toLocaleString()}</TableBodyCell>
                 </TableBodyRow>
             {/each}
         </TableBody>

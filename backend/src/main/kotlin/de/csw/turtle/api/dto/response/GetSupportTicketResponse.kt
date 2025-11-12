@@ -1,6 +1,7 @@
 package de.csw.turtle.api.dto.response
 
 import de.csw.turtle.api.entity.SupportTicketEntity
+import java.time.Instant
 
 data class GetSupportTicketResponse(
     val id: Long,
@@ -8,7 +9,8 @@ data class GetSupportTicketResponse(
     val category: SupportTicketEntity.Category,
     val email: String,
     val subject: String,
-    val description: String
+    val description: String,
+    val createdAt: Instant
 ) {
 
     constructor(entity: SupportTicketEntity) : this(
@@ -17,7 +19,8 @@ data class GetSupportTicketResponse(
         category = entity.category,
         email = entity.email,
         subject = entity.subject,
-        description = entity.description
+        description = entity.description,
+        createdAt = entity.createdAt
     )
 
 }

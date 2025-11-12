@@ -40,6 +40,11 @@
         <span>{m.admin_support_id__description_label()}</span>
         <Textarea value={ticket.description} class="w-full" disabled></Textarea>
     </Label>
+
+    <Label>
+        <span>{m.admin_support_id__created_at_label()}</span>
+        <Input type="text" value={(new Date(ticket.createdAt)).toLocaleString()} disabled/>
+    </Label>
 </form>
 
 

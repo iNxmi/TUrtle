@@ -10,6 +10,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.resource.NoResourceFoundException
 
 @RestControllerAdvice
@@ -36,8 +37,8 @@ class GlobalControllerExceptionHandler {
     fun httpRequestMethodNotSupported(exception: HttpRequestMethodNotSupportedException, request: HttpServletRequest) =
         exception.responseEntity(request.requestURI, HttpStatus.METHOD_NOT_ALLOWED)
 
-    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
-    fun methodArgumentTypeMismatch(exception: HttpRequestMethodNotSupportedException, request: HttpServletRequest) =
+    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
+    fun methodArgumentTypeMismatch(exception: MethodArgumentTypeMismatchException, request: HttpServletRequest) =
         exception.responseEntity(request.requestURI, HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(Exception::class)

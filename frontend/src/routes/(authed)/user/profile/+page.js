@@ -1,5 +1,5 @@
 export async function load() {
-    const apiResponse = await fetch("/api/auth/me");
-    const user = await apiResponse.json();
-    return {user};
+    const response = await fetch("/api/auth/me");
+    const payload = await response.json();
+    return {user: payload};
 }
