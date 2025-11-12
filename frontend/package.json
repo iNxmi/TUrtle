@@ -10,7 +10,9 @@
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write ."
   },
-  "dependencies": {},
+  "dependencies": {
+    "bytemd": "^1.22.0"
+  },
   "devDependencies": {
     "@eslint/compat": "^1.4.0",
     "@eslint/js": "^9.36.0",

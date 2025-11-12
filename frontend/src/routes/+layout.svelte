@@ -1,6 +1,6 @@
 <script>
     import '../app.css';
-    import {Sidebar, SidebarDropdownWrapper, SidebarDropdownItem, Hr} from 'flowbite-svelte';
+    import {Sidebar, SidebarDropdownWrapper, SidebarDropdownItem, Hr, Heading, Span} from 'flowbite-svelte';
 
     import {Select, Toggle} from 'flowbite-svelte';
 
@@ -19,7 +19,9 @@
         {value: "ja", name: "日本語"},
         {value: "ar", name: "_arabic"},
         {value: "ru", name: "_russian"},
-        {value: "vi", name: "_vietnamese"}
+        {value: "vi", name: "_vietnamese"},
+        {value: "hu", name: "_hungarian"},
+        {value: "ro", name: "_romanian"}
     ];
     let language = $state("en");
 
@@ -168,6 +170,16 @@
             </div>
 
             <Hr class="m-0 p-0"/>
+
+            {#if user}
+                <Heading tag="h5" class="text-center">
+                    <Span class="text-orange-400">
+                        {`${user.firstName} ${user.lastName}`}
+                    </Span>
+                </Heading>
+
+                <Hr class="m-0 p-0"/>
+            {/if}
 
             <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
                                     label={m.sidebar_category_public()}>

@@ -16,10 +16,10 @@
             password: password
         }
 
-        const response = await fetch('/api/auth/login', {
-            method: 'POST',
+        const response = await fetch("/api/auth/login", {
+            method: "POST",
             body: JSON.stringify(payload),
-            headers: {'Content-Type': 'application/json'}
+            headers: {"Content-Type": "application/json"}
         });
 
         apiResponse = await response.json();
