@@ -21,6 +21,11 @@
   "sidebar_about": "About",
   "sidebar_home": "Home",
 
+  "footer_about": "About",
+  "footer_privacy_policy": "Privacy Policy",
+  "footer_licensing": "Licensing",
+  "footer_contact": "Contact",
+
   "login__title": "Login to TUrtle",
   "login__username_or_email_label": "Username or Email",
   "login__password_label": "Password",

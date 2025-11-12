@@ -11,7 +11,7 @@
 </script>
 
 <form class="flex flex-col gap-5">
-    <Heading tag="h3" class="text-center">{m.profile__title({username:user.userName})}</Heading>
+    <Heading tag="h3" class="text-center">{m.profile__title({username: user.userName})}</Heading>
 
     <Label>
         <span>{m.profile__username_label()}</span>
@@ -40,15 +40,15 @@
         <Input name="email" type="text" value={user.email} disabled/>
     </Label>
 
-<!--    <Label>-->
-<!--        <span>_profile__study_field</span>-->
-<!--        <Input name="study_field" type="text" value="__BWL" disabled/>-->
-<!--    </Label>-->
+    <!--    <Label>-->
+    <!--        <span>_profile__study_field</span>-->
+    <!--        <Input name="study_field" type="text" value="__BWL" disabled/>-->
+    <!--    </Label>-->
 
-<!--    <Label>-->
-<!--        <span>_profile__department</span>-->
-<!--        <Input name="department" type="text" value="__67" disabled/>-->
-<!--    </Label>-->
+    <!--    <Label>-->
+    <!--        <span>_profile__department</span>-->
+    <!--        <Input name="department" type="text" value="__67" disabled/>-->
+    <!--    </Label>-->
 
     <Label>
         <span>{m.profile__student_id_label()}</span>

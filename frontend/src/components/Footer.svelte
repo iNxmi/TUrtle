@@ -1,15 +1,16 @@
 <script>
     import {Footer, FooterCopyright, FooterLinkGroup, FooterLink, FooterIcon} from "flowbite-svelte";
     import {GithubSolid, InstagramSolid, TwitterSolid} from "flowbite-svelte-icons";
+    import {m} from '$lib/paraglide/messages.js';
 </script>
 
 <Footer>
     <FooterCopyright href="/" by="CSW TUrtle" year={2025}/>
     <FooterLinkGroup class="mt-3 flex flex-wrap items-center text-sm text-gray-500 sm:mt-0 dark:text-gray-400">
-        <FooterLink href="/">_footer__about</FooterLink>
-        <FooterLink href="/">_footer__privacy_policy</FooterLink>
-        <FooterLink href="/">_footer__licensing</FooterLink>
-        <FooterLink href="/">_footer__contact</FooterLink>
+        <FooterLink href="/about">{m.footer_about()}</FooterLink>
+        <FooterLink href="/privacy">{m.footer_privacy_policy()}</FooterLink>
+        <FooterLink href="/license">{m.footer_licensing()}</FooterLink>
+        <FooterLink href="/support">{m.footer_contact()}</FooterLink>
     </FooterLinkGroup>
     <div class="flex gap-5">
         <FooterIcon href="https://github.com/CSWTeam/TUrtle" target="_blank">
