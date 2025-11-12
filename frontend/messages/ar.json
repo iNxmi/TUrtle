@@ -16,6 +16,10 @@
   "sidebar_manage_bookings": "إدارة الحجوزات",
   "sidebar_manage_news": "إدارة الأخبار",
   "sidebar_dashboard": "لوحة التحكم",
+  "sidebar_category_settings": "الإعدادات",
+  "sidebar_logout": "تسجيل الخروج",
+  "sidebar_about": "حول",
+  "sidebar_home": "الصفحة الرئيسية",
 
   "login__title": "تسجيل الدخول إلى TUrtle",
   "login__username_or_email_label": "اسم المستخدم أو البريد الإلكتروني",
@@ -23,6 +27,7 @@
   "login__forgot_password": "هل نسيت كلمة المرور؟",
   "login__no_account": "ليس لديك حساب TUrtle؟",
   "login__button": "تسجيل الدخول",
+  "login__remember_me": "تذكرني ({days} أيام)",
 
   "register__title": "إنشاء حساب في TUrtle",
   "register__username_label": "اسم المستخدم",
@@ -47,6 +52,9 @@
   "support__email_label": "البريد الإلكتروني",
   "support__subject_label": "الموضوع",
   "support__description_label": "صف مشكلتك",
+  "support__description_placeholder": "صف مشكلتك...",
+  "support__i_agree_to_tos": "أوافق على شروط الخدمة",
+  "support__faq_title": "الأسئلة المتكررة",
   "support__button": "إرسال التذكرة",
 
   "admin_users__title": "إدارة المستخدمين",
@@ -58,5 +66,26 @@
   "admin_users__create_user": "إنشاء مستخدم",
   "admin_users__search_user": "بحث عن مستخدم",
   "admin_users__edit_user": "تعديل المستخدم",
-  "admin_users__delete_user": "حذف المستخدم"
+  "admin_users__delete_user": "حذف المستخدم",
+  "admin_users__loading": "جارٍ تحميل المستخدمين",
+
+  "footer_about": "حول",
+  "footer_privacy_policy": "سياسة الخصوصية",
+  "footer_licensing": "الترخيص",
+  "footer_contact": "اتصال",
+
+  "profile__title": "مرحبًا مجددًا {username}",
+  "profile__username_label": "اسم المستخدم",
+  "profile__first_name_label": "الاسم الأول",
+  "profile__last_name_label": "اسم العائلة",
+  "profile__role_label": "الدور",
+  "profile__email_label": "البريد الإلكتروني",
+  "profile__student_id_label": "رقم الطالب",
+  "profile__password_change_button": "تغيير كلمة المرور",
+  "profile__password_change_title": "تغيير كلمة المرور",
+  "profile__password_change__current_password_label": "كلمة المرور الحالية",
+  "profile__password_change__new_password_label": "كلمة المرور الجديدة",
+  "profile__password_change__new_password_repeat_label": "أعد إدخال كلمة المرور الجديدة",
+  "profile__password_change__submit_button": "إرسال",
+  "profile__new_ota_button": "إنشاء OTA جديد"
 }

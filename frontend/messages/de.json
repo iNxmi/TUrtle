@@ -16,6 +16,10 @@
   "sidebar_manage_bookings": "Buchungen verwalten",
   "sidebar_manage_news": "Neuigkeiten verwalten",
   "sidebar_dashboard": "Dashboard",
+  "sidebar_category_settings": "Einstellungen",
+  "sidebar_logout": "Abmelden",
+  "sidebar_about": "Über",
+  "sidebar_home": "Startseite",
 
   "login__title": "Bei TUrtle anmelden",
   "login__username_or_email_label": "Benutzername oder E-Mail",
@@ -23,6 +27,7 @@
   "login__forgot_password": "Passwort vergessen?",
   "login__no_account": "Kein TUrtle-Konto?",
   "login__button": "Anmelden",
+  "login__remember_me": "Angemeldet bleiben ({days} Tage)",
 
   "register__title": "Bei TUrtle registrieren",
   "register__username_label": "Benutzername",
@@ -47,6 +52,9 @@
   "support__email_label": "E-Mail",
   "support__subject_label": "Betreff",
   "support__description_label": "Beschreiben Sie Ihr Problem",
+  "support__description_placeholder": "Beschreiben Sie Ihr Problem...",
+  "support__i_agree_to_tos": "Ich stimme den Nutzungsbedingungen zu",
+  "support__faq_title": "Häufig gestellte Fragen",
   "support__button": "Ticket absenden",
 
   "admin_users__title": "Nutzerverwaltung",
@@ -58,5 +66,26 @@
   "admin_users__create_user": "Nutzer erstellen",
   "admin_users__search_user": "Nutzer suchen",
   "admin_users__edit_user": "Nutzer bearbeiten",
-  "admin_users__delete_user": "Nutzer löschen"
+  "admin_users__delete_user": "Nutzer löschen",
+  "admin_users__loading": "Benutzer werden geladen",
+
+  "footer_about": "Über",
+  "footer_privacy_policy": "Datenschutzrichtlinie",
+  "footer_licensing": "Lizenzierung",
+  "footer_contact": "Kontakt",
+
+  "profile__title": "Willkommen zurück {username}",
+  "profile__username_label": "Benutzername",
+  "profile__first_name_label": "Vorname",
+  "profile__last_name_label": "Nachname",
+  "profile__role_label": "Rolle",
+  "profile__email_label": "E-Mail",
+  "profile__student_id_label": "Matrikelnummer",
+  "profile__password_change_button": "Passwort ändern",
+  "profile__password_change_title": "Passwort ändern",
+  "profile__password_change__current_password_label": "Aktuelles Passwort",
+  "profile__password_change__new_password_label": "Neues Passwort",
+  "profile__password_change__new_password_repeat_label": "Neues Passwort wiederholen",
+  "profile__password_change__submit_button": "Absenden",
+  "profile__new_ota_button": "Neue OTA erzeugen"
 }

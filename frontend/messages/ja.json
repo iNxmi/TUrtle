@@ -16,6 +16,10 @@
   "sidebar_manage_bookings": "予約管理",
   "sidebar_manage_news": "ニュース管理",
   "sidebar_dashboard": "ダッシュボード",
+  "sidebar_category_settings": "設定",
+  "sidebar_logout": "ログアウト",
+  "sidebar_about": "概要",
+  "sidebar_home": "ホーム",
 
   "login__title": "TUrtleにログイン",
   "login__username_or_email_label": "ユーザー名またはメールアドレス",
@@ -23,6 +27,7 @@
   "login__forgot_password": "パスワードを忘れた場合",
   "login__no_account": "TUrtleアカウントをお持ちではないですか？",
   "login__button": "ログイン",
+  "login__remember_me": "ログイン状態を記憶する（{days}日）",
 
   "register__title": "TUrtleに登録",
   "register__username_label": "ユーザー名",
@@ -47,6 +52,9 @@
   "support__email_label": "Eメール",
   "support__subject_label": "件名",
   "support__description_label": "問題の内容を記入してください",
+  "support__description_placeholder": "問題の詳細を記入してください...",
+  "support__i_agree_to_tos": "利用規約に同意します",
+  "support__faq_title": "よくある質問",
   "support__button": "チケット送信",
 
   "admin_users__title": "ユーザー管理",
@@ -58,5 +66,26 @@
   "admin_users__create_user": "ユーザー作成",
   "admin_users__search_user": "ユーザー検索",
   "admin_users__edit_user": "ユーザー編集",
-  "admin_users__delete_user": "ユーザー削除"
+  "admin_users__delete_user": "ユーザー削除",
+  "admin_users__loading": "ユーザーを読み込み中",
+
+  "footer_about": "概要",
+  "footer_privacy_policy": "プライバシーポリシー",
+  "footer_licensing": "ライセンス",
+  "footer_contact": "お問い合わせ",
+
+  "profile__title": "おかえりなさい {username}",
+  "profile__username_label": "ユーザー名",
+  "profile__first_name_label": "名",
+  "profile__last_name_label": "姓",
+  "profile__role_label": "役割",
+  "profile__email_label": "メールアドレス",
+  "profile__student_id_label": "学生ID",
+  "profile__password_change_button": "パスワードを変更",
+  "profile__password_change_title": "パスワードを変更",
+  "profile__password_change__current_password_label": "現在のパスワード",
+  "profile__password_change__new_password_label": "新しいパスワード",
+  "profile__password_change__new_password_repeat_label": "新しいパスワード（再入力）",
+  "profile__password_change__submit_button": "送信",
+  "profile__new_ota_button": "新しいOTAを生成"
 }

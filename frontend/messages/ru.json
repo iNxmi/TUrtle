@@ -16,6 +16,10 @@
   "sidebar_manage_bookings": "Управление бронированиями",
   "sidebar_manage_news": "Управление новостями",
   "sidebar_dashboard": "Панель управления",
+  "sidebar_category_settings": "Настройки",
+  "sidebar_logout": "Выйти",
+  "sidebar_about": "О проекте",
+  "sidebar_home": "Главная",
 
   "login__title": "Вход в TUrtle",
   "login__username_or_email_label": "Имя пользователя или E-Mail",
@@ -23,6 +27,7 @@
   "login__forgot_password": "Забыли пароль?",
   "login__no_account": "Нет аккаунта TUrtle?",
   "login__button": "Войти",
+  "login__remember_me": "Запомнить меня ({days} дней)",
 
   "register__title": "Регистрация в TUrtle",
   "register__username_label": "Имя пользователя",
@@ -47,6 +52,9 @@
   "support__email_label": "E-Mail",
   "support__subject_label": "Тема",
   "support__description_label": "Опишите вашу проблему",
+  "support__description_placeholder": "Опишите вашу проблему...",
+  "support__i_agree_to_tos": "Я согласен с условиями использования",
+  "support__faq_title": "Часто задаваемые вопросы",
   "support__button": "Отправить тикет",
 
   "admin_users__title": "Управление пользователями",
@@ -58,5 +66,26 @@
   "admin_users__create_user": "Создать пользователя",
   "admin_users__search_user": "Поиск пользователя",
   "admin_users__edit_user": "Редактировать пользователя",
-  "admin_users__delete_user": "Удалить пользователя"
+  "admin_users__delete_user": "Удалить пользователя",
+  "admin_users__loading": "Загрузка пользователей",
+
+  "profile__title": "С возвращением {username}",
+  "profile__username_label": "Имя пользователя",
+  "profile__first_name_label": "Имя",
+  "profile__last_name_label": "Фамилия",
+  "profile__role_label": "Роль",
+  "profile__email_label": "E-Mail",
+  "profile__student_id_label": "Студенческий номер",
+  "profile__password_change_button": "Изменить пароль",
+  "profile__password_change_title": "Изменить пароль",
+  "profile__password_change__current_password_label": "Текущий пароль",
+  "profile__password_change__new_password_label": "Новый пароль",
+  "profile__password_change__new_password_repeat_label": "Повторите новый пароль",
+  "profile__password_change__submit_button": "Отправить",
+  "profile__new_ota_button": "Сгенерировать новый OTA",
+
+  "footer_about": "О проекте",
+  "footer_privacy_policy": "Политика конфиденциальности",
+  "footer_licensing": "Лицензирование",
+  "footer_contact": "Контакты"
 }
