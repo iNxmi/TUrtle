@@ -10,6 +10,9 @@
     import TUrtleLogo from "../components/TUrtleLogo.svelte";
     import Footer from "../components/Footer.svelte";
 
+    let {data, children} = $props();
+    const user = data.user;
+
     const languages = [
         {value: "en", name: "English"},
         {value: "de", name: "Deutsch"},
@@ -64,8 +67,6 @@
             base: 'bg-secondary dark:bg-secondary'
         }
     };
-
-    let {children} = $props();
 </script>
 
 <div class="flex h-full">
@@ -114,63 +115,65 @@
                 </SidebarDropdownItem>
             </SidebarDropdownWrapper>
 
-            <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
-                                    label={m.sidebar_category_user()}>
-                <SidebarDropdownItem label={m.sidebar_dashboard()} href="/dashboard">
-                    {#snippet icon()}
-                        <NewspaperSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-                <SidebarDropdownItem label={m.sidebar_profile()} href="/profile">
-                    {#snippet icon()}
-                        <UserSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-                <SidebarDropdownItem label={m.sidebar_reservations()} href="/reservation">
-                    {#snippet icon()}
-                        <DesktopPcSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-                <SidebarDropdownItem label={m.sidebar_bookings()} href="/bookings">
-                    {#snippet icon()}
-                        <CalendarMonthSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-                <SidebarDropdownItem label={m.sidebar_logout()} href="/logout">
-                    {#snippet icon()}
-                        <UserSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-            </SidebarDropdownWrapper>
+            {#if user}
+                <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
+                                        label={m.sidebar_category_user()}>
+                    <SidebarDropdownItem label={m.sidebar_dashboard()} href="/dashboard">
+                        {#snippet icon()}
+                            <NewspaperSolid class="text-orange-400 h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                    <SidebarDropdownItem label={m.sidebar_profile()} href="/profile">
+                        {#snippet icon()}
+                            <UserSolid class="text-orange-400 h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                    <SidebarDropdownItem label={m.sidebar_reservations()} href="/reservation">
+                        {#snippet icon()}
+                            <DesktopPcSolid class="text-orange-400 h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                    <SidebarDropdownItem label={m.sidebar_bookings()} href="/bookings">
+                        {#snippet icon()}
+                            <CalendarMonthSolid class="text-orange-400 h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                    <SidebarDropdownItem label={m.sidebar_logout()} href="/logout">
+                        {#snippet icon()}
+                            <UserSolid class="text-orange-400 h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                </SidebarDropdownWrapper>
 
-            <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
-                                    label={m.sidebar_category_admin()}>
-                <SidebarDropdownItem label={m.sidebar_manage_users()} href="/admin/users">
-                    {#snippet icon()}
-                        <UsersGroupSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-                <SidebarDropdownItem label={m.sidebar_manage_bookings()} href="/admin/bookings">
-                    {#snippet icon()}
-                        <CalendarEditSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-                <SidebarDropdownItem label={m.sidebar_manage_support_tickets()} href="/admin/support">
-                    {#snippet icon()}
-                        <UserHeadsetSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-                <SidebarDropdownItem label={m.sidebar_manage_news()} href="/admin/news">
-                    {#snippet icon()}
-                        <NewspaperSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-                <SidebarDropdownItem label={m.sidebar_admin_settings()} href="/admin/settings">
-                    {#snippet icon()}
-                        <UserSettingsSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-            </SidebarDropdownWrapper>
+                <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
+                                        label={m.sidebar_category_admin()}>
+                    <SidebarDropdownItem label={m.sidebar_manage_users()} href="/admin/users">
+                        {#snippet icon()}
+                            <UsersGroupSolid class="text-orange-400 h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                    <SidebarDropdownItem label={m.sidebar_manage_bookings()} href="/admin/bookings">
+                        {#snippet icon()}
+                            <CalendarEditSolid class="text-orange-400 h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                    <SidebarDropdownItem label={m.sidebar_manage_support_tickets()} href="/admin/support">
+                        {#snippet icon()}
+                            <UserHeadsetSolid class="text-orange-400 h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                    <SidebarDropdownItem label={m.sidebar_manage_news()} href="/admin/news">
+                        {#snippet icon()}
+                            <NewspaperSolid class="text-orange-400 h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                    <SidebarDropdownItem label={m.sidebar_admin_settings()} href="/admin/settings">
+                        {#snippet icon()}
+                            <UserSettingsSolid class="text-orange-400 h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                </SidebarDropdownWrapper>
+            {/if}
 
             <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
                                     label={m.sidebar_category_settings()}>
