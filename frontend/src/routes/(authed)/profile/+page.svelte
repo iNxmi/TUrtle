@@ -41,15 +41,15 @@
         <Input name="email" type="text" value={user.email} disabled/>
     </Label>
 
-    <Label>
-        <span>_profile__study_field</span>
-        <Input name="study_field" type="text" value="__BWL" disabled/>
-    </Label>
+<!--    <Label>-->
+<!--        <span>_profile__study_field</span>-->
+<!--        <Input name="study_field" type="text" value="__BWL" disabled/>-->
+<!--    </Label>-->
 
-    <Label>
-        <span>_profile__department</span>
-        <Input name="department" type="text" value="__67" disabled/>
-    </Label>
+<!--    <Label>-->
+<!--        <span>_profile__department</span>-->
+<!--        <Input name="department" type="text" value="__67" disabled/>-->
+<!--    </Label>-->
 
     <Label>
         <span>_profile__studentID</span>
