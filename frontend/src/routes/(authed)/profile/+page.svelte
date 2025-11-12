@@ -12,32 +12,32 @@
 </script>
 
 <form class="flex flex-col gap-5">
-    <Heading tag="h3" class="text-center">{m.login__title()}</Heading>
+    <Heading tag="h3" class="text-center">{m.profile__title({username:user.userName})}</Heading>
 
     <Label>
-        <span>_profile__username</span>
+        <span>{m.profile__username_label()}</span>
         <Input name="username" type="text" value={user.userName} disabled/>
     </Label>
 
     <div class="flex gap-5">
         <Label class="flex-1">
-            <span>_profile__firstname</span>
+            <span>{m.profile__first_name_label()}</span>
             <Input name="first_name" type="text" value={user.firstName} disabled/>
         </Label>
 
         <Label class="flex-1">
-            <span>_profile__surname</span>
+            <span>{m.profile__last_name_label()}</span>
             <Input name="last_name" type="text" value={user.lastName} disabled/>
         </Label>
     </div>
 
     <Label>
-        <span>_profile__role</span>
+        <span>{m.profile__role_label()}</span>
         <Input name="role" type="text" value={user.role} disabled/>
     </Label>
 
     <Label>
-        <span>_profile__email</span>
+        <span>{m.profile__email_label()}</span>
         <Input name="email" type="text" value={user.email} disabled/>
     </Label>
 
@@ -52,32 +52,32 @@
 <!--    </Label>-->
 
     <Label>
-        <span>_profile__studentID</span>
+        <span>{m.profile__student_id_label()}</span>
         <Input name="studentID" type="text" value={user.studentId} disabled/>
     </Label>
 
     <div class="flex gap-5">
-        <Button class="flex-1" onclick={() => changePassword = true}>_profile__password_change</Button>
-        <Modal title="__profile_password_change_title" form bind:open={changePassword}
+        <Button class="flex-1" onclick={() => changePassword = true}>{m.profile__password_change_button()}</Button>
+        <Modal title={m.profile__password_change_title()} form bind:open={changePassword}
                onaction={({ action }) => alert(`Handle "${action}"`)}>
             <Label>
-                <span>_profile__password_change__current_password</span>
+                <span>{m.profile__password_change__current_password_label()}</span>
                 <Input name="current_password" type="password" value="" required/>
             </Label>
             <Label>
-                <span>_profile__password_change__new_password</span>
+                <span>{m.profile__password_change__new_password_label()}</span>
                 <Input name="new_password" type="password" value="" required/>
             </Label>
             <Label>
-                <span>_profile__password_change__new_password_repeat</span>
+                <span>{m.profile__password_change__new_password_repeat_label()}</span>
                 <Input name="new_password_repeat" type="password" value="" required/>
             </Label>
 
             {#snippet footer()}
-                <Button type="submit" value="success">__profile__password_change_submit</Button>
+                <Button type="submit" value="success">{m.profile__password_change__submit_button()}</Button>
             {/snippet}
         </Modal>
-        <Button class="flex-1" onclick={() => changeOTA = true}>_profile__new_OTA</Button>
+        <Button class="flex-1" onclick={() => changeOTA = true}>{m.profile__new_ota_button()}</Button>
     </div>
 </form>
 

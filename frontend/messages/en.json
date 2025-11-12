@@ -67,5 +67,20 @@
   "admin_users__search_user": "Search User",
   "admin_users__edit_user": "Edit User",
   "admin_users__delete_user": "Delete User",
-  "admin_users__loading": "Loading Users"
+  "admin_users__loading": "Loading Users",
+
+  "profile__title": "Welcome back {username}",
+  "profile__username_label": "Username",
+  "profile__first_name_label": "First Name",
+  "profile__last_name_label": "Last Name",
+  "profile__role_label": "Role",
+  "profile__email_label": "Email",
+  "profile__student_id_label": "Student ID",
+  "profile__password_change_button": "Change Password",
+  "profile__password_change_title": "Change Password",
+  "profile__password_change__current_password_label": "Current Password",
+  "profile__password_change__new_password_label": "New Password",
+  "profile__password_change__new_password_repeat_label": "Repeat New Password",
+  "profile__password_change__submit_button": "Submit",
+  "profile__new_ota_button": "Generate New OTA"
 }
