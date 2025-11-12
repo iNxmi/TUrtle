@@ -67,6 +67,89 @@
             base: 'bg-secondary dark:bg-secondary'
         }
     };
+
+    const itemsPublic = [
+        {
+            label: m.sidebar_home(),
+            href: '/',
+            icon: HomeSolid
+        },
+        {
+            label: m.sidebar_login(),
+            href: '/login',
+            icon: UserSolid
+        },
+        {
+            label: m.sidebar_register(),
+            href: '/register',
+            icon: UserSolid
+        },
+        {
+            label: m.sidebar_support(),
+            href: '/support',
+            icon: UserHeadsetSolid
+        },
+        {
+            label: m.sidebar_about(),
+            href: '/about',
+            icon: InfoCircleSolid
+        }
+    ];
+    const itemsUser = [
+        {
+            label: m.sidebar_dashboard(),
+            href: '/dashboard',
+            icon: NewspaperSolid
+        },
+        {
+            label: m.sidebar_profile(),
+            href: '/profile',
+            icon: UserSolid
+        },
+        {
+            label: m.sidebar_reservations(),
+            href: '/reservation',
+            icon: DesktopPcSolid
+        },
+        {
+            label: m.sidebar_bookings(),
+            href: '/bookings',
+            icon: CalendarMonthSolid
+        },
+        {
+            label: m.sidebar_logout(),
+            href: '/logout',
+            icon: UserSolid
+        }
+    ];
+    const itemsAdmin = [
+        {
+            label: m.sidebar_manage_users(),
+            href: '/admin/users',
+            icon: UsersGroupSolid
+        },
+        {
+            label: m.sidebar_manage_bookings(),
+            href: '/admin/bookings',
+            icon: CalendarEditSolid
+        },
+        {
+            label: m.sidebar_manage_support_tickets(),
+            href: '/admin/support',
+            icon: UserHeadsetSolid
+        },
+        {
+            label: m.sidebar_manage_news(),
+            href: '/admin/news',
+            icon: NewspaperSolid
+        },
+        {
+            label: m.sidebar_admin_settings(),
+            href: '/admin/settings',
+            icon: UserSettingsSolid
+        }
+    ];
+
 </script>
 
 <div class="flex h-full">
@@ -88,90 +171,38 @@
 
             <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
                                     label={m.sidebar_category_public()}>
-                <SidebarDropdownItem label={m.sidebar_home()} href="/">
-                    {#snippet icon()}
-                        <HomeSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-                <SidebarDropdownItem label={m.sidebar_login()} href="/login">
-                    {#snippet icon()}
-                        <UserSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-                <SidebarDropdownItem label={m.sidebar_register()} href="/register">
-                    {#snippet icon()}
-                        <UserSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-                <SidebarDropdownItem label={m.sidebar_support()} href="/support">
-                    {#snippet icon()}
-                        <UserHeadsetSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
-                <SidebarDropdownItem label={m.sidebar_about()} href="/about">
-                    {#snippet icon()}
-                        <InfoCircleSolid class="text-orange-400 h-5 w-5"/>
-                    {/snippet}
-                </SidebarDropdownItem>
+                {#each itemsPublic as item}
+                    <SidebarDropdownItem label={item.label} href={item.href}>
+                        {#snippet icon()}
+                            <svelte:component this={item.icon} class="text-orange-400 h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                {/each}
             </SidebarDropdownWrapper>
 
             {#if user}
                 <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
                                         label={m.sidebar_category_user()}>
-                    <SidebarDropdownItem label={m.sidebar_dashboard()} href="/dashboard">
-                        {#snippet icon()}
-                            <NewspaperSolid class="text-orange-400 h-5 w-5"/>
-                        {/snippet}
-                    </SidebarDropdownItem>
-                    <SidebarDropdownItem label={m.sidebar_profile()} href="/profile">
-                        {#snippet icon()}
-                            <UserSolid class="text-orange-400 h-5 w-5"/>
-                        {/snippet}
-                    </SidebarDropdownItem>
-                    <SidebarDropdownItem label={m.sidebar_reservations()} href="/reservation">
-                        {#snippet icon()}
-                            <DesktopPcSolid class="text-orange-400 h-5 w-5"/>
-                        {/snippet}
-                    </SidebarDropdownItem>
-                    <SidebarDropdownItem label={m.sidebar_bookings()} href="/bookings">
-                        {#snippet icon()}
-                            <CalendarMonthSolid class="text-orange-400 h-5 w-5"/>
-                        {/snippet}
-                    </SidebarDropdownItem>
-                    <SidebarDropdownItem label={m.sidebar_logout()} href="/logout">
-                        {#snippet icon()}
-                            <UserSolid class="text-orange-400 h-5 w-5"/>
-                        {/snippet}
-                    </SidebarDropdownItem>
+                    {#each itemsUser as item}
+                        <SidebarDropdownItem label={item.label} href={item.href}>
+                            {#snippet icon()}
+                                <svelte:component this={item.icon} class="text-orange-400 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                    {/each}
                 </SidebarDropdownWrapper>
+            {/if}
 
+            {#if user && user.role === "ADMIN"}
                 <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
                                         label={m.sidebar_category_admin()}>
-                    <SidebarDropdownItem label={m.sidebar_manage_users()} href="/admin/users">
-                        {#snippet icon()}
-                            <UsersGroupSolid class="text-orange-400 h-5 w-5"/>
-                        {/snippet}
-                    </SidebarDropdownItem>
-                    <SidebarDropdownItem label={m.sidebar_manage_bookings()} href="/admin/bookings">
-                        {#snippet icon()}
-                            <CalendarEditSolid class="text-orange-400 h-5 w-5"/>
-                        {/snippet}
-                    </SidebarDropdownItem>
-                    <SidebarDropdownItem label={m.sidebar_manage_support_tickets()} href="/admin/support">
-                        {#snippet icon()}
-                            <UserHeadsetSolid class="text-orange-400 h-5 w-5"/>
-                        {/snippet}
-                    </SidebarDropdownItem>
-                    <SidebarDropdownItem label={m.sidebar_manage_news()} href="/admin/news">
-                        {#snippet icon()}
-                            <NewspaperSolid class="text-orange-400 h-5 w-5"/>
-                        {/snippet}
-                    </SidebarDropdownItem>
-                    <SidebarDropdownItem label={m.sidebar_admin_settings()} href="/admin/settings">
-                        {#snippet icon()}
-                            <UserSettingsSolid class="text-orange-400 h-5 w-5"/>
-                        {/snippet}
-                    </SidebarDropdownItem>
+                    {#each itemsAdmin as item}
+                        <SidebarDropdownItem label={item.label} href={item.href}>
+                            {#snippet icon()}
+                                <svelte:component this={item.icon} class="text-orange-400 h-5 w-5"/>
+                            {/snippet}
+                        </SidebarDropdownItem>
+                    {/each}
                 </SidebarDropdownWrapper>
             {/if}
 
