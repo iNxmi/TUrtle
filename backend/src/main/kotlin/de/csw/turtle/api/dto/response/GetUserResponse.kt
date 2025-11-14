@@ -1,11 +1,11 @@
 package de.csw.turtle.api.dto.response
 
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.entity.UserEntity.Role
+import de.csw.turtle.api.security.Role
 import java.time.Instant
 
 data class GetUserResponse(
-    val userName: String,
+    val username: String,
     val firstName: String,
     val lastName: String,
     val email: String,
@@ -15,7 +15,7 @@ data class GetUserResponse(
 ) {
 
     constructor(user: UserEntity) : this(
-        userName = user.userName,
+        username = user.userName,
         firstName = user.firstName,
         lastName = user.lastName,
         email = user.email,

@@ -3,7 +3,6 @@ package de.csw.turtle.api.dto.request
 import de.csw.turtle.api.entity.UserEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 
-
 data class RegisterUserRequest(
     val username: String,
     val firstName: String,
@@ -12,12 +11,14 @@ data class RegisterUserRequest(
     val studentId: Long,
     val password: String
 ) {
+
     fun create(passwordEncoder: PasswordEncoder) = UserEntity(
-        username,
-        firstName,
-        lastName,
-        email,
-        studentId,
-        passwordEncoder.encode(password)
+        userName = username,
+        firstName = firstName,
+        lastName = lastName,
+        email = email,
+        studentId = studentId,
+        passwordHash = passwordEncoder.encode(password)
     )
+
 }

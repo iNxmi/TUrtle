@@ -18,7 +18,7 @@ class CustomAuthenticationEntryPoint: AuthenticationEntryPoint {
         response: HttpServletResponse,
         exception: AuthenticationException
     ) {
-        val status = HttpStatus.FORBIDDEN
+        val status = HttpStatus.UNAUTHORIZED
         val responseDto = ExceptionResponse(request.requestURI, exception, status)
 
         response.status = status.value()

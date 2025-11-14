@@ -205,7 +205,7 @@
                 </SidebarDropdownWrapper>
             {/if}
 
-            {#if user && user.role === "ADMIN"}
+            {#if user && user.role === "ADMINISTRATOR"}
                 <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
                                         label={m.sidebar_category_admin()}>
                     {#each itemsAdmin as item}

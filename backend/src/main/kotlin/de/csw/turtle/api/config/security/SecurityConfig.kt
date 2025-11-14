@@ -1,6 +1,5 @@
 package de.csw.turtle.api.config.security
 
-import de.csw.turtle.api.service.CustomUserDetailsService
 import de.csw.turtle.api.service.PasswordEncoderService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -13,10 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
-import javax.sql.DataSource
 
 @Configuration
 @EnableWebSecurity
@@ -72,19 +68,19 @@ class SecurityConfig(
 //            }
 
             .authorizeHttpRequests {
-                it.requestMatchers(
-                    "/docs",
-                    "/swagger-ui/**",
-                    "/swagger-ui.html",
-                    "/openapi/api-docs/**"
-                ).permitAll()
+//                it.requestMatchers(
+//                    "/docs",
+//                    "/swagger-ui/**",
+//                    "/swagger-ui.html",
+//                    "/openapi/api-docs/**"
+//                ).permitAll()
+//
+//                it.requestMatchers(
+//                    "/api/auth/login",
+//                    "/api/auth/register"
+//                ).permitAll()
 
-                it.requestMatchers(
-                    "/api/auth/login",
-                    "/api/auth/register"
-                ).permitAll()
-
-                it.anyRequest().authenticated()
+                it.anyRequest().permitAll()
             }
 
             .formLogin { it.disable() }

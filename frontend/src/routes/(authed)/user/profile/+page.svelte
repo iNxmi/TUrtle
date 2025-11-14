@@ -10,11 +10,11 @@
 </script>
 
 <form class="flex flex-col gap-5">
-    <Heading tag="h3" class="text-center">{m.profile__title({username: user.userName})}</Heading>
+    <Heading tag="h3" class="text-center">{m.profile__title({username: user.username})}</Heading>
 
     <Label>
         <span>{m.profile__username_label()}</span>
-        <Input name="username" type="text" value={user.userName} disabled/>
+        <Input name="username" type="text" value={user.username} disabled/>
     </Label>
 
     <div class="flex gap-5">

@@ -29,9 +29,9 @@
 
         <TableBody>
             {#each page.content as user}
-                <TableBodyRow onclick={() => window.location.href = `/admin/users/${user.userName}`} class="hover:cursor-pointer">
+                <TableBodyRow onclick={() => window.location.href = `/admin/users/${user.username}`} class="hover:cursor-pointer">
                     <TableBodyCell>{user.studentId}</TableBodyCell>
-                    <TableBodyCell>{user.userName}</TableBodyCell>
+                    <TableBodyCell>{user.username}</TableBodyCell>
                     <TableBodyCell>{user.firstName}</TableBodyCell>
                     <TableBodyCell>{user.lastName}</TableBodyCell>
                     <TableBodyCell>{user.email}</TableBodyCell>

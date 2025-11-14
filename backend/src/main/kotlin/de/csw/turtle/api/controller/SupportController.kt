@@ -2,22 +2,16 @@ package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.dto.request.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.response.GetSupportTicketResponse
-import de.csw.turtle.api.dto.response.GetUserResponse
 import de.csw.turtle.api.exception.exceptions.support.TicketNotFoundException
 import de.csw.turtle.api.repository.SupportTicketRepository
+import de.csw.turtle.api.security.Permission.*
+import de.csw.turtle.api.security.RequiresPermission
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort.Direction
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.net.URI
 import kotlin.jvm.optionals.getOrNull
 
@@ -27,6 +21,7 @@ class SupportController(
     private val supportTicketRepository: SupportTicketRepository
 ) {
 
+    @RequiresPermission(API_SUPPORT_CREATE)
     @PostMapping
     @Transactional
     fun create(
@@ -40,6 +35,7 @@ class SupportController(
             .body(GetSupportTicketResponse(ticket))
     }
 
+    @RequiresPermission(API_SUPPORT_GET_PAGINATED)
     @GetMapping
     fun getPaginated(
         @RequestParam(name = "page", required = false) pageNumber: Int = 0,
@@ -57,6 +53,7 @@ class SupportController(
         return ResponseEntity.ok(page)
     }
 
+    @RequiresPermission(API_SUPPORT_GET_ONE)
     @GetMapping("/{id}")
     fun getById(
         @PathVariable id: Long
@@ -67,6 +64,7 @@ class SupportController(
         return ResponseEntity.ok(GetSupportTicketResponse(ticket))
     }
 
+    @RequiresPermission(API_SUPPORT_DELETE)
     @DeleteMapping("/{id}")
     @Transactional
     fun deleteById(

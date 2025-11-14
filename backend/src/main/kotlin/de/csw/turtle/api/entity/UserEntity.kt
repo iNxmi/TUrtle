@@ -1,9 +1,7 @@
 package de.csw.turtle.api.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import de.csw.turtle.api.security.Role
+import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.time.Instant
@@ -12,7 +10,7 @@ import java.time.Instant
 @Table(name = "users")
 data class UserEntity(
     @Id
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(name = "username", nullable = false, unique = true, updatable = false)
     var userName: String,
 
     @Column(nullable = false)
@@ -27,10 +25,11 @@ data class UserEntity(
     @Column(nullable = false, unique = true)
     var studentId: Long,
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     var passwordHash: String,
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     var role: Role = Role.STUDENT,
 
     @Column(nullable = false, updatable = false)
@@ -45,13 +44,5 @@ data class UserEntity(
     override fun getUsername() = userName
 
     override fun getPassword() = passwordHash
-
-    enum class Role() {
-        STUDENT,
-        ADMIN,
-        PROFESSOR;
-
-        fun getGrantedAuthority() = GrantedAuthority { name }
-    }
 
 }

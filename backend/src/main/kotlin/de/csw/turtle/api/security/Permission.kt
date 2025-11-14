@@ -1,0 +1,19 @@
+package de.csw.turtle.api.security
+
+enum class Permission {
+    API_USERS_CREATE,
+    API_USERS_GET_PAGINATED,
+    API_USERS_GET_ONE,
+    API_USERS_PATCH,
+    API_USERS_DELETE,
+
+    API_SUPPORT_CREATE,
+    API_SUPPORT_GET_PAGINATED,
+    API_SUPPORT_GET_ONE,
+    API_SUPPORT_DELETE,
+
+    API_AUTH_REGISTER,
+    API_AUTH_LOGIN,
+    API_AUTH_ME,
+    API_AUTH_LOGOUT
+}

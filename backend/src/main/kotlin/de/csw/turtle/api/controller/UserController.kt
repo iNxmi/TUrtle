@@ -4,6 +4,8 @@ import de.csw.turtle.api.dto.request.CreateUserRequest
 import de.csw.turtle.api.dto.request.UpdateUserRequest
 import de.csw.turtle.api.dto.response.GetUserResponse
 import de.csw.turtle.api.exception.exceptions.user.UserNotFoundException
+import de.csw.turtle.api.security.Permission.*
+import de.csw.turtle.api.security.RequiresPermission
 import de.csw.turtle.api.service.UserService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -18,6 +20,7 @@ class UserController(
     private val userService: UserService
 ) {
 
+    @RequiresPermission(API_USERS_CREATE)
     @PostMapping
     fun create(
         @RequestBody createUserRequest: CreateUserRequest
@@ -28,6 +31,7 @@ class UserController(
             .body(GetUserResponse(user))
     }
 
+    @RequiresPermission(API_USERS_GET_PAGINATED)
     @GetMapping
     fun getPaginated(
         @RequestParam(name = "page", required = false) pageNumber: Int = 0,
@@ -44,6 +48,7 @@ class UserController(
         return ResponseEntity.ok(page)
     }
 
+    @RequiresPermission(API_USERS_GET_ONE)
     @GetMapping("/{username}")
     fun getByUsername(
         @PathVariable username: String
@@ -54,6 +59,7 @@ class UserController(
         return ResponseEntity.ok(GetUserResponse(user))
     }
 
+    @RequiresPermission(API_USERS_PATCH)
     @PatchMapping("/{username}")
     fun patchByUsername(
         @PathVariable username: String,
@@ -63,6 +69,7 @@ class UserController(
         return ResponseEntity.ok(GetUserResponse(user))
     }
 
+    @RequiresPermission(API_USERS_DELETE)
     @DeleteMapping("/{username}")
     fun deleteByUsername(
         @PathVariable username: String

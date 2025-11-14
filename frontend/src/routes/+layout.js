@@ -3,7 +3,7 @@ export const ssr = false;
 
 export async function load() {
     const response = await fetch("/api/auth/me");
-    if (response.status === 403)
+    if (response.status !== 200)
         return {user: null};
 
     const payload = await response.json();

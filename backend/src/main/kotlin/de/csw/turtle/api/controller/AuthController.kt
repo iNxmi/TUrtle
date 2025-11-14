@@ -4,17 +4,15 @@ import de.csw.turtle.api.dto.request.LoginUserRequest
 import de.csw.turtle.api.dto.request.RegisterUserRequest
 import de.csw.turtle.api.dto.response.GetUserResponse
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.security.Permission.*
+import de.csw.turtle.api.security.RequiresPermission
 import de.csw.turtle.api.service.AuthService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.net.URI
 
 @RestController
@@ -23,6 +21,7 @@ class AuthController(
     val authService: AuthService
 ) {
 
+    @RequiresPermission(API_AUTH_REGISTER)
     @PostMapping("/register")
     fun register(
         @RequestBody request: RegisterUserRequest
@@ -34,6 +33,7 @@ class AuthController(
             .body(GetUserResponse(user))
     }
 
+    @RequiresPermission(API_AUTH_LOGIN)
     @PostMapping("/login")
     fun login(
         @RequestBody loginUserRequest: LoginUserRequest,
@@ -43,6 +43,7 @@ class AuthController(
         return ResponseEntity.ok(GetUserResponse(user))
     }
 
+    @RequiresPermission(API_AUTH_LOGOUT)
     @GetMapping("/logout")
     fun logout(
         httpRequest: HttpServletRequest,
@@ -53,6 +54,7 @@ class AuthController(
         return ResponseEntity.noContent().build()
     }
 
+    @RequiresPermission(API_AUTH_ME)
     @GetMapping("/me")
     fun me(@AuthenticationPrincipal user: UserEntity): ResponseEntity<GetUserResponse> {
         val getUserResponse = GetUserResponse(user)

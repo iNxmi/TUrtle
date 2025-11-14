@@ -9,7 +9,7 @@
 <form class="flex flex-col gap-5">
     <Label>
         <span>{m.admin_users_id__username_label()}</span>
-        <Input type="text" value={user.userName} disabled/>
+        <Input type="text" value={user.username} disabled/>
     </Label>
 
     <div class="flex gap-5">
