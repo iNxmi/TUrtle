@@ -3,7 +3,10 @@ package de.csw.turtle.test
 import de.csw.turtle.api.dto.request.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.request.CreateUserRequest
 import de.csw.turtle.api.entity.SupportTicketEntity
+import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.repository.SupportTicketRepository
+import de.csw.turtle.api.security.Role
+import de.csw.turtle.api.service.PasswordEncoderService
 import de.csw.turtle.api.service.UserService
 import io.github.serpro69.kfaker.Faker
 import org.springframework.boot.CommandLineRunner
@@ -16,6 +19,7 @@ import kotlin.math.floor
 @Configuration
 class DataSeeder(
     private val userService: UserService,
+    private val passwordEncoderService: PasswordEncoderService,
     private val supportTicketRepository: SupportTicketRepository
 ) {
 
@@ -42,6 +46,17 @@ class DataSeeder(
             )
             userService.create(createUserRequest)
         }
+
+        val admin = UserEntity(
+            userName = "admin",
+            firstName = "admin",
+            lastName = "admin",
+            email = "admin@csw.de",
+            studentId = 42069,
+            passwordHash = passwordEncoderService.encode("admin"),
+            role = Role.ADMINISTRATOR
+        )
+        repository.save(admin)
     }
 
     @Bean

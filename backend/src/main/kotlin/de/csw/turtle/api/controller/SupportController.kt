@@ -70,7 +70,11 @@ class SupportController(
     fun deleteById(
         @PathVariable id: Long
     ): ResponseEntity<Void> {
-        supportTicketRepository.deleteById(id)
+        val ticket = supportTicketRepository.findById(id).getOrNull()
+            ?: throw TicketNotFoundException(id)
+
+        supportTicketRepository.delete(ticket)
+
         return ResponseEntity.noContent().build()
     }
 

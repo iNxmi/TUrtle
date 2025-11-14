@@ -12,7 +12,7 @@ import java.time.Instant
 class ExceptionEntity(
 
     @Column(nullable = false)
-    val url: String,
+    val endpoint: String,
 
     @Column(nullable = true)
     val exception: String?,

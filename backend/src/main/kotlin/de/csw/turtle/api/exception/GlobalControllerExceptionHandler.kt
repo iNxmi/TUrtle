@@ -58,7 +58,7 @@ class GlobalControllerExceptionHandler(
         val url = request.requestURI
 
         val exceptionEntity = ExceptionEntity(
-            url = url,
+            endpoint = url,
             exception = exception::class.simpleName,
             message = exception.message,
             stackTrace = getStackTraceAsString(exception)

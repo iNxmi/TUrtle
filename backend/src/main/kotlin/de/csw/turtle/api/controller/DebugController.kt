@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
-@RequestMapping("/api/debug")
+@RequestMapping("/debug")
 class DebugController() {
 
     @GetMapping("/info")
@@ -26,7 +26,7 @@ class DebugController() {
     }
 
     @GetMapping("/exception")
-    fun exception(@RequestParam message: String): ResponseEntity<ExceptionResponse> {
+    fun exception(@RequestParam message: String?): ResponseEntity<ExceptionResponse> {
         throw DebugException(message)
     }
 

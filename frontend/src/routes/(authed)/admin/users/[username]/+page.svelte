@@ -25,11 +25,6 @@
     </div>
 
     <Label>
-        <span>{m.admin_users_id__role_label()}</span>
-        <Input type="text" value={user.role} disabled/>
-    </Label>
-
-    <Label>
         <span>{m.admin_users_id__email_label()}</span>
         <Input type="text" value={user.email} disabled/>
     </Label>
@@ -37,6 +32,11 @@
     <Label>
         <span>{m.admin_users_id__student_id_label()}</span>
         <Input type="text" value={user.studentId} disabled/>
+    </Label>
+
+    <Label>
+        <span>{m.admin_users_id__role_label()}</span>
+        <Input type="text" value={user.role} disabled/>
     </Label>
 
     <Label>
