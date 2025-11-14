@@ -9,6 +9,7 @@
   "sidebar_login": "Login",
   "sidebar_manage_users": "User Management",
   "sidebar_manage_support_tickets": "Support Tickets",
+  "sidebar_manage_exceptions_tickets": "Backend Exceptions",
   "sidebar_profile": "Profile",
   "sidebar_register": "Register",
   "sidebar_reservations": "Borrow Devices",

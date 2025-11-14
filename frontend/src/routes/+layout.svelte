@@ -40,7 +40,8 @@
         UserSettingsSolid,
         NewspaperSolid,
         HomeSolid,
-        InfoCircleSolid
+        InfoCircleSolid,
+        BugSolid
     } from 'flowbite-svelte-icons';
 
     import {page} from '$app/state';
@@ -70,87 +71,74 @@
         }
     };
 
-    const itemsPublic = [
-        {
-            label: m.sidebar_home(),
-            href: '/',
-            icon: HomeSolid
-        },
-        {
-            label: m.sidebar_login(),
-            href: '/login',
-            icon: UserSolid
-        },
-        {
-            label: m.sidebar_register(),
-            href: '/register',
-            icon: UserSolid
-        },
-        {
-            label: m.sidebar_support(),
-            href: '/support',
-            icon: UserHeadsetSolid
-        },
-        {
-            label: m.sidebar_about(),
-            href: '/about',
-            icon: InfoCircleSolid
-        }
-    ];
-    const itemsUser = [
-        {
-            label: m.sidebar_dashboard(),
-            href: '/user/dashboard',
-            icon: NewspaperSolid
-        },
-        {
-            label: m.sidebar_profile(),
-            href: '/user/profile',
-            icon: UserSolid
-        },
-        {
-            label: m.sidebar_reservations(),
-            href: '/user/reservation',
-            icon: DesktopPcSolid
-        },
-        {
-            label: m.sidebar_bookings(),
-            href: '/user/bookings',
-            icon: CalendarMonthSolid
-        },
-        {
-            label: m.sidebar_logout(),
-            href: '/user/logout',
-            icon: UserSolid
-        }
-    ];
-    const itemsAdmin = [
-        {
-            label: m.sidebar_manage_users(),
-            href: '/admin/users',
-            icon: UsersGroupSolid
-        },
-        {
-            label: m.sidebar_manage_bookings(),
-            href: '/admin/bookings',
-            icon: CalendarEditSolid
-        },
-        {
-            label: m.sidebar_manage_support_tickets(),
-            href: '/admin/support',
-            icon: UserHeadsetSolid
-        },
-        {
-            label: m.sidebar_manage_news(),
-            href: '/admin/news',
-            icon: NewspaperSolid
-        },
-        {
-            label: m.sidebar_admin_settings(),
-            href: '/admin/settings',
-            icon: UserSettingsSolid
-        }
-    ];
+    const itemsPublic = [{
+        label: m.sidebar_home(),
+        href: '/',
+        icon: HomeSolid
+    }, {
+        label: m.sidebar_login(),
+        href: '/login',
+        icon: UserSolid
+    }, {
+        label: m.sidebar_register(),
+        href: '/register',
+        icon: UserSolid
+    }, {
+        label: m.sidebar_support(),
+        href: '/support',
+        icon: UserHeadsetSolid
+    }, {
+        label: m.sidebar_about(),
+        href: '/about',
+        icon: InfoCircleSolid
+    }];
+    const itemsUser = [{
+        label: m.sidebar_dashboard(),
+        href: '/user/dashboard',
+        icon: NewspaperSolid
+    }, {
+        label: m.sidebar_profile(),
+        href: '/user/profile',
+        icon: UserSolid
+    }, {
+        label: m.sidebar_reservations(),
+        href: '/user/reservation',
+        icon: DesktopPcSolid
+    }, {
+        label: m.sidebar_bookings(),
+        href: '/user/bookings',
+        icon: CalendarMonthSolid
+    }, {
+        label: m.sidebar_logout(),
+        href: '/user/logout',
+        icon: UserSolid
+    }];
+
+    const itemsAdmin = [{
+        label: m.sidebar_manage_users(),
+        href: '/admin/users',
+        icon: UsersGroupSolid
+    }, {
+        label: m.sidebar_manage_bookings(),
+        href: '/admin/bookings',
+        icon: CalendarEditSolid
+    }, {
+        label: m.sidebar_manage_support_tickets(),
+        href: '/admin/support',
+        icon: UserHeadsetSolid
+    }, {
+        label: m.sidebar_manage_exceptions_tickets(),
+        href: '/admin/exceptions',
+        icon: BugSolid
+    }, {
+        label: m.sidebar_manage_news(),
+        href: '/admin/news',
+        icon: NewspaperSolid
+    }, {
+        label: m.sidebar_admin_settings(),
+        href: '/admin/settings',
+        icon: UserSettingsSolid
+    }];
 
 </script>
 
