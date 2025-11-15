@@ -3,9 +3,9 @@
 
     let response = $state(null)
 
-    function logout() {
-        response = fetch("/api/auth/logout")
-        window.location.href = "/login"
+    async function logout() {
+        response = await fetch("/api/auth/logout")
+        // window.location.href = "/login"
     }
 </script>
 

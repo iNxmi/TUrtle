@@ -17,7 +17,7 @@ class ExceptionEntity(
     @Column(nullable = true)
     val exception: String?,
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     val message: String?,
 
     @Column(nullable = false, columnDefinition = "TEXT")

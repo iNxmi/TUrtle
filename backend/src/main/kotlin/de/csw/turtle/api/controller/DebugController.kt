@@ -1,6 +1,5 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.dto.response.ExceptionResponse
 import de.csw.turtle.api.exception.exceptions.debug.DebugException
 import de.csw.turtle.api.security.Permission
 import de.csw.turtle.api.security.RequiresPermission
@@ -30,7 +29,7 @@ class DebugController() {
 
     @RequiresPermission(Permission.DEBUG_EXCEPTION)
     @GetMapping("/exception")
-    fun exception(@RequestParam message: String?): ResponseEntity<ExceptionResponse> {
+    fun exception(@RequestParam message: String?): Nothing {
         throw DebugException(message)
     }
 

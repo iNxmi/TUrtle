@@ -2,7 +2,6 @@ package de.csw.turtle.api.entity
 
 import de.csw.turtle.api.security.Role
 import jakarta.persistence.*
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.time.Instant
 
@@ -36,10 +35,7 @@ data class UserEntity(
     var createdAt: Instant = Instant.now()
 ) : UserDetails {
 
-    override fun getAuthorities(): Collection<GrantedAuthority> {
-        val authority = role.getGrantedAuthority()
-        return setOf(authority)
-    }
+    override fun getAuthorities() = setOf(role.getGrantedAuthority())
 
     override fun getUsername() = userName
 

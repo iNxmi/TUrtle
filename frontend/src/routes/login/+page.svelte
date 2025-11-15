@@ -25,7 +25,7 @@
         apiResponse = await response.json();
         modal = true;
 
-        window.location.reload()
+        // window.location.reload()
     }
 </script>
 
