@@ -1,7 +1,7 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.dto.request.CreateUserRequest
-import de.csw.turtle.api.dto.request.UpdateUserRequest
+import de.csw.turtle.api.dto.request.PatchUserRequest
 import de.csw.turtle.api.dto.response.GetUserResponse
 import de.csw.turtle.api.exception.exceptions.user.UserNotFoundException
 import de.csw.turtle.api.security.Permission.*
@@ -63,9 +63,9 @@ class UserController(
     @PatchMapping("/{username}")
     fun patchByUsername(
         @PathVariable username: String,
-        @RequestBody updateUserRequest: UpdateUserRequest
+        @RequestBody patchUserRequest: PatchUserRequest
     ): ResponseEntity<GetUserResponse> {
-        val user = userService.update(username, updateUserRequest)
+        val user = userService.update(username, patchUserRequest)
         return ResponseEntity.ok(GetUserResponse(user))
     }
 

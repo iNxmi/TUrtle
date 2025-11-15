@@ -7,9 +7,11 @@ import java.time.Instant
 @Table(name = "support_tickets")
 data class SupportTicketEntity(
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     var urgency: Urgency,
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     var category: Category,
 
     @Column(nullable = false)
@@ -18,8 +20,12 @@ data class SupportTicketEntity(
     @Column(nullable = false)
     var subject: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     var description: String,
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    var status: Status = Status.OPEN,
 
     @Id
     @GeneratedValue
@@ -41,6 +47,13 @@ data class SupportTicketEntity(
         BILLING,
         GENERAL,
         OTHER
+    }
+
+    enum class Status {
+        OPEN,
+        IN_PROGRESS,
+        ON_HOLD,
+        CLOSED
     }
 
 }

@@ -1,7 +1,7 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.dto.request.CreateUserRequest
-import de.csw.turtle.api.dto.request.UpdateUserRequest
+import de.csw.turtle.api.dto.request.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.exceptions.user.UserNotFoundException
 import de.csw.turtle.api.exception.exceptions.user.UsernameAlreadyExistsException
@@ -35,7 +35,7 @@ class UserService(
     fun getByUsername(username: String) = repository.findByUserName(username)
 
     @Transactional
-    fun update(username: String, request: UpdateUserRequest): UserEntity {
+    fun update(username: String, request: PatchUserRequest): UserEntity {
         val user = repository.findByUserName(username)
             ?: throw UserNotFoundException(username)
 

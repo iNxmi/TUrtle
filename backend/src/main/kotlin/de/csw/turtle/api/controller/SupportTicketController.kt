@@ -1,6 +1,7 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.dto.request.CreateSupportTicketRequest
+import de.csw.turtle.api.dto.request.PatchSupportTicketRequest
 import de.csw.turtle.api.dto.response.GetSupportTicketResponse
 import de.csw.turtle.api.exception.exceptions.support.TicketNotFoundException
 import de.csw.turtle.api.repository.SupportTicketRepository
@@ -17,7 +18,7 @@ import kotlin.jvm.optionals.getOrNull
 
 @RestController
 @RequestMapping("/api/support")
-class SupportController(
+class SupportTicketController(
     private val supportTicketRepository: SupportTicketRepository
 ) {
 
@@ -60,6 +61,23 @@ class SupportController(
     ): ResponseEntity<GetSupportTicketResponse> {
         val ticket = supportTicketRepository.findById(id).getOrNull()
             ?: throw TicketNotFoundException(id)
+
+        return ResponseEntity.ok(GetSupportTicketResponse(ticket))
+    }
+
+    @RequiresPermission(API_SUPPORT_DELETE)
+    @PatchMapping("/{id}")
+    @Transactional
+    fun deleteById(
+        @PathVariable id: Long,
+        @RequestBody request: PatchSupportTicketRequest
+    ): ResponseEntity<GetSupportTicketResponse> {
+        val ticket = supportTicketRepository.findById(id).getOrNull()
+            ?: throw TicketNotFoundException(id)
+
+        request.status?.let { ticket.status = it }
+
+        supportTicketRepository.save(ticket)
 
         return ResponseEntity.ok(GetSupportTicketResponse(ticket))
     }
