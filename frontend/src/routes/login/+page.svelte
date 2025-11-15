@@ -31,7 +31,9 @@
 
 <div>
     <form class="flex flex-col gap-5" onsubmit={login}>
-        <Heading tag="h3" class="text-center">{m.login__title()}</Heading>
+        <Heading tag="h3" class="text-center">
+            {m.login__title()}
+        </Heading>
 
         <Label>
             <span>{m.login__username_or_email_label()}</span>

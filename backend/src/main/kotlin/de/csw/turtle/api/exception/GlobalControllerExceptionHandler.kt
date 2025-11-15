@@ -36,7 +36,6 @@ class GlobalControllerExceptionHandler(
     fun validation(exception: MethodArgumentNotValidException, request: HttpServletRequest) =
         exception.responseEntity(request.requestURI, HttpStatus.BAD_REQUEST)
 
-    //TODO change name
     @ExceptionHandler(PropertyReferenceException::class)
     fun propertyReference(exception: PropertyReferenceException, request: HttpServletRequest) =
         exception.responseEntity(request.requestURI, HttpStatus.BAD_REQUEST)

@@ -13,7 +13,10 @@ import org.springframework.stereotype.Component
 class PermissionAspect {
 
     @Around("@annotation(requiresPermission)")
-    fun checkPermission(joinPoint: ProceedingJoinPoint, requiresPermission: RequiresPermission): Any {
+    fun checkPermission(
+        joinPoint: ProceedingJoinPoint,
+        requiresPermission: RequiresPermission
+    ): Any {
         val principal = SecurityContextHolder.getContext().authentication?.principal
 
         val role = if (principal is UserEntity) principal.role else Role.GUEST

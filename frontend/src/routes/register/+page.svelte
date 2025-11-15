@@ -33,7 +33,9 @@
 
 <div>
     <form class="flex flex-col gap-5" onsubmit={register}>
-        <Heading tag="h3" class="text-center">{m.register__title()}</Heading>
+        <Heading tag="h3" class="text-center">
+            {m.register__title()}
+        </Heading>
 
         <Label>
             <span>{m.register__username_label()}</span>

@@ -38,7 +38,9 @@
 
 <div class="flex flex-col gap-10">
     <div class="flex flex-col gap-10">
-        <Heading class="text-center" tag="h3">{m.support__faq_title()}</Heading>
+        <Heading class="text-center" tag="h3">
+            {m.support__faq_title()}
+        </Heading>
 
         <div class="flex flex-col">
             <Heading tag="h4">1. dummy_title</Heading>
@@ -80,7 +82,9 @@
     <hr>
 
     <form class="flex flex-col gap-5" onsubmit={send}>
-        <Heading class="text-center" tag="h3">{m.support__title()}</Heading>
+        <Heading class="text-center" tag="h3">
+            {m.support__title()}
+        </Heading>
 
         <div class="flex gap-5">
             <Label class="flex flex-1 flex-col">

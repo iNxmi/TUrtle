@@ -8,7 +8,7 @@
         TableHeadCell,
         Heading
     } from 'flowbite-svelte';
-    import {m} from '$lib/paraglide/messages';
+    import {m} from '$lib/paraglide/messages.js';
 
     let {data} = $props();
     const page = data.page

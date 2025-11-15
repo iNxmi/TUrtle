@@ -2,6 +2,8 @@ package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.dto.response.ExceptionResponse
 import de.csw.turtle.api.exception.exceptions.debug.DebugException
+import de.csw.turtle.api.security.Permission
+import de.csw.turtle.api.security.RequiresPermission
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,6 +16,7 @@ import java.net.URI
 @RequestMapping("/debug")
 class DebugController() {
 
+    @RequiresPermission(Permission.DEBUG_INFORMATION)
     @GetMapping("/info")
     fun debug(
         httpRequest: HttpServletRequest
@@ -25,6 +28,7 @@ class DebugController() {
         return ResponseEntity.ok(map)
     }
 
+    @RequiresPermission(Permission.DEBUG_EXCEPTION)
     @GetMapping("/exception")
     fun exception(@RequestParam message: String?): ResponseEntity<ExceptionResponse> {
         throw DebugException(message)

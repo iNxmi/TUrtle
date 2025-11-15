@@ -1,25 +1,16 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.dto.response.GetExceptionResponse
-import de.csw.turtle.api.dto.response.GetUserResponse
 import de.csw.turtle.api.exception.exceptions.exception.ExceptionNotFoundException
-import de.csw.turtle.api.exception.exceptions.support.TicketNotFoundException
 import de.csw.turtle.api.repository.ExceptionRepository
-import de.csw.turtle.api.security.Permission
 import de.csw.turtle.api.security.Permission.*
 import de.csw.turtle.api.security.RequiresPermission
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort.Direction
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import kotlin.jvm.optionals.getOrNull
 
 @RestController

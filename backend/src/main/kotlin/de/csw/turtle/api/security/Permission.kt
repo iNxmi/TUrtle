@@ -19,5 +19,8 @@ enum class Permission {
     API_AUTH_REGISTER,
     API_AUTH_LOGIN,
     API_AUTH_ME,
-    API_AUTH_LOGOUT
+    API_AUTH_LOGOUT,
+
+    DEBUG_EXCEPTION,
+    DEBUG_INFORMATION
 }

@@ -1,4 +1,4 @@
-package de.csw.turtle.api.config.security
+package de.csw.turtle.api.config
 
 import de.csw.turtle.api.service.PasswordEncoderService
 import org.springframework.beans.factory.annotation.Value
@@ -17,8 +17,6 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val authenticationEntryPoint: CustomAuthenticationEntryPoint,
-    private val accessDeniedHandler: CustomAccessDeniedHandler,
     private val sessionRegistry: SessionRegistry,
     private val passwordEncoderService: PasswordEncoderService
 ) {
@@ -67,30 +65,10 @@ class SecurityConfig(
 //                    .alwaysRemember(false)
 //            }
 
-            .authorizeHttpRequests {
-//                it.requestMatchers(
-//                    "/docs",
-//                    "/swagger-ui/**",
-//                    "/swagger-ui.html",
-//                    "/openapi/api-docs/**"
-//                ).permitAll()
-//
-//                it.requestMatchers(
-//                    "/api/auth/login",
-//                    "/api/auth/register"
-//                ).permitAll()
-
-                it.anyRequest().permitAll()
-            }
-
+            .authorizeHttpRequests { it.anyRequest().permitAll() }
             .formLogin { it.disable() }
             .logout { it.disable() }
             .httpBasic { it.disable() }
-
-            .exceptionHandling {
-                it.authenticationEntryPoint(authenticationEntryPoint)
-                it.accessDeniedHandler(accessDeniedHandler)
-            }
 
         return http.build()
     }
