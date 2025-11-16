@@ -1,7 +1,8 @@
 package de.csw.turtle.api.config
 
+import de.csw.turtle.TUrtleProperties
+import de.csw.turtle.api.service.CustomUserDetailsService
 import de.csw.turtle.api.service.PasswordEncoderService
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -13,26 +14,19 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository
+import javax.sql.DataSource
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
+    private val properties: TUrtleProperties,
     private val sessionRegistry: SessionRegistry,
-    private val passwordEncoderService: PasswordEncoderService
+    private val passwordEncoderService: PasswordEncoderService,
+    private val userDetailsService: CustomUserDetailsService,
+    private val persistentTokenRepository: PersistentTokenRepository
 ) {
-
-    @Value("\${turtle.api.max_sessions}")
-    private val maxSession: Int = 16
-
-    /**
-     * Default value = 30 * seconds per day
-     * so 30 day valid session token
-     */
-    @Value("\${turtle.api.session_duration_seconds}")
-    private val sessionDurationInSeconds: Int = 30 * 24 * 60 * 60
-
-    @Value("\${turtle.api.session_key}")
-    private lateinit var sessionKey: String
 
     @Bean
     fun authenticationManager(
@@ -50,20 +44,20 @@ class SecurityConfig(
             .cors { it.disable() }
 
             .sessionManagement {
-                it.maximumSessions(maxSession)
+                it.maximumSessions(properties.security.maxSessions)
                     .sessionRegistry(sessionRegistry)
                     .maxSessionsPreventsLogin(false)
 
                 it.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             }
 
-//            .rememberMe {
-//                it.key(sessionKey)
-//                    .userDetailsService(userDetailsService)
-//                    .tokenRepository(persistentTokenRepository(dataSource))
-//                    .tokenValiditySeconds(sessionDurationInSeconds)
-//                    .alwaysRemember(false)
-//            }
+            .rememberMe {
+                it.key(properties.security.sessionSecret)
+                    .userDetailsService(userDetailsService)
+                    .tokenRepository(persistentTokenRepository)
+                    .tokenValiditySeconds(properties.security.rememberMeDuration.seconds.toInt())
+                    .alwaysRemember(false)
+            }
 
             .authorizeHttpRequests { it.anyRequest().permitAll() }
             .formLogin { it.disable() }

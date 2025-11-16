@@ -30,7 +30,6 @@ server:
       timeout: 30m
 
 turtle:
-  api:
-    max_sessions: 16
-    session_duration_seconds: 2592000
-    session_key: some_super_secret_key
+  security:
+    max-sessions: 16
+    session-secret: F~jU}3x]&Y@{LZgn:'!uWMmFhmZEySZZ{p9ve&Y]gDa,Pg[:^pv_T)s'=R+3{/d9
