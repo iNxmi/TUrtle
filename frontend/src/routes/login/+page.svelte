@@ -8,12 +8,14 @@
     async function login(event) {
         event.preventDefault();
 
-        const username = document.getElementById('username_or_email').value;
-        const password = document.getElementById('password').value;
+        const username = document.getElementById("input_username_or_email").value;
+        const password = document.getElementById("input_password").value;
+        const rememberMe = document.getElementById("input_remember_me").checked;
 
         const payload = {
-            username: username,
-            password: password
+            username,
+            password,
+            rememberMe
         }
 
         const response = await fetch("/api/auth/login", {
@@ -37,15 +39,15 @@
 
         <Label>
             <span>{m.login__username_or_email_label()}</span>
-            <Input id="username_or_email" type="text" required/>
+            <Input id="input_username_or_email" type="text" required/>
         </Label>
 
         <Label>
             <span>{m.login__password_label()}</span>
-            <Input id="password" type="password" required/>
+            <Input id="input_password" type="password" required/>
         </Label>
 
-        <Checkbox>{m.login__remember_me({days: 30})}</Checkbox>
+        <Checkbox id="input_remember_me">{m.login__remember_me({days: 30})}</Checkbox>
 
         <div class="border border-dashed">
             <P class="text-center m-8">I am not a Robot ✅</P>

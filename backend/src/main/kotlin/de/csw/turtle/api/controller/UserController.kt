@@ -50,7 +50,7 @@ class UserController(
 
     @RequiresPermission(API_USERS_GET_ONE)
     @GetMapping("/{username}")
-    fun getByUsername(
+    fun get(
         @PathVariable username: String
     ): ResponseEntity<GetUserResponse> {
         val user = userService.getByUsername(username)
@@ -61,7 +61,7 @@ class UserController(
 
     @RequiresPermission(API_USERS_PATCH)
     @PatchMapping("/{username}")
-    fun patchByUsername(
+    fun patch(
         @PathVariable username: String,
         @RequestBody patchUserRequest: PatchUserRequest
     ): ResponseEntity<GetUserResponse> {
@@ -71,7 +71,7 @@ class UserController(
 
     @RequiresPermission(API_USERS_DELETE)
     @DeleteMapping("/{username}")
-    fun deleteByUsername(
+    fun delete(
         @PathVariable username: String
     ): ResponseEntity<Void> {
         userService.delete(username)
