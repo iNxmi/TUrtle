@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService(
-    val repository: UserRepository,
+    private val repository: UserRepository,
     private val passwordEncoderService: PasswordEncoderService,
     private val sessionRegistry: SessionRegistry
 ) {
@@ -24,15 +24,12 @@ class UserService(
             throw UsernameAlreadyExistsException(request.username)
 
         val user = request.create(passwordEncoderService.encoder)
-        repository.save(user)
-
-        return user
+        return repository.save(user)
     }
 
     //TODO make it not query for hidden fields based on dto (only be able to sort by dto fields)
-    fun getAllPaged(pageRequest: PageRequest) = repository.findAll(pageRequest)
-
-    fun getByUsername(username: String) = repository.findByUserName(username)
+    fun getPaginated(request: PageRequest) = repository.findAll(request)
+    fun get(username: String) = repository.findByUserName(username)
 
     @Transactional
     fun update(username: String, request: PatchUserRequest): UserEntity {
@@ -46,8 +43,7 @@ class UserService(
         request.studentId?.let { user.studentId = it }
         request.password?.let { user.passwordHash = passwordEncoderService.encode(it) }
 
-        repository.save(user)
-        return user
+        return repository.save(user)
     }
 
     @Transactional

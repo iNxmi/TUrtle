@@ -44,7 +44,7 @@ class UserController(
         } else {
             PageRequest.of(pageNumber, pageSize, direction, *sort)
         }
-        val page = userService.getAllPaged(pageRequest).map { GetUserResponse(it) }
+        val page = userService.getPaginated(pageRequest).map { GetUserResponse(it) }
         return ResponseEntity.ok(page)
     }
 
@@ -53,7 +53,7 @@ class UserController(
     fun get(
         @PathVariable username: String
     ): ResponseEntity<GetUserResponse> {
-        val user = userService.getByUsername(username)
+        val user = userService.get(username)
             ?: throw UserNotFoundException(username)
 
         return ResponseEntity.ok(GetUserResponse(user))

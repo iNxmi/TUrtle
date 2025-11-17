@@ -19,11 +19,11 @@
 
     <Table hoverable={true}>
         <TableHead>
-            <TableHeadCell class="bg-secondary">{m.admin_exceptions__id_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_exceptions__endpoint_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_exceptions__exception_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_exceptions__message_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_exceptions__created_at_label()}</TableHeadCell>
+            <TableHeadCell>{m.admin_exceptions__id_label()}</TableHeadCell>
+            <TableHeadCell>{m.admin_exceptions__endpoint_label()}</TableHeadCell>
+            <TableHeadCell>{m.admin_exceptions__exception_label()}</TableHeadCell>
+            <TableHeadCell>{m.admin_exceptions__message_label()}</TableHeadCell>
+            <TableHeadCell>{m.admin_exceptions__created_at_label()}</TableHeadCell>
         </TableHead>
 
         <TableBody>

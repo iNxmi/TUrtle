@@ -1,10 +1,10 @@
 package de.csw.turtle.test
 
 import de.csw.turtle.api.dto.request.CreateSupportTicketRequest
-import de.csw.turtle.api.dto.request.CreateUserRequest
 import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.repository.SupportTicketRepository
+import de.csw.turtle.api.repository.UserRepository
 import de.csw.turtle.api.security.Role
 import de.csw.turtle.api.service.PasswordEncoderService
 import de.csw.turtle.api.service.UserService
@@ -19,6 +19,7 @@ import kotlin.math.floor
 @Configuration
 class DataSeeder(
     private val userService: UserService,
+    private val userRepository: UserRepository,
     private val passwordEncoderService: PasswordEncoderService,
     private val supportTicketRepository: SupportTicketRepository
 ) {
@@ -29,22 +30,26 @@ class DataSeeder(
     @Bean
     @Transactional
     fun seedUsers() = CommandLineRunner {
-        val repository = userService.repository
-        while (repository.count() < minimumEntries) {
+        while (userRepository.count() < minimumEntries) {
             val firstName = faker.name.firstName()
             val lastName = faker.name.lastName()
             val email = faker.internet.email("$firstName $lastName")
             val username = ("$firstName.$lastName").lowercase()
 
-            val createUserRequest = CreateUserRequest(
-                username,
-                firstName,
-                lastName,
-                email,
-                faker.random.unique.nextInt().absoluteValue.toLong(),
-                "password"
+            val entries = Role.entries
+            val index = floor(Math.random() * (entries.size - 1)).toInt() + 1
+            val role = entries[index]
+
+            val user = UserEntity(
+                userName = username,
+                firstName = firstName,
+                lastName = lastName,
+                email = email,
+                studentId = faker.random.unique.nextInt().absoluteValue.toLong(),
+                passwordHash = passwordEncoderService.encode("password"),
+                role = role
             )
-            userService.create(createUserRequest)
+            userRepository.save(user)
         }
 
         val admin = UserEntity(
@@ -56,7 +61,7 @@ class DataSeeder(
             passwordHash = passwordEncoderService.encode("admin"),
             role = Role.ADMINISTRATOR
         )
-        repository.save(admin)
+        userRepository.save(admin)
     }
 
     @Bean

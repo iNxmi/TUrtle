@@ -7,7 +7,8 @@
         TableBodyRow,
         TableHead,
         TableHeadCell,
-        Heading
+        Heading,
+        FloatingLabelInput
     } from 'flowbite-svelte';
 
     let {data} = $props();
@@ -15,26 +16,56 @@
 </script>
 
 <div>
-    <Heading tag="h3">{m.admin_users__title()}</Heading>
+    <Heading tag="h3" class="text-center">{m.admin_users__title()}</Heading>
 
     <Table hoverable={true}>
         <TableHead>
-            <TableHeadCell class="bg-secondary">{m.admin_users__student_id_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_users__username_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_users__last_name_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_users__first_name_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_users__email_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_users__created_at_label()}</TableHeadCell>
+            <TableHeadCell>
+                <FloatingLabelInput id="input_username" type="text">
+                    {m.admin_users__username_label()}
+                </FloatingLabelInput>
+            </TableHeadCell>
+            <TableHeadCell>
+                <FloatingLabelInput id="input_first_name" type="text">
+                    {m.admin_users__first_name_label()}
+                </FloatingLabelInput>
+            </TableHeadCell>
+            <TableHeadCell>
+                <FloatingLabelInput id="input_last_name" type="text">
+                    {m.admin_users__last_name_label()}
+                </FloatingLabelInput>
+            </TableHeadCell>
+            <TableHeadCell>
+                <FloatingLabelInput id="input_email" type="text">
+                    {m.admin_users__email_label()}
+                </FloatingLabelInput>
+            </TableHeadCell>
+            <TableHeadCell>
+                <FloatingLabelInput id="input_student_id" type="text">
+                    {m.admin_users__student_id_label()}
+                </FloatingLabelInput>
+            </TableHeadCell>
+            <TableHeadCell>
+                <FloatingLabelInput id="input_role" type="text">
+                    {m.admin_users__role_label()}
+                </FloatingLabelInput>
+            </TableHeadCell>
+            <TableHeadCell>
+                <FloatingLabelInput id="input_created_at" type="text">
+                    {m.admin_users__created_at_label()}
+                </FloatingLabelInput>
+            </TableHeadCell>
         </TableHead>
 
         <TableBody>
             {#each page.content as user}
                 <TableBodyRow onclick={() => window.location.href = `/admin/users/${user.username}`} class="hover:cursor-pointer">
-                    <TableBodyCell>{user.studentId}</TableBodyCell>
                     <TableBodyCell>{user.username}</TableBodyCell>
-                    <TableBodyCell>{user.firstName}</TableBodyCell>
                     <TableBodyCell>{user.lastName}</TableBodyCell>
+                    <TableBodyCell>{user.firstName}</TableBodyCell>
                     <TableBodyCell>{user.email}</TableBodyCell>
+                    <TableBodyCell>{user.studentId}</TableBodyCell>
+                    <TableBodyCell>{user.role}</TableBodyCell>
                     <TableBodyCell>{(new Date(user.createdAt)).toLocaleString()}</TableBodyCell>
                 </TableBodyRow>
             {/each}

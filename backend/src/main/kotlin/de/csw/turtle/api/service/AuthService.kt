@@ -45,7 +45,7 @@ class AuthService(
         loginUserRequest: LoginUserRequest,
         httpRequest: HttpServletRequest
     ): UserEntity {
-        val user = userService.getByUsername(loginUserRequest.username)
+        val user = userService.get(loginUserRequest.username)
             ?: throw UsernameOrPasswordInvalidException()
 
         if (!passwordEncoderService.matches(loginUserRequest.password, user.password))

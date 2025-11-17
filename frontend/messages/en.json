@@ -72,6 +72,7 @@
   "admin_users__first_name_label": "First Name",
   "admin_users__last_name_label": "Last Name",
   "admin_users__email_label": "Email",
+  "admin_users__role_label": "Role",
   "admin_users__created_at_label": "Created At",
 
   "admin_users_id__username_label": "Username",

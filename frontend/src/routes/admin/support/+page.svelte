@@ -19,12 +19,12 @@
 
     <Table hoverable={true}>
         <TableHead>
-            <TableHeadCell class="bg-secondary">{m.admin_support__id_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_support__urgency_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_support__category_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_support__subject_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_support__email_label()}</TableHeadCell>
-            <TableHeadCell class="bg-secondary">{m.admin_support__created_at_label()}</TableHeadCell>
+            <TableHeadCell>{m.admin_support__id_label()}</TableHeadCell>
+            <TableHeadCell>{m.admin_support__urgency_label()}</TableHeadCell>
+            <TableHeadCell>{m.admin_support__category_label()}</TableHeadCell>
+            <TableHeadCell>{m.admin_support__subject_label()}</TableHeadCell>
+            <TableHeadCell>{m.admin_support__email_label()}</TableHeadCell>
+            <TableHeadCell>{m.admin_support__created_at_label()}</TableHeadCell>
         </TableHead>
 
         <TableBody>

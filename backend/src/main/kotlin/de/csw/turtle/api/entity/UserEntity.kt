@@ -32,7 +32,7 @@ data class UserEntity(
     var role: Role = Role.STUDENT,
 
     @Column(nullable = false, updatable = false)
-    var createdAt: Instant = Instant.now()
+    val createdAt: Instant = Instant.now()
 ) : UserDetails {
 
     override fun getAuthorities() = setOf(role.getGrantedAuthority())
