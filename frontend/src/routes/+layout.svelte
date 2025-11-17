@@ -41,7 +41,8 @@
         NewspaperSolid,
         HomeSolid,
         InfoCircleSolid,
-        BugSolid
+        BugSolid,
+        BookOpenSolid
     } from 'flowbite-svelte-icons';
 
     import {page} from '$app/state';
@@ -138,6 +139,10 @@
         label: m.sidebar_admin_settings(),
         href: '/admin/settings',
         icon: UserSettingsSolid
+    }, {
+        label: m.sidebar_auditlogs(),
+        href: '/admin/auditlogs',
+        icon:  BookOpenSolid
     }];
 
 </script>

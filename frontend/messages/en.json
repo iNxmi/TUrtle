@@ -21,6 +21,7 @@
   "sidebar_logout": "Logout",
   "sidebar_about": "About",
   "sidebar_home": "Home",
+  "sidebar_auditlogs": "Audit Logs",
 
   "footer_about": "About",
   "footer_privacy_policy": "Privacy Policy",
@@ -112,6 +113,14 @@
   "admin_exceptions_id__message_label": "Message",
   "admin_exceptions_id__stack_trace_label": "Stack Trace",
   "admin_exceptions_id__created_at_label": "Created At",
+
+  "admin_auditlogs__title": "View Audit Logs",
+  "admin_auditlogs__id_label": "Audit Log ID",
+  "admin_auditlogs__ip_address_label": "IP Address",
+  "admin_auditlogs__username_label": "Username",
+  "admin_auditlogs__endpoint_label": "Endpoint",
+  "admin_auditlogs__http_method_label": "HTTP Method",
+  "admin_auditlogs__created_at_label": "Created At",
 
   "profile__title": "Welcome back {username}",
   "profile__username_label": "Username",

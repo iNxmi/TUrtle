@@ -24,8 +24,12 @@ data class UserEntity(
     @Column(nullable = false, unique = true)
     var studentId: Long,
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false, name = "password")
     var passwordHash: String,
+
+    @Column(nullable = false)
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val auditLogs: Collection<AuditLogEntity> = emptyList(),
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
