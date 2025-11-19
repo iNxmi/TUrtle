@@ -48,6 +48,7 @@
 
     --color-table-dark: #d1f3d1;
     --color-accent: #3dff4a;
+    --color-logo: #FF6A00;
 }
 
 .dark {
@@ -84,6 +85,7 @@
 
     --color-table-dark: #053105;
     --color-accent: #00c20d;
+    --color-logo: #FF6A00;
 }
 
 @font-face {

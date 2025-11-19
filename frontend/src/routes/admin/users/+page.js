@@ -1,5 +1,18 @@
-export async function load({url}) {
+import { dev } from '$app/environment';
+export async function load({url, fetch}) {
 
+    if(dev){
+
+        const response = await fetch('/api/admin/users');
+
+        const users = await response.json();
+
+        return {
+            page: users
+        };
+
+    }
+    
     const parameters = {}
 
     const page = url.searchParams.get("page")
