@@ -1,5 +1,5 @@
 <script>
-    import {Label, Input} from "flowbite-svelte";
+    import {Input, Label} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
 
     let {data} = $props();

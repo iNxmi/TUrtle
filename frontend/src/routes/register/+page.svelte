@@ -1,7 +1,7 @@
 <script>
-    import {Button, Checkbox, Label, Input, Heading, A, P, Modal} from "flowbite-svelte";
+    import {A, Button, Checkbox, Heading, Input, Label, Modal, P} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
-    import ReCAPTCHA from '../../components/ReCAPTCHA.svelte';
+    import ReCAPTCHA from '$lib/components/ReCAPTCHA.svelte';
     import request from "$lib/api/api.js";
 
     let apiResponse = $state(null);

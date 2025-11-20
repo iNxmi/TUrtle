@@ -1,13 +1,5 @@
 <script>
-    import {
-        Table,
-        TableBody,
-        TableBodyCell,
-        TableBodyRow,
-        TableHead,
-        TableHeadCell,
-        Heading
-    } from 'flowbite-svelte';
+    import {Heading, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
 
     let {data} = $props();

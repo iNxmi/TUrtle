@@ -1,4 +1,4 @@
-import { paraglideMiddleware } from '$lib/paraglide/server';
+import {paraglideMiddleware} from '$lib/paraglide/server';
 
 const handleParaglide = ({ event, resolve }) =>
 	paraglideMiddleware(event.request, ({ request, locale }) => {

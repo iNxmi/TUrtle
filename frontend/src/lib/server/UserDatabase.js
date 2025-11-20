@@ -1,4 +1,4 @@
-import { data } from './sampleUsers.js';
+import {data} from './sampleUsers.js';
 import SimpleDB from './SimpleDB.js';
 
 export const db = new SimpleDB();

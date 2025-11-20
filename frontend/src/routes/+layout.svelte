@@ -1,14 +1,38 @@
 <script>
     import '../app.css';
-    import {Sidebar, SidebarDropdownWrapper, SidebarDropdownItem, Hr, Heading, Span} from 'flowbite-svelte';
-
-    import {Select, Toggle} from 'flowbite-svelte';
+    import {
+        Heading,
+        Hr,
+        Select,
+        Sidebar,
+        SidebarDropdownItem,
+        SidebarDropdownWrapper,
+        Span,
+        Toggle
+    } from 'flowbite-svelte';
 
     import {m} from '$lib/paraglide/messages.js';
     import {setLocale} from '$lib/paraglide/runtime.js';
 
-    import TUrtleLogo from "../components/TUrtleLogo.svelte";
-    import Footer from "../components/Footer.svelte";
+    import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
+    import Footer from "$lib/components/Footer.svelte";
+    import {
+        BookOpenSolid,
+        BugSolid,
+        CalendarEditSolid,
+        CalendarMonthSolid,
+        DesktopPcSolid,
+        HomeSolid,
+        InfoCircleSolid,
+        NewspaperSolid,
+        UserHeadsetSolid,
+        UserSettingsSolid,
+        UsersGroupSolid,
+        UserSolid
+    } from 'flowbite-svelte-icons';
+
+    import {page} from '$app/state';
+    import {onMount} from 'svelte';
 
     let {data, children} = $props();
     const user = data.user;
@@ -30,29 +54,10 @@
         setLocale(language);
     }
 
-    import {
-        UserSolid,
-        UsersGroupSolid,
-        DesktopPcSolid,
-        UserHeadsetSolid,
-        CalendarMonthSolid,
-        CalendarEditSolid,
-        UserSettingsSolid,
-        NewspaperSolid,
-        HomeSolid,
-        InfoCircleSolid,
-        BugSolid,
-        BookOpenSolid
-    } from 'flowbite-svelte-icons';
-
-    import {page} from '$app/state';
-
     let activeUrl = $state(page.url.pathname);
     $effect(() => {
         activeUrl = page.url.pathname;
     });
-
-    import {onMount} from 'svelte';
 
     let darkmode = $state(false);
     onMount(() => {

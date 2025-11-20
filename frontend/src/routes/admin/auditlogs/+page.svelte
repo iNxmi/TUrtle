@@ -1,14 +1,14 @@
 <script>
     import {m} from '$lib/paraglide/messages.js';
     import {
+        FloatingLabelInput,
+        Heading,
         Table,
         TableBody,
         TableBodyCell,
         TableBodyRow,
         TableHead,
-        TableHeadCell,
-        Heading,
-        FloatingLabelInput
+        TableHeadCell
     } from 'flowbite-svelte';
 
     let {data} = $props();

@@ -1,7 +1,7 @@
 <script>
-    import {Heading, Input, Label, Button, Select, Textarea, Checkbox, P} from 'flowbite-svelte';
+    import {Button, Checkbox, Heading, Input, Label, P, Select, Textarea} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
-    import ReCAPTCHA from '../../components/ReCAPTCHA.svelte';
+    import ReCAPTCHA from '$lib/components/ReCAPTCHA.svelte';
     import request from "$lib/api/api.js";
 
     const urgencies = [

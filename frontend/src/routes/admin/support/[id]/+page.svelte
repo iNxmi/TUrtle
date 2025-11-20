@@ -1,5 +1,5 @@
 <script>
-    import {Label, Input, Textarea, Heading} from "flowbite-svelte";
+    import {Heading, Input, Label, Textarea} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
 
     let {data} = $props();

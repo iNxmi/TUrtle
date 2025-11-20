@@ -1,5 +1,5 @@
 <script>
-    import {Footer, FooterCopyright, FooterLinkGroup, FooterLink, FooterIcon} from "flowbite-svelte";
+    import {Footer, FooterCopyright, FooterIcon, FooterLink, FooterLinkGroup} from "flowbite-svelte";
     import {GithubSolid, InstagramSolid, TwitterSolid} from "flowbite-svelte-icons";
     import {m} from '$lib/paraglide/messages.js';
 </script>
