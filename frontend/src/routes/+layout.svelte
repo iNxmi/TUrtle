@@ -9,8 +9,18 @@
 
     import TUrtleLogo from "../components/TUrtleLogo.svelte";
     import Footer from "../components/Footer.svelte";
+    import { dev} from "$app/environment";
 
     let {data, children} = $props();
+   
+    
+    if(dev){
+        data.user = {
+            firstName: "UI ",
+            lastName: "Test",
+            role: "ADMINISTRATOR"
+        }
+    }
     const user = data.user;
 
     const languages = [
@@ -179,7 +189,7 @@
                 {#each itemsPublic as item}
                     <SidebarDropdownItem label={item.label} href={item.href}>
                         {#snippet icon()}
-                            <svelte:component this={item.icon} class="text-orange-400 h-5 w-5"/>
+                            <item.icon class="text-orange-400 h-5 w-5"/>
                         {/snippet}
                     </SidebarDropdownItem>
                 {/each}
@@ -191,7 +201,7 @@
                     {#each itemsUser as item}
                         <SidebarDropdownItem label={item.label} href={item.href}>
                             {#snippet icon()}
-                                <svelte:component this={item.icon} class="text-orange-400 h-5 w-5"/>
+                                <item.icon class="text-orange-400 h-5 w-5"/>
                             {/snippet}
                         </SidebarDropdownItem>
                     {/each}
@@ -204,7 +214,7 @@
                     {#each itemsAdmin as item}
                         <SidebarDropdownItem label={item.label} href={item.href}>
                             {#snippet icon()}
-                                <svelte:component this={item.icon} class="text-orange-400 h-5 w-5"/>
+                                <item.icon class="text-orange-400 h-5 w-5"/>
                             {/snippet}
                         </SidebarDropdownItem>
                     {/each}

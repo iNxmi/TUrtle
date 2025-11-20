@@ -22,7 +22,7 @@
 
 <button id="export-target" class="flex flex-col items-center select-none w-max h-max" onclick={rotate}>
     <Heading class="inline-block">
-        <Span class="text-7xl" gradient="redToYellow">
+        <Span class="text-7xl text-logo">
             CSW
         </Span>
     </Heading>
