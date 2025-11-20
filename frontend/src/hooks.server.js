@@ -1,12 +1,16 @@
 import {paraglideMiddleware} from '$lib/paraglide/server';
+import {dev} from "$app/environment";
+import {error} from "@sveltejs/kit";
 
-const handleParaglide = ({ event, resolve }) =>
-	paraglideMiddleware(event.request, ({ request, locale }) => {
-		event.request = request;
+export async function handle({event, resolve}) {
+    if (!dev && event.url.pathname.startsWith("/dev"))
+        throw error(404, "Not Found")
 
-		return resolve(event, {
-			transformPageChunk: ({ html }) => html.replace('%lang%', locale)
-		});
-	});
+    return paraglideMiddleware(event.request, ({request, locale}) => {
+        event.request = request;
 
-export const handle = handleParaglide;
+        return resolve(event, {
+            transformPageChunk: ({html}) => html.replace('%lang%', locale)
+        });
+    });
+}
