@@ -171,7 +171,7 @@
 
             {#if user}
                 <Heading tag="h5" class="text-center">
-                    <Span class="text-orange-400">
+                    <Span class="text-csw">
                         {`${user.firstName} ${user.lastName}`}
                     </Span>
                 </Heading>
@@ -184,7 +184,7 @@
                 {#each itemsPublic as item}
                     <SidebarDropdownItem label={item.label} href={item.href}>
                         {#snippet icon()}
-                            <item.icon class="text-orange-400 h-5 w-5"/>
+                            <item.icon class="text-csw h-5 w-5"/>
                         {/snippet}
                     </SidebarDropdownItem>
                 {/each}
@@ -196,7 +196,7 @@
                     {#each itemsUser as item}
                         <SidebarDropdownItem label={item.label} href={item.href}>
                             {#snippet icon()}
-                                <item.icon class="text-orange-400 h-5 w-5"/>
+                                <item.icon class="text-csw h-5 w-5"/>
                             {/snippet}
                         </SidebarDropdownItem>
                     {/each}
@@ -209,7 +209,7 @@
                     {#each itemsAdmin as item}
                         <SidebarDropdownItem label={item.label} href={item.href}>
                             {#snippet icon()}
-                                <item.icon class="text-orange-400 h-5 w-5"/>
+                                <item.icon class="text-csw h-5 w-5"/>
                             {/snippet}
                         </SidebarDropdownItem>
                     {/each}
