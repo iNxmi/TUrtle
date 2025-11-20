@@ -1,5 +1,7 @@
-export async function load({url}) {
-    const response = await fetch("/api/auditlogs");
+import request from "$lib/api/api.js";
+
+export async function load() {
+    const response = await request("/auditlogs");
     const payload = await response.json();
 
     return {page: payload};

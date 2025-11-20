@@ -1,18 +1,6 @@
-import { dev } from '$app/environment';
+import {dev} from '$app/environment';
+
 export async function load({url, fetch}) {
-
-    if(dev){
-
-        const response = await fetch('/api/admin/users');
-
-        const users = await response.json();
-
-        return {
-            page: users
-        };
-
-    }
-    
     const parameters = {}
 
     const page = url.searchParams.get("page")
@@ -33,7 +21,7 @@ export async function load({url, fetch}) {
 
     const urlParameters = new URLSearchParams(parameters)
 
-    const response = await fetch("/api/users?" + urlParameters.toString());
+    const response = await request("/users?" + urlParameters.toString());
     const payload = await response.json();
 
     return {page: payload};

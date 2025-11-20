@@ -1,6 +1,7 @@
 <script>
     import {Button, Checkbox, Label, Input, Heading, A, P, Modal} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
+    import request from "$lib/api/api.js";
 
     let apiResponse = $state(null);
     let modal = $state(false);
@@ -18,7 +19,7 @@
             rememberMe
         }
 
-        const response = await fetch("/api/auth/login", {
+        const response = await request("/auth/login", {
             method: "POST",
             body: JSON.stringify(payload),
             headers: {"Content-Type": "application/json"}

@@ -2,6 +2,7 @@
     import {Heading, Input, Label, Button, Select, Textarea, Checkbox, P} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
     import ReCAPTCHA from '../../components/ReCAPTCHA.svelte';
+    import request from "$lib/api/api.js";
 
     const urgencies = [
         {value: "LOW", name: m.support__urgency_low()},
@@ -28,7 +29,7 @@
             description: document.getElementById("input_description").value
         }
 
-        const response = await fetch("/api/support", {
+        const response = await request("/support", {
             method: "POST",
             body: JSON.stringify(payload),
             headers: {"Content-Type": "application/json"}

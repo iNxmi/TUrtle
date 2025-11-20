@@ -9,18 +9,8 @@
 
     import TUrtleLogo from "../components/TUrtleLogo.svelte";
     import Footer from "../components/Footer.svelte";
-    import { dev} from "$app/environment";
 
     let {data, children} = $props();
-   
-    
-    if(dev){
-        data.user = {
-            firstName: "UI ",
-            lastName: "Test",
-            role: "ADMINISTRATOR"
-        }
-    }
     const user = data.user;
 
     const languages = [
@@ -152,7 +142,7 @@
     }, {
         label: m.sidebar_auditlogs(),
         href: '/admin/auditlogs',
-        icon:  BookOpenSolid
+        icon: BookOpenSolid
     }];
 
 </script>

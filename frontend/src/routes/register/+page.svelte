@@ -2,6 +2,7 @@
     import {Button, Checkbox, Label, Input, Heading, A, P, Modal} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
     import ReCAPTCHA from '../../components/ReCAPTCHA.svelte';
+    import request from "$lib/api/api.js";
 
     let apiResponse = $state(null);
     let modal = $state(false);
@@ -20,7 +21,7 @@
 
         alert(JSON.stringify(payload, null, 2));
 
-        const response = await fetch('/api/auth/register', {
+        const response = await request('/auth/register', {
             method: 'POST',
             body: JSON.stringify(payload),
             headers: {'Content-Type': 'application/json'}
