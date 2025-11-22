@@ -1,72 +1,74 @@
 <script>
-    import {A, Button, Checkbox, Heading, Input, Label, Modal, P} from "flowbite-svelte";
-    import {m} from '$lib/paraglide/messages.js';
-    import request from "$lib/api/api.js";
+	import { A, Button, Checkbox, Heading, Input, Label, Modal, P } from 'flowbite-svelte';
+	import { m } from '$lib/paraglide/messages.js';
+	import request from '$lib/api/api.js';
+	import { snapshot } from 'node:test';
 
-    let apiResponse = $state(null);
-    let modal = $state(false);
+	let apiResponse = $state(null);
+	let modal = $state(false);
+	let username = $state('');
+	let password = $state('');
+	let rememberMe = $state(false);
 
-    async function login(event) {
-        event.preventDefault();
+	async function login(event) {
+		event.preventDefault();
 
-        const username = document.getElementById("input_username_or_email").value;
-        const password = document.getElementById("input_password").value;
-        const rememberMe = document.getElementById("input_remember_me").checked;
+		const payload = {
+			username: $state.snapshot(username),
+			password: $state.snapshot(password),
+			rememberMe: $state.snapshot(rememberMe)
+		};
 
-        const payload = {
-            username,
-            password,
-            rememberMe
-        }
+		const response = await request('/auth/login', {
+			method: 'POST',
+			body: JSON.stringify(payload),
+			headers: { 'Content-Type': 'application/json' }
+		});
 
-        const response = await request("/auth/login", {
-            method: "POST",
-            body: JSON.stringify(payload),
-            headers: {"Content-Type": "application/json"}
-        });
+		apiResponse = await response.json();
+		modal = true;
 
-        apiResponse = await response.json();
-        modal = true;
-
-        // window.location.reload()
-    }
+		// window.location.reload()
+	}
 </script>
 
 <div>
-    <form class="flex flex-col gap-5" onsubmit={login}>
-        <Heading tag="h3" class="text-center">
-            {m.login__title()}
-        </Heading>
+	<form class="flex flex-col gap-5" onsubmit={login}>
+		<Heading tag="h3" class="text-center">
+			{m.login__title()}
+		</Heading>
 
-        <Label>
-            <span>{m.login__username_or_email_label()}</span>
-            <Input id="input_username_or_email" type="text" required/>
-        </Label>
+		<Label>
+			<span>{m.login__username_or_email_label()}</span>
+			<Input bind:value={username} type="text" required />
+		</Label>
 
-        <Label>
-            <span>{m.login__password_label()}</span>
-            <Input id="input_password" type="password" required/>
-        </Label>
+		<Label>
+			<span>{m.login__password_label()}</span>
+			<Input bind:value={password} type="password" required />
+		</Label>
 
-        <Checkbox id="input_remember_me">{m.login__remember_me({days: 30})}</Checkbox>
+		<Checkbox bind:checked={rememberMe}>{m.login__remember_me({ days: 30 })}</Checkbox>
 
-        <div class="border border-dashed">
-            <P class="text-center m-8">I am not a Robot ✅</P>
-        </div>
+		<div class="border border-dashed">
+			<P class="text-center m-8">I am not a Robot ✅</P>
+		</div>
 
-        <Button type="submit">{m.login__button()}</Button>
+		<Button type="submit">{m.login__button()}</Button>
 
-        <div class="flex gap-5 justify-between">
-            <A href="/register"
-               class="text-sm text-blue-700 hover:underline dark:text-blue-500">{m.login__no_account()}</A>
-            <A href="/"
-               class="text-sm text-blue-700 hover:underline dark:text-blue-500">{m.login__forgot_password()}</A>
-        </div>
-    </form>
+		<div class="flex gap-5 justify-between">
+			<A href="/register" class="text-sm text-blue-700 hover:underline dark:text-blue-500"
+				>{m.login__no_account()}</A
+			>
+			<A href="/" class="text-sm text-blue-700 hover:underline dark:text-blue-500"
+				>{m.login__forgot_password()}</A
+			>
+		</div>
+	</form>
 
-    <Modal title="API Response" bind:open={modal}>
-        {#if apiResponse}
-            <P class="whitespace-pre">{JSON.stringify(apiResponse, null, 2)}</P>
-        {/if}
-    </Modal>
+	<Modal title="API Response" bind:open={modal}>
+		{#if apiResponse}
+			<P class="whitespace-pre">{JSON.stringify(apiResponse, null, 2)}</P>
+		{/if}
+	</Modal>
 </div>
