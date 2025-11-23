@@ -13,9 +13,7 @@ export async function DELETE({ request }) {
 }
 
 export async function PATCH({ request }) {
-	console.log('Test');
 	const event = await request.json();
-	console.log(JSON.stringify(event));
 	eventDatabase.updateEventByID(event.id, event);
 	return new Response(null, { status: 200 });
 }
