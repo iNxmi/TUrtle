@@ -49,20 +49,16 @@
 		{ value: 'hu', name: '_hungarian' },
 		{ value: 'ro', name: '_romanian' }
 	];
-	let language = $state(page.url.searchParams.get('locale'));
+
+	let language = $state(page.url.searchParams.get('locale') || 'de');
 
 	setContext('locale', () => language);
 
-	$effect(() => {
-		if(language){
-			goto(`?locale=${language}`);
-			setLocale(language);
-		}
-	});
 	function updateLanguage(event) {
 		event.preventDefault();
 
-		setLocale(language);
+        goto(`?locale=${language}`);
+        setTimeout(() => setLocale(language));
 	}
 
 	let activeUrl = $state(page.url.pathname);
@@ -182,7 +178,6 @@
 </script>
 
 <div class="flex h-full">
-	{@debug language}
 	<Sidebar
 		alwaysOpen
 		{activeUrl}
@@ -264,7 +259,7 @@
 				isOpen={true}
 				label={m.sidebar_category_settings()}
 			>
-				<Select items={languages} bind:value={language} />
+				<Select items={languages} bind:value={language} onchange={updateLanguage}/>
 				<Toggle onchange={toggleDarkMode}>_toggle_darkmode</Toggle>
 			</SidebarDropdownWrapper>
 		</div>
