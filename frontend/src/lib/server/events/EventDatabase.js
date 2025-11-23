@@ -11,7 +11,7 @@ export class EventDatabase {
 	seedDatabase() {
 		events.forEach((event, index) => {
 			this.db.create(this.collection, {
-				id: index,
+				id: index.toString(),
 				title: event.title,
 				start: event.start,
 				end: event.end
@@ -22,7 +22,7 @@ export class EventDatabase {
 
 	createEvent(title, start, end) {
 		this.this.db.create(this.collection, this.collection, {
-			id: this.id,
+			id: this.id.toString(),
 			title,
 			start,
 			end
@@ -41,6 +41,6 @@ export class EventDatabase {
 		this.db.delete(this.collection, id);
 	}
 	updateEventByID(id, event) {
-		this.db.update(id, event);
+		this.db.update(this.collection, id, event);
 	}
 }
