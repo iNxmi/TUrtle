@@ -2,7 +2,6 @@
 	import { A, Button, Checkbox, Heading, Input, Label, Modal, P } from 'flowbite-svelte';
 	import { m } from '$lib/paraglide/messages.js';
 	import request from '$lib/api/api.js';
-	import { snapshot } from 'node:test';
 
 	let apiResponse = $state(null);
 	let modal = $state(false);
