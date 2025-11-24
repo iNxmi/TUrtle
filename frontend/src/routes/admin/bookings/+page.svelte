@@ -103,10 +103,26 @@
 			slotMinTime: '6:00:00',
 			allDaySlot: false,
 			initialView: 'timeGridWeek',
+			customButtons: {
+				newEventButton: {
+					text: '_New Event_',
+					click: function() {
+						const date = new Date();
+						const endDate = new Date();
+						endDate.setHours(endDate.getHours()+1);
+						const newEvent = {
+							title: "_New Event_",
+							start: date,
+							end:  endDate
+						}
+						calendar.addEvent(newEvent);
+					}
+				}
+			},
 			headerToolbar: {
 				left: 'prev,next today',
 				center: 'title',
-				right: 'timeGridWeek,listWeek'
+				right: 'newEventButton, timeGridWeek,listWeek'
 			}
 		});
 		calendar.render();
@@ -176,6 +192,10 @@
 			<ThemeProvider {theme}>
 				<Button onclick={updateDate}>_Speichern_</Button>
 			</ThemeProvider>
+			{:else}
+			<div class="flex flex-col h-full justify-center items-center">
+				<h1 class="text-2xl text-gray-500">_Select Event_</h1>
+			</div>
 			{/if}
 		</Card>
 </div>
