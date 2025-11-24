@@ -1,11 +1,9 @@
 <script>
 	import { getContext, onMount } from 'svelte';
-	import { dev } from '$app/environment';
+	import { dev, browser } from '$app/environment';
 	import request from '$lib/api/api';
 	import ContextMenu from './ContextMenu.svelte';
 	import {Card, Label, Input, Datepicker, Button, ThemeProvider} from 'flowbite-svelte';
-
-	import {TrashBinSolid} from 'flowbite-svelte-icons';
 
 	import { Calendar } from '@fullcalendar/core';
 
@@ -13,19 +11,10 @@
 	import listPlugin from '@fullcalendar/list';
 	import interactionPlugin from '@fullcalendar/interaction';
 
+
 	let { data } = $props();
 	let contextMenu;
 	let calendar;
-
-	let clientX;
-	let clientY;
-
-	function onPageClick(e) {
-		if (e.clientX !== clientX && e.clientY + window.scrollY !== clientY) {
-			selectedEvent = false;
-		}
-	};
-
 	let localeFunction = getContext('locale');
 
 	let localeString = $derived(localeFunction());
@@ -34,7 +23,7 @@
 	let startDate = $derived(selectedEvent.start);
 	let endDate = $derived(selectedEvent.end);
 
-	let eventTitle = $derived(selectedEvent.title);
+	
 	
 	let startTime = $derived.by(() => {
 		const tempHour = selectedEvent.start.getHours() < 10  ? "0"+selectedEvent.start.getHours().toString() : selectedEvent.start.getHours().toString();
@@ -46,24 +35,17 @@
 		const tempMinutes = selectedEvent.end.getMinutes() < 10 ? "0"+selectedEvent.end.getMinutes().toString() : selectedEvent.end.getMinutes().toString();
 		return tempHour+":"+tempMinutes;
 	});
-	let newStartDate = $derived.by(() => {
-		
-		let tempStartDate = startDate;
-		 tempStartDate.setHours(parseInt(startTime.substring(0,2)));
-		 tempStartDate.setMinutes(parseInt(startTime.substring(3)));
-		
-		return tempStartDate;
-	}); 
 	
-	let newEndDate = $derived.by(() => {
+	let eventDate = $derived.by(() => {
 		
 		let tempEndDate = endDate;
-		 tempEndDate.setHours(parseInt(endTime.substring(0,2)));
-		 tempEndDate.setMinutes(parseInt(endTime.substring(3)));
+		tempEndDate = endDate.setHours(parseInt(endTime.substring(0,2)));
+		tempEndDate = endDate.setMinutes(parseInt(endTime.substring(3)));
 		
 		return tempEndDate;
 	}); 
 
+	
 	onMount(() => {
 		let calendarEl = document.getElementById('calendar');
 		calendar = new Calendar(calendarEl, {
@@ -77,21 +59,19 @@
 				request('/events', {
 					method: "PATCH",
 					body: JSON.stringify(eventDropInfo.event)
-				});
+				})
 			},
 			eventResize: function (eventResizeInfo){
 				eventResizeInfo.jsEvent.preventDefault();
 				request('/events', {
 					method: "PATCH",
 					body: JSON.stringify(eventResizeInfo.event)
-				});
+				})
 			},
 			eventClick: function (info) {
 				info.jsEvent.preventDefault();
 				selectedEvent = info.event;
-				clientX = info.jsEvent.clientX;
-				clientY = info.jsEvent.clientY + window.scrollY;
-				/* contextMenu.rightClickContextMenu(info.jsEvent, info.event); */
+				contextMenu.rightClickContextMenu(info.jsEvent, info.event);
 			},
 			eventColor: 'oklch(75% 0.183 55.934)',
 			slotLabelFormat: {
@@ -112,28 +92,19 @@
 		calendar.render();
 		
 	});
-	function removeEvent() {
-		request('/events', {
-			method: 'DELETE',
-			body: selectedEvent.id
-		});
-		selectedEvent.remove();
-		selectedEvent = false;
-	};
 
 	function updateDate(){
-		calendar.getEventById(selectedEvent.id).setProp('title', eventTitle);
-		calendar.getEventById(selectedEvent.id).setStart(newStartDate);
-		calendar.getEventById(selectedEvent.id).setEnd(newEndDate);
+
+		calendar.getEventById(selectedEvent.id).setEnd(eventDate);
 		request('/events', {
 			method: 'PATCH',
 			body : JSON.stringify(calendar.getEventById(selectedEvent.id))
 		});
-	};
+	}
 	
 	const theme = {
 		button: {
-			base: "bg-csw hover:bg-orange-800"
+			base: "bg-csw"
 		}
 	};
 	/* $effect(() => {
@@ -142,42 +113,14 @@
 			calendar.getEventById(selectedEvent.id).setEnd(eventDate);
 	}); */
 	
-	$effect(() => {
-		if(calendar){
-			if (localeString === 'en') {
-				calendar.setOption('locale', 'en-us');
-			} else {
-				calendar.setOption('locale', localeString);
-			}
+	if(calendar){
+		if (() => localeString === 'en') {
+			calendar.setOption('locale', 'en-us');
+		} else {
+			calendar.setOption('locale', () => localeString);
 		}
-	});
+}
 </script>
 
-<div class="flex flex-row gap-2">
-	<div class="grow" id="calendar"></div>
-		<Card class="flex flex-col p-5 gap-5">
-			{#if selectedEvent}
-			<div class="flex flex-row justify-between h-10">
-				<input type="test" class="text-2xl h-full mr-auto rounded-lg focus:ring-2 focus:ring-csw focus:outline-hidden" bind:value={eventTitle} /> 
-				<button class="h-full w-10 inline-flex justify-end items-center" onclick={removeEvent}>
-					<TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
-				</button>
-			</div>
-			<Label class="space-y-2"> <span>_Start_</span>
-				<Datepicker inputClass="focus:ring-csw! focus:border-csw!" monthBtn="hover:text-csw!" monthBtnSelected="bg-csw! hover:text-white!" classes={{
-					dayButton:"aria-selected:bg-csw! aria-selected:text-white! hover:text-csw!"
-				}} bind:value={startDate}></Datepicker>
-				<Input class="focus:ring-csw! focus:border-csw!" type="time" bind:value={startTime}/>
-			</Label>
-			<Label class="space-y-2"> <span>_End_</span>
-				<Datepicker inputClass="focus:ring-csw! focus:border-csw!" classes={{dayButton:"aria-selected:bg-csw! aria-selected:hover:bg-csw!"}} bind:value={endDate}></Datepicker>
-				<Input class="focus:ring-csw! focus:border-csw!" type="time" bind:value={endTime}/>
-			</Label>
-			<ThemeProvider {theme}>
-				<Button onclick={updateDate}>_Speichern_</Button>
-			</ThemeProvider>
-			{/if}
-		</Card>
-</div>
-<svelte:window on:click={onPageClick} />
-<!-- <ContextMenu bind:this={contextMenu} /> -->
+	<div class="grow" id="calendar"> </div>
+<ContextMenu bind:this={contextMenu} />
