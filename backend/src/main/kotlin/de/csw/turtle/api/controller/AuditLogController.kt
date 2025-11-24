@@ -3,8 +3,8 @@ package de.csw.turtle.api.controller
 import de.csw.turtle.api.dto.response.GetAuditLogResponse
 import de.csw.turtle.api.exception.exceptions.exception.ExceptionNotFoundException
 import de.csw.turtle.api.repository.AuditLogRepository
-import de.csw.turtle.api.security.Permission.API_AUDITLOGS_GET_ONE
-import de.csw.turtle.api.security.Permission.API_AUDITLOGS_GET_PAGINATED
+import de.csw.turtle.api.security.Permission
+import de.csw.turtle.api.security.Permission.*
 import de.csw.turtle.api.security.RequiresPermission
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -20,7 +20,7 @@ class AuditLogController(
 ) {
 
 
-    @RequiresPermission(API_AUDITLOGS_GET_PAGINATED)
+    @RequiresPermission(API_AUDITLOGS_GET)
     @GetMapping
     fun getPaginated(
         @RequestParam(name = "page") pageNumber: Int = 0,
@@ -37,7 +37,7 @@ class AuditLogController(
         return ResponseEntity.ok(page)
     }
 
-    @RequiresPermission(API_AUDITLOGS_GET_ONE)
+    @RequiresPermission(API_AUDITLOGS_GET)
     @GetMapping("/{id}")
     fun get(@PathVariable id: Long): ResponseEntity<GetAuditLogResponse> {
         val entity = auditLogRepository.findById(id).getOrNull()

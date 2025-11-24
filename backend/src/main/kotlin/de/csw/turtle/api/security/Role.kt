@@ -8,10 +8,8 @@ private val user = setOf(API_PROFILE_GET, API_PROFILE_PATCH, API_PROFILE_DELETE,
 enum class Role(val permissions: Set<Permission>) {
 
     GUEST(setOf(API_AUTH_LOGIN, API_AUTH_REGISTER, API_SUPPORT_CREATE)),
-
     STUDENT(user),
     PROFESSOR(user),
-
     ADMINISTRATOR(Permission.entries.toSet());
 
     fun getGrantedAuthority() = GrantedAuthority { name }
