@@ -3,7 +3,7 @@
 	import { dev } from '$app/environment';
 	import request from '$lib/api/api';
 	import ContextMenu from './ContextMenu.svelte';
-	import {Card, Label, Input, Datepicker, Button, ThemeProvider} from 'flowbite-svelte';
+	import {Label, Input, Datepicker, Button, ThemeProvider} from 'flowbite-svelte';
 
 	import {TrashBinSolid} from 'flowbite-svelte-icons';
 
@@ -16,12 +16,13 @@
 	let { data } = $props();
 	let contextMenu;
 	let calendar;
+	let eventCard;
 
 	let clientX;
 	let clientY;
 
 	function onPageClick(e) {
-		if (e.clientX !== clientX && e.clientY + window.scrollY !== clientY) {
+		if (e.clientX !== clientX && e.clientY + window.scrollY !== clientY && !eventCard.contains(e.target)) {
 			selectedEvent = false;
 		}
 	};
@@ -126,7 +127,6 @@
 			}
 		});
 		calendar.render();
-		
 	});
 	function removeEvent() {
 		request('/events', {
@@ -171,33 +171,33 @@
 
 <div class="flex flex-row gap-2">
 	<div class="grow" id="calendar"></div>
-		<Card class="flex flex-col p-5 gap-5">
-			{#if selectedEvent}
-			<div class="flex flex-row justify-between h-10">
-				<input type="test" class="text-2xl h-full mr-auto rounded-lg focus:ring-2 focus:ring-csw focus:outline-hidden" bind:value={eventTitle} /> 
-				<button class="h-full w-10 inline-flex justify-end items-center" onclick={removeEvent}>
-					<TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
-				</button>
-			</div>
-			<Label class="space-y-2"> <span>_Start_</span>
-				<Datepicker inputClass="focus:ring-csw! focus:border-csw!" monthBtn="hover:text-csw!" monthBtnSelected="bg-csw! hover:text-white!" classes={{
-					dayButton:"aria-selected:bg-csw! aria-selected:text-white! hover:text-csw!"
-				}} bind:value={startDate}></Datepicker>
-				<Input class="focus:ring-csw! focus:border-csw!" type="time" bind:value={startTime}/>
-			</Label>
-			<Label class="space-y-2"> <span>_End_</span>
-				<Datepicker inputClass="focus:ring-csw! focus:border-csw!" classes={{dayButton:"aria-selected:bg-csw! aria-selected:hover:bg-csw!"}} bind:value={endDate}></Datepicker>
-				<Input class="focus:ring-csw! focus:border-csw!" type="time" bind:value={endTime}/>
-			</Label>
-			<ThemeProvider {theme}>
-				<Button onclick={updateDate}>_Speichern_</Button>
-			</ThemeProvider>
-			{:else}
-			<div class="flex flex-col h-full justify-center items-center">
-				<h1 class="text-2xl text-gray-500">_Select Event_</h1>
-			</div>
-			{/if}
-		</Card>
+		<div bind:this={eventCard} class="w-full bg-white border rounded-lg max-w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col mt-17 p-5 gap-5">
+				{#if selectedEvent}
+				<div class="flex flex-row justify-between h-10">
+					<input type="test" class="text-2xl h-full mr-auto rounded-lg focus:ring-2 focus:ring-csw focus:outline-hidden" bind:value={eventTitle} /> 
+					<button class="h-full w-10 inline-flex justify-end items-center" onclick={removeEvent}>
+						<TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
+					</button>
+				</div>
+				<Label class="space-y-2"> <span>_Start_</span>
+					<Datepicker inputClass="focus:ring-csw! focus:border-csw!" monthBtn="hover:text-csw!" monthBtnSelected="bg-csw! hover:text-white!" classes={{
+						dayButton:"aria-selected:bg-csw! aria-selected:text-white! hover:text-csw!"
+					}} bind:value={startDate}></Datepicker>
+					<Input class="focus:ring-csw! focus:border-csw!" type="time" bind:value={startTime}/>
+				</Label>
+				<Label class="space-y-2"> <span>_End_</span>
+					<Datepicker inputClass="focus:ring-csw! focus:border-csw!" classes={{dayButton:"aria-selected:bg-csw! aria-selected:hover:bg-csw!"}} bind:value={endDate}></Datepicker>
+					<Input class="focus:ring-csw! focus:border-csw!" type="time" bind:value={endTime}/>
+				</Label>
+				<ThemeProvider {theme}>
+					<Button onclick={updateDate}>_Speichern_</Button>
+				</ThemeProvider>
+				{:else}
+				<div class="flex flex-col h-full justify-center items-center">
+					<h1 class="text-2xl text-gray-500">_Select Event_</h1>
+				</div>
+				{/if}
+		</div>
 </div>
 <svelte:window on:click={onPageClick} />
 <!-- <ContextMenu bind:this={contextMenu} /> -->
