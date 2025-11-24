@@ -53,12 +53,4 @@ class AuthController(
         authService.logout(httpRequest, httpResponse, authentication)
         return ResponseEntity.noContent().build()
     }
-
-    @RequiresPermission(API_AUTH_ME)
-    @GetMapping("/me")
-    fun me(@AuthenticationPrincipal user: UserEntity): ResponseEntity<GetUserResponse> {
-        val getUserResponse = GetUserResponse(user)
-        return ResponseEntity.ok(getUserResponse)
-    }
-
 }

@@ -4,7 +4,7 @@ export const prerender = false;
 export const ssr = false;
 
 export async function load() {
-    const response = await request("/auth/me");
+    const response = await request("/profile");
     if (response.status !== 200)
         return {user: null};
 

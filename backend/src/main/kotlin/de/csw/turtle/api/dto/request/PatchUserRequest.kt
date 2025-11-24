@@ -1,10 +1,13 @@
 package de.csw.turtle.api.dto.request
 
-data class PatchUserRequest(
-    val username: String?,
-    val firstName: String?,
-    val lastName: String?,
-    val email: String?,
-    val studentId: Long?,
-    val password: String?
+import de.csw.turtle.api.security.Role
+
+open class PatchUserRequest(
+    val username: String? = null,
+    val firstName: String? = null,
+    val lastName: String? = null,
+    val email: String? = null,
+    val studentId: Long? = null,
+    val role: Role? = null,
+    val password: String? = null
 )
