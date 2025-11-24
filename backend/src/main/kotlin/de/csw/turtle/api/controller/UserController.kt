@@ -31,7 +31,7 @@ class UserController(
             .body(GetUserResponse(user))
     }
 
-    @RequiresPermission(API_USERS_GET_PAGINATED)
+    @RequiresPermission(API_USERS_GET)
     @GetMapping
     fun getPaginated(
         @RequestParam(name = "page", required = false) pageNumber: Int = 0,
@@ -48,7 +48,7 @@ class UserController(
         return ResponseEntity.ok(page)
     }
 
-    @RequiresPermission(API_USERS_GET_ONE)
+    @RequiresPermission(API_USERS_GET)
     @GetMapping("/{username}")
     fun get(
         @PathVariable username: String

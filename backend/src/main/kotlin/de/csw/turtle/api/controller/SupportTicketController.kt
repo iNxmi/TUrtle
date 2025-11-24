@@ -36,7 +36,7 @@ class SupportTicketController(
             .body(GetSupportTicketResponse(ticket))
     }
 
-    @RequiresPermission(API_SUPPORT_GET_PAGINATED)
+    @RequiresPermission(API_SUPPORT_GET)
     @GetMapping
     fun getPaginated(
         @RequestParam(name = "page", required = false) pageNumber: Int = 0,
@@ -54,7 +54,7 @@ class SupportTicketController(
         return ResponseEntity.ok(page)
     }
 
-    @RequiresPermission(API_SUPPORT_GET_ONE)
+    @RequiresPermission(API_SUPPORT_GET)
     @GetMapping("/{id}")
     fun getById(
         @PathVariable id: Long

@@ -19,7 +19,7 @@ class ExceptionController(
     private val exceptionRepository: ExceptionRepository
 ) {
 
-    @RequiresPermission(API_EXCEPTIONS_GET_PAGINATED)
+    @RequiresPermission(API_EXCEPTIONS_GET)
     @GetMapping
     fun getPaginated(
         @RequestParam(name = "page") pageNumber: Int = 0,
@@ -36,7 +36,7 @@ class ExceptionController(
         return ResponseEntity.ok(page)
     }
 
-    @RequiresPermission(API_EXCEPTIONS_GET_ONE)
+    @RequiresPermission(API_EXCEPTIONS_GET)
     @GetMapping("/{id}")
     fun get(@PathVariable id: Long): ResponseEntity<GetExceptionResponse> {
         val entity = exceptionRepository.findById(id).getOrNull()
