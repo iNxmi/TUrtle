@@ -3,7 +3,8 @@ package de.csw.turtle.api.controller
 import de.csw.turtle.api.dto.response.GetExceptionResponse
 import de.csw.turtle.api.exception.exceptions.exception.ExceptionNotFoundException
 import de.csw.turtle.api.repository.ExceptionRepository
-import de.csw.turtle.api.security.Permission.*
+import de.csw.turtle.api.security.Permission.API_EXCEPTIONS_DELETE
+import de.csw.turtle.api.security.Permission.API_EXCEPTIONS_GET
 import de.csw.turtle.api.security.RequiresPermission
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest

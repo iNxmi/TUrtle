@@ -26,5 +26,6 @@ enum class Permission {
     DEBUG_EXCEPTION,
     DEBUG_INFO,
     DEBUG_LOCKER,
-    DEBUG_DOOR
+    DEBUG_DOOR,
+    DEBUG_EMAIL
 }

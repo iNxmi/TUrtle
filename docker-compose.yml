@@ -20,6 +20,15 @@ services:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
 
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - network
+
   backend:
     build: backend
     container_name: backend
@@ -28,6 +37,7 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+      - mailhog
     networks:
       - network
     environment:
@@ -35,6 +45,10 @@ services:
       DATASOURCE_DATABASE: ${DATABASE_NAME}
       DATASOURCE_USERNAME: ${DATABASE_USERNAME}
       DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USERNAME: ${SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
 
   frontend:
     build: frontend
@@ -79,6 +93,7 @@ services:
 
   adminer:
     image: adminer:latest
+    container_name: adminer
     ports:
       - "8000:8080"
     depends_on:

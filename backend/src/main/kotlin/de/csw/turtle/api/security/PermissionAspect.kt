@@ -12,13 +12,12 @@ import org.springframework.stereotype.Component
 @Component
 class PermissionAspect {
 
-    @Around("@annotation(requiresPermission)")
-    fun checkPermission(
-        joinPoint: ProceedingJoinPoint,
-        requiresPermission: RequiresPermission
-    ): Any {
-        val principal = SecurityContextHolder.getContext().authentication?.principal
+    @Around("@annotation(RequiresPermission)")
+    fun checkPermission(joinPoint: ProceedingJoinPoint): Any? {
+        val method = (joinPoint.signature as org.aspectj.lang.reflect.MethodSignature).method
+        val requiresPermission = method.getAnnotation(RequiresPermission::class.java)!!
 
+        val principal = SecurityContextHolder.getContext().authentication?.principal
         val role = if (principal is UserEntity) principal.role else Role.GUEST
         val permission = requiresPermission.permission
 

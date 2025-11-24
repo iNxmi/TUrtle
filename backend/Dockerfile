@@ -1,5 +1,4 @@
 # Build the application
-
 FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
@@ -15,7 +14,6 @@ COPY src src
 RUN chmod +x ./gradlew && ./gradlew bootJar --no-daemon -x test
 
 # Run the application
-
 FROM eclipse-temurin:21-jre
 
 WORKDIR /app

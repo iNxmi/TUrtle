@@ -3,8 +3,7 @@ package de.csw.turtle.api.controller
 import de.csw.turtle.api.dto.response.GetAuditLogResponse
 import de.csw.turtle.api.exception.exceptions.exception.ExceptionNotFoundException
 import de.csw.turtle.api.repository.AuditLogRepository
-import de.csw.turtle.api.security.Permission
-import de.csw.turtle.api.security.Permission.*
+import de.csw.turtle.api.security.Permission.API_AUDITLOGS_GET
 import de.csw.turtle.api.security.RequiresPermission
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -18,7 +17,6 @@ import kotlin.jvm.optionals.getOrNull
 class AuditLogController(
     private val auditLogRepository: AuditLogRepository
 ) {
-
 
     @RequiresPermission(API_AUDITLOGS_GET)
     @GetMapping

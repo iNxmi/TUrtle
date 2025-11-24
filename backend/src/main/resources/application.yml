@@ -17,6 +17,18 @@ spring:
     hibernate:
       ddl-auto: update
 
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
 springdoc:
   api-docs:
     path: /openapi/api-docs
