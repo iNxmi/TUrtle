@@ -1,5 +1,5 @@
 <script>
-	import { getContext } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 
 	import { Calendar } from '@fullcalendar/core';
 	import timeGridPlugin from '@fullcalendar/timegrid';
@@ -13,7 +13,7 @@
 	let localeString = $derived(localeFunction());
 
 	let calendar;
-	$effect(() => {
+	onMount(() => {
 		let calendarEl = document.getElementById('calendar');
 		calendar = new Calendar(calendarEl, {
 			plugins: [timeGridPlugin, listPlugin],
