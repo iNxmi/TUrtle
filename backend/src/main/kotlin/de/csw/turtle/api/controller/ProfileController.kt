@@ -24,9 +24,9 @@ class ProfileController(
     @PatchMapping
     fun patch(
         @AuthenticationPrincipal user: UserEntity,
-        @RequestBody patchUserRequest: PatchProfileRequest
+        @RequestBody patchProfileRequest: PatchProfileRequest
     ): ResponseEntity<GetUserResponse> {
-        val updated = userService.update(user.username, patchUserRequest)
+        val updated = userService.updateProfile(user.username, patchProfileRequest)
         return ResponseEntity.ok(GetUserResponse(updated))
     }
 

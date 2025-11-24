@@ -2,7 +2,7 @@ package de.csw.turtle.api.dto.request
 
 import de.csw.turtle.api.security.Role
 
-open class PatchUserRequest(
+data class PatchUserRequest(
     val username: String? = null,
     val firstName: String? = null,
     val lastName: String? = null,

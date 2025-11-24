@@ -1,6 +1,7 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.dto.request.CreateUserRequest
+import de.csw.turtle.api.dto.request.PatchProfileRequest
 import de.csw.turtle.api.dto.request.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.exceptions.user.UserNotFoundException
@@ -42,6 +43,20 @@ class UserService(
         request.email?.let { user.email = it }
         request.studentId?.let { user.studentId = it }
         request.role?.let { user.role = it }
+        request.password?.let { user.passwordHash = passwordEncoderService.encode(it) }
+
+        return repository.save(user)
+    }
+
+    @Transactional
+    fun updateProfile(username: String, request: PatchProfileRequest): UserEntity {
+        val user = repository.findByUserName(username)
+            ?: throw UserNotFoundException(username)
+
+        request.firstName?.let { user.firstName = it }
+        request.lastName?.let { user.lastName = it }
+        request.email?.let { user.email = it }
+        request.studentId?.let { user.studentId = it }
         request.password?.let { user.passwordHash = passwordEncoderService.encode(it) }
 
         return repository.save(user)
