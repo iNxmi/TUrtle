@@ -1,9 +1,14 @@
 <script>
     import {Button, Heading, Input, Label, Modal} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
-
     let changePassword = $state(false);
+
     let changeOTA = $state(false);
+
+    import request from "$lib/api/api.js";
+    async function logout() {
+        await request("/auth/logout")
+    }
 
     let {data} = $props();
     // user is already in data prop because it is defined in +layout.js so no need to create a +page.js to load it again :)
@@ -62,27 +67,29 @@
 
     <div class="flex gap-5">
         <Button class="flex-1" onclick={() => changePassword = true}>{m.profile__password_change_button()}</Button>
-        <Modal title={m.profile__password_change_title()} form bind:open={changePassword}
-               onaction={({ action }) => alert(`Handle "${action}"`)}>
-            <Label>
-                <span>{m.profile__password_change__current_password_label()}</span>
-                <Input name="current_password" type="password" value="" required/>
-            </Label>
-            <Label>
-                <span>{m.profile__password_change__new_password_label()}</span>
-                <Input name="new_password" type="password" value="" required/>
-            </Label>
-            <Label>
-                <span>{m.profile__password_change__new_password_repeat_label()}</span>
-                <Input name="new_password_repeat" type="password" value="" required/>
-            </Label>
-
-            {#snippet footer()}
-                <Button type="submit" value="success">{m.profile__password_change__submit_button()}</Button>
-            {/snippet}
-        </Modal>
         <Button class="flex-1" onclick={() => changeOTA = true}>{m.profile__new_ota_button()}</Button>
+        <Button class="flex-1" color="orange" onclick={logout}>Logout</Button>
     </div>
+
+    <Modal title={m.profile__password_change_title()} form bind:open={changePassword}
+           onaction={({ action }) => alert(`Handle "${action}"`)}>
+        <Label>
+            <span>{m.profile__password_change__current_password_label()}</span>
+            <Input name="current_password" type="password" value="" required/>
+        </Label>
+        <Label>
+            <span>{m.profile__password_change__new_password_label()}</span>
+            <Input name="new_password" type="password" value="" required/>
+        </Label>
+        <Label>
+            <span>{m.profile__password_change__new_password_repeat_label()}</span>
+            <Input name="new_password_repeat" type="password" value="" required/>
+        </Label>
+
+        {#snippet footer()}
+            <Button type="submit" value="success">{m.profile__password_change__submit_button()}</Button>
+        {/snippet}
+    </Modal>
 </form>
 
 

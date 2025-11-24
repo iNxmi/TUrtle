@@ -114,10 +114,6 @@
         label: m.sidebar_bookings(),
         href: '/user/bookings',
         icon: CalendarMonthSolid
-    }, {
-        label: m.sidebar_logout(),
-        href: '/user/logout',
-        icon: UserSolid
     }];
 
     const itemsAdmin = [{
