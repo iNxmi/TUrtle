@@ -7,7 +7,7 @@ export async function GET({ request }) {
 
 export async function DELETE({ request }) {
 	const id = await request.json();
-	eventDatabase.deleteEventById(id);
+	eventDatabase.deleteEventById(id.toString());
 
 	return new Response(null, { status: 204 });
 }
