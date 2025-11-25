@@ -4,23 +4,26 @@ import jakarta.persistence.*
 
 @Entity
 data class DeviceEntity(
-    @Id
-    val id: String,
 
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(nullable = false)
-    val description: String,
+    var description: String,
 
     @Column(nullable = false)
-    val accessories: String,
+    var inventoryId: String,
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    val category: DeviceCategoryEntity,
+    var category: DeviceCategoryEntity,
 
     @ManyToOne
     @JoinColumn(name = "locker_id", nullable = false)
-    val locker: LockerEntity
+    var locker: LockerEntity,
+
+    @Id
+    @GeneratedValue
+    val id: Long = 0
+
 )

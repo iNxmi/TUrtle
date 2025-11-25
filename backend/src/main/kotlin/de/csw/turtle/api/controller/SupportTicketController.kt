@@ -3,6 +3,7 @@ package de.csw.turtle.api.controller
 import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
 import de.csw.turtle.api.dto.get.GetSupportTicketResponse
+import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.exception.exceptions.support.TicketNotFoundException
 import de.csw.turtle.api.repository.SupportTicketRepository
 import de.csw.turtle.api.security.Permission.*
@@ -26,14 +27,20 @@ class SupportTicketController(
     @PostMapping
     @Transactional
     fun create(
-        @RequestBody createSupportTicketRequest: CreateSupportTicketRequest
+        @RequestBody request: CreateSupportTicketRequest
     ): ResponseEntity<GetSupportTicketResponse> {
-        val ticket = createSupportTicketRequest.create()
-        supportTicketRepository.save(ticket)
+        val entity = SupportTicketEntity(
+            urgency = request.urgency,
+            category = request.category,
+            email = request.email,
+            subject = request.subject,
+            description = request.description
+        )
+        supportTicketRepository.save(entity)
 
         return ResponseEntity
-            .created(URI.create("/api/support/${ticket.id}"))
-            .body(GetSupportTicketResponse(ticket))
+            .created(URI.create("/api/support/${entity.id}"))
+            .body(GetSupportTicketResponse(entity))
     }
 
     @RequiresPermission(API_SUPPORT_GET)

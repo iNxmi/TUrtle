@@ -24,7 +24,14 @@ class UserService(
         if (repository.findByUserName(request.username) != null)
             throw UsernameAlreadyExistsException(request.username)
 
-        val user = request.create(passwordEncoderService.encoder)
+        val user = UserEntity(
+            userName = request.username,
+            firstName = request.firstName,
+            lastName = request.lastName,
+            email = request.email,
+            studentId = request.studentId,
+            passwordHash = passwordEncoderService.encode(request.password)
+        )
         return repository.save(user)
     }
 

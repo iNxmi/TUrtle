@@ -10,10 +10,10 @@ class ExceptionEntity(
     @Column(nullable = false)
     val endpoint: String,
 
-    @Column(nullable = false)
+    @Column
     val exception: String?,
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     val message: String?,
 
     @Column(nullable = false, columnDefinition = "TEXT")

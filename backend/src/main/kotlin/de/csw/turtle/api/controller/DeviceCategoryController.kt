@@ -1,13 +1,15 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.dto.create.CreateLockerRequest
+import de.csw.turtle.api.dto.create.CreateDeviceCategoryRequest
+import de.csw.turtle.api.dto.get.GetDeviceCategoryResponse
 import de.csw.turtle.api.dto.get.GetDeviceResponse
-import de.csw.turtle.api.dto.get.GetLockerResponse
+import de.csw.turtle.api.dto.patch.PatchDeviceCategoryRequest
 import de.csw.turtle.api.dto.patch.PatchLockerRequest
+import de.csw.turtle.api.exception.exceptions.device.category.DeviceCategoryNotFoundException
 import de.csw.turtle.api.exception.exceptions.locker.LockerNotFoundException
 import de.csw.turtle.api.security.Permission.*
 import de.csw.turtle.api.security.RequiresPermission
-import de.csw.turtle.api.service.LockerService
+import de.csw.turtle.api.service.DeviceCategoryService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort.Direction
@@ -16,48 +18,48 @@ import org.springframework.web.bind.annotation.*
 import java.net.URI
 
 @RestController
-@RequestMapping("/api/lockers")
-class LockerController(
-    private val lockerService: LockerService
+@RequestMapping("/api/devicecategories")
+class DeviceCategoryController(
+    private val deviceCategoryService: DeviceCategoryService,
 ) {
 
-    @RequiresPermission(API_LOCKERS_CREATE)
+    @RequiresPermission(API_DEVICES_CATEGORIES_CREATE)
     @PostMapping
     fun create(
-        @RequestBody createLockerRequest: CreateLockerRequest
-    ): ResponseEntity<GetLockerResponse> {
-        val entity = lockerService.create(createLockerRequest)
+        @RequestBody request: CreateDeviceCategoryRequest
+    ): ResponseEntity<GetDeviceCategoryResponse> {
+        val entity = deviceCategoryService.create(request)
         return ResponseEntity
-            .created(URI.create("/api/lockers/${entity.id}"))
-            .body(GetLockerResponse(entity))
+            .created(URI.create("/api/devices/categories/${entity.id}"))
+            .body(GetDeviceCategoryResponse(entity))
     }
 
-    @RequiresPermission(API_LOCKERS_GET)
+    @RequiresPermission(API_DEVICES_CATEGORIES_GET)
     @GetMapping
     fun getPaginated(
         @RequestParam(name = "page", required = false) pageNumber: Int = 0,
         @RequestParam(name = "size", required = false) pageSize: Int = 20,
         @RequestParam(name = "sort", required = false) sort: Array<String> = emptyArray(),
         @RequestParam(name = "direction", required = false) direction: Direction = Direction.DESC
-    ): ResponseEntity<Page<GetLockerResponse>> {
+    ): ResponseEntity<Page<GetDeviceCategoryResponse>> {
         val pageRequest = if (sort.isEmpty()) {
             PageRequest.of(pageNumber, pageSize)
         } else {
             PageRequest.of(pageNumber, pageSize, direction, *sort)
         }
-        val page = lockerService.getPaginated(pageRequest)
-        return ResponseEntity.ok(page.map { GetLockerResponse(it) })
+        val page = deviceCategoryService.getPaginated(pageRequest)
+        return ResponseEntity.ok(page.map { GetDeviceCategoryResponse(it) })
     }
 
-    @RequiresPermission(API_LOCKERS_GET)
+    @RequiresPermission(API_DEVICES_CATEGORIES_GET)
     @GetMapping("/{id}")
     fun get(
         @PathVariable id: Long
-    ): ResponseEntity<GetLockerResponse> {
-        val entity = lockerService.get(id)
-            ?: throw LockerNotFoundException(id)
+    ): ResponseEntity<GetDeviceCategoryResponse> {
+        val entity = deviceCategoryService.get(id)
+            ?: throw DeviceCategoryNotFoundException(id)
 
-        return ResponseEntity.ok(GetLockerResponse(entity))
+        return ResponseEntity.ok(GetDeviceCategoryResponse(entity))
     }
 
     @RequiresPermission(API_LOCKERS_GET)
@@ -65,31 +67,30 @@ class LockerController(
     fun getDevices(
         @PathVariable id: Long
     ): ResponseEntity<Set<GetDeviceResponse>> {
-        val entity = lockerService.get(id)
-            ?: throw LockerNotFoundException(id)
+        val entity = deviceCategoryService.get(id)
+            ?: throw DeviceCategoryNotFoundException(id)
 
         val set = entity.devices.map { GetDeviceResponse(it) }.toSet()
         return ResponseEntity.ok(set)
     }
 
-    @RequiresPermission(API_LOCKERS_PATCH)
+    @RequiresPermission(API_DEVICES_CATEGORIES_PATCH)
     @PatchMapping("/{id}")
     fun patch(
         @PathVariable id: Long,
-        @RequestBody patchLockerRequest: PatchLockerRequest
-    ): ResponseEntity<GetLockerResponse> {
-        val entity = lockerService.update(id, patchLockerRequest)
-        return ResponseEntity.ok(GetLockerResponse(entity))
+        @RequestBody request: PatchDeviceCategoryRequest
+    ): ResponseEntity<GetDeviceCategoryResponse> {
+        val entity = deviceCategoryService.update(id, request)
+        return ResponseEntity.ok(GetDeviceCategoryResponse(entity))
     }
 
-    @RequiresPermission(API_LOCKERS_DELETE)
+    @RequiresPermission(API_DEVICES_CATEGORIES_DELETE)
     @DeleteMapping("/{id}")
     fun delete(
         @PathVariable id: Long
     ): ResponseEntity<Void> {
-        lockerService.delete(id)
+        deviceCategoryService.delete(id)
         return ResponseEntity.noContent().build()
     }
-
 
 }

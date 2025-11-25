@@ -5,7 +5,7 @@ import jakarta.persistence.*
 @Entity
 class DeviceCategoryEntity(
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @OneToMany(mappedBy = "category")
     val devices: MutableSet<DeviceEntity> = mutableSetOf(),

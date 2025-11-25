@@ -8,14 +8,4 @@ data class CreateSupportTicketRequest(
     val email: String,
     val subject: String,
     val description: String
-) {
-
-    fun create() = SupportTicketEntity(
-        urgency = urgency,
-        category = category,
-        email = email,
-        subject = subject,
-        description = description
-    )
-
-}
+)

@@ -21,7 +21,10 @@ class LockerService(
         if (repository.findByIndex(request.index) != null)
             throw IndexAlreadyExistsException(request.index)
 
-        val entity = request.create()
+        val entity = LockerEntity(
+            index = request.index,
+            name = request.name,
+        )
         return repository.save(entity)
     }
 

@@ -11,6 +11,7 @@ data class GetAuditLogResponse(
     val httpMethod: AuditLogEntity.HttpMethod,
     val createdAt: Instant
 ) {
+
     constructor(entity: AuditLogEntity) : this(
         id = entity.id,
         ipAddress = entity.ipAddress,
@@ -19,4 +20,5 @@ data class GetAuditLogResponse(
         httpMethod = entity.httpMethod,
         createdAt = entity.createdAt
     )
+
 }

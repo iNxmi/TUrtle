@@ -1,20 +1,16 @@
 package de.csw.turtle.test
 
-import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
-import de.csw.turtle.api.entity.LockerEntity
-import de.csw.turtle.api.entity.SupportTicketEntity
-import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.repository.LockerRepository
-import de.csw.turtle.api.repository.SupportTicketRepository
-import de.csw.turtle.api.repository.UserRepository
+import de.csw.turtle.api.entity.*
+import de.csw.turtle.api.repository.*
 import de.csw.turtle.api.security.Role
 import de.csw.turtle.api.service.PasswordEncoderService
-import de.csw.turtle.api.service.UserService
 import io.github.serpro69.kfaker.Faker
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.transaction.annotation.Transactional
+import kotlin.jvm.optionals.getOrNull
 import kotlin.math.absoluteValue
 import kotlin.math.floor
 
@@ -22,6 +18,8 @@ import kotlin.math.floor
 class DataSeeder(
     private val userRepository: UserRepository,
     private val lockerRepository: LockerRepository,
+    private val deviceCategoryRepository: DeviceCategoryRepository,
+    private val deviceRepository: DeviceRepository,
     private val passwordEncoderService: PasswordEncoderService,
     private val supportTicketRepository: SupportTicketRepository
 ) {
@@ -86,29 +84,82 @@ class DataSeeder(
             val subject = "This is a support ticket about Something"
             val description = "I am facing an issue with Something. Please help!"
 
-            val createSupportTicketRequest = CreateSupportTicketRequest(
-                urgency,
-                category,
-                email,
-                subject,
-                description
+            val ticket = SupportTicketEntity(
+                urgency = urgency,
+                category = category,
+                email = email,
+                subject = subject,
+                description = description
             )
-
-            val ticket = createSupportTicketRequest.create()
             repository.save(ticket)
         }
     }
 
+    @Order(1)
     @Bean
     @Transactional
     fun seedLockers() = CommandLineRunner {
         val repository = lockerRepository
 
-        val locker6 = LockerEntity(6, "Locker Nr. 6")
-        repository.save(locker6)
+        if (lockerRepository.findByIndex(6) == null) {
+            val locker6 = LockerEntity(6, "Locker Nr. 6")
+            repository.save(locker6)
+        }
 
-        val locker7 = LockerEntity(7, "Locker Nr. 7")
-        repository.save(locker7)
+        if (lockerRepository.findByIndex(7) == null) {
+            val locker7 = LockerEntity(7, "Locker Nr. 7")
+            repository.save(locker7)
+        }
+    }
+
+    @Order(1)
+    @Bean
+    @Transactional
+    fun seedCategories() = CommandLineRunner {
+        val repository = deviceCategoryRepository
+
+        val categoryLaptops = DeviceCategoryEntity("Laptops")
+        repository.save(categoryLaptops)
+
+        val categoryConsoles = DeviceCategoryEntity("Consoles")
+        repository.save(categoryConsoles)
+
+        val categoryProjectors = DeviceCategoryEntity("Projectors")
+        repository.save(categoryProjectors)
+    }
+
+    @Order(2)
+    @Bean
+    @Transactional
+    fun seedDevices() = CommandLineRunner {
+        val repository = deviceRepository
+
+        val xbox360 = DeviceEntity(
+            name = "Xbox 360",
+            description = "The Xbox 360 (we love it)",
+            inventoryId = "x360_1",
+            category = deviceCategoryRepository.findById(2).getOrNull()!!,
+            locker = lockerRepository.findByIndex(6)!!
+        )
+        repository.save(xbox360)
+
+        val ps4 = DeviceEntity(
+            name = "PlayStation 4",
+            description = "The PS4 (we love it not as much as the 360)",
+            inventoryId = "ps4_1",
+            category = deviceCategoryRepository.findById(2).getOrNull()!!,
+            locker = lockerRepository.findByIndex(6)!!
+        )
+        repository.save(ps4)
+
+        val laptop = DeviceEntity(
+            name = "Dell Laptop",
+            description = "laptop from dell",
+            inventoryId = "dell_laptop_00_1",
+            category = deviceCategoryRepository.findById(1).getOrNull()!!,
+            locker = lockerRepository.findByIndex(7)!!
+        )
+        repository.save(laptop)
     }
 
 }

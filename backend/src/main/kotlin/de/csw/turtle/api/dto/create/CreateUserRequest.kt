@@ -10,15 +10,4 @@ data class CreateUserRequest(
     val email: String,
     val studentId: Long,
     val password: String
-) {
-
-    fun create(passwordEncoder: PasswordEncoder) = UserEntity(
-        userName = username,
-        firstName = firstName,
-        lastName = lastName,
-        email = email,
-        studentId = studentId,
-        passwordHash = passwordEncoder.encode(password)
-    )
-
-}
+)
