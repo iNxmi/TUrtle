@@ -13,7 +13,6 @@
 	import listPlugin from '@fullcalendar/list';
 	import interactionPlugin from '@fullcalendar/interaction';
 
-	let { data } = $props();
 	let contextMenu;
 	let calendar;
 	let eventCard;

@@ -6,7 +6,7 @@
 	import listPlugin from '@fullcalendar/list';
 	import deLocale from '@fullcalendar/core/locales/de';
 
-	let { data } = $props();
+
 
 	let localeFunction = getContext('locale');
 
@@ -46,7 +46,6 @@
 		}
 	});
 
-	const events = fetch('/dev/api/events');
 </script>
 
 <div id="calendar"></div>

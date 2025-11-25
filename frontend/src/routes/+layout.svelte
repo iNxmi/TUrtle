@@ -61,10 +61,7 @@
         setTimeout(() => setLocale(language));
 	}
 
-	let activeUrl = $state(page.url.pathname);
-	$effect(() => {
-		activeUrl = page.url.pathname;
-	});
+	let activeUrl = $derived(page.url.pathname);
 
 	let darkmode = $state(false);
 	onMount(() => {
@@ -76,12 +73,6 @@
 		document.documentElement.classList.add(darkmode ? 'light' : 'dark');
 		darkmode = !darkmode;
 	}
-
-	const theme = {
-		sidebar: {
-			base: 'bg-secondary dark:bg-secondary'
-		}
-	};
 
 	const itemsPublic = [
 		{
