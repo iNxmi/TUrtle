@@ -1,6 +1,6 @@
 package de.csw.turtle.api.exception
 
-import de.csw.turtle.api.dto.response.ExceptionResponse
+import de.csw.turtle.api.dto.ExceptionResponse
 import de.csw.turtle.api.entity.ExceptionEntity
 import de.csw.turtle.api.exception.exceptions.TUrtleException
 import de.csw.turtle.api.exception.exceptions.debug.DebugException

@@ -1,4 +1,4 @@
-package de.csw.turtle.api.dto.response
+package de.csw.turtle.api.dto.get
 
 import de.csw.turtle.api.entity.AuditLogEntity
 import java.time.Instant

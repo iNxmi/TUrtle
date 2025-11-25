@@ -9,10 +9,10 @@ import jakarta.persistence.OneToMany
 @Entity
 data class LockerEntity(
     @Column(nullable = false, unique = true)
-    val index: Int,
+    var index: Int,
 
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @OneToMany(mappedBy = "locker")
     val devices: MutableSet<DeviceEntity> = mutableSetOf(),

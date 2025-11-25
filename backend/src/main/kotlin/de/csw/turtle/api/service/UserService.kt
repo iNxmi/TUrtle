@@ -1,8 +1,8 @@
 package de.csw.turtle.api.service
 
-import de.csw.turtle.api.dto.request.CreateUserRequest
-import de.csw.turtle.api.dto.request.PatchProfileRequest
-import de.csw.turtle.api.dto.request.PatchUserRequest
+import de.csw.turtle.api.dto.create.CreateUserRequest
+import de.csw.turtle.api.dto.patch.PatchProfileRequest
+import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.exceptions.user.UserNotFoundException
 import de.csw.turtle.api.exception.exceptions.user.UsernameAlreadyExistsException

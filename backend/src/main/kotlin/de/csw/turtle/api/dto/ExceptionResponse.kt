@@ -1,4 +1,4 @@
-package de.csw.turtle.api.dto.response
+package de.csw.turtle.api.dto
 
 import org.springframework.http.HttpStatus
 import java.time.Instant

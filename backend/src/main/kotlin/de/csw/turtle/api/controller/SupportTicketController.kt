@@ -1,8 +1,8 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.dto.request.CreateSupportTicketRequest
-import de.csw.turtle.api.dto.request.PatchSupportTicketRequest
-import de.csw.turtle.api.dto.response.GetSupportTicketResponse
+import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
+import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
+import de.csw.turtle.api.dto.get.GetSupportTicketResponse
 import de.csw.turtle.api.exception.exceptions.support.TicketNotFoundException
 import de.csw.turtle.api.repository.SupportTicketRepository
 import de.csw.turtle.api.security.Permission.*

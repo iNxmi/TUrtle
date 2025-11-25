@@ -1,8 +1,8 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.dto.request.CreateUserRequest
-import de.csw.turtle.api.dto.request.PatchUserRequest
-import de.csw.turtle.api.dto.response.GetUserResponse
+import de.csw.turtle.api.dto.create.CreateUserRequest
+import de.csw.turtle.api.dto.patch.PatchUserRequest
+import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.exception.exceptions.user.UserNotFoundException
 import de.csw.turtle.api.security.Permission.*
 import de.csw.turtle.api.security.RequiresPermission

@@ -1,7 +1,7 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.dto.request.PatchProfileRequest
-import de.csw.turtle.api.dto.response.GetUserResponse
+import de.csw.turtle.api.dto.patch.PatchProfileRequest
+import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.security.Permission.*
 import de.csw.turtle.api.security.RequiresPermission

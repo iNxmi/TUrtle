@@ -1,8 +1,8 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.dto.request.LoginUserRequest
-import de.csw.turtle.api.dto.request.RegisterUserRequest
-import de.csw.turtle.api.dto.response.GetUserResponse
+import de.csw.turtle.api.dto.LoginUserRequest
+import de.csw.turtle.api.dto.RegisterUserRequest
+import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.security.Permission.*
 import de.csw.turtle.api.security.RequiresPermission
 import de.csw.turtle.api.service.AuthService

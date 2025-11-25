@@ -1,6 +1,11 @@
 package de.csw.turtle.api.security
 
 enum class Permission {
+    API_LOCKERS_CREATE,
+    API_LOCKERS_GET,
+    API_LOCKERS_PATCH,
+    API_LOCKERS_DELETE,
+
     API_USERS_CREATE,
     API_USERS_GET,
     API_USERS_PATCH,

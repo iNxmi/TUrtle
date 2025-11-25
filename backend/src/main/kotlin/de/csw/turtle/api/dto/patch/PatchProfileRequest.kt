@@ -1,4 +1,4 @@
-package de.csw.turtle.api.dto.request
+package de.csw.turtle.api.dto.patch
 
 data class PatchProfileRequest(
     val firstName: String? = null,

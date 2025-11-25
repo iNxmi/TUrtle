@@ -1,4 +1,4 @@
-package de.csw.turtle.api.dto.request
+package de.csw.turtle.api.dto
 
 import de.csw.turtle.api.entity.UserEntity
 import org.springframework.security.crypto.password.PasswordEncoder

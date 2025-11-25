@@ -1,6 +1,6 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.dto.response.GetExceptionResponse
+import de.csw.turtle.api.dto.get.GetExceptionResponse
 import de.csw.turtle.api.exception.exceptions.exception.ExceptionNotFoundException
 import de.csw.turtle.api.repository.ExceptionRepository
 import de.csw.turtle.api.security.Permission.API_EXCEPTIONS_DELETE

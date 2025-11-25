@@ -1,11 +1,12 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.exception.exceptions.debug.DebugException
+import de.csw.turtle.api.exception.exceptions.locker.LockerNotFoundException
 import de.csw.turtle.api.security.Permission.*
 import de.csw.turtle.api.security.RequiresPermission
 import de.csw.turtle.api.service.EmailService
+import de.csw.turtle.api.service.LockerService
 import de.csw.turtle.api.service.door.DoorControlService
-import de.csw.turtle.api.service.locker.Locker
 import de.csw.turtle.api.service.locker.LockerControlService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
@@ -17,7 +18,8 @@ import java.net.URI
 class DebugController(
     private val doorControlService: DoorControlService,
     private val lockerControlService: LockerControlService,
-    private val emailService: EmailService
+    private val emailService: EmailService,
+    private val lockerService : LockerService
 ) {
 
     @RequiresPermission(DEBUG_INFO)
@@ -40,9 +42,9 @@ class DebugController(
 
     @RequiresPermission(DEBUG_LOCKER)
     @GetMapping("/locker/{id}")
-    fun door(@PathVariable id: Int): ResponseEntity<String> {
-        val locker = Locker.entries.find { it.id == id }
-            ?: throw IllegalArgumentException("No locker found with id '$id'.")
+    fun door(@PathVariable id: Long): ResponseEntity<String> {
+        val locker = lockerService.get(id)
+            ?: throw LockerNotFoundException(id)
 
         val response = lockerControlService.trigger(locker)
         return ResponseEntity.ok(response)

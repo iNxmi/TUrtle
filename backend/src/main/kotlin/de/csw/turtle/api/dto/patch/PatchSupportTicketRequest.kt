@@ -1,4 +1,4 @@
-package de.csw.turtle.api.dto.request
+package de.csw.turtle.api.dto.patch
 
 import de.csw.turtle.api.entity.SupportTicketEntity
 

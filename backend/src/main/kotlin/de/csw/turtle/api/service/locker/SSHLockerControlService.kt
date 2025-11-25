@@ -1,14 +1,15 @@
 package de.csw.turtle.api.service.locker
 
 import de.csw.turtle.TUrtleProperties
+import de.csw.turtle.api.entity.LockerEntity
 import net.schmizz.sshj.SSHClient
 
 class SSHLockerControlService(
     private val properties: TUrtleProperties
 ) : LockerControlService {
 
-    override fun trigger(locker: Locker): String {
-        val input = "~/cabinet${locker.id}Open.sh"
+    override fun trigger(locker: LockerEntity): String {
+        val input = "~/cabinet${locker.index}Open.sh"
 
         return SSHClient().use { client ->
             client.connect(properties.ssh.locker.host, properties.ssh.locker.port)

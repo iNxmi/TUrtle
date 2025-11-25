@@ -1,8 +1,10 @@
 package de.csw.turtle.test
 
-import de.csw.turtle.api.dto.request.CreateSupportTicketRequest
+import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
+import de.csw.turtle.api.entity.LockerEntity
 import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.repository.LockerRepository
 import de.csw.turtle.api.repository.SupportTicketRepository
 import de.csw.turtle.api.repository.UserRepository
 import de.csw.turtle.api.security.Role
@@ -18,8 +20,8 @@ import kotlin.math.floor
 
 @Configuration
 class DataSeeder(
-    private val userService: UserService,
     private val userRepository: UserRepository,
+    private val lockerRepository: LockerRepository,
     private val passwordEncoderService: PasswordEncoderService,
     private val supportTicketRepository: SupportTicketRepository
 ) {
@@ -95,6 +97,18 @@ class DataSeeder(
             val ticket = createSupportTicketRequest.create()
             repository.save(ticket)
         }
+    }
+
+    @Bean
+    @Transactional
+    fun seedLockers() = CommandLineRunner {
+        val repository = lockerRepository
+
+        val locker6 = LockerEntity(6, "Locker Nr. 6")
+        repository.save(locker6)
+
+        val locker7 = LockerEntity(7, "Locker Nr. 7")
+        repository.save(locker7)
     }
 
 }

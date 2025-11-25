@@ -1,4 +1,4 @@
-package de.csw.turtle.api.dto.request
+package de.csw.turtle.api.dto
 
 data class LoginUserRequest(
     val username: String,
