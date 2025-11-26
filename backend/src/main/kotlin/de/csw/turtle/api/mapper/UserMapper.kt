@@ -6,8 +6,8 @@ import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import org.mapstruct.Mapper
 
-@Mapper
-class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest> {
+@Mapper(componentModel = "spring")
+open class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest> {
 
     override fun get(entity: UserEntity) = GetUserResponse(
         id = entity.id,

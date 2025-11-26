@@ -52,16 +52,18 @@ class DataSeeder(
             userRepository.save(user)
         }
 
-        val admin = UserEntity(
-            userName = "admin",
-            firstName = "admin",
-            lastName = "admin",
-            email = "admin@csw.de",
-            studentId = 42069,
-            passwordHash = passwordEncoderService.encode("admin"),
-            role = Role.ADMINISTRATOR
-        )
-        userRepository.save(admin)
+        if (userRepository.findByUserName("admin") == null) {
+            val admin = UserEntity(
+                userName = "admin",
+                firstName = "admin",
+                lastName = "admin",
+                email = "admin@csw.de",
+                studentId = 42069,
+                passwordHash = passwordEncoderService.encode("admin"),
+                role = Role.ADMINISTRATOR
+            )
+            userRepository.save(admin)
+        }
     }
 
     @Bean

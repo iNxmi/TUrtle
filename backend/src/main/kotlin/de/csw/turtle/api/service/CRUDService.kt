@@ -19,10 +19,10 @@ abstract class CRUDService<
         PatchRequest : CRUDPatchRequest,
         Repository : CRUDRepository<Entity>,
         Mapper : CRUDMapper<Entity, CreateRequest, GetResponse, PatchRequest>
-        >(
-    protected val repository: Repository,
-    protected val mapper: Mapper,
-) {
+        > {
+
+    protected abstract val repository: Repository
+    protected abstract val mapper: Mapper
 
     @Transactional
     open fun create(request: CreateRequest): Entity {

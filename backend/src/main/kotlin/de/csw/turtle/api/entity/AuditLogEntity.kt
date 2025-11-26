@@ -8,13 +8,16 @@ import java.time.Instant
 data class AuditLogEntity(
 
     @ManyToOne
-    @JoinColumn(name = "username")
+    @JoinColumn(name = "user_id", nullable = false)
     val user: UserEntity,
 
+    @Column(nullable = false)
     val ipAddress: String,
 
+    @Column(nullable = false)
     val endpoint: String,
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     val httpMethod: HttpMethod,
 

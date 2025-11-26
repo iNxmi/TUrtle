@@ -31,10 +31,11 @@ abstract class CRUDController<
         Mapper : CRUDMapper<Entity, CreateRequest, GetResponse, PatchRequest>,
         Service : CRUDService<Entity, CreateRequest, GetResponse, PatchRequest, Repository, Mapper>
         >(
-    protected val prefix: String,
-    protected val service: Service,
-    protected val mapper: Mapper
+    protected val prefix: String
 ) {
+
+    protected abstract val service: Service
+    protected abstract val mapper: Mapper
 
     @PostMapping
     @RequiresPermission(TEMPORARY_DEBUG_CRUD_CREATE)

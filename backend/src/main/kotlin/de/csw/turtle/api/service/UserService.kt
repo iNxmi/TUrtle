@@ -15,14 +15,11 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService(
-    repository: UserRepository,
-    mapper: UserMapper,
+    override val repository: UserRepository,
+    override val mapper: UserMapper,
     private val passwordEncoderService: PasswordEncoderService,
     private val sessionRegistry: SessionRegistry
-) : CRUDService<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest, UserRepository, UserMapper>(
-    repository,
-    mapper
-) {
+) : CRUDService<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest, UserRepository, UserMapper>() {
 
     override fun create(request: CreateUserRequest): UserEntity {
         if (repository.findByUserName(request.username) != null)
@@ -60,5 +57,6 @@ class UserService(
         sessionRegistry.getAllSessions(id, false).forEach { it.expireNow() }
     }
 
+    fun getByUsername(username: String) = repository.findByUserName(username)
 
 }
