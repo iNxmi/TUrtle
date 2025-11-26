@@ -1,6 +1,6 @@
 <script>
 	import { getContext, onMount } from 'svelte';
-
+	import { dev } from '$app/environment';
 	import { Calendar } from '@fullcalendar/core';
 	import timeGridPlugin from '@fullcalendar/timegrid';
 	import listPlugin from '@fullcalendar/list';
@@ -19,7 +19,7 @@
 			plugins: [timeGridPlugin, listPlugin],
 			locale: deLocale,
 			aspectRatio: 2.1,
-			events: '/dev/api/events',
+			events: dev ? '/dev/api/events' : '/api/events',
 			eventColor: 'oklch(75% 0.183 55.934)',
 			slotLabelFormat: {
 				hour: 'numeric',
