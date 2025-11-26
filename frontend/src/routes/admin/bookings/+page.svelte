@@ -103,30 +103,28 @@
 			slotMinTime: '6:00:00',
 			allDaySlot: false,
 			initialView: 'timeGridWeek',
-			customButtons: {
-				newEventButton: {
-					text: '_New Event_',
-					click: function() {
-						const date = new Date();
-						const endDate = new Date();
-						endDate.setHours(endDate.getHours()+1);
-						const newEvent = {
-							title: "_New Event_",
-							start: date,
-							end:  endDate
-						}
-						calendar.addEvent(newEvent);
-					}
-				}
-			},
 			headerToolbar: {
 				left: 'prev,next today',
 				center: 'title',
-				right: 'newEventButton, timeGridWeek,listWeek'
+				right: 'timeGridWeek,listWeek'
 			}
 		});
 		calendar.render();
 	});
+
+	function createEvent(e){
+		e.stopPropagation();
+		const date = new Date();
+		const endDate = new Date();
+		endDate.setHours(endDate.getHours()+1);
+		selectedEvent = {
+			title: "_New Event_",
+			start: date,
+			end:  endDate
+		};
+		calendar.addEvent(selectedEvent);
+
+	}
 	function removeEvent() {
 		request('/events', {
 			method: 'DELETE',
@@ -167,8 +165,8 @@
 		}
 	});
 </script>
-
-<div class="flex flex-row gap-2">
+{@debug selectedEvent}
+<div class="flex flex-col md:flex-row  gap-2">
 	<div class="grow" id="calendar"></div>
 		<div bind:this={eventCard} class="w-full bg-white border rounded-lg max-w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col mt-17 p-5 gap-5">
 				{#if selectedEvent}
@@ -194,6 +192,8 @@
 				{:else}
 				<div class="flex flex-col h-full justify-center items-center">
 					<h1 class="text-2xl text-gray-500">_Select Event_</h1>
+					<span class="mb-2.5">_or_</span>
+					<Button class="bg-csw!" onclick={createEvent}>_Create new Event_</Button>
 				</div>
 				{/if}
 		</div>
