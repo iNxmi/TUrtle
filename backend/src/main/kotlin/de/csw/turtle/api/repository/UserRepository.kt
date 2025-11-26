@@ -3,7 +3,7 @@ package de.csw.turtle.api.repository
 import de.csw.turtle.api.entity.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface UserRepository : JpaRepository<UserEntity, String> {
+interface UserRepository : CRUDRepository<UserEntity> {
 
     fun findByUserName(username: String): UserEntity?
     fun findByEmail(email: String): UserEntity?

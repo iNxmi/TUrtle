@@ -10,4 +10,4 @@ data class PatchUserRequest(
     val studentId: Long? = null,
     val role: Role? = null,
     val password: String? = null
-)
+) : CRUDPatchRequest

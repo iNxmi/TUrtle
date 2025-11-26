@@ -8,8 +8,7 @@ import java.time.Instant
 @Entity
 @Table(name = "users")
 data class UserEntity(
-    @Id
-    @Column(name = "username", nullable = false, unique = true, updatable = false)
+    @Column(name = "username", nullable = false, unique = true)
     var userName: String,
 
     @Column(nullable = false)
@@ -28,16 +27,20 @@ data class UserEntity(
     var passwordHash: String,
 
     @Column(nullable = false)
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val auditLogs: Collection<AuditLogEntity> = emptyList(),
-
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     var role: Role = Role.STUDENT,
 
+    @Column(nullable = false)
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val auditLogs: Collection<AuditLogEntity> = emptyList(),
+
     @Column(nullable = false, updatable = false)
-    val createdAt: Instant = Instant.now()
-) : UserDetails {
+    val createdAt: Instant = Instant.now(),
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    override val id: Long = 0
+) : CRUDEntity(), UserDetails {
 
     override fun getAuthorities() = setOf(role.getGrantedAuthority())
 

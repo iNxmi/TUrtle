@@ -1,58 +1,35 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.dto.create.CreateUserRequest
+import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchProfileRequest
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.exceptions.user.UserNotFoundException
 import de.csw.turtle.api.exception.exceptions.user.UsernameAlreadyExistsException
+import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.repository.UserRepository
-import org.springframework.data.domain.PageRequest
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService(
-    private val repository: UserRepository,
+    repository: UserRepository,
+    mapper: UserMapper,
     private val passwordEncoderService: PasswordEncoderService,
     private val sessionRegistry: SessionRegistry
+) : CRUDService<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest, UserRepository, UserMapper>(
+    repository,
+    mapper
 ) {
 
-    @Transactional
-    fun create(request: CreateUserRequest): UserEntity {
+    override fun create(request: CreateUserRequest): UserEntity {
         if (repository.findByUserName(request.username) != null)
             throw UsernameAlreadyExistsException(request.username)
 
-        val user = UserEntity(
-            userName = request.username,
-            firstName = request.firstName,
-            lastName = request.lastName,
-            email = request.email,
-            studentId = request.studentId,
-            passwordHash = passwordEncoderService.encode(request.password)
-        )
-        return repository.save(user)
-    }
-
-    //TODO make it not query for hidden fields based on dto (only be able to sort by dto fields)
-    fun getPaginated(request: PageRequest) = repository.findAll(request)
-    fun get(username: String) = repository.findByUserName(username)
-
-    @Transactional
-    fun update(username: String, request: PatchUserRequest): UserEntity {
-        val user = repository.findByUserName(username)
-            ?: throw UserNotFoundException(username)
-
-        request.username?.let { user.userName = it }
-        request.firstName?.let { user.firstName = it }
-        request.lastName?.let { user.lastName = it }
-        request.email?.let { user.email = it }
-        request.studentId?.let { user.studentId = it }
-        request.role?.let { user.role = it }
-        request.password?.let { user.passwordHash = passwordEncoderService.encode(it) }
-
-        return repository.save(user)
+        val hashed = request.copy(password = passwordEncoderService.encode(request.password))
+        return super.create(hashed)
     }
 
     @Transactional
@@ -69,15 +46,19 @@ class UserService(
         return repository.save(user)
     }
 
-    @Transactional
-    fun delete(username: String) {
-        val user = repository.findByUserName(username)
-            ?: throw UserNotFoundException(username)
+    override fun patch(id: Long, request: PatchUserRequest): UserEntity {
+        val patched = if (request.password != null) {
+            request.copy(password = passwordEncoderService.encode(request.password))
+        } else request
+        return super.patch(id, patched)
+    }
+
+    override fun delete(id: Long) {
+        super.delete(id)
 
         //TODO make session invalidation work when deleting a user
-        sessionRegistry.getAllSessions(user.username, false).forEach { it.expireNow() }
-
-        repository.delete(user)
+        sessionRegistry.getAllSessions(id, false).forEach { it.expireNow() }
     }
+
 
 }

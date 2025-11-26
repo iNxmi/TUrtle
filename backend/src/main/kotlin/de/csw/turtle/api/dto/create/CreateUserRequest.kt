@@ -1,8 +1,5 @@
 package de.csw.turtle.api.dto.create
 
-import de.csw.turtle.api.entity.UserEntity
-import org.springframework.security.crypto.password.PasswordEncoder
-
 data class CreateUserRequest(
     val username: String,
     val firstName: String,
@@ -10,4 +7,4 @@ data class CreateUserRequest(
     val email: String,
     val studentId: Long,
     val password: String
-)
+) : CRUDCreateRequest
