@@ -2,23 +2,23 @@ package de.csw.turtle.api.config
 
 import de.csw.turtle.TUrtleProperties
 import de.csw.turtle.api.Role
-import de.csw.turtle.api.service.CustomUserDetailsService
 import de.csw.turtle.api.service.PasswordEncoderService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.ProviderManager
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 class SecurityConfig(
     private val properties: TUrtleProperties,
     private val sessionRegistry: SessionRegistry,
@@ -58,8 +58,11 @@ class SecurityConfig(
 //                    .alwaysRemember(false)
 //            }
 
-            .authorizeHttpRequests { it.anyRequest().permitAll() }
-            .anonymous { it.authorities(Role.ANONYMOUS.getGrantedAuthorities()) }
+            .authorizeHttpRequests {
+                it.requestMatchers("/api/*").authenticated()
+                it.anyRequest().permitAll()
+            }
+            .anonymous { it.authorities(Role.ANONYMOUS.grantedAuthorities()) }
 
             .formLogin { it.disable() }
             .logout { it.disable() }

@@ -1,8 +1,8 @@
 package de.csw.turtle.test
 
+import de.csw.turtle.api.Role
 import de.csw.turtle.api.entity.*
 import de.csw.turtle.api.repository.*
-import de.csw.turtle.api.security.Role
 import de.csw.turtle.api.service.PasswordEncoderService
 import io.github.serpro69.kfaker.Faker
 import org.springframework.boot.CommandLineRunner

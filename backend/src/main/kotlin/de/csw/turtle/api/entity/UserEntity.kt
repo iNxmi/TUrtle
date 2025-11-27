@@ -42,7 +42,7 @@ data class UserEntity(
     override val id: Long = 0
 ) : CRUDEntity(), UserDetails {
 
-    override fun getAuthorities() = role.getGrantedAuthorities()
+    override fun getAuthorities() = role.grantedAuthorities()
     override fun getUsername() = userName
     override fun getPassword() = passwordHash
 

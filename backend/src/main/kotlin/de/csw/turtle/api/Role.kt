@@ -4,27 +4,45 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 //TODO convert to entity for custom roles
 
-private val user = setOf(
-    "api.profile:get",
-    "api.profile:patch",
-    "api.profile:delete",
-    "api.auth:logout",
-    "api.support:create"
-)
-
 enum class Role(val permissions: Set<String>) {
 
     ANONYMOUS(setOf(
         "api.auth:login",
         "api.auth:register",
+
         "api.support:create"
     )),
 
-    STUDENT(user),
-    PROFESSOR(user),
+    STUDENT(setOf(
+        "api.profile:get",
+        "api.profile:patch",
+        "api.profile:delete",
 
-    ADMINISTRATOR(setOf("*:*"));
+        "api.auth:logout",
 
-    fun getGrantedAuthorities() = permissions.map { SimpleGrantedAuthority(it) }
+        "api.support:create"
+    )),
+
+    PROFESSOR(setOf(
+        "api.profile:get",
+        "api.profile:patch",
+        "api.profile:delete",
+
+        "api.auth:logout",
+
+        "api.support:create"
+    )),
+
+    ADMINISTRATOR(setOf(
+        "api.auth:login",
+        "api.auth:register",
+        "api.auth:logout",
+
+        "api.profile:get",
+        "api.profile:patch",
+        "api.profile:delete"
+    ));
+
+    fun grantedAuthorities() = permissions.map { SimpleGrantedAuthority(it) }
 
 }

@@ -8,6 +8,7 @@ import de.csw.turtle.api.service.AuthService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -20,6 +21,7 @@ class AuthController(
 ) {
 
     @PostMapping("/register")
+    @PreAuthorize("hasAuthority('api.auth:register')")
     fun register(
         @RequestBody request: RegisterUserRequest
     ): ResponseEntity<GetUserResponse> {
@@ -31,6 +33,7 @@ class AuthController(
     }
 
     @PostMapping("/login")
+    @PreAuthorize("hasAuthority('api.auth:login')")
     fun login(
         @RequestBody loginUserRequest: LoginUserRequest,
         httpRequest: HttpServletRequest
@@ -40,6 +43,7 @@ class AuthController(
     }
 
     @GetMapping("/logout")
+    @PreAuthorize("hasAuthority('api.auth:logout')")
     fun logout(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse,

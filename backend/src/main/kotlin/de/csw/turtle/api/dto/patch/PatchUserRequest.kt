@@ -1,6 +1,6 @@
 package de.csw.turtle.api.dto.patch
 
-import de.csw.turtle.api.security.Role
+import de.csw.turtle.api.Role
 
 data class PatchUserRequest(
     val username: String? = null,

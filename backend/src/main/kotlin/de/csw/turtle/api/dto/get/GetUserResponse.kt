@@ -1,6 +1,6 @@
 package de.csw.turtle.api.dto.get
 
-import de.csw.turtle.api.security.Role
+import de.csw.turtle.api.Role
 import java.time.Instant
 
 data class GetUserResponse(

@@ -49,7 +49,7 @@ class GlobalControllerExceptionHandler(
         exception.responseEntity(request.requestURI, HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(MissingServletRequestParameterException::class)
-    fun methodArgumentTypeMismatch(exception: MissingServletRequestParameterException, request: HttpServletRequest) =
+    fun missingServletRequestParameter(exception: MissingServletRequestParameterException, request: HttpServletRequest) =
         exception.responseEntity(request.requestURI, HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(Exception::class)
