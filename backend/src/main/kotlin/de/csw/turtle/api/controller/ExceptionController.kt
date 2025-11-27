@@ -3,9 +3,6 @@ package de.csw.turtle.api.controller
 import de.csw.turtle.api.dto.get.GetExceptionResponse
 import de.csw.turtle.api.exception.exceptions.exception.ExceptionNotFoundException
 import de.csw.turtle.api.repository.ExceptionRepository
-import de.csw.turtle.api.security.Permission.API_EXCEPTIONS_DELETE
-import de.csw.turtle.api.security.Permission.API_EXCEPTIONS_GET
-import de.csw.turtle.api.security.RequiresPermission
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort.Direction
@@ -20,7 +17,6 @@ class ExceptionController(
     private val exceptionRepository: ExceptionRepository
 ) {
 
-    @RequiresPermission(API_EXCEPTIONS_GET)
     @GetMapping
     fun getPaginated(
         @RequestParam(name = "page") pageNumber: Int = 0,
@@ -37,7 +33,6 @@ class ExceptionController(
         return ResponseEntity.ok(page)
     }
 
-    @RequiresPermission(API_EXCEPTIONS_GET)
     @GetMapping("/{id}")
     fun get(@PathVariable id: Long): ResponseEntity<GetExceptionResponse> {
         val entity = exceptionRepository.findById(id).getOrNull()
@@ -46,7 +41,6 @@ class ExceptionController(
         return ResponseEntity.ok(GetExceptionResponse(entity))
     }
 
-    @RequiresPermission(API_EXCEPTIONS_DELETE)
     @DeleteMapping("/{id}")
     @Transactional
     fun delete(@PathVariable id: Long): ResponseEntity<Void> {

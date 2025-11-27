@@ -4,10 +4,7 @@ import de.csw.turtle.api.dto.LoginUserRequest
 import de.csw.turtle.api.dto.RegisterUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.mapper.UserMapper
-import de.csw.turtle.api.security.Permission.*
-import de.csw.turtle.api.security.RequiresPermission
 import de.csw.turtle.api.service.AuthService
-import de.csw.turtle.api.service.UserService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
@@ -22,7 +19,6 @@ class AuthController(
     private val userMapper: UserMapper
 ) {
 
-    @RequiresPermission(API_AUTH_REGISTER)
     @PostMapping("/register")
     fun register(
         @RequestBody request: RegisterUserRequest
@@ -34,7 +30,6 @@ class AuthController(
             .body(userMapper.get(user))
     }
 
-    @RequiresPermission(API_AUTH_LOGIN)
     @PostMapping("/login")
     fun login(
         @RequestBody loginUserRequest: LoginUserRequest,
@@ -44,7 +39,6 @@ class AuthController(
         return ResponseEntity.ok(userMapper.get(user))
     }
 
-    @RequiresPermission(API_AUTH_LOGOUT)
     @GetMapping("/logout")
     fun logout(
         httpRequest: HttpServletRequest,
@@ -54,4 +48,5 @@ class AuthController(
         authService.logout(httpRequest, httpResponse, authentication)
         return ResponseEntity.noContent().build()
     }
+
 }

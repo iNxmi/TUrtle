@@ -1,6 +1,7 @@
 package de.csw.turtle.api.config
 
 import de.csw.turtle.TUrtleProperties
+import de.csw.turtle.api.Role
 import de.csw.turtle.api.service.CustomUserDetailsService
 import de.csw.turtle.api.service.PasswordEncoderService
 import org.springframework.context.annotation.Bean
@@ -21,9 +22,9 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 class SecurityConfig(
     private val properties: TUrtleProperties,
     private val sessionRegistry: SessionRegistry,
-    private val passwordEncoderService: PasswordEncoderService,
-    private val userDetailsService: CustomUserDetailsService,
-    private val persistentTokenRepository: PersistentTokenRepository
+    private val passwordEncoderService: PasswordEncoderService
+//    private val userDetailsService: CustomUserDetailsService,
+//    private val persistentTokenRepository: PersistentTokenRepository
 ) {
 
     @Bean
@@ -49,15 +50,17 @@ class SecurityConfig(
                 it.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             }
 
-            .rememberMe {
-                it.key(properties.security.sessionSecret)
-                    .userDetailsService(userDetailsService)
-                    .tokenRepository(persistentTokenRepository)
-                    .tokenValiditySeconds(properties.security.rememberMeDuration.seconds.toInt())
-                    .alwaysRemember(false)
-            }
+//            .rememberMe {
+//                it.key(properties.security.sessionSecret)
+//                    .userDetailsService(userDetailsService)
+//                    .tokenRepository(persistentTokenRepository)
+//                    .tokenValiditySeconds(properties.security.rememberMeDuration.seconds.toInt())
+//                    .alwaysRemember(false)
+//            }
 
             .authorizeHttpRequests { it.anyRequest().permitAll() }
+            .anonymous { it.authorities(Role.ANONYMOUS.getGrantedAuthorities()) }
+
             .formLogin { it.disable() }
             .logout { it.disable() }
             .httpBasic { it.disable() }

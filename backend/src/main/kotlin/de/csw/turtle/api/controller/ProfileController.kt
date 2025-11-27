@@ -1,13 +1,12 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.dto.patch.PatchProfileRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
+import de.csw.turtle.api.dto.patch.PatchProfileRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.mapper.UserMapper
-import de.csw.turtle.api.security.Permission.*
-import de.csw.turtle.api.security.RequiresPermission
 import de.csw.turtle.api.service.UserService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
@@ -18,12 +17,12 @@ class ProfileController(
     private val userMapper: UserMapper
 ) {
 
-    @RequiresPermission(API_PROFILE_GET)
     @GetMapping
+    @PreAuthorize("hasAuthority('api.profile:get')")
     fun get(@AuthenticationPrincipal user: UserEntity) = ResponseEntity.ok(userMapper.get(user))
 
-    @RequiresPermission(API_PROFILE_PATCH)
     @PatchMapping
+    @PreAuthorize("hasAuthority('api.profile:patch')")
     fun patch(
         @AuthenticationPrincipal user: UserEntity,
         @RequestBody patchProfileRequest: PatchProfileRequest
@@ -32,8 +31,8 @@ class ProfileController(
         return ResponseEntity.ok(userMapper.get(updated))
     }
 
-    @RequiresPermission(API_PROFILE_DELETE)
     @DeleteMapping
+    @PreAuthorize("hasAuthority('api.profile:delete')")
     fun delete(
         @AuthenticationPrincipal user: UserEntity
     ): ResponseEntity<GetUserResponse> {

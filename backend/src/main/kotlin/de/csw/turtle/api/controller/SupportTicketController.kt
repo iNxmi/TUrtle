@@ -1,13 +1,11 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
-import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
 import de.csw.turtle.api.dto.get.GetSupportTicketResponse
+import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
 import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.exception.exceptions.support.TicketNotFoundException
 import de.csw.turtle.api.repository.SupportTicketRepository
-import de.csw.turtle.api.security.Permission.*
-import de.csw.turtle.api.security.RequiresPermission
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort.Direction
@@ -23,7 +21,6 @@ class SupportTicketController(
     private val supportTicketRepository: SupportTicketRepository
 ) {
 
-    @RequiresPermission(API_SUPPORT_CREATE)
     @PostMapping
     @Transactional
     fun create(
@@ -43,7 +40,6 @@ class SupportTicketController(
             .body(GetSupportTicketResponse(entity))
     }
 
-    @RequiresPermission(API_SUPPORT_GET)
     @GetMapping
     fun getPaginated(
         @RequestParam(name = "page", required = false) pageNumber: Int = 0,
@@ -61,7 +57,6 @@ class SupportTicketController(
         return ResponseEntity.ok(page)
     }
 
-    @RequiresPermission(API_SUPPORT_GET)
     @GetMapping("/{id}")
     fun getById(
         @PathVariable id: Long
@@ -72,7 +67,6 @@ class SupportTicketController(
         return ResponseEntity.ok(GetSupportTicketResponse(ticket))
     }
 
-    @RequiresPermission(API_SUPPORT_DELETE)
     @PatchMapping("/{id}")
     @Transactional
     fun deleteById(
@@ -89,7 +83,6 @@ class SupportTicketController(
         return ResponseEntity.ok(GetSupportTicketResponse(ticket))
     }
 
-    @RequiresPermission(API_SUPPORT_DELETE)
     @DeleteMapping("/{id}")
     @Transactional
     fun deleteById(

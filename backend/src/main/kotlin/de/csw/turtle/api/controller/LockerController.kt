@@ -5,8 +5,6 @@ import de.csw.turtle.api.dto.get.GetDeviceResponse
 import de.csw.turtle.api.dto.get.GetLockerResponse
 import de.csw.turtle.api.dto.patch.PatchLockerRequest
 import de.csw.turtle.api.exception.exceptions.locker.LockerNotFoundException
-import de.csw.turtle.api.security.Permission.*
-import de.csw.turtle.api.security.RequiresPermission
 import de.csw.turtle.api.service.LockerService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -21,7 +19,6 @@ class LockerController(
     private val lockerService: LockerService
 ) {
 
-    @RequiresPermission(API_LOCKERS_CREATE)
     @PostMapping
     fun create(
         @RequestBody createLockerRequest: CreateLockerRequest
@@ -32,7 +29,6 @@ class LockerController(
             .body(GetLockerResponse(entity))
     }
 
-    @RequiresPermission(API_LOCKERS_GET)
     @GetMapping
     fun getPaginated(
         @RequestParam(name = "page", required = false) pageNumber: Int = 0,
@@ -49,7 +45,6 @@ class LockerController(
         return ResponseEntity.ok(page.map { GetLockerResponse(it) })
     }
 
-    @RequiresPermission(API_LOCKERS_GET)
     @GetMapping("/{id}")
     fun get(
         @PathVariable id: Long
@@ -60,7 +55,6 @@ class LockerController(
         return ResponseEntity.ok(GetLockerResponse(entity))
     }
 
-    @RequiresPermission(API_LOCKERS_GET)
     @GetMapping("/{id}/devices")
     fun getDevices(
         @PathVariable id: Long
@@ -72,7 +66,6 @@ class LockerController(
         return ResponseEntity.ok(set)
     }
 
-    @RequiresPermission(API_LOCKERS_PATCH)
     @PatchMapping("/{id}")
     fun patch(
         @PathVariable id: Long,
@@ -82,7 +75,6 @@ class LockerController(
         return ResponseEntity.ok(GetLockerResponse(entity))
     }
 
-    @RequiresPermission(API_LOCKERS_DELETE)
     @DeleteMapping("/{id}")
     fun delete(
         @PathVariable id: Long

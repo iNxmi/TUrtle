@@ -4,8 +4,6 @@ import de.csw.turtle.api.dto.create.CreateDeviceRequest
 import de.csw.turtle.api.dto.get.GetDeviceResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceRequest
 import de.csw.turtle.api.exception.exceptions.device.DeviceNotFoundException
-import de.csw.turtle.api.security.Permission.*
-import de.csw.turtle.api.security.RequiresPermission
 import de.csw.turtle.api.service.DeviceService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -20,7 +18,6 @@ class DeviceController(
     private val deviceService: DeviceService,
 ) {
 
-    @RequiresPermission(API_DEVICES_CREATE)
     @PostMapping
     fun create(
         @RequestBody request: CreateDeviceRequest
@@ -31,7 +28,6 @@ class DeviceController(
             .body(GetDeviceResponse(entity))
     }
 
-    @RequiresPermission(API_DEVICES_GET)
     @GetMapping
     fun getPaginated(
         @RequestParam(name = "page", required = false) pageNumber: Int = 0,
@@ -48,7 +44,6 @@ class DeviceController(
         return ResponseEntity.ok(page.map { GetDeviceResponse(it) })
     }
 
-    @RequiresPermission(API_DEVICES_GET)
     @GetMapping("/{id}")
     fun get(
         @PathVariable id: Long
@@ -59,7 +54,6 @@ class DeviceController(
         return ResponseEntity.ok(GetDeviceResponse(entity))
     }
 
-    @RequiresPermission(API_DEVICES_PATCH)
     @PatchMapping("/{id}")
     fun patch(
         @PathVariable id: Long,
@@ -69,7 +63,6 @@ class DeviceController(
         return ResponseEntity.ok(GetDeviceResponse(entity))
     }
 
-    @RequiresPermission(API_DEVICES_DELETE)
     @DeleteMapping("/{id}")
     fun delete(
         @PathVariable id: Long
