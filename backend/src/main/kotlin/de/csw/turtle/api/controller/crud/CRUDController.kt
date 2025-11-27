@@ -10,6 +10,11 @@ import de.csw.turtle.api.service.CRUDService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Sort.Direction
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.authorization.AuthorizationDeniedException
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 
@@ -22,7 +27,8 @@ abstract class CRUDController<
         Mapper : CRUDMapper<Entity, CreateRequest, GetResponse, PatchRequest>,
         Service : CRUDService<Entity, CreateRequest, GetResponse, PatchRequest, Repository, Mapper>
         >(
-    protected val prefix: String
+    protected val prefix: String,
+    protected val path: String
 ) {
 
     protected abstract val service: Service
@@ -30,6 +36,8 @@ abstract class CRUDController<
 
     @PostMapping
     fun create(@RequestBody request: CreateRequest): ResponseEntity<GetResponse> {
+        permission(path, "create")
+
         val entity = service.create(request)
         val response = mapper.get(entity)
         val location = URI.create("$prefix/${entity.id}")
@@ -38,6 +46,8 @@ abstract class CRUDController<
 
     @GetMapping("/{id}")
     fun get(@PathVariable id: Long): ResponseEntity<GetResponse> {
+        permission(path, "get")
+
         val entity = service.get(id)
         return ResponseEntity.ok(mapper.get(entity))
     }
@@ -49,20 +59,33 @@ abstract class CRUDController<
         @RequestParam(name = "sort", required = false) sort: Array<String> = emptyArray(),
         @RequestParam(name = "direction", required = false) direction: Direction = Direction.DESC
     ): ResponseEntity<Page<GetResponse>> {
+        permission(path, "get")
+
         val result = service.getPage(page, size, sort, direction)
         return ResponseEntity.ok(result.map { mapper.get(it) })
     }
 
     @PatchMapping("/{id}")
     fun patch(@PathVariable id: Long, @RequestBody request: PatchRequest): ResponseEntity<GetResponse> {
+        permission(path, "patch")
+
         val entity = service.patch(id, request)
         return ResponseEntity.ok(mapper.get(entity))
     }
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseEntity<Void> {
+        permission(path, "delete")
+
         service.delete(id)
         return ResponseEntity.noContent().build()
+    }
+
+    private fun permission(path: String, action: String) {
+        val auth = SecurityContextHolder.getContext().authentication
+        val permission = "$path:$action"
+        if (auth == null || auth.authorities.none { it.authority == permission })
+            throw AuthorizationDeniedException("Access Denied")
     }
 
 }

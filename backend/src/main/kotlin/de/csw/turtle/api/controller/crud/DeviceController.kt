@@ -21,5 +21,6 @@ class DeviceController(
     override val service: DeviceService,
     override val mapper: DeviceMapper
 ) : CRUDController<DeviceEntity, CreateDeviceRequest, GetDeviceResponse, PatchDeviceRequest, DeviceRepository, DeviceMapper, DeviceService>(
-    "/api/devices"
+    "/api/devices",
+    "api.devices"
 )

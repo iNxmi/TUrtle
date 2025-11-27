@@ -16,5 +16,6 @@ class UserController(
     override val service: UserService,
     override val mapper: UserMapper
 ) : CRUDController<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest, UserRepository, UserMapper, UserService>(
-    "/api/users"
+    "/api/users",
+    "api.users"
 )

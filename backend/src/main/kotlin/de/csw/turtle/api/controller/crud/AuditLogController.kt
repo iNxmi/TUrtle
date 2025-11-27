@@ -28,5 +28,6 @@ class AuditLogController(
     override val service: AuditLogService,
     override val mapper: AuditLogMapper
 ) : CRUDController<AuditLogEntity, CreateAuditLogRequest, GetAuditLogResponse, PatchAuditLogRequest, AuditLogRepository, AuditLogMapper, AuditLogService>(
-    "/api/auditlogs"
+    "/api/auditlogs",
+    "api.auditlogs"
 )

@@ -22,5 +22,6 @@ class DeviceCategoryController(
     override val service: DeviceCategoryService,
     override val mapper: DeviceCategoryMapper
 ) : CRUDController<DeviceCategoryEntity, CreateDeviceCategoryRequest, GetDeviceCategoryResponse, PatchDeviceCategoryRequest, DeviceCategoryRepository, DeviceCategoryMapper, DeviceCategoryService>(
-    "/api/devicecategories"
+    "/api/devicecategories",
+    "api.devicecategories"
 )

@@ -22,5 +22,6 @@ class LockerController(
     override val service: LockerService,
     override val mapper: LockerMapper
 ) : CRUDController<LockerEntity, CreateLockerRequest, GetLockerResponse, PatchLockerRequest, LockerRepository, LockerMapper, LockerService>(
-    "/api/lockers"
+    "/api/lockers",
+    "api.lockers"
 )

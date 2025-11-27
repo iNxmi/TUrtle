@@ -15,5 +15,6 @@ class ExceptionController(
     override val service: ExceptionService,
     override val mapper: ExceptionMapper,
 ) : CRUDController<ExceptionEntity, CreateExceptionRequest, GetExceptionResponse, PatchExceptionRequest, ExceptionRepository, ExceptionMapper, ExceptionService>(
-    "/api/exceptions"
+    "/api/exceptions",
+    "api.exceptions"
 )

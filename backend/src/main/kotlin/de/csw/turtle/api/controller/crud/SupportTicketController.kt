@@ -23,5 +23,6 @@ class SupportTicketController(
     override val service: SupportTicketService,
     override val mapper: SupportTicketMapper
 ) : CRUDController<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse, PatchSupportTicketRequest, SupportTicketRepository, SupportTicketMapper, SupportTicketService>(
-    "/api/support"
+    "/api/support",
+    "api.support"
 )

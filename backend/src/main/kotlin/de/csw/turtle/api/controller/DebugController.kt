@@ -8,6 +8,7 @@ import de.csw.turtle.api.service.door.DoorControlService
 import de.csw.turtle.api.service.locker.LockerControlService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -25,6 +26,7 @@ class DebugController(
 ) {
 
     @GetMapping("/info")
+    @PreAuthorize("hasAuthority('debug:info')")
     fun debug(
         httpRequest: HttpServletRequest
     ): ResponseEntity<Map<String, String>> {
@@ -35,12 +37,14 @@ class DebugController(
     }
 
     @GetMapping("/door")
+    @PreAuthorize("hasAuthority('debug:door')")
     fun door(): ResponseEntity<String> {
         val response = doorControlService.trigger()
         return ResponseEntity.ok(response)
     }
 
     @GetMapping("/locker/{id}")
+    @PreAuthorize("hasAuthority('debug:locker')")
     fun door(@PathVariable id: Long): ResponseEntity<String> {
         val locker = lockerService.getOrNull(id)
             ?: throw LockerNotFoundException(id)
@@ -50,11 +54,13 @@ class DebugController(
     }
 
     @GetMapping("/exception")
+    @PreAuthorize("hasAuthority('debug:exception')")
     fun exception(@RequestParam message: String?): Nothing {
         throw DebugException(message)
     }
 
     @GetMapping("/email")
+    @PreAuthorize("hasAuthority('debug:email')")
     fun exception(@RequestParam to: String, @RequestParam subject: String, @RequestParam text: String) {
         emailService.sendSimpleEmail(to, subject, text)
     }
