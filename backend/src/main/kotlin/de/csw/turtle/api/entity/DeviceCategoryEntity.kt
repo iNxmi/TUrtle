@@ -1,6 +1,7 @@
 package de.csw.turtle.api.entity
 
 import jakarta.persistence.*
+import java.time.Instant
 
 @Entity
 class DeviceCategoryEntity(
@@ -12,5 +13,8 @@ class DeviceCategoryEntity(
 
     @Id
     @GeneratedValue
-    val id: Long = 0,
-)
+    override val id: Long = 0,
+
+    @Column(nullable = false)
+    override val createdAt: Instant = Instant.now()
+) : CRUDEntity()

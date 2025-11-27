@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller
+package de.csw.turtle.api.controller.crud
 
 import de.csw.turtle.api.dto.create.CRUDCreateRequest
 import de.csw.turtle.api.dto.get.CRUDGetResponse
@@ -49,8 +49,8 @@ abstract class CRUDController<
         @RequestParam(name = "sort", required = false) sort: Array<String> = emptyArray(),
         @RequestParam(name = "direction", required = false) direction: Direction = Direction.DESC
     ): ResponseEntity<Page<GetResponse>> {
-        val page = service.getPage(page, size, sort, direction)
-        return ResponseEntity.ok(page.map { mapper.get(it) })
+        val result = service.getPage(page, size, sort, direction)
+        return ResponseEntity.ok(result.map { mapper.get(it) })
     }
 
     @PatchMapping("/{id}")

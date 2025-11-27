@@ -7,7 +7,16 @@ import de.csw.turtle.api.entity.UserEntity
 import org.mapstruct.Mapper
 
 @Mapper(componentModel = "spring")
-open class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest> {
+abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest> {
+
+    override fun create(request: CreateUserRequest) = UserEntity(
+        userName = request.username,
+        firstName = request.firstName,
+        lastName = request.lastName,
+        email = request.email,
+        studentId = request.studentId,
+        passwordHash = request.password
+    )
 
     override fun get(entity: UserEntity) = GetUserResponse(
         id = entity.id,
@@ -18,15 +27,6 @@ open class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRespons
         studentId = entity.studentId,
         role = entity.role,
         createdAt = entity.createdAt
-    )
-
-    override fun create(request: CreateUserRequest) = UserEntity(
-        userName = request.username,
-        firstName = request.firstName,
-        lastName = request.lastName,
-        email = request.email,
-        studentId = request.studentId,
-        passwordHash = request.password
     )
 
     override fun patch(

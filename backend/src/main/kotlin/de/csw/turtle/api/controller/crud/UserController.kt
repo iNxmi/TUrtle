@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller
+package de.csw.turtle.api.controller.crud
 
 import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse

@@ -9,26 +9,26 @@ data class AuditLogEntity(
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    val user: UserEntity,
+    var user: UserEntity,
 
     @Column(nullable = false)
-    val ipAddress: String,
+    var ipAddress: String,
 
     @Column(nullable = false)
-    val endpoint: String,
+    var endpoint: String,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    val httpMethod: HttpMethod,
+    var httpMethod: HttpMethod,
 
     @Id
     @GeneratedValue
-    val id: Long = 0,
+    override val id: Long = 0,
 
     @Column(updatable = false)
-    val createdAt: Instant = Instant.now()
+    override val createdAt: Instant = Instant.now()
 
-) {
+) : CRUDEntity() {
 
     enum class HttpMethod {
         GET, POST, PUT, DELETE, HEAD, OPTIONS, TRACE, PATCH

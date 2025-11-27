@@ -1,6 +1,6 @@
 package de.csw.turtle.api.dto.patch
 
 data class PatchLockerRequest(
-    val index: Int?,
-    val name: String?
-)
+    val index: Int? = null,
+    val name: String? = null
+): CRUDPatchRequest

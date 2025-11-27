@@ -8,22 +8,22 @@ import java.time.Instant
 class ExceptionEntity(
 
     @Column(nullable = false)
-    val endpoint: String,
+    var endpoint: String,
 
     @Column
-    val exception: String?,
+    var exception: String?,
 
     @Column(columnDefinition = "TEXT")
-    val message: String?,
+    var message: String?,
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    val stackTrace: String,
+    var stackTrace: String,
 
     @Id
     @GeneratedValue
-    val id: Long = 0,
+    override val id: Long = 0,
 
     @Column(nullable = false, updatable = false)
-    val createdAt: Instant = Instant.now()
+    override val createdAt: Instant = Instant.now()
 
-)
+) : CRUDEntity()

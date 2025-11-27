@@ -6,4 +6,4 @@ data class CreateDeviceRequest(
     val inventoryId: String,
     val categoryId: Long,
     val lockerId: Long
-)
+) : CRUDCreateRequest

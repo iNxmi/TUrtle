@@ -12,6 +12,7 @@ data class RegisterUserRequest(
     val password: String
 ) {
 
+    //TODO remove create method
     fun create(passwordEncoder: PasswordEncoder) = UserEntity(
         userName = username,
         firstName = firstName,

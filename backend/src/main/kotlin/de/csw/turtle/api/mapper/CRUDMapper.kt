@@ -7,9 +7,9 @@ import de.csw.turtle.api.entity.CRUDEntity
 
 interface CRUDMapper<Entity : CRUDEntity, CreateRequest : CRUDCreateRequest, GetResponse : CRUDGetResponse, PatchRequest : CRUDPatchRequest> {
 
-    fun get(entity: Entity): GetResponse
-
     fun create(request: CreateRequest): Entity
+
+    fun get(entity: Entity): GetResponse
 
     fun patch(entity: Entity, request: PatchRequest): Entity
 

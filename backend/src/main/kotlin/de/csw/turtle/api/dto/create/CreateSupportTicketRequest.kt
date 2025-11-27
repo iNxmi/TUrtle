@@ -8,4 +8,4 @@ data class CreateSupportTicketRequest(
     val email: String,
     val subject: String,
     val description: String
-)
+) : CRUDCreateRequest

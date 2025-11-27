@@ -29,11 +29,11 @@ data class SupportTicketEntity(
 
     @Id
     @GeneratedValue
-    val id: Long = 0,
+    override val id: Long = 0,
 
     @Column(nullable = false, updatable = false)
-    val createdAt: Instant = Instant.now()
-) {
+    override val createdAt: Instant = Instant.now()
+) : CRUDEntity() {
 
     enum class Urgency {
         LOW,

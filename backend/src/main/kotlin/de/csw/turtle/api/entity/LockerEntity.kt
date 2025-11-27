@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
+import java.time.Instant
 
 @Entity
 data class LockerEntity(
@@ -19,5 +20,8 @@ data class LockerEntity(
 
     @Id
     @GeneratedValue
-    val id: Long = 0
-)
+    override val id: Long = 0,
+
+    @Column(nullable = false)
+    override val createdAt: Instant = Instant.now()
+) : CRUDEntity()

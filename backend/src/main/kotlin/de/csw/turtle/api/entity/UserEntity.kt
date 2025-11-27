@@ -34,12 +34,12 @@ data class UserEntity(
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val auditLogs: Collection<AuditLogEntity> = emptyList(),
 
-    @Column(nullable = false, updatable = false)
-    val createdAt: Instant = Instant.now(),
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    override val id: Long = 0
+    @GeneratedValue
+    override val id: Long = 0,
+
+    @Column(nullable = false, updatable = false)
+    override val createdAt: Instant = Instant.now()
 ) : CRUDEntity(), UserDetails {
 
     override fun getAuthorities() = role.grantedAuthorities()

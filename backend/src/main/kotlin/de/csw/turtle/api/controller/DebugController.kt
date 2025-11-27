@@ -8,7 +8,11 @@ import de.csw.turtle.api.service.door.DoorControlService
 import de.csw.turtle.api.service.locker.LockerControlService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
@@ -38,7 +42,7 @@ class DebugController(
 
     @GetMapping("/locker/{id}")
     fun door(@PathVariable id: Long): ResponseEntity<String> {
-        val locker = lockerService.get(id)
+        val locker = lockerService.getOrNull(id)
             ?: throw LockerNotFoundException(id)
 
         val response = lockerControlService.trigger(locker)

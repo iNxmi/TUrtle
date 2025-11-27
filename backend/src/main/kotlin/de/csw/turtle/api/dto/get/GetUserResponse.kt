@@ -11,5 +11,5 @@ data class GetUserResponse(
     val email: String,
     val studentId: Long,
     val role: Role,
-    val createdAt: Instant
+    override val createdAt: Instant
 ) : CRUDGetResponse
