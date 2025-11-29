@@ -1,7 +1,7 @@
 package de.csw.turtle.api.entity
 
-import de.csw.turtle.api.Role
 import jakarta.persistence.*
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.time.Instant
 
@@ -26,9 +26,13 @@ data class UserEntity(
     @Column(nullable = false, name = "password")
     var passwordHash: String,
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    var role: Role = Role.STUDENT,
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "role_id")]
+    )
+    val roles: MutableSet<RoleEntity> = mutableSetOf(),
 
     @Column(nullable = false)
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
@@ -42,7 +46,7 @@ data class UserEntity(
     override val createdAt: Instant = Instant.now()
 ) : CRUDEntity(), UserDetails {
 
-    override fun getAuthorities() = role.grantedAuthorities()
+    override fun getAuthorities(): Set<SimpleGrantedAuthority> = roles.flatMap { it.grantedAuthorities() }.toSet()
     override fun getUsername() = userName
     override fun getPassword() = passwordHash
 

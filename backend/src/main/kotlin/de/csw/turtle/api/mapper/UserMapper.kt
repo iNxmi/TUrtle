@@ -4,10 +4,18 @@ import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.service.RoleService
 import org.mapstruct.Mapper
+import org.springframework.beans.factory.annotation.Autowired
 
 @Mapper(componentModel = "spring")
 abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest> {
+
+    @Autowired
+    protected lateinit var roleMapper: RoleMapper
+
+    @Autowired
+    protected lateinit var roleService: RoleService
 
     override fun create(request: CreateUserRequest) = UserEntity(
         userName = request.username,
@@ -25,7 +33,7 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
         lastName = entity.lastName,
         email = entity.email,
         studentId = entity.studentId,
-        role = entity.role,
+        roles = entity.roles.map { it.id }.toSet(),
         createdAt = entity.createdAt
     )
 
@@ -40,7 +48,14 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
         request.email?.let { entity.email = it }
         request.studentId?.let { entity.studentId = it }
         request.password?.let { entity.passwordHash = it }
-        request.role?.let { entity.role = it }
+
+        if (request.roleIds != null) {
+            val roles = request.roleIds.map { roleService.get(it) }.toSet()
+
+            entity.roles.clear()
+            entity.roles.addAll(roles)
+        }
+
         return entity
     }
 

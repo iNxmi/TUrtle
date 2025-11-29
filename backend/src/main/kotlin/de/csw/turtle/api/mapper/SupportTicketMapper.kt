@@ -4,7 +4,6 @@ import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.get.GetSupportTicketResponse
 import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
 import de.csw.turtle.api.entity.SupportTicketEntity
-import de.csw.turtle.api.service.UserService
 import org.mapstruct.Mapper
 
 @Mapper(componentModel = "spring")

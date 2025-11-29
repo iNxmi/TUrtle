@@ -2,11 +2,9 @@ package de.csw.turtle.api.dto.get
 
 import java.time.Instant
 
-data class GetExceptionResponse(
+data class GetRoleResponse(
     override val id: Long,
-    val endpoint: String,
-    val exception: String?,
-    val message: String?,
-    val stackTrace: String,
+    val name: String,
+    val permissions: Set<String>,
     override val createdAt: Instant
 ) : CRUDGetResponse

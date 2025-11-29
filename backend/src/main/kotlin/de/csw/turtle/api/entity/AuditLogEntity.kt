@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.time.Instant
 
 @Entity
-@Table(name = "audit_logs")
+@Table(name = "auditlogs")
 data class AuditLogEntity(
 
     @ManyToOne

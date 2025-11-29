@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import java.time.Instant
 
 @Entity
+@Table(name = "device_categories")
 class DeviceCategoryEntity(
     @Column(nullable = false)
     var name: String,

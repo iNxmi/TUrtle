@@ -59,4 +59,6 @@ abstract class CRUDService<
     @Transactional
     open fun delete(id: Long) = repository.delete(get(id))
 
+    open fun count() = repository.count()
+
 }

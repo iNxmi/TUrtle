@@ -10,11 +10,8 @@ import de.csw.turtle.api.service.CRUDService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Sort.Direction
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.authorization.AuthorizationDeniedException
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 

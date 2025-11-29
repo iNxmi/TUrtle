@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.core.session.SessionRegistryImpl
 
 @Configuration
-class SessionConfig {
+class SessionConfiguration {
 
     @Bean
     fun sessionRegistry() = SessionRegistryImpl()

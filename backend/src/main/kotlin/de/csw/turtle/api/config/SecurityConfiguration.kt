@@ -1,8 +1,8 @@
 package de.csw.turtle.api.config
 
 import de.csw.turtle.TUrtleProperties
-import de.csw.turtle.api.Role
 import de.csw.turtle.api.service.PasswordEncoderService
+import de.csw.turtle.api.service.RoleService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.SecurityFilterChain
@@ -19,10 +20,12 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-class SecurityConfig(
+class SecurityConfiguration(
     private val properties: TUrtleProperties,
     private val sessionRegistry: SessionRegistry,
-    private val passwordEncoderService: PasswordEncoderService
+    private val passwordEncoderService: PasswordEncoderService,
+    private val roleService: RoleService,
+
 //    private val userDetailsService: CustomUserDetailsService,
 //    private val persistentTokenRepository: PersistentTokenRepository
 ) {
@@ -39,6 +42,12 @@ class SecurityConfig(
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
+
+        val anonymous = mutableListOf<GrantedAuthority>()
+        val role = roleService.getByName("Anonymous")
+        if(role != null)
+            anonymous.addAll(role.grantedAuthorities())
+
         http.csrf { it.disable() }
             .cors { it.disable() }
 
@@ -62,7 +71,10 @@ class SecurityConfig(
                 it.requestMatchers("/api/*").authenticated()
                 it.anyRequest().permitAll()
             }
-            .anonymous { it.authorities(Role.ANONYMOUS.grantedAuthorities()) }
+
+            .anonymous {
+                it.authorities(anonymous)
+            }
 
             .formLogin { it.disable() }
             .logout { it.disable() }

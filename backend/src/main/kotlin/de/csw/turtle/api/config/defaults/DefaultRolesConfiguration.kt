@@ -1,19 +1,24 @@
-package de.csw.turtle.api
+package de.csw.turtle.api.config.defaults
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority
+import de.csw.turtle.api.dto.create.CreateRoleRequest
+import de.csw.turtle.api.service.RoleService
+import org.springframework.boot.CommandLineRunner
+import org.springframework.context.annotation.Configuration
+import org.springframework.transaction.annotation.Transactional
 
-//TODO convert to entity for custom roles
+@Configuration
+class DefaultRolesConfiguration(
+    private val service: RoleService
+) : CommandLineRunner {
 
-enum class Role(val permissions: Set<String>) {
-
-    ANONYMOUS(setOf(
+    private val anonymous = setOf(
         "api.auth:login",
         "api.auth:register",
 
         "api.support:create"
-    )),
+    )
 
-    STUDENT(setOf(
+    private val student = setOf(
         "api.profile:get",
         "api.profile:patch",
         "api.profile:delete",
@@ -21,9 +26,9 @@ enum class Role(val permissions: Set<String>) {
         "api.auth:logout",
 
         "api.support:create"
-    )),
+    )
 
-    PROFESSOR(setOf(
+    private val professor = setOf(
         "api.profile:get",
         "api.profile:patch",
         "api.profile:delete",
@@ -31,9 +36,9 @@ enum class Role(val permissions: Set<String>) {
         "api.auth:logout",
 
         "api.support:create"
-    )),
+    )
 
-    ADMINISTRATOR(setOf(
+    private val administrator = setOf(
         "debug:info",
         "debug:door",
         "debug:locker",
@@ -82,8 +87,22 @@ enum class Role(val permissions: Set<String>) {
         "api.users:get",
         "api.users:patch",
         "api.users:delete",
-    ));
 
-    fun grantedAuthorities() = permissions.map { SimpleGrantedAuthority(it) }
+        "api.roles:create",
+        "api.roles:get",
+        "api.roles:patch",
+        "api.roles:delete"
+    )
+
+    @Transactional
+    override fun run(vararg args: String) {
+        if (service.count() > 0)
+            return
+
+        service.create(CreateRoleRequest(name = "Anonymous", permissions = anonymous))
+        service.create(CreateRoleRequest(name = "Student", permissions = student))
+        service.create(CreateRoleRequest(name = "Professor", permissions = professor))
+        service.create(CreateRoleRequest(name = "Administrator", permissions = administrator))
+    }
 
 }

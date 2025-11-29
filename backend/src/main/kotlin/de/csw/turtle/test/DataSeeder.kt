@@ -1,9 +1,9 @@
 package de.csw.turtle.test
 
-import de.csw.turtle.api.Role
 import de.csw.turtle.api.entity.*
 import de.csw.turtle.api.repository.*
 import de.csw.turtle.api.service.PasswordEncoderService
+import de.csw.turtle.api.service.RoleService
 import io.github.serpro69.kfaker.Faker
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
@@ -21,7 +21,8 @@ class DataSeeder(
     private val deviceCategoryRepository: DeviceCategoryRepository,
     private val deviceRepository: DeviceRepository,
     private val passwordEncoderService: PasswordEncoderService,
-    private val supportTicketRepository: SupportTicketRepository
+    private val supportTicketRepository: SupportTicketRepository,
+    private val roleService: RoleService
 ) {
 
     private val minimumEntries = 128
@@ -36,9 +37,9 @@ class DataSeeder(
             val email = faker.internet.email("$firstName $lastName")
             val username = ("$firstName.$lastName").lowercase()
 
-            val entries = Role.entries
-            val index = floor(Math.random() * (entries.size - 1)).toInt() + 1
-            val role = entries[index]
+            val roles = roleService.getAll()
+            val index = floor(Math.random() * (roles.size - 1)).toInt() + 1
+            val role = roles[index]
 
             val user = UserEntity(
                 userName = username,
@@ -47,7 +48,7 @@ class DataSeeder(
                 email = email,
                 studentId = faker.random.unique.nextInt().absoluteValue.toLong(),
                 passwordHash = passwordEncoderService.encode("password"),
-                role = role
+                roles = setOf(role).toMutableSet()
             )
             userRepository.save(user)
         }
@@ -60,7 +61,7 @@ class DataSeeder(
                 email = "admin@csw.de",
                 studentId = 42069,
                 passwordHash = passwordEncoderService.encode("admin"),
-                role = Role.ADMINISTRATOR
+                roles = mutableSetOf(roleService.getByName("Administrator")!!)
             )
             userRepository.save(admin)
         }

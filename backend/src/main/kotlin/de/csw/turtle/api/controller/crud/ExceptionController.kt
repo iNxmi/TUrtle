@@ -7,7 +7,8 @@ import de.csw.turtle.api.entity.ExceptionEntity
 import de.csw.turtle.api.mapper.ExceptionMapper
 import de.csw.turtle.api.repository.ExceptionRepository
 import de.csw.turtle.api.service.ExceptionService
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/exceptions")

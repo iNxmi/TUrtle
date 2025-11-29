@@ -31,8 +31,8 @@ abstract class DeviceMapper: CRUDMapper<DeviceEntity, CreateDeviceRequest, GetDe
         name = entity.name,
         description = entity.description,
         inventoryId = entity.inventoryId,
-        categoryId = entity.category.id,
-        lockerId = entity.locker.id,
+        category = entity.category.id,
+        locker = entity.locker.id,
         createdAt = entity.createdAt
     )
 

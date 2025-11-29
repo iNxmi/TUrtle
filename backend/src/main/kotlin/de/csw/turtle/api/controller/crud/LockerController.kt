@@ -1,20 +1,14 @@
 package de.csw.turtle.api.controller.crud
 
 import de.csw.turtle.api.dto.create.CreateLockerRequest
-import de.csw.turtle.api.dto.get.GetDeviceResponse
 import de.csw.turtle.api.dto.get.GetLockerResponse
 import de.csw.turtle.api.dto.patch.PatchLockerRequest
 import de.csw.turtle.api.entity.LockerEntity
-import de.csw.turtle.api.exception.exceptions.locker.LockerNotFoundException
 import de.csw.turtle.api.mapper.LockerMapper
 import de.csw.turtle.api.repository.LockerRepository
 import de.csw.turtle.api.service.LockerService
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort.Direction
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
-import java.net.URI
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/lockers")
