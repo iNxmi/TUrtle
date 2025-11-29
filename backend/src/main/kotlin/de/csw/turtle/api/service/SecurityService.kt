@@ -14,7 +14,7 @@ class SecurityService(
 
     fun required(permission: Permission) {
         val authentication = SecurityContextHolder.getContext().authentication
-            ?: TODO("implement exception")
+            ?: throw IllegalStateException("Authentication not found.")
 
         val principal = authentication.principal
         val permissions: Collection<Permission> = if (principal is UserDetails) {

@@ -4,6 +4,7 @@ import de.csw.turtle.api.dto.create.CRUDCreateRequest
 import de.csw.turtle.api.dto.get.CRUDGetResponse
 import de.csw.turtle.api.dto.patch.CRUDPatchRequest
 import de.csw.turtle.api.entity.CRUDEntity
+import de.csw.turtle.api.exception.exceptions.crud.CRUDResourceNotFoundException
 import de.csw.turtle.api.mapper.CRUDMapper
 import de.csw.turtle.api.repository.CRUDRepository
 import org.springframework.data.domain.Page
@@ -29,7 +30,7 @@ abstract class CRUDService<
     }
 
     fun getOrNull(id: Long): Entity? = repository.findById(id).getOrNull()
-    fun get(id: Long): Entity = getOrNull(id) ?: TODO("implement exception")
+    fun get(id: Long): Entity = getOrNull(id) ?: throw CRUDResourceNotFoundException(id)
 
     fun getAll(): List<Entity> = repository.findAll()
 
