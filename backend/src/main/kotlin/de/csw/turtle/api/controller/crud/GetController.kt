@@ -18,7 +18,7 @@ interface GetController<
         GetResponse : CRUDGetResponse
         > {
 
-    val service: CRUDService<Entity, *, GetResponse, *, *, *>
+    val service: CRUDService<Entity, *, GetResponse, *>
     val mapper: CRUDMapper<Entity, *, GetResponse, *>
     val securityService: SecurityService
     val getPermission: Permission

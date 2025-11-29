@@ -12,4 +12,4 @@ import org.springframework.stereotype.Service
 class AuditLogService(
     override val repository: AuditLogRepository,
     override val mapper: AuditLogMapper
-) : CRUDService<AuditLogEntity, CreateAuditLogRequest, GetAuditLogResponse, PatchAuditLogRequest, AuditLogRepository, AuditLogMapper>()
+) : CRUDService<AuditLogEntity, CreateAuditLogRequest, GetAuditLogResponse, PatchAuditLogRequest>()

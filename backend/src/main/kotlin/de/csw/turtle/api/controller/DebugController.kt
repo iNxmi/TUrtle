@@ -4,7 +4,7 @@ import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.exception.exceptions.debug.DebugException
 import de.csw.turtle.api.exception.exceptions.locker.LockerNotFoundException
 import de.csw.turtle.api.service.EmailService
-import de.csw.turtle.api.service.LockerService
+import de.csw.turtle.api.service.locker.LockerService
 import de.csw.turtle.api.service.SecurityService
 import de.csw.turtle.api.service.door.DoorControlService
 import de.csw.turtle.api.service.locker.LockerControlService

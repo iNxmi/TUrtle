@@ -12,4 +12,4 @@ import org.springframework.stereotype.Service
 class DeviceService(
     override val repository: DeviceRepository,
     override val mapper: DeviceMapper
-) : CRUDService<DeviceEntity, CreateDeviceRequest, GetDeviceResponse, PatchDeviceRequest, DeviceRepository, DeviceMapper>()
+) : CRUDService<DeviceEntity, CreateDeviceRequest, GetDeviceResponse, PatchDeviceRequest>()

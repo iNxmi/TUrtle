@@ -5,7 +5,7 @@ import de.csw.turtle.api.dto.get.GetDeviceResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceRequest
 import de.csw.turtle.api.entity.DeviceEntity
 import de.csw.turtle.api.service.DeviceCategoryService
-import de.csw.turtle.api.service.LockerService
+import de.csw.turtle.api.service.locker.LockerService
 import org.mapstruct.Mapper
 import org.springframework.beans.factory.annotation.Autowired
 

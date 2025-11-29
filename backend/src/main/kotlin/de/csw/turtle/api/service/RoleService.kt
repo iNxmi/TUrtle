@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 class RoleService(
     override val repository: RoleRepository,
     override val mapper: RoleMapper
-) : CRUDService<RoleEntity, CreateRoleRequest, GetRoleResponse, PatchRoleRequest, RoleRepository, RoleMapper>() {
+) : CRUDService<RoleEntity, CreateRoleRequest, GetRoleResponse, PatchRoleRequest>() {
 
     fun getByName(name: String) = repository.findByName(name)
 

@@ -12,4 +12,4 @@ import org.springframework.stereotype.Service
 class ExceptionService(
     override val repository: ExceptionRepository,
     override val mapper: ExceptionMapper
-) : CRUDService<ExceptionEntity, CreateExceptionRequest, GetExceptionResponse, PatchExceptionRequest, ExceptionRepository, ExceptionMapper>()
+) : CRUDService<ExceptionEntity, CreateExceptionRequest, GetExceptionResponse, PatchExceptionRequest>()

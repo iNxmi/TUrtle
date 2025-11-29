@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable
 
 interface DeleteController<Entity : CRUDEntity> {
 
-    val service: CRUDService<Entity, *, *, *, *, *>
+    val service: CRUDService<Entity, *, *, *>
     val securityService: SecurityService
     val deletePermission: Permission
 

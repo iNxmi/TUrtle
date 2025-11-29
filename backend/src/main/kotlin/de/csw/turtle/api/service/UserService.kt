@@ -18,7 +18,7 @@ class UserService(
     override val repository: UserRepository,
     override val mapper: UserMapper,
     private val passwordEncoder: PasswordEncoder
-) : CRUDService<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest, UserRepository, UserMapper>() {
+) : CRUDService<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest>() {
 
     override fun create(request: CreateUserRequest): UserEntity {
         if (getOrNull(request.username) != null)

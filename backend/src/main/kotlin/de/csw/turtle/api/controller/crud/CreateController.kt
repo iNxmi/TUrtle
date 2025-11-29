@@ -19,7 +19,7 @@ interface CreateController<
         > {
 
     val endpoint: String
-    val service: CRUDService<Entity, CreateRequest, GetResponse, *, *, *>
+    val service: CRUDService<Entity, CreateRequest, GetResponse, *>
     val mapper: CRUDMapper<Entity, CreateRequest, GetResponse, *>
     val securityService: SecurityService
     val createPermission: Permission

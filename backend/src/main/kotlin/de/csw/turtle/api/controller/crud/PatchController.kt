@@ -18,7 +18,7 @@ interface PatchController<
         GetResponse : CRUDGetResponse
         > {
 
-    val service: CRUDService<Entity, *, GetResponse, PatchRequest, *, *>
+    val service: CRUDService<Entity, *, GetResponse, PatchRequest>
     val mapper: CRUDMapper<Entity, *, GetResponse, PatchRequest>
     val securityService: SecurityService
     val patchPermission: Permission

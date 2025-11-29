@@ -16,13 +16,11 @@ abstract class CRUDService<
         Entity : CRUDEntity,
         CreateRequest : CRUDCreateRequest,
         GetResponse : CRUDGetResponse,
-        PatchRequest : CRUDPatchRequest,
-        Repository : CRUDRepository<Entity>,
-        Mapper : CRUDMapper<Entity, CreateRequest, GetResponse, PatchRequest>
+        PatchRequest : CRUDPatchRequest
         > {
 
-    protected abstract val repository: Repository
-    protected abstract val mapper: Mapper
+    protected abstract val repository: CRUDRepository<Entity>
+    protected abstract val mapper: CRUDMapper<Entity, CreateRequest, GetResponse, PatchRequest>
 
     @Transactional
     open fun create(request: CreateRequest): Entity {

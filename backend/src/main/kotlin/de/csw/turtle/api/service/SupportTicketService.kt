@@ -12,4 +12,4 @@ import org.springframework.stereotype.Service
 class SupportTicketService(
     override val repository: SupportTicketRepository,
     override val mapper: SupportTicketMapper
-) : CRUDService<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse, PatchSupportTicketRequest, SupportTicketRepository, SupportTicketMapper>()
+) : CRUDService<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse, PatchSupportTicketRequest>()

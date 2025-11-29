@@ -6,7 +6,7 @@ import de.csw.turtle.api.dto.get.GetLockerResponse
 import de.csw.turtle.api.dto.patch.PatchLockerRequest
 import de.csw.turtle.api.entity.LockerEntity
 import de.csw.turtle.api.mapper.LockerMapper
-import de.csw.turtle.api.service.LockerService
+import de.csw.turtle.api.service.locker.LockerService
 import de.csw.turtle.api.service.SecurityService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
