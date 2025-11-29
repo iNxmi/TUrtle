@@ -4,10 +4,7 @@ import de.csw.turtle.api.entity.*
 import de.csw.turtle.api.repository.*
 import de.csw.turtle.api.service.RoleService
 import io.github.serpro69.kfaker.Faker
-import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.context.event.ApplicationReadyEvent
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.EventListener
 import org.springframework.core.annotation.Order
 import org.springframework.security.crypto.password.PasswordEncoder

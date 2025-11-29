@@ -10,7 +10,7 @@ import org.mapstruct.Mapper
 import org.springframework.beans.factory.annotation.Autowired
 
 @Mapper(componentModel = "spring")
-abstract class DeviceMapper: CRUDMapper<DeviceEntity, CreateDeviceRequest, GetDeviceResponse, PatchDeviceRequest> {
+abstract class DeviceMapper : CRUDMapper<DeviceEntity, CreateDeviceRequest, GetDeviceResponse, PatchDeviceRequest> {
 
     @Autowired
     protected lateinit var deviceCategoryService: DeviceCategoryService

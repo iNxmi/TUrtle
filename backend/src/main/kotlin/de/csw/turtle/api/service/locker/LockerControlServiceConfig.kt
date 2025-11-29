@@ -11,7 +11,7 @@ class LockerControlServiceConfig(
 
     @Bean
     fun lockerControlService(): LockerControlService {
-        if(properties.debug)
+        if (properties.debug)
             return DebugLockerControlService()
 
         return SSHLockerControlService(properties)

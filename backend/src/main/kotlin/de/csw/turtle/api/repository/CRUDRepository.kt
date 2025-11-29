@@ -5,4 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.NoRepositoryBean
 
 @NoRepositoryBean
-interface CRUDRepository<Entity: CRUDEntity> : JpaRepository<Entity, Long>
+interface CRUDRepository<Entity : CRUDEntity> : JpaRepository<Entity, Long>

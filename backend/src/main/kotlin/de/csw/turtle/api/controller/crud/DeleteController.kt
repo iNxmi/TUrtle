@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 
-interface DeleteController<Entity: CRUDEntity> {
+interface DeleteController<Entity : CRUDEntity> {
 
     val service: CRUDService<Entity, *, *, *, *, *>
     val securityService: SecurityService

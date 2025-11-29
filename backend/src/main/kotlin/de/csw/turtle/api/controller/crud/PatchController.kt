@@ -31,5 +31,4 @@ interface PatchController<
         return ResponseEntity.ok(mapper.get(entity))
     }
 
-
 }

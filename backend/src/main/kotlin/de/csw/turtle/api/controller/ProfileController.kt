@@ -1,6 +1,5 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchProfileRequest

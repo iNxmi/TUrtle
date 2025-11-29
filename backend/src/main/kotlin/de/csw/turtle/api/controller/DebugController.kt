@@ -1,6 +1,5 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.exception.exceptions.debug.DebugException
 import de.csw.turtle.api.exception.exceptions.locker.LockerNotFoundException
@@ -11,7 +10,6 @@ import de.csw.turtle.api.service.door.DoorControlService
 import de.csw.turtle.api.service.locker.LockerControlService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 

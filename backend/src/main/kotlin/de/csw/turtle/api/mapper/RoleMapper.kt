@@ -27,7 +27,7 @@ abstract class RoleMapper : CRUDMapper<RoleEntity, CreateRoleRequest, GetRoleRes
     ): RoleEntity {
         request.name?.let { entity.name = it }
 
-        if(request.permissions != null) {
+        if (request.permissions != null) {
             entity.permissions.clear()
             entity.permissions.addAll(request.permissions)
         }

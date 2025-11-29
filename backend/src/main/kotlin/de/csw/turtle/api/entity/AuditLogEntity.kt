@@ -1,6 +1,5 @@
 package de.csw.turtle.api.entity
 
-import de.csw.turtle.api.entity.UserEntity
 import jakarta.persistence.*
 import java.time.Instant
 

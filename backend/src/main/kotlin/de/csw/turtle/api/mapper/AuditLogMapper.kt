@@ -9,7 +9,8 @@ import org.mapstruct.Mapper
 import org.springframework.beans.factory.annotation.Autowired
 
 @Mapper(componentModel = "spring")
-abstract class AuditLogMapper: CRUDMapper<AuditLogEntity, CreateAuditLogRequest, GetAuditLogResponse, PatchAuditLogRequest> {
+abstract class AuditLogMapper :
+    CRUDMapper<AuditLogEntity, CreateAuditLogRequest, GetAuditLogResponse, PatchAuditLogRequest> {
 
     @Autowired
     protected lateinit var userService: UserService
