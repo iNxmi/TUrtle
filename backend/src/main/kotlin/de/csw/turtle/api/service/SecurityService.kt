@@ -1,6 +1,7 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.Permission
+import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.exceptions.security.InsufficientPermissionException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
@@ -12,7 +13,7 @@ class SecurityService(
     private val roleService: RoleService
 ) {
 
-    fun required(permission: Permission) {
+    fun hasPermission(permission: Permission): UserEntity? {
         val authentication = SecurityContextHolder.getContext().authentication
             ?: throw IllegalStateException("Authentication not found.")
 
@@ -26,6 +27,11 @@ class SecurityService(
 
         if (!permissions.contains(permission))
             throw InsufficientPermissionException(permission)
+
+        if(principal !is UserDetails)
+            return null
+
+        return userService.get(principal.username)
     }
 
 }

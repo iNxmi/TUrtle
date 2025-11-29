@@ -8,6 +8,7 @@ import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.service.SecurityService
 import de.csw.turtle.api.service.UserService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
@@ -20,28 +21,24 @@ class ProfileController(
 ) {
 
     @GetMapping
-    fun get(@AuthenticationPrincipal user: UserEntity): ResponseEntity<GetUserResponse> {
-        securityService.required(API_PROFILE__GET)
-
+    fun get(): ResponseEntity<GetUserResponse> {
+        val user = securityService.hasPermission(API_PROFILE__GET)!!
         return ResponseEntity.ok(userMapper.get(user))
     }
 
     @PatchMapping
     fun patch(
-        @AuthenticationPrincipal user: UserEntity,
         @RequestBody patchProfileRequest: PatchProfileRequest
     ): ResponseEntity<GetUserResponse> {
-        securityService.required(API_PROFILE__PATCH)
+        val user = securityService.hasPermission(API_PROFILE__PATCH)!!
 
         val updated = userService.updateProfile(user.username, patchProfileRequest)
         return ResponseEntity.ok(userMapper.get(updated))
     }
 
     @DeleteMapping
-    fun delete(
-        @AuthenticationPrincipal user: UserEntity
-    ): ResponseEntity<GetUserResponse> {
-        securityService.required(API_PROFILE__DELETE)
+    fun delete(): ResponseEntity<GetUserResponse> {
+        val user = securityService.hasPermission(API_PROFILE__DELETE)!!
 
         userService.delete(user.id)
         return ResponseEntity.noContent().build()

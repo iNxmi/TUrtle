@@ -25,7 +25,7 @@ interface GetController<
 
     @GetMapping("/one/{id}")
     fun get(@PathVariable id: Long): ResponseEntity<GetResponse> {
-        securityService.required(getPermission)
+        securityService.hasPermission(getPermission)
 
         val entity = service.get(id)
         return ResponseEntity.ok(mapper.get(entity))
@@ -33,7 +33,7 @@ interface GetController<
 
     @GetMapping("/all")
     fun getAll(): ResponseEntity<Collection<GetResponse>> {
-        securityService.required(getPermission)
+        securityService.hasPermission(getPermission)
 
         val entities = service.getAll()
         return ResponseEntity.ok(entities.map { mapper.get(it) })
@@ -46,7 +46,7 @@ interface GetController<
         @RequestParam(name = "sort", required = false) sort: Array<String> = emptyArray(),
         @RequestParam(name = "direction", required = false) direction: Direction = Direction.DESC
     ): ResponseEntity<Page<GetResponse>> {
-        securityService.required(getPermission)
+        securityService.hasPermission(getPermission)
 
         val result = service.getPage(page, size, sort, direction)
         return ResponseEntity.ok(result.map { mapper.get(it) })

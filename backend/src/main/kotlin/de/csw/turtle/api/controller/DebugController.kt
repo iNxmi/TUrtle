@@ -27,7 +27,7 @@ class DebugController(
     fun debug(
         httpRequest: HttpServletRequest
     ): ResponseEntity<Map<String, String>> {
-        securityService.required(DEBUG__INFO)
+        securityService.hasPermission(DEBUG__INFO)
 
         val origin = URI.create(httpRequest.requestURL.toString()).host
 
@@ -37,7 +37,7 @@ class DebugController(
 
     @GetMapping("/door")
     fun door(): ResponseEntity<String> {
-        securityService.required(DEBUG__DOOR)
+        securityService.hasPermission(DEBUG__DOOR)
 
         val response = doorControlService.trigger()
         return ResponseEntity.ok(response)
@@ -45,7 +45,7 @@ class DebugController(
 
     @GetMapping("/locker/{id}")
     fun door(@PathVariable id: Long): ResponseEntity<String> {
-        securityService.required(DEBUG__LOCKER)
+        securityService.hasPermission(DEBUG__LOCKER)
 
         val locker = lockerService.getOrNull(id)
             ?: throw LockerNotFoundException(id)
@@ -56,14 +56,14 @@ class DebugController(
 
     @GetMapping("/exception")
     fun exception(@RequestParam message: String?): Nothing {
-        securityService.required(DEBUG__EXCEPTION)
+        securityService.hasPermission(DEBUG__EXCEPTION)
 
         throw DebugException(message)
     }
 
     @GetMapping("/email")
     fun exception(@RequestParam to: String, @RequestParam subject: String, @RequestParam text: String) {
-        securityService.required(DEBUG__EMAIL)
+        securityService.hasPermission(DEBUG__EMAIL)
 
         emailService.sendSimpleEmail(to, subject, text)
     }

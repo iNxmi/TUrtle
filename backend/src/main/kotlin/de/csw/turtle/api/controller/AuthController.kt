@@ -26,7 +26,7 @@ class AuthController(
     fun register(
         @RequestBody request: RegisterUserRequest
     ): ResponseEntity<GetUserResponse> {
-        securityService.required(API_AUTH__REGISTER)
+        securityService.hasPermission(API_AUTH__REGISTER)
 
         val user = authService.register(request)
 
@@ -40,7 +40,7 @@ class AuthController(
         @RequestBody loginUserRequest: LoginUserRequest,
         httpRequest: HttpServletRequest
     ): ResponseEntity<GetUserResponse> {
-        securityService.required(API_AUTH__LOGIN)
+        securityService.hasPermission(API_AUTH__LOGIN)
 
         val user = authService.login(loginUserRequest, httpRequest)
         return ResponseEntity.ok(userMapper.get(user))
@@ -52,7 +52,7 @@ class AuthController(
         httpResponse: HttpServletResponse,
         authentication: Authentication
     ): ResponseEntity<Void> {
-        securityService.required(API_AUTH__LOGOUT)
+        securityService.hasPermission(API_AUTH__LOGOUT)
 
         authService.logout(httpRequest, httpResponse, authentication)
         return ResponseEntity.noContent().build()

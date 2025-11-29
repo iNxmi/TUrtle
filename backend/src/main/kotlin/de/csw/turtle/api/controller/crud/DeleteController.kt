@@ -16,7 +16,7 @@ interface DeleteController<Entity : CRUDEntity> {
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseEntity<Void> {
-        securityService.required(deletePermission)
+        securityService.hasPermission(deletePermission)
 
         service.delete(id)
         return ResponseEntity.noContent().build()

@@ -25,7 +25,7 @@ interface PatchController<
 
     @PatchMapping("/{id}")
     fun patch(@PathVariable id: Long, @RequestBody request: PatchRequest): ResponseEntity<GetResponse> {
-        securityService.required(patchPermission)
+        securityService.hasPermission(patchPermission)
 
         val entity = service.patch(id, request)
         return ResponseEntity.ok(mapper.get(entity))
