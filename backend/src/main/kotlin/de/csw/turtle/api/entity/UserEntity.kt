@@ -42,7 +42,6 @@ data class UserEntity(
     )
     val roles: MutableSet<RoleEntity> = mutableSetOf(),
 
-    @Column(nullable = false)
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val auditLogs: Collection<AuditLogEntity> = emptyList(),
 

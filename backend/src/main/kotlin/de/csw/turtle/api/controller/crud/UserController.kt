@@ -1,11 +1,12 @@
 package de.csw.turtle.api.controller.crud
 
+import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.mapper.UserMapper
-import de.csw.turtle.api.repository.UserRepository
+import de.csw.turtle.api.service.SecurityService
 import de.csw.turtle.api.service.UserService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -13,8 +14,17 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/resources/users")
 class UserController(
+    override val endpoint: String = "/api/resources/users",
+
+    override val createPermission: Permission = Permission.API_RESOURCES_USERS__CREATE,
+    override val getPermission: Permission = Permission.API_RESOURCES_USERS__GET,
+    override val patchPermission: Permission = Permission.API_RESOURCES_USERS__PATCH,
+    override val deletePermission: Permission = Permission.API_RESOURCES_USERS__DELETE,
+
     override val service: UserService,
-    override val mapper: UserMapper
-) : CRUDController<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest, UserRepository, UserMapper, UserService>(
-    "/api/resources/users"
-)
+    override val mapper: UserMapper,
+    override val securityService: SecurityService
+) : CreateController<UserEntity, CreateUserRequest, GetUserResponse>,
+    GetController<UserEntity, GetUserResponse>,
+    PatchController<UserEntity, PatchUserRequest, GetUserResponse>,
+    DeleteController<UserEntity>

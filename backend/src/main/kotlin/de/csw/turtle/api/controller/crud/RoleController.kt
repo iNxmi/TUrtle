@@ -1,20 +1,30 @@
 package de.csw.turtle.api.controller.crud
 
+import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.create.CreateRoleRequest
 import de.csw.turtle.api.dto.get.GetRoleResponse
 import de.csw.turtle.api.dto.patch.PatchRoleRequest
 import de.csw.turtle.api.entity.RoleEntity
 import de.csw.turtle.api.mapper.RoleMapper
-import de.csw.turtle.api.repository.RoleRepository
 import de.csw.turtle.api.service.RoleService
+import de.csw.turtle.api.service.SecurityService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/resources/roles")
 class RoleController(
+    override val endpoint: String = "/api/resources/roles",
+
+    override val createPermission: Permission = Permission.API_RESOURCES_ROLES__CREATE,
+    override val getPermission: Permission = Permission.API_RESOURCES_ROLES__GET,
+    override val patchPermission: Permission = Permission.API_RESOURCES_ROLES__PATCH,
+    override val deletePermission: Permission = Permission.API_RESOURCES_ROLES__DELETE,
+
     override val service: RoleService,
-    override val mapper: RoleMapper
-) : CRUDController<RoleEntity, CreateRoleRequest, GetRoleResponse, PatchRoleRequest, RoleRepository, RoleMapper, RoleService>(
-    "/api/resources/roles"
-)
+    override val mapper: RoleMapper,
+    override val securityService: SecurityService
+) : CreateController<RoleEntity, CreateRoleRequest, GetRoleResponse>,
+    GetController<RoleEntity, GetRoleResponse>,
+    PatchController<RoleEntity, PatchRoleRequest, GetRoleResponse>,
+    DeleteController<RoleEntity>

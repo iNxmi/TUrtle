@@ -16,10 +16,7 @@ enum class Permission(val path: String, val action: String) {
     API_PROFILE__PATCH("api.profile", "patch"),
     API_PROFILE__DELETE("api.profile", "delete"),
 
-    API_RESOURCES_AUDITLOGS__CREATE("api.resources.auditlogs", "create"),
     API_RESOURCES_AUDITLOGS__GET("api.resources.auditlogs", "get"),
-    API_RESOURCES_AUDITLOGS__PATCH("api.resources.auditlogs", "patch"),
-    API_RESOURCES_AUDITLOGS__DELETE("api.resources.auditlogs", "delete"),
 
     API_RESOURCES_DEVICECATEGORIES__CREATE("api.resources.devicecategories", "create"),
     API_RESOURCES_DEVICECATEGORIES__GET("api.resources.devicecategories", "get"),
@@ -54,9 +51,7 @@ enum class Permission(val path: String, val action: String) {
     API_RESOURCES_ROLES__CREATE("api.resources.roles", "create"),
     API_RESOURCES_ROLES__GET("api.resources.roles", "get"),
     API_RESOURCES_ROLES__PATCH("api.resources.roles", "patch"),
-    API_RESOURCES_ROLES__DELETE("api.resources.roles", "delete"),
-
-    TEMPORARY("", "");
+    API_RESOURCES_ROLES__DELETE("api.resources.roles", "delete");
 
     val permission = "$path:$action"
 

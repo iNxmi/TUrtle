@@ -12,7 +12,12 @@ class RoleEntity(
     @Column(nullable = false)
     var name: String,
 
-    @Column(nullable = false)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+        name = "role_permissions",
+        joinColumns = [JoinColumn(name = "role_id")],
+    )
+    @Enumerated(EnumType.STRING)
     val permissions: MutableSet<Permission> = mutableSetOf(),
 
     @ManyToMany(mappedBy = "roles")
