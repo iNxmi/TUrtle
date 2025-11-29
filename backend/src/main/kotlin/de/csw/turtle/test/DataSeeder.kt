@@ -5,16 +5,19 @@ import de.csw.turtle.api.repository.*
 import de.csw.turtle.api.service.RoleService
 import io.github.serpro69.kfaker.Faker
 import org.springframework.boot.CommandLineRunner
+import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.event.EventListener
 import org.springframework.core.annotation.Order
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 import kotlin.math.absoluteValue
 import kotlin.math.floor
 
-@Configuration
+@Component
 class DataSeeder(
     private val userRepository: UserRepository,
     private val lockerRepository: LockerRepository,
@@ -28,9 +31,9 @@ class DataSeeder(
     private val minimumEntries = 128
     private val faker = Faker()
 
-    @Bean
+    @EventListener(ApplicationReadyEvent::class)
     @Transactional
-    fun seedUsers() = CommandLineRunner {
+    fun seedUsers() {
         while (userRepository.count() < minimumEntries) {
             val firstName = faker.name.firstName()
             val lastName = faker.name.lastName()
@@ -67,9 +70,9 @@ class DataSeeder(
         }
     }
 
-    @Bean
+    @EventListener(ApplicationReadyEvent::class)
     @Transactional
-    fun seedSupportTickets() = CommandLineRunner {
+    fun seedSupportTickets() {
         val repository = supportTicketRepository
         while (repository.count() < minimumEntries) {
             val entriesUrgency = SupportTicketEntity.Urgency.entries
@@ -99,9 +102,9 @@ class DataSeeder(
     }
 
     @Order(1)
-    @Bean
+    @EventListener(ApplicationReadyEvent::class)
     @Transactional
-    fun seedLockers() = CommandLineRunner {
+    fun seedLockers() {
         val repository = lockerRepository
 
         if (lockerRepository.findByIndex(6) == null) {
@@ -116,9 +119,9 @@ class DataSeeder(
     }
 
     @Order(1)
-    @Bean
+    @EventListener(ApplicationReadyEvent::class)
     @Transactional
-    fun seedCategories() = CommandLineRunner {
+    fun seedCategories() {
         val repository = deviceCategoryRepository
 
         val categoryLaptops = DeviceCategoryEntity("Laptops")
@@ -132,9 +135,9 @@ class DataSeeder(
     }
 
     @Order(2)
-    @Bean
+    @EventListener(ApplicationReadyEvent::class)
     @Transactional
-    fun seedDevices() = CommandLineRunner {
+    fun seedDevices() {
         val repository = deviceRepository
 
         val xbox360 = DeviceEntity(
