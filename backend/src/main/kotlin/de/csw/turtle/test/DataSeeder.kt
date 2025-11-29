@@ -2,13 +2,13 @@ package de.csw.turtle.test
 
 import de.csw.turtle.api.entity.*
 import de.csw.turtle.api.repository.*
-import de.csw.turtle.api.service.PasswordEncoderService
 import de.csw.turtle.api.service.RoleService
 import io.github.serpro69.kfaker.Faker
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 import kotlin.math.absoluteValue
@@ -20,7 +20,7 @@ class DataSeeder(
     private val lockerRepository: LockerRepository,
     private val deviceCategoryRepository: DeviceCategoryRepository,
     private val deviceRepository: DeviceRepository,
-    private val passwordEncoderService: PasswordEncoderService,
+    private val passwordEncoder: PasswordEncoder,
     private val supportTicketRepository: SupportTicketRepository,
     private val roleService: RoleService
 ) {
@@ -42,25 +42,25 @@ class DataSeeder(
             val role = roles[index]
 
             val user = UserEntity(
-                userName = username,
+                username = username,
                 firstName = firstName,
                 lastName = lastName,
                 email = email,
                 studentId = faker.random.unique.nextInt().absoluteValue.toLong(),
-                passwordHash = passwordEncoderService.encode("password"),
+                password = passwordEncoder.encode("password"),
                 roles = setOf(role).toMutableSet()
             )
             userRepository.save(user)
         }
 
-        if (userRepository.findByUserName("admin") == null) {
+        if (userRepository.findByUsername("admin") == null) {
             val admin = UserEntity(
-                userName = "admin",
+                username = "admin",
                 firstName = "admin",
                 lastName = "admin",
                 email = "admin@csw.de",
                 studentId = 42069,
-                passwordHash = passwordEncoderService.encode("admin"),
+                password = passwordEncoder.encode("admin"),
                 roles = mutableSetOf(roleService.getByName("Administrator")!!)
             )
             userRepository.save(admin)

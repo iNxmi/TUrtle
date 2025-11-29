@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/lockers")
+@RequestMapping("/api/resources/lockers")
 class LockerController(
     override val service: LockerService,
     override val mapper: LockerMapper
 ) : CRUDController<LockerEntity, CreateLockerRequest, GetLockerResponse, PatchLockerRequest, LockerRepository, LockerMapper, LockerService>(
-    "/api/lockers",
-    "api.lockers"
+    "/api/resources/lockers"
 )

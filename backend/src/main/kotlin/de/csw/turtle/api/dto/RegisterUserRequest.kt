@@ -14,12 +14,12 @@ data class RegisterUserRequest(
 
     //TODO remove create method
     fun create(passwordEncoder: PasswordEncoder) = UserEntity(
-        userName = username,
+        username = username,
         firstName = firstName,
         lastName = lastName,
         email = email,
         studentId = studentId,
-        passwordHash = passwordEncoder.encode(password)
+        password = passwordEncoder.encode(password)
     )
 
 }

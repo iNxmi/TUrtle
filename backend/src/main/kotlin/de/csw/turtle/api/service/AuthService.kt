@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class AuthService(
     private val userService: UserService,
-    private val passwordEncoderService: PasswordEncoderService,
     private val authenticationManager: AuthenticationManager
 ) {
 
@@ -36,26 +35,20 @@ class AuthService(
             registerUserRequest.password,
         )
 
-        return  userService.create(createUserRequest)
+        return userService.create(createUserRequest)
     }
 
     @Transactional
     fun login(
-        loginUserRequest: LoginUserRequest,
+        request: LoginUserRequest,
         httpRequest: HttpServletRequest
     ): UserEntity {
-        val user = userService.getByUsername(loginUserRequest.username)
-            ?: throw UsernameOrPasswordInvalidException()
-
-        if (!passwordEncoderService.matches(loginUserRequest.password, user.password))
-            throw UsernameOrPasswordInvalidException()
-
-        val authenticationToken = UsernamePasswordAuthenticationToken.unauthenticated(
-            loginUserRequest.username,
-            loginUserRequest.password
+        val token = UsernamePasswordAuthenticationToken.unauthenticated(
+            request.username,
+            request.password
         )
 
-        val authentication = authenticationManager.authenticate(authenticationToken)
+        val authentication = authenticationManager.authenticate(token)
         SecurityContextHolder.getContext().authentication = authentication
 
         httpRequest.getSession(true).setAttribute(
@@ -63,13 +56,11 @@ class AuthService(
             SecurityContextHolder.getContext()
         )
 
-        return user
+        return userService.get(request.username)
     }
 
     @Transactional
-    fun logout(httpRequest: HttpServletRequest, httpResponse: HttpServletResponse, authentication: Authentication) {
-        val logoutHandler = SecurityContextLogoutHandler()
-        logoutHandler.logout(httpRequest, httpResponse, authentication)
-    }
+    fun logout(httpRequest: HttpServletRequest, httpResponse: HttpServletResponse, authentication: Authentication) =
+        SecurityContextLogoutHandler().logout(httpRequest, httpResponse, authentication)
 
 }

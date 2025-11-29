@@ -1,15 +1,23 @@
 package de.csw.turtle.api.entity
 
-import jakarta.persistence.*
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.JoinTable
+import jakarta.persistence.ManyToMany
+import jakarta.persistence.OneToMany
+import jakarta.persistence.Table
 import java.time.Instant
 
 @Entity
 @Table(name = "users")
 data class UserEntity(
-    @Column(name = "username", nullable = false, unique = true)
-    var userName: String,
+    @Column(nullable = false, unique = true)
+    var username: String,
 
     @Column(nullable = false)
     var firstName: String,
@@ -23,8 +31,8 @@ data class UserEntity(
     @Column(nullable = false, unique = true)
     var studentId: Long,
 
-    @Column(nullable = false, name = "password")
-    var passwordHash: String,
+    @Column(nullable = false)
+    var password: String,
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -44,10 +52,4 @@ data class UserEntity(
 
     @Column(nullable = false, updatable = false)
     override val createdAt: Instant = Instant.now()
-) : CRUDEntity(), UserDetails {
-
-    override fun getAuthorities(): Set<SimpleGrantedAuthority> = roles.flatMap { it.grantedAuthorities() }.toSet()
-    override fun getUsername() = userName
-    override fun getPassword() = passwordHash
-
-}
+) : CRUDEntity()

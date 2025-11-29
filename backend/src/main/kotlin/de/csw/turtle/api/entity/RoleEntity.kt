@@ -1,7 +1,8 @@
 package de.csw.turtle.api.entity
 
+import de.csw.turtle.api.Permission
+import de.csw.turtle.api.entity.UserEntity
 import jakarta.persistence.*
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.time.Instant
 
@@ -12,7 +13,7 @@ class RoleEntity(
     var name: String,
 
     @Column(nullable = false)
-    val permissions: MutableSet<String> = mutableSetOf(),
+    val permissions: MutableSet<Permission> = mutableSetOf(),
 
     @ManyToMany(mappedBy = "roles")
     val users: MutableSet<UserEntity> = mutableSetOf(),
@@ -25,6 +26,6 @@ class RoleEntity(
     override val createdAt: Instant = Instant.now()
 ) : CRUDEntity() {
 
-    fun grantedAuthorities(): Set<SimpleGrantedAuthority> = permissions.map { SimpleGrantedAuthority(it) }.toSet()
+    fun authorities(): Set<SimpleGrantedAuthority> = permissions.map { SimpleGrantedAuthority(it.permission) }.toSet()
 
 }

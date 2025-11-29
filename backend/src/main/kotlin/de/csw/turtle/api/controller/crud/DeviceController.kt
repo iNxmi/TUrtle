@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/devices")
+@RequestMapping("/api/resources/devices")
 class DeviceController(
     override val service: DeviceService,
     override val mapper: DeviceMapper
 ) : CRUDController<DeviceEntity, CreateDeviceRequest, GetDeviceResponse, PatchDeviceRequest, DeviceRepository, DeviceMapper, DeviceService>(
-    "/api/devices",
-    "api.devices"
+    "/api/resources/devices"
 )

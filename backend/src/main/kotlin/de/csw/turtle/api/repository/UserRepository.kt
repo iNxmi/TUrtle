@@ -4,10 +4,10 @@ import de.csw.turtle.api.entity.UserEntity
 
 interface UserRepository : CRUDRepository<UserEntity> {
 
-    fun findByUserName(username: String): UserEntity?
+    fun findByUsername(username: String): UserEntity?
     fun findByEmail(email: String): UserEntity?
     fun findByStudentId(studentId: Long): UserEntity?
 
-    fun deleteByUserName(username: String)
+    fun deleteByUsername(username: String)
 
 }

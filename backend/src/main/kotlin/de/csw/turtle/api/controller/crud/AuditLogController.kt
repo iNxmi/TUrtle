@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/auditlogs")
+@RequestMapping("/api/resources/auditlogs")
 class AuditLogController(
     override val service: AuditLogService,
     override val mapper: AuditLogMapper
 ) : CRUDController<AuditLogEntity, CreateAuditLogRequest, GetAuditLogResponse, PatchAuditLogRequest, AuditLogRepository, AuditLogMapper, AuditLogService>(
-    "/api/auditlogs",
-    "api.auditlogs"
+    "/api/resources/auditlogs"
 )

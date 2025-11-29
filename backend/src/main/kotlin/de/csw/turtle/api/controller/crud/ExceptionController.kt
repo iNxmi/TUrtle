@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/exceptions")
+@RequestMapping("/api/resources/exceptions")
 class ExceptionController(
     override val service: ExceptionService,
     override val mapper: ExceptionMapper,
 ) : CRUDController<ExceptionEntity, CreateExceptionRequest, GetExceptionResponse, PatchExceptionRequest, ExceptionRepository, ExceptionMapper, ExceptionService>(
-    "/api/exceptions",
-    "api.exceptions"
+    "/api/resources/exceptions"
 )

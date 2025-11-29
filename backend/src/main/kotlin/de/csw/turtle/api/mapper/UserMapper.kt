@@ -12,23 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired
 abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest> {
 
     @Autowired
-    protected lateinit var roleMapper: RoleMapper
-
-    @Autowired
     protected lateinit var roleService: RoleService
 
     override fun create(request: CreateUserRequest) = UserEntity(
-        userName = request.username,
+        username = request.username,
         firstName = request.firstName,
         lastName = request.lastName,
         email = request.email,
         studentId = request.studentId,
-        passwordHash = request.password
+        password = request.password
     )
 
     override fun get(entity: UserEntity) = GetUserResponse(
         id = entity.id,
-        username = entity.userName,
+        username = entity.username,
         firstName = entity.firstName,
         lastName = entity.lastName,
         email = entity.email,
@@ -41,13 +38,13 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
         entity: UserEntity,
         request: PatchUserRequest
     ): UserEntity {
-        request.username?.let { entity.userName = it }
+        request.username?.let { entity.username = it }
         request.firstName?.let { entity.firstName = it }
         request.lastName?.let { entity.lastName = it }
         request.lastName?.let { entity.lastName = it }
         request.email?.let { entity.email = it }
         request.studentId?.let { entity.studentId = it }
-        request.password?.let { entity.passwordHash = it }
+        request.password?.let { entity.password = it }
 
         if (request.roleIds != null) {
             val roles = request.roleIds.map { roleService.get(it) }.toSet()

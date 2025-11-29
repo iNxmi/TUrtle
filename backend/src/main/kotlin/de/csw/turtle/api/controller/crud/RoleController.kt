@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/roles")
+@RequestMapping("/api/resources/roles")
 class RoleController(
     override val service: RoleService,
     override val mapper: RoleMapper
 ) : CRUDController<RoleEntity, CreateRoleRequest, GetRoleResponse, PatchRoleRequest, RoleRepository, RoleMapper, RoleService>(
-    "/api/roles",
-    "api.roles"
+    "/api/resources/roles"
 )

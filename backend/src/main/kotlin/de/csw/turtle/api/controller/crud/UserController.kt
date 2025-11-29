@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/resources/users")
 class UserController(
     override val service: UserService,
     override val mapper: UserMapper
 ) : CRUDController<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest, UserRepository, UserMapper, UserService>(
-    "/api/users",
-    "api.users"
+    "/api/resources/users"
 )

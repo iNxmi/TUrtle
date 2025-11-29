@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/support")
+@RequestMapping("/api/resources/support")
 class SupportTicketController(
     override val service: SupportTicketService,
     override val mapper: SupportTicketMapper
 ) : CRUDController<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse, PatchSupportTicketRequest, SupportTicketRepository, SupportTicketMapper, SupportTicketService>(
-    "/api/support",
-    "api.support"
+    "/api/resources/support"
 )

@@ -1,5 +1,7 @@
 package de.csw.turtle.api.config.defaults
 
+import de.csw.turtle.api.Permission
+import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.dto.create.CreateRoleRequest
 import de.csw.turtle.api.service.RoleService
 import org.springframework.boot.CommandLineRunner
@@ -12,87 +14,33 @@ class DefaultRolesConfiguration(
 ) : CommandLineRunner {
 
     private val anonymous = setOf(
-        "api.auth:login",
-        "api.auth:register",
+        API_AUTH__LOGIN,
+        API_AUTH__REGISTER,
 
-        "api.support:create"
+        API_RESOURCES_SUPPORT__CREATE
     )
 
     private val student = setOf(
-        "api.profile:get",
-        "api.profile:patch",
-        "api.profile:delete",
+        API_PROFILE__GET,
+        API_PROFILE__PATCH,
+        API_PROFILE__DELETE,
 
-        "api.auth:logout",
+        API_AUTH__LOGOUT,
 
-        "api.support:create"
+        API_RESOURCES_SUPPORT__CREATE
     )
 
     private val professor = setOf(
-        "api.profile:get",
-        "api.profile:patch",
-        "api.profile:delete",
+        API_PROFILE__GET,
+        API_PROFILE__PATCH,
+        API_PROFILE__DELETE,
 
-        "api.auth:logout",
+        API_AUTH__LOGOUT,
 
-        "api.support:create"
+        API_RESOURCES_SUPPORT__CREATE
     )
 
-    private val administrator = setOf(
-        "debug:info",
-        "debug:door",
-        "debug:locker",
-        "debug:exception",
-        "debug:email",
-
-        "api.auth:login",
-        "api.auth:register",
-        "api.auth:logout",
-
-        "api.profile:get",
-        "api.profile:patch",
-        "api.profile:delete",
-
-        "api.auditlogs:create",
-        "api.auditlogs:get",
-        "api.auditlogs:patch",
-        "api.auditlogs:delete",
-
-        "api.devicecategories:create",
-        "api.devicecategories:get",
-        "api.devicecategories:patch",
-        "api.devicecategories:delete",
-
-        "api.devices:create",
-        "api.devices:get",
-        "api.devices:patch",
-        "api.devices:delete",
-
-        "api.exceptions:create",
-        "api.exceptions:get",
-        "api.exceptions:patch",
-        "api.exceptions:delete",
-
-        "api.lockers:create",
-        "api.lockers:get",
-        "api.lockers:patch",
-        "api.lockers:delete",
-
-        "api.support:create",
-        "api.support:get",
-        "api.support:patch",
-        "api.support:delete",
-
-        "api.users:create",
-        "api.users:get",
-        "api.users:patch",
-        "api.users:delete",
-
-        "api.roles:create",
-        "api.roles:get",
-        "api.roles:patch",
-        "api.roles:delete"
-    )
+    private val administrator = Permission.entries.toSet()
 
     @Transactional
     override fun run(vararg args: String) {
