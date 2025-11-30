@@ -168,7 +168,7 @@
 	];
 </script>
 
-<div class="flex h-full">
+<div class="flex h-full min-h-[calc(100svh-71px)]">
 	<Sidebar
 		alwaysOpen
 		{activeUrl}
@@ -176,7 +176,7 @@
 		backdrop={false}
 		isOpen={true}
 		position="static"
-		class="min-w-64"
+		class="min-w-64 min-h-[calc(100svh-71px)]"
 	>
 		<div class="flex flex-col gap-3">
 			<div class="flex flex-col items-center">
