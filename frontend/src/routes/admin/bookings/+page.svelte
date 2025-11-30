@@ -91,7 +91,6 @@
 				selectedEvent = info.event;
 				clientX = info.jsEvent.clientX;
 				clientY = info.jsEvent.clientY + window.scrollY;
-				/* contextMenu.rightClickContextMenu(info.jsEvent, info.event); */
 			},
 			eventColor: 'oklch(75% 0.183 55.934)',
 			slotLabelFormat: {
@@ -165,7 +164,6 @@
 		}
 	});
 </script>
-{@debug selectedEvent}
 <div class="flex flex-col md:flex-row  gap-2">
 	<div class="grow" id="calendar"></div>
 		<div bind:this={eventCard} class="w-full bg-white border rounded-lg max-w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col mt-17 p-5 gap-5">
@@ -199,4 +197,3 @@
 		</div>
 </div>
 <svelte:window on:click={onPageClick} />
-<!-- <ContextMenu bind:this={contextMenu} /> -->
