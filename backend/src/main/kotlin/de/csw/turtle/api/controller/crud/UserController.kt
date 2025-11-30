@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     override val endpoint: String = "/api/users",
 
-    override val createPermission: Permission = Permission.API_USERS__CREATE,
-    override val getPermission: Permission = Permission.API_USERS__GET,
-    override val patchPermission: Permission = Permission.API_USERS__PATCH,
-    override val deletePermission: Permission = Permission.API_USERS__DELETE,
+    override val createPermission: Permission = Permission.BACKEND__API_USERS__CREATE,
+    override val getPermission: Permission = Permission.BACKEND__API_USERS__GET,
+    override val patchPermission: Permission = Permission.BACKEND__API_USERS__PATCH,
+    override val deletePermission: Permission = Permission.BACKEND__API_USERS__DELETE,
 
     override val service: UserService,
     override val mapper: UserMapper,

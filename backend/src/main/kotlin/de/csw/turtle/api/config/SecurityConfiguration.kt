@@ -45,19 +45,7 @@ class SecurityConfiguration(
             }
 
             .anonymous {}
-            .authorizeHttpRequests {
-                //Debug
-                it.requestMatchers("/docs", "/openapi/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-
-                //Auth
-                it.requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register").permitAll()
-
-                //Support Ticket
-                it.requestMatchers(HttpMethod.POST, "/api/supporttickets").permitAll()
-
-                //Other
-                it.anyRequest().authenticated()
-            }
+            .authorizeHttpRequests { it.anyRequest().permitAll() }
             .userDetailsService(userDetailsService)
 
             .formLogin { it.disable() }

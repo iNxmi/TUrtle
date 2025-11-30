@@ -52,8 +52,7 @@ class GlobalControllerExceptionHandler(
     fun missingServletRequestParameter(
         exception: MissingServletRequestParameterException,
         request: HttpServletRequest
-    ) =
-        exception.responseEntity(request.requestURI, HttpStatus.BAD_REQUEST)
+    ) = exception.responseEntity(request.requestURI, HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(Exception::class)
     fun generic(exception: Exception, request: HttpServletRequest): ResponseEntity<ExceptionResponse> {

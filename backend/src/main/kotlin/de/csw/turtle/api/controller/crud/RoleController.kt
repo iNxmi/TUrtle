@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController
 class RoleController(
     override val endpoint: String = "/api/roles",
 
-    override val createPermission: Permission = Permission.API_ROLES__CREATE,
-    override val getPermission: Permission = Permission.API_ROLES__GET,
-    override val patchPermission: Permission = Permission.API_ROLES__PATCH,
-    override val deletePermission: Permission = Permission.API_ROLES__DELETE,
+    override val createPermission: Permission = Permission.BACKEND__API_ROLES__CREATE,
+    override val getPermission: Permission = Permission.BACKEND__API_ROLES__GET,
+    override val patchPermission: Permission = Permission.BACKEND__API_ROLES__PATCH,
+    override val deletePermission: Permission = Permission.BACKEND__API_ROLES__DELETE,
 
     override val service: RoleService,
     override val mapper: RoleMapper,

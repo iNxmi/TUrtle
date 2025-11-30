@@ -1,10 +1,12 @@
 package de.csw.turtle.api.controller
 
+import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.dto.LoginUserRequest
 import de.csw.turtle.api.dto.RegisterUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.service.AuthService
+import de.csw.turtle.api.service.SecurityService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
@@ -16,13 +18,16 @@ import java.net.URI
 @RequestMapping("/api/auth")
 class AuthController(
     private val authService: AuthService,
-    private val userMapper: UserMapper
+    private val userMapper: UserMapper,
+    private val securityService: SecurityService
 ) {
 
     @PostMapping("/register")
     fun register(
         @RequestBody request: RegisterUserRequest
     ): ResponseEntity<GetUserResponse> {
+        securityService.hasPermission(BACKEND__API_AUTH__REGISTER)
+
         val user = authService.register(request)
 
         return ResponseEntity
@@ -35,6 +40,8 @@ class AuthController(
         @RequestBody loginUserRequest: LoginUserRequest,
         httpRequest: HttpServletRequest
     ): ResponseEntity<GetUserResponse> {
+        securityService.hasPermission(BACKEND__API_AUTH__LOGIN)
+
         val user = authService.login(loginUserRequest, httpRequest)
         return ResponseEntity.ok(userMapper.get(user))
     }
@@ -45,6 +52,8 @@ class AuthController(
         httpResponse: HttpServletResponse,
         authentication: Authentication
     ): ResponseEntity<Void> {
+        securityService.hasPermission(BACKEND__API_AUTH__LOGOUT)
+
         authService.logout(httpRequest, httpResponse, authentication)
         return ResponseEntity.noContent().build()
     }

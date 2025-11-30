@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController
 class SupportTicketController(
     override val endpoint: String = "/api/support",
 
-    override val createPermission: Permission = Permission.API_SUPPORTTICKETS__CREATE,
-    override val getPermission: Permission = Permission.API_SUPPORTTICKETS__GET,
-    override val patchPermission: Permission = Permission.API_SUPPORTTICKETS__PATCH,
-    override val deletePermission: Permission = Permission.API_SUPPORTTICKETS__DELETE,
+    override val createPermission: Permission = Permission.BACKEND__API_SUPPORTTICKETS__CREATE,
+    override val getPermission: Permission = Permission.BACKEND__API_SUPPORTTICKETS__GET,
+    override val patchPermission: Permission = Permission.BACKEND__API_SUPPORTTICKETS__PATCH,
+    override val deletePermission: Permission = Permission.BACKEND__API_SUPPORTTICKETS__DELETE,
 
     override val service: SupportTicketService,
     override val mapper: SupportTicketMapper,

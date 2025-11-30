@@ -28,7 +28,8 @@
         UserHeadsetSolid,
         UserSettingsSolid,
         UsersGroupSolid,
-        UserSolid
+        UserSolid,
+        LockSolid
     } from 'flowbite-svelte-icons';
 
     import {page} from '$app/state';
@@ -78,62 +79,62 @@
     };
 
     const itemsPublic = [{
-        label: m.sidebar_home(),
+        label: m.sidebar_public_home(),
         href: '/',
         icon: HomeSolid
     }, {
-        label: m.sidebar_login(),
+        label: m.sidebar_public_login(),
         href: '/login',
         icon: UserSolid
     }, {
-        label: m.sidebar_register(),
+        label: m.sidebar_public_register(),
         href: '/register',
         icon: UserSolid
     }, {
-        label: m.sidebar_support(),
+        label: m.sidebar_public_support(),
         href: '/support',
         icon: UserHeadsetSolid
     }, {
-        label: m.sidebar_about(),
+        label: m.sidebar_public_about(),
         href: '/about',
         icon: InfoCircleSolid
     }];
     const itemsUser = [{
-        label: m.sidebar_dashboard(),
+        label: m.sidebar_user_dashboard(),
         href: '/user/dashboard',
         icon: NewspaperSolid
     }, {
-        label: m.sidebar_profile(),
+        label: m.sidebar_user_profile(),
         href: '/user/profile',
         icon: UserSolid
     }, {
-        label: m.sidebar_reservations(),
+        label: m.sidebar_user_reservations(),
         href: '/user/reservation',
         icon: DesktopPcSolid
     }, {
-        label: m.sidebar_bookings(),
+        label: m.sidebar_user_bookings(),
         href: '/user/bookings',
         icon: CalendarMonthSolid
     }];
 
     const itemsAdmin = [{
-        label: m.sidebar_manage_users(),
+        label: m.sidebar_admin_manage_users(),
         href: '/admin/users',
         icon: UsersGroupSolid
     }, {
-        label: m.sidebar_manage_bookings(),
+        label: m.sidebar_admin_manage_bookings(),
         href: '/admin/bookings',
         icon: CalendarEditSolid
     }, {
-        label: m.sidebar_manage_support_tickets(),
+        label: m.sidebar_admin_manage_support_tickets(),
         href: '/admin/support',
         icon: UserHeadsetSolid
     }, {
-        label: m.sidebar_manage_exceptions_tickets(),
+        label: m.sidebar_admin_manage_exceptions(),
         href: '/admin/exceptions',
         icon: BugSolid
     }, {
-        label: m.sidebar_manage_news(),
+        label: m.sidebar_admin_manage_news(),
         href: '/admin/news',
         icon: NewspaperSolid
     }, {
@@ -141,9 +142,13 @@
         href: '/admin/settings',
         icon: UserSettingsSolid
     }, {
-        label: m.sidebar_auditlogs(),
+        label: m.sidebar_admin_auditlogs(),
         href: '/admin/auditlogs',
         icon: BookOpenSolid
+    }, {
+        label: m.sidebar_admin_roles(),
+        href: '/admin/roles',
+        icon: LockSolid
     }];
 
 </script>
@@ -199,7 +204,7 @@
                 </SidebarDropdownWrapper>
             {/if}
 
-            {#if user && user.permissions.includes("VIEW_ADMINISTRATOR")}
+            {#if user && user.permissions.includes("FRONTEND__VIEW_ADMINISTRATOR")}
                 <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
                                         label={m.sidebar_category_admin()}>
                     {#each itemsAdmin as item}

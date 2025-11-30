@@ -10,21 +10,24 @@ import org.springframework.stereotype.Service
 
 @Service
 class SecurityService(
+    private val roleService: RoleService,
     private val userService: UserService
 ) {
 
-    fun hasPermission(permission: Permission): UserEntity {
+    fun hasPermission(permission: Permission) {
         val authentication = SecurityContextHolder.getContext().authentication
             ?: throw IllegalStateException("Authentication not found.")
 
-        val principal = authentication.principal as SimpleUserDetails
-        val user = userService.get(principal.username)
-        val permissions = user.roles.flatMap { it.permissions }
+        val principal = authentication.principal
+        val permissions = if (principal is UserDetails) {
+            val user = userService.get(principal.username)
+            user.roles.flatMap { it.permissions }
+        } else {
+            roleService.getByName("Guest")!!.permissions
+        }
 
         if (!permissions.contains(permission))
             throw InsufficientPermissionException(permission)
-
-        return userService.get(principal.username)
     }
 
 }
