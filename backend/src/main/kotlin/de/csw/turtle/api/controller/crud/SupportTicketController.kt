@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/resources/support")
+@RequestMapping("/api/support")
 class SupportTicketController(
-    override val endpoint: String = "/api/resources/support",
+    override val endpoint: String = "/api/support",
 
-    override val createPermission: Permission = Permission.API_RESOURCES_SUPPORT__CREATE,
-    override val getPermission: Permission = Permission.API_RESOURCES_SUPPORT__GET,
-    override val patchPermission: Permission = Permission.API_RESOURCES_SUPPORT__PATCH,
-    override val deletePermission: Permission = Permission.API_RESOURCES_SUPPORT__DELETE,
+    override val createPermission: Permission = Permission.API_SUPPORTTICKETS__CREATE,
+    override val getPermission: Permission = Permission.API_SUPPORTTICKETS__GET,
+    override val patchPermission: Permission = Permission.API_SUPPORTTICKETS__PATCH,
+    override val deletePermission: Permission = Permission.API_SUPPORTTICKETS__DELETE,
 
     override val service: SupportTicketService,
     override val mapper: SupportTicketMapper,

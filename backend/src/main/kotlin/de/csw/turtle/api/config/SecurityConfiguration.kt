@@ -4,6 +4,7 @@ import de.csw.turtle.TUrtleProperties
 import de.csw.turtle.api.service.CustomUserDetailsService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
@@ -43,7 +44,20 @@ class SecurityConfiguration(
                 it.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             }
 
-            .authorizeHttpRequests { it.anyRequest().permitAll() }
+            .anonymous {}
+            .authorizeHttpRequests {
+                //Debug
+                it.requestMatchers("/docs", "/openapi/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+                //Auth
+                it.requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register").permitAll()
+
+                //Support Ticket
+                it.requestMatchers(HttpMethod.POST, "/api/supporttickets").permitAll()
+
+                //Other
+                it.anyRequest().authenticated()
+            }
             .userDetailsService(userDetailsService)
 
             .formLogin { it.disable() }

@@ -59,7 +59,7 @@
 
         <TableBody>
             {#each page.content as user}
-                <TableBodyRow onclick={() => window.location.href = `/admin/users/${user.username}`} class="hover:cursor-pointer">
+                <TableBodyRow onclick={() => window.location.href = `/admin/users/${user.id}`} class="hover:cursor-pointer">
                     <TableBodyCell>{user.username}</TableBodyCell>
                     <TableBodyCell>{user.lastName}</TableBodyCell>
                     <TableBodyCell>{user.firstName}</TableBodyCell>

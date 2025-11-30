@@ -1,7 +1,7 @@
 import request from "$lib/api/api.js";
 
 export async function load() {
-    const response = await request("/support");
+    const response = await request("/support/page");
     const payload = await response.json();
 
     return {page: payload};

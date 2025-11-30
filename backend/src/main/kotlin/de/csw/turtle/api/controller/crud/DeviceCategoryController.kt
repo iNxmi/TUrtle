@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/resources/devicecategories")
+@RequestMapping("/api/devicecategories")
 class DeviceCategoryController(
-    override val endpoint: String = "/api/resources/devicecategories",
+    override val endpoint: String = "/api/devicecategories",
 
-    override val createPermission: Permission = Permission.API_RESOURCES_DEVICECATEGORIES__CREATE,
-    override val getPermission: Permission = Permission.API_RESOURCES_DEVICECATEGORIES__GET,
-    override val patchPermission: Permission = Permission.API_RESOURCES_DEVICECATEGORIES__PATCH,
-    override val deletePermission: Permission = Permission.API_RESOURCES_DEVICECATEGORIES__DELETE,
+    override val createPermission: Permission = Permission.API_DEVICECATEGORIES__CREATE,
+    override val getPermission: Permission = Permission.API_DEVICECATEGORIES__GET,
+    override val patchPermission: Permission = Permission.API_DEVICECATEGORIES__PATCH,
+    override val deletePermission: Permission = Permission.API_DEVICECATEGORIES__DELETE,
 
     override val service: DeviceCategoryService,
     override val mapper: DeviceCategoryMapper,

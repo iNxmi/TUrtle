@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/resources/roles")
+@RequestMapping("/api/roles")
 class RoleController(
-    override val endpoint: String = "/api/resources/roles",
+    override val endpoint: String = "/api/roles",
 
-    override val createPermission: Permission = Permission.API_RESOURCES_ROLES__CREATE,
-    override val getPermission: Permission = Permission.API_RESOURCES_ROLES__GET,
-    override val patchPermission: Permission = Permission.API_RESOURCES_ROLES__PATCH,
-    override val deletePermission: Permission = Permission.API_RESOURCES_ROLES__DELETE,
+    override val createPermission: Permission = Permission.API_ROLES__CREATE,
+    override val getPermission: Permission = Permission.API_ROLES__GET,
+    override val patchPermission: Permission = Permission.API_ROLES__PATCH,
+    override val deletePermission: Permission = Permission.API_ROLES__DELETE,
 
     override val service: RoleService,
     override val mapper: RoleMapper,

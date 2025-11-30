@@ -36,8 +36,6 @@
 
     let {data, children} = $props();
     const user = data.user;
-    const roles = data.roles;
-    alert(JSON.stringify(roles, null, 4));
 
     const languages = [
         {value: "en", name: "English"},
@@ -201,7 +199,7 @@
                 </SidebarDropdownWrapper>
             {/if}
 
-            {#if user && roles.find(r => r.id === user.roles[0]).name === "Administrator"}
+            {#if user && user.permissions.includes("VIEW_ADMINISTRATOR")}
                 <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
                                         label={m.sidebar_category_admin()}>
                     {#each itemsAdmin as item}

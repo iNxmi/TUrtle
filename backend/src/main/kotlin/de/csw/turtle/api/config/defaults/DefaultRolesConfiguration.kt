@@ -13,32 +13,9 @@ class DefaultRolesConfiguration(
     private val service: RoleService
 ) : CommandLineRunner {
 
-    private val anonymous = setOf(
-        API_AUTH__LOGIN,
-        API_AUTH__REGISTER,
+    private val student = setOf<Permission>()
 
-        API_RESOURCES_SUPPORT__CREATE
-    )
-
-    private val student = setOf(
-        API_PROFILE__GET,
-        API_PROFILE__PATCH,
-        API_PROFILE__DELETE,
-
-        API_AUTH__LOGOUT,
-
-        API_RESOURCES_SUPPORT__CREATE
-    )
-
-    private val professor = setOf(
-        API_PROFILE__GET,
-        API_PROFILE__PATCH,
-        API_PROFILE__DELETE,
-
-        API_AUTH__LOGOUT,
-
-        API_RESOURCES_SUPPORT__CREATE
-    )
+    private val professor = setOf<Permission>()
 
     private val administrator = Permission.entries.toSet()
 
@@ -47,7 +24,6 @@ class DefaultRolesConfiguration(
         if (service.count() > 0)
             return
 
-        service.create(CreateRoleRequest(name = "Anonymous", permissions = anonymous))
         service.create(CreateRoleRequest(name = "Student", permissions = student))
         service.create(CreateRoleRequest(name = "Professor", permissions = professor))
         service.create(CreateRoleRequest(name = "Administrator", permissions = administrator))

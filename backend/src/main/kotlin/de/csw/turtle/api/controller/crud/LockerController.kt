@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/resources/lockers")
+@RequestMapping("/api/lockers")
 class LockerController(
-    override val endpoint: String = "/api/resources/lockers",
+    override val endpoint: String = "/api/lockers",
 
-    override val createPermission: Permission = Permission.API_RESOURCES_LOCKERS__CREATE,
-    override val getPermission: Permission = Permission.API_RESOURCES_LOCKERS__GET,
-    override val patchPermission: Permission = Permission.API_RESOURCES_LOCKERS__PATCH,
-    override val deletePermission: Permission = Permission.API_RESOURCES_LOCKERS__DELETE,
+    override val createPermission: Permission = Permission.API_LOCKERS__CREATE,
+    override val getPermission: Permission = Permission.API_LOCKERS__GET,
+    override val patchPermission: Permission = Permission.API_LOCKERS__PATCH,
+    override val deletePermission: Permission = Permission.API_LOCKERS__DELETE,
 
     override val service: LockerService,
     override val mapper: LockerMapper,

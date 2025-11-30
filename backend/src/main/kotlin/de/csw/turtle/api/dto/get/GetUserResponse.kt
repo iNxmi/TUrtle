@@ -1,5 +1,6 @@
 package de.csw.turtle.api.dto.get
 
+import de.csw.turtle.api.Permission
 import java.time.Instant
 
 data class GetUserResponse(
@@ -9,6 +10,14 @@ data class GetUserResponse(
     val lastName: String,
     val email: String,
     val studentId: Long,
-    val roles: Set<Long>,
+    val roles: Set<GetRoleResponse>,
+    val permissions: Set<Permission>,
     override val createdAt: Instant
-) : CRUDGetResponse
+) : CRUDGetResponse {
+
+    data class GetRoleResponse(
+        val id: Long,
+        val name: String
+    )
+
+}

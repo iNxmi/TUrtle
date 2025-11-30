@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/resources/devices")
+@RequestMapping("/api/devices")
 class DeviceController(
-    override val endpoint: String = "/api/resources/devices",
+    override val endpoint: String = "/api/devices",
 
-    override val createPermission: Permission = Permission.API_RESOURCES_DEVICES__CREATE,
-    override val getPermission: Permission = Permission.API_RESOURCES_DEVICES__GET,
-    override val patchPermission: Permission = Permission.API_RESOURCES_DEVICES__PATCH,
-    override val deletePermission: Permission = Permission.API_RESOURCES_DEVICES__DELETE,
+    override val createPermission: Permission = Permission.API_DEVICES__CREATE,
+    override val getPermission: Permission = Permission.API_DEVICES__GET,
+    override val patchPermission: Permission = Permission.API_DEVICES__PATCH,
+    override val deletePermission: Permission = Permission.API_DEVICES__DELETE,
 
     override val service: DeviceService,
     override val mapper: DeviceMapper,

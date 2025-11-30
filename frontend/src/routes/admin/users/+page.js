@@ -21,7 +21,7 @@ export async function load({url, fetch}) {
 
     const urlParameters = new URLSearchParams(parameters)
 
-    const response = await request(`/users?${urlParameters.toString()}`);
+    const response = await request(`/users/page?${urlParameters.toString()}`);
     const payload = await response.json();
 
     return {page: payload};
