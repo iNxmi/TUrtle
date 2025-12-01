@@ -48,6 +48,7 @@
     --color-table-dark: #d1f3d1;
     --color-accent: #3dff4a;
     --color-csw: #FF6A00;
+    --ec-button-bg-color: var(--color-csw);
 }
 
 .dark {
@@ -85,6 +86,7 @@
     --color-table-dark: #053105;
     --color-accent: #00c20d;
     --color-csw: #FF6A00;
+    
 }
 
 @font-face {
@@ -94,6 +96,11 @@
     font-stretch: 75% 125%;
     font-style: normal;
     font-display: swap;
+}
+.ec {
+    --ec-button-bg-color: var(--color-orange-400);
+    --ec-button-text-color: var(--color-white);
+    --ec-button-active-bg-color: var(--color-csw);
 }
 .fc .fc-timegrid-slot-minor{
   border-top-style: none;
