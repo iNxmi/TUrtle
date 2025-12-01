@@ -36,7 +36,7 @@
 
     <Label>
         <span>{m.admin_users_id__roles_label()}</span>
-        <Input type="text" value={user.roles} disabled/>
+        <Input type="text" value={JSON.stringify(user.roles)} disabled/>
     </Label>
 
     <Label>

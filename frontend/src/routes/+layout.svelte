@@ -8,7 +8,9 @@
         SidebarDropdownItem,
         SidebarDropdownWrapper,
         Span,
-        Toggle
+        Toggle,
+        SplitPane,
+        Pane
     } from 'flowbite-svelte';
 
     import {m} from '$lib/paraglide/messages.js';
@@ -71,12 +73,6 @@
         document.documentElement.classList.add(darkmode ? "light" : "dark");
         darkmode = !darkmode;
     }
-
-    const theme = {
-        sidebar: {
-            base: 'bg-secondary dark:bg-secondary'
-        }
-    };
 
     const itemsPublic = [{
         label: m.sidebar_public_home(),
@@ -153,48 +149,28 @@
 
 </script>
 
-<div class="flex h-full">
-    <Sidebar
-            alwaysOpen
-            {activeUrl}
-            isSingle={false}
-            backdrop={false}
-            isOpen={true}
-            position="static"
-            class="min-w-64"
-    >
-        <div class="flex flex-col gap-3">
-            <div class="flex flex-col items-center">
-                <TUrtleLogo/>
-            </div>
-
-            <Hr class="m-0 p-0"/>
-
-            {#if user}
-                <Heading tag="h5" class="text-center">
-                    <Span class="text-csw">
-                        {`${user.firstName} ${user.lastName}`}
-                    </Span>
-                </Heading>
+<SplitPane minSize={300} initialSizes={[0, 100]} responsive={false}>
+    <Pane>
+        <Sidebar alwaysOpen {activeUrl} isSingle={false} backdrop={false} isOpen={true} position="static" class="w-full">
+            <div class="flex flex-col gap-3">
+                <div class="flex flex-col items-center">
+                    <TUrtleLogo/>
+                </div>
 
                 <Hr class="m-0 p-0"/>
-            {/if}
 
-            <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
-                                    label={m.sidebar_category_public()}>
-                {#each itemsPublic as item}
-                    <SidebarDropdownItem label={item.label} href={item.href}>
-                        {#snippet icon()}
-                            <item.icon class="text-csw h-5 w-5"/>
-                        {/snippet}
-                    </SidebarDropdownItem>
-                {/each}
-            </SidebarDropdownWrapper>
+                {#if user}
+                    <Heading tag="h5" class="text-center">
+                        <Span class="text-csw">
+                            {`${user.firstName} ${user.lastName}`}
+                        </Span>
+                    </Heading>
 
-            {#if user}
-                <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
-                                        label={m.sidebar_category_user()}>
-                    {#each itemsUser as item}
+                    <Hr class="m-0 p-0"/>
+                {/if}
+
+                <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true} label={m.sidebar_category_public()}>
+                    {#each itemsPublic as item}
                         <SidebarDropdownItem label={item.label} href={item.href}>
                             {#snippet icon()}
                                 <item.icon class="text-csw h-5 w-5"/>
@@ -202,33 +178,44 @@
                         </SidebarDropdownItem>
                     {/each}
                 </SidebarDropdownWrapper>
-            {/if}
 
-            {#if user && user.permissions.includes("FRONTEND__VIEW_ADMINISTRATOR")}
-                <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
-                                        label={m.sidebar_category_admin()}>
-                    {#each itemsAdmin as item}
-                        <SidebarDropdownItem label={item.label} href={item.href}>
-                            {#snippet icon()}
-                                <item.icon class="text-csw h-5 w-5"/>
-                            {/snippet}
-                        </SidebarDropdownItem>
-                    {/each}
+                {#if user}
+                    <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true} label={m.sidebar_category_user()}>
+                        {#each itemsUser as item}
+                            <SidebarDropdownItem label={item.label} href={item.href}>
+                                {#snippet icon()}
+                                    <item.icon class="text-csw h-5 w-5"/>
+                                {/snippet}
+                            </SidebarDropdownItem>
+                        {/each}
+                    </SidebarDropdownWrapper>
+                {/if}
+
+                {#if user && user.permissions.includes("FRONTEND__VIEW_ADMINISTRATOR")}
+                    <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true} label={m.sidebar_category_admin()}>
+                        {#each itemsAdmin as item}
+                            <SidebarDropdownItem label={item.label} href={item.href}>
+                                {#snippet icon()}
+                                    <item.icon class="text-csw h-5 w-5"/>
+                                {/snippet}
+                            </SidebarDropdownItem>
+                        {/each}
+                    </SidebarDropdownWrapper>
+                {/if}
+
+                <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true} label={m.sidebar_category_settings()}>
+                    <Select items={languages} bind:value={language} onchange={updateLanguage}/>
+                    <Toggle onchange={toggleDarkMode}>_toggle_darkmode</Toggle>
                 </SidebarDropdownWrapper>
-            {/if}
+            </div>
+        </Sidebar>
+    </Pane>
 
-            <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
-                                    label={m.sidebar_category_settings()}>
-                <Select items={languages} bind:value={language} onchange={updateLanguage}/>
-                <Toggle onchange={toggleDarkMode}>_toggle_darkmode</Toggle>
-            </SidebarDropdownWrapper>
+    <Pane>
+        <div class="m-10">
+            {@render children?.()}
         </div>
-    </Sidebar>
-
-    <div class="w-full m-10">
-        {@render children?.()}
-    </div>
-
-</div>
+    </Pane>
+</SplitPane>
 
 <Footer/>

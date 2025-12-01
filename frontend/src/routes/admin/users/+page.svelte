@@ -49,7 +49,7 @@
                     <TableBodyCell>{user.firstName}</TableBodyCell>
                     <TableBodyCell>{user.email}</TableBodyCell>
                     <TableBodyCell>{user.studentId}</TableBodyCell>
-                    <TableBodyCell>{user.roles}</TableBodyCell>
+                    <TableBodyCell>{JSON.stringify(user.roles)}</TableBodyCell>
                     <TableBodyCell>{(new Date(user.createdAt)).toLocaleString()}</TableBodyCell>
                 </TableBodyRow>
             {/each}
