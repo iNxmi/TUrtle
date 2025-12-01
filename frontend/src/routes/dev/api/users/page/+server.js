@@ -1,0 +1,215 @@
+import {json} from "@sveltejs/kit";
+
+const page = {
+    "content": [{
+        "id": 1,
+        "username": "beverley.bins",
+        "firstName": "Beverley",
+        "lastName": "Bins",
+        "email": "BeverleyBins@hahn-kilback.example",
+        "studentId": 3137691,
+        "roles": [{"id": 2, "name": "Student"}],
+        "permissions": ["BACKEND__API_AUTH__LOGOUT", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH"],
+        "createdAt": "2025-11-30T23:24:21.115966Z"
+    }, {
+        "id": 2,
+        "username": "jesica.swaniawski",
+        "firstName": "Jesica",
+        "lastName": "Swaniawski",
+        "email": "JesicaSwaniawski@strosin.example",
+        "studentId": 1979243104,
+        "roles": [{"id": 3, "name": "Professor"}],
+        "permissions": ["BACKEND__API_AUTH__LOGOUT", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH"],
+        "createdAt": "2025-11-30T23:24:21.178221Z"
+    }, {
+        "id": 3,
+        "username": "maida.fay",
+        "firstName": "Maida",
+        "lastName": "Fay",
+        "email": "MaidaFay@emard.example",
+        "studentId": 1686665256,
+        "roles": [{"id": 2, "name": "Student"}],
+        "permissions": ["BACKEND__API_AUTH__LOGOUT", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH"],
+        "createdAt": "2025-11-30T23:24:21.239723Z"
+    }, {
+        "id": 4,
+        "username": "gaston.macgyver",
+        "firstName": "Gaston",
+        "lastName": "MacGyver",
+        "email": "GastonMacGyver@ledner.example",
+        "studentId": 1802700465,
+        "roles": [{"id": 2, "name": "Student"}],
+        "permissions": ["BACKEND__API_AUTH__LOGOUT", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH"],
+        "createdAt": "2025-11-30T23:24:21.298084Z"
+    }, {
+        "id": 5,
+        "username": "danyelle.stanton",
+        "firstName": "Danyelle",
+        "lastName": "Stanton",
+        "email": "DanyelleStanton@streich.test",
+        "studentId": 160808996,
+        "roles": [{"id": 2, "name": "Student"}],
+        "permissions": ["BACKEND__API_AUTH__LOGOUT", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH"],
+        "createdAt": "2025-11-30T23:24:21.356875Z"
+    }, {
+        "id": 6,
+        "username": "kayce.hansen",
+        "firstName": "Kayce",
+        "lastName": "Hansen",
+        "email": "KayceHansen@skiles-daugherty.example",
+        "studentId": 327999656,
+        "roles": [{"id": 3, "name": "Professor"}],
+        "permissions": ["BACKEND__API_AUTH__LOGOUT", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH"],
+        "createdAt": "2025-11-30T23:24:21.415875Z"
+    }, {
+        "id": 7,
+        "username": "criselda.berge",
+        "firstName": "Criselda",
+        "lastName": "Berge",
+        "email": "CriseldaBerge@bruen.example",
+        "studentId": 286317875,
+        "roles": [{"id": 2, "name": "Student"}],
+        "permissions": ["BACKEND__API_AUTH__LOGOUT", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH"],
+        "createdAt": "2025-11-30T23:24:21.474149Z"
+    }, {
+        "id": 8,
+        "username": "bryan.leannon",
+        "firstName": "Bryan",
+        "lastName": "Leannon",
+        "email": "BryanLeannon@watsica.test",
+        "studentId": 800002375,
+        "roles": [{"id": 2, "name": "Student"}],
+        "permissions": ["BACKEND__API_AUTH__LOGOUT", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH"],
+        "createdAt": "2025-11-30T23:24:21.533667Z"
+    }, {
+        "id": 9,
+        "username": "lyman.satterfield",
+        "firstName": "Lyman",
+        "lastName": "Satterfield",
+        "email": "LymanSatterfield@oconnell-bayer.test",
+        "studentId": 745483582,
+        "roles": [{"id": 3, "name": "Professor"}],
+        "permissions": ["BACKEND__API_AUTH__LOGOUT", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH"],
+        "createdAt": "2025-11-30T23:24:21.593179Z"
+    }, {
+        "id": 10,
+        "username": "trenton.stiedemann",
+        "firstName": "Trenton",
+        "lastName": "Stiedemann",
+        "email": "TrentonStiedemann@hoeger.test",
+        "studentId": 714127594,
+        "roles": [{"id": 2, "name": "Student"}],
+        "permissions": ["BACKEND__API_AUTH__LOGOUT", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH"],
+        "createdAt": "2025-11-30T23:24:21.651453Z"
+    }, {
+        "id": 11,
+        "username": "toby.rau",
+        "firstName": "Toby",
+        "lastName": "Rau",
+        "email": "TobyRau@wolff.test",
+        "studentId": 698809818,
+        "roles": [{"id": 4, "name": "Administrator"}],
+        "permissions": ["BACKEND__API_AUDITLOGS__GET", "BACKEND__API_AUTH__LOGIN", "BACKEND__API_AUTH__LOGOUT", "BACKEND__API_AUTH__REGISTER", "BACKEND__API_DEVICECATEGORIES__CREATE", "BACKEND__API_DEVICECATEGORIES__DELETE", "BACKEND__API_DEVICECATEGORIES__GET", "BACKEND__API_DEVICECATEGORIES__PATCH", "BACKEND__API_DEVICES__CREATE", "BACKEND__API_DEVICES__DELETE", "BACKEND__API_DEVICES__GET", "BACKEND__API_DEVICES__PATCH", "BACKEND__API_EXCEPTIONS__DELETE", "BACKEND__API_EXCEPTIONS__GET", "BACKEND__API_LOCKERS__CREATE", "BACKEND__API_LOCKERS__DELETE", "BACKEND__API_LOCKERS__GET", "BACKEND__API_LOCKERS__PATCH", "BACKEND__API_ROLES__CREATE", "BACKEND__API_ROLES__DELETE", "BACKEND__API_ROLES__GET", "BACKEND__API_ROLES__PATCH", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_SUPPORTTICKETS__DELETE", "BACKEND__API_SUPPORTTICKETS__GET", "BACKEND__API_SUPPORTTICKETS__PATCH", "BACKEND__API_USERS__CREATE", "BACKEND__API_USERS__DELETE", "BACKEND__API_USERS__GET", "BACKEND__API_USERS__PATCH", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH", "BACKEND__DEBUG__DOOR", "BACKEND__DEBUG__EMAIL", "BACKEND__DEBUG__EXCEPTION", "BACKEND__DEBUG__INFO", "BACKEND__DEBUG__LOCKER", "FRONTEND__VIEW_ADMINISTRATOR"],
+        "createdAt": "2025-11-30T23:24:21.710017Z"
+    }, {
+        "id": 12,
+        "username": "clement.rempel",
+        "firstName": "Clement",
+        "lastName": "Rempel",
+        "email": "ClementRempel@mayer.test",
+        "studentId": 1989571633,
+        "roles": [{"id": 4, "name": "Administrator"}],
+        "permissions": ["BACKEND__API_AUDITLOGS__GET", "BACKEND__API_AUTH__LOGIN", "BACKEND__API_AUTH__LOGOUT", "BACKEND__API_AUTH__REGISTER", "BACKEND__API_DEVICECATEGORIES__CREATE", "BACKEND__API_DEVICECATEGORIES__DELETE", "BACKEND__API_DEVICECATEGORIES__GET", "BACKEND__API_DEVICECATEGORIES__PATCH", "BACKEND__API_DEVICES__CREATE", "BACKEND__API_DEVICES__DELETE", "BACKEND__API_DEVICES__GET", "BACKEND__API_DEVICES__PATCH", "BACKEND__API_EXCEPTIONS__DELETE", "BACKEND__API_EXCEPTIONS__GET", "BACKEND__API_LOCKERS__CREATE", "BACKEND__API_LOCKERS__DELETE", "BACKEND__API_LOCKERS__GET", "BACKEND__API_LOCKERS__PATCH", "BACKEND__API_ROLES__CREATE", "BACKEND__API_ROLES__DELETE", "BACKEND__API_ROLES__GET", "BACKEND__API_ROLES__PATCH", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_SUPPORTTICKETS__DELETE", "BACKEND__API_SUPPORTTICKETS__GET", "BACKEND__API_SUPPORTTICKETS__PATCH", "BACKEND__API_USERS__CREATE", "BACKEND__API_USERS__DELETE", "BACKEND__API_USERS__GET", "BACKEND__API_USERS__PATCH", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH", "BACKEND__DEBUG__DOOR", "BACKEND__DEBUG__EMAIL", "BACKEND__DEBUG__EXCEPTION", "BACKEND__DEBUG__INFO", "BACKEND__DEBUG__LOCKER", "FRONTEND__VIEW_ADMINISTRATOR"],
+        "createdAt": "2025-11-30T23:24:21.768821Z"
+    }, {
+        "id": 13,
+        "username": "mayola.shields",
+        "firstName": "Mayola",
+        "lastName": "Shields",
+        "email": "MayolaShields@schaefer.test",
+        "studentId": 220835580,
+        "roles": [{"id": 3, "name": "Professor"}],
+        "permissions": ["BACKEND__API_AUTH__LOGOUT", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH"],
+        "createdAt": "2025-11-30T23:24:21.828431Z"
+    }, {
+        "id": 14,
+        "username": "trinidad.hills",
+        "firstName": "Trinidad",
+        "lastName": "Hills",
+        "email": "TrinidadHills@treutel.test",
+        "studentId": 503115085,
+        "roles": [{"id": 4, "name": "Administrator"}],
+        "permissions": ["BACKEND__API_AUDITLOGS__GET", "BACKEND__API_AUTH__LOGIN", "BACKEND__API_AUTH__LOGOUT", "BACKEND__API_AUTH__REGISTER", "BACKEND__API_DEVICECATEGORIES__CREATE", "BACKEND__API_DEVICECATEGORIES__DELETE", "BACKEND__API_DEVICECATEGORIES__GET", "BACKEND__API_DEVICECATEGORIES__PATCH", "BACKEND__API_DEVICES__CREATE", "BACKEND__API_DEVICES__DELETE", "BACKEND__API_DEVICES__GET", "BACKEND__API_DEVICES__PATCH", "BACKEND__API_EXCEPTIONS__DELETE", "BACKEND__API_EXCEPTIONS__GET", "BACKEND__API_LOCKERS__CREATE", "BACKEND__API_LOCKERS__DELETE", "BACKEND__API_LOCKERS__GET", "BACKEND__API_LOCKERS__PATCH", "BACKEND__API_ROLES__CREATE", "BACKEND__API_ROLES__DELETE", "BACKEND__API_ROLES__GET", "BACKEND__API_ROLES__PATCH", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_SUPPORTTICKETS__DELETE", "BACKEND__API_SUPPORTTICKETS__GET", "BACKEND__API_SUPPORTTICKETS__PATCH", "BACKEND__API_USERS__CREATE", "BACKEND__API_USERS__DELETE", "BACKEND__API_USERS__GET", "BACKEND__API_USERS__PATCH", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH", "BACKEND__DEBUG__DOOR", "BACKEND__DEBUG__EMAIL", "BACKEND__DEBUG__EXCEPTION", "BACKEND__DEBUG__INFO", "BACKEND__DEBUG__LOCKER", "FRONTEND__VIEW_ADMINISTRATOR"],
+        "createdAt": "2025-11-30T23:24:21.884763Z"
+    }, {
+        "id": 15,
+        "username": "cruz.feest",
+        "firstName": "Cruz",
+        "lastName": "Feest",
+        "email": "CruzFeest@jenkins.example",
+        "studentId": 1199201159,
+        "roles": [{"id": 4, "name": "Administrator"}],
+        "permissions": ["BACKEND__API_AUDITLOGS__GET", "BACKEND__API_AUTH__LOGIN", "BACKEND__API_AUTH__LOGOUT", "BACKEND__API_AUTH__REGISTER", "BACKEND__API_DEVICECATEGORIES__CREATE", "BACKEND__API_DEVICECATEGORIES__DELETE", "BACKEND__API_DEVICECATEGORIES__GET", "BACKEND__API_DEVICECATEGORIES__PATCH", "BACKEND__API_DEVICES__CREATE", "BACKEND__API_DEVICES__DELETE", "BACKEND__API_DEVICES__GET", "BACKEND__API_DEVICES__PATCH", "BACKEND__API_EXCEPTIONS__DELETE", "BACKEND__API_EXCEPTIONS__GET", "BACKEND__API_LOCKERS__CREATE", "BACKEND__API_LOCKERS__DELETE", "BACKEND__API_LOCKERS__GET", "BACKEND__API_LOCKERS__PATCH", "BACKEND__API_ROLES__CREATE", "BACKEND__API_ROLES__DELETE", "BACKEND__API_ROLES__GET", "BACKEND__API_ROLES__PATCH", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_SUPPORTTICKETS__DELETE", "BACKEND__API_SUPPORTTICKETS__GET", "BACKEND__API_SUPPORTTICKETS__PATCH", "BACKEND__API_USERS__CREATE", "BACKEND__API_USERS__DELETE", "BACKEND__API_USERS__GET", "BACKEND__API_USERS__PATCH", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH", "BACKEND__DEBUG__DOOR", "BACKEND__DEBUG__EMAIL", "BACKEND__DEBUG__EXCEPTION", "BACKEND__DEBUG__INFO", "BACKEND__DEBUG__LOCKER", "FRONTEND__VIEW_ADMINISTRATOR"],
+        "createdAt": "2025-11-30T23:24:21.942503Z"
+    }, {
+        "id": 16,
+        "username": "jeffie.muller",
+        "firstName": "Jeffie",
+        "lastName": "Muller",
+        "email": "JeffieMuller@zulauf-bins.example",
+        "studentId": 891840206,
+        "roles": [{"id": 4, "name": "Administrator"}],
+        "permissions": ["BACKEND__API_AUDITLOGS__GET", "BACKEND__API_AUTH__LOGIN", "BACKEND__API_AUTH__LOGOUT", "BACKEND__API_AUTH__REGISTER", "BACKEND__API_DEVICECATEGORIES__CREATE", "BACKEND__API_DEVICECATEGORIES__DELETE", "BACKEND__API_DEVICECATEGORIES__GET", "BACKEND__API_DEVICECATEGORIES__PATCH", "BACKEND__API_DEVICES__CREATE", "BACKEND__API_DEVICES__DELETE", "BACKEND__API_DEVICES__GET", "BACKEND__API_DEVICES__PATCH", "BACKEND__API_EXCEPTIONS__DELETE", "BACKEND__API_EXCEPTIONS__GET", "BACKEND__API_LOCKERS__CREATE", "BACKEND__API_LOCKERS__DELETE", "BACKEND__API_LOCKERS__GET", "BACKEND__API_LOCKERS__PATCH", "BACKEND__API_ROLES__CREATE", "BACKEND__API_ROLES__DELETE", "BACKEND__API_ROLES__GET", "BACKEND__API_ROLES__PATCH", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_SUPPORTTICKETS__DELETE", "BACKEND__API_SUPPORTTICKETS__GET", "BACKEND__API_SUPPORTTICKETS__PATCH", "BACKEND__API_USERS__CREATE", "BACKEND__API_USERS__DELETE", "BACKEND__API_USERS__GET", "BACKEND__API_USERS__PATCH", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH", "BACKEND__DEBUG__DOOR", "BACKEND__DEBUG__EMAIL", "BACKEND__DEBUG__EXCEPTION", "BACKEND__DEBUG__INFO", "BACKEND__DEBUG__LOCKER", "FRONTEND__VIEW_ADMINISTRATOR"],
+        "createdAt": "2025-11-30T23:24:21.999796Z"
+    }, {
+        "id": 17,
+        "username": "tamala.greenholt",
+        "firstName": "Tamala",
+        "lastName": "Greenholt",
+        "email": "TamalaGreenholt@rosenbaum.example",
+        "studentId": 1013652431,
+        "roles": [{"id": 4, "name": "Administrator"}],
+        "permissions": ["BACKEND__API_AUDITLOGS__GET", "BACKEND__API_AUTH__LOGIN", "BACKEND__API_AUTH__LOGOUT", "BACKEND__API_AUTH__REGISTER", "BACKEND__API_DEVICECATEGORIES__CREATE", "BACKEND__API_DEVICECATEGORIES__DELETE", "BACKEND__API_DEVICECATEGORIES__GET", "BACKEND__API_DEVICECATEGORIES__PATCH", "BACKEND__API_DEVICES__CREATE", "BACKEND__API_DEVICES__DELETE", "BACKEND__API_DEVICES__GET", "BACKEND__API_DEVICES__PATCH", "BACKEND__API_EXCEPTIONS__DELETE", "BACKEND__API_EXCEPTIONS__GET", "BACKEND__API_LOCKERS__CREATE", "BACKEND__API_LOCKERS__DELETE", "BACKEND__API_LOCKERS__GET", "BACKEND__API_LOCKERS__PATCH", "BACKEND__API_ROLES__CREATE", "BACKEND__API_ROLES__DELETE", "BACKEND__API_ROLES__GET", "BACKEND__API_ROLES__PATCH", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_SUPPORTTICKETS__DELETE", "BACKEND__API_SUPPORTTICKETS__GET", "BACKEND__API_SUPPORTTICKETS__PATCH", "BACKEND__API_USERS__CREATE", "BACKEND__API_USERS__DELETE", "BACKEND__API_USERS__GET", "BACKEND__API_USERS__PATCH", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH", "BACKEND__DEBUG__DOOR", "BACKEND__DEBUG__EMAIL", "BACKEND__DEBUG__EXCEPTION", "BACKEND__DEBUG__INFO", "BACKEND__DEBUG__LOCKER", "FRONTEND__VIEW_ADMINISTRATOR"],
+        "createdAt": "2025-11-30T23:24:22.057964Z"
+    }, {
+        "id": 18,
+        "username": "shelba.hane",
+        "firstName": "Shelba",
+        "lastName": "Hane",
+        "email": "ShelbaHane@heaney.example",
+        "studentId": 310247170,
+        "roles": [{"id": 4, "name": "Administrator"}],
+        "permissions": ["BACKEND__API_AUDITLOGS__GET", "BACKEND__API_AUTH__LOGIN", "BACKEND__API_AUTH__LOGOUT", "BACKEND__API_AUTH__REGISTER", "BACKEND__API_DEVICECATEGORIES__CREATE", "BACKEND__API_DEVICECATEGORIES__DELETE", "BACKEND__API_DEVICECATEGORIES__GET", "BACKEND__API_DEVICECATEGORIES__PATCH", "BACKEND__API_DEVICES__CREATE", "BACKEND__API_DEVICES__DELETE", "BACKEND__API_DEVICES__GET", "BACKEND__API_DEVICES__PATCH", "BACKEND__API_EXCEPTIONS__DELETE", "BACKEND__API_EXCEPTIONS__GET", "BACKEND__API_LOCKERS__CREATE", "BACKEND__API_LOCKERS__DELETE", "BACKEND__API_LOCKERS__GET", "BACKEND__API_LOCKERS__PATCH", "BACKEND__API_ROLES__CREATE", "BACKEND__API_ROLES__DELETE", "BACKEND__API_ROLES__GET", "BACKEND__API_ROLES__PATCH", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_SUPPORTTICKETS__DELETE", "BACKEND__API_SUPPORTTICKETS__GET", "BACKEND__API_SUPPORTTICKETS__PATCH", "BACKEND__API_USERS__CREATE", "BACKEND__API_USERS__DELETE", "BACKEND__API_USERS__GET", "BACKEND__API_USERS__PATCH", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH", "BACKEND__DEBUG__DOOR", "BACKEND__DEBUG__EMAIL", "BACKEND__DEBUG__EXCEPTION", "BACKEND__DEBUG__INFO", "BACKEND__DEBUG__LOCKER", "FRONTEND__VIEW_ADMINISTRATOR"],
+        "createdAt": "2025-11-30T23:24:22.114550Z"
+    }, {
+        "id": 19,
+        "username": "dolly.heathcote",
+        "firstName": "Dolly",
+        "lastName": "Heathcote",
+        "email": "DollyHeathcote@gerlach-grady.test",
+        "studentId": 2132325325,
+        "roles": [{"id": 3, "name": "Professor"}],
+        "permissions": ["BACKEND__API_AUTH__LOGOUT", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH"],
+        "createdAt": "2025-11-30T23:24:22.171395Z"
+    }, {
+        "id": 20,
+        "username": "marguerita.wintheiser",
+        "firstName": "Marguerita",
+        "lastName": "Wintheiser",
+        "email": "MargueritaWintheiser@zieme.example",
+        "studentId": 1496233934,
+        "roles": [{"id": 4, "name": "Administrator"}],
+        "permissions": ["BACKEND__API_AUDITLOGS__GET", "BACKEND__API_AUTH__LOGIN", "BACKEND__API_AUTH__LOGOUT", "BACKEND__API_AUTH__REGISTER", "BACKEND__API_DEVICECATEGORIES__CREATE", "BACKEND__API_DEVICECATEGORIES__DELETE", "BACKEND__API_DEVICECATEGORIES__GET", "BACKEND__API_DEVICECATEGORIES__PATCH", "BACKEND__API_DEVICES__CREATE", "BACKEND__API_DEVICES__DELETE", "BACKEND__API_DEVICES__GET", "BACKEND__API_DEVICES__PATCH", "BACKEND__API_EXCEPTIONS__DELETE", "BACKEND__API_EXCEPTIONS__GET", "BACKEND__API_LOCKERS__CREATE", "BACKEND__API_LOCKERS__DELETE", "BACKEND__API_LOCKERS__GET", "BACKEND__API_LOCKERS__PATCH", "BACKEND__API_ROLES__CREATE", "BACKEND__API_ROLES__DELETE", "BACKEND__API_ROLES__GET", "BACKEND__API_ROLES__PATCH", "BACKEND__API_SUPPORTTICKETS__CREATE", "BACKEND__API_SUPPORTTICKETS__DELETE", "BACKEND__API_SUPPORTTICKETS__GET", "BACKEND__API_SUPPORTTICKETS__PATCH", "BACKEND__API_USERS__CREATE", "BACKEND__API_USERS__DELETE", "BACKEND__API_USERS__GET", "BACKEND__API_USERS__PATCH", "BACKEND__API_USER_PROFILE__DELETE", "BACKEND__API_USER_PROFILE__GET", "BACKEND__API_USER_PROFILE__PATCH", "BACKEND__DEBUG__DOOR", "BACKEND__DEBUG__EMAIL", "BACKEND__DEBUG__EXCEPTION", "BACKEND__DEBUG__INFO", "BACKEND__DEBUG__LOCKER", "FRONTEND__VIEW_ADMINISTRATOR"],
+        "createdAt": "2025-11-30T23:24:22.228519Z"
+    }],
+    "page": {
+        "size": 20,
+        "number": 0,
+        "totalElements": 129,
+        "totalPages": 7
+    }
+}
+
+export async function GET() {
+    return json(page);
+}

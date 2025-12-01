@@ -35,8 +35,8 @@
     </Label>
 
     <Label>
-        <span>{m.admin_users_id__role_label()}</span>
-        <Input type="text" value={user.role} disabled/>
+        <span>{m.admin_users_id__roles_label()}</span>
+        <Input type="text" value={user.roles} disabled/>
     </Label>
 
     <Label>
