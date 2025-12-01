@@ -2,7 +2,6 @@
 	import { getContext, onMount } from 'svelte';
 	import { dev } from '$app/environment';
 	import request from '$lib/api/api';
-	import ContextMenu from './ContextMenu.svelte';
 	import {Label, Input, Datepicker, Button, ThemeProvider} from 'flowbite-svelte';
 
 	import {TrashBinSolid} from 'flowbite-svelte-icons';
