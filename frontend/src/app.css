@@ -99,6 +99,7 @@
 }
 .ec {
     --ec-button-bg-color: var(--color-orange-400);
+    --ec-button-border-color: var(--color-white);
     --ec-button-text-color: var(--color-white);
     --ec-button-active-bg-color: var(--color-csw);
 }
