@@ -1,36 +1,40 @@
-import {data} from './sampleUsers.js';
+import { data } from './sampleUsers.js';
 import SimpleDB from './SimpleDB.js';
 
-export const db = new SimpleDB();
+export class UserDatabase {
+	constructor(db) {
+		this.db = db;
+		this.collection = 'users';
+	}
 
-function seedDatabase() {
-	data.forEach((user) =>
-		db.create('users', {
-			firstName: user.firstName,
-			lastName: user.lastName,
-			studentId: user.studentId,
-			username: user.username,
-			email: user.email
-		})
-	);
-}
-seedDatabase();
+	seedDatabase() {
+		data.forEach((user) =>
+			this.db.create('users', {
+				firstName: user.firstName,
+				lastName: user.lastName,
+				studentId: user.studentId,
+				username: user.username,
+				email: user.email
+			})
+		);
+	}
 
-export function getUsers() {
-	const users = db.read('users');
+	getUsers() {
+		const users = this.db.read('users');
 
-	return users;
-}
+		return users;
+	}
 
-export function getUser(id) {
-	const user = db.read('users', id);
-	return user;
-}
+	getUser(id) {
+		const user = this.db.read('users', id);
+		return user;
+	}
 
-export function createUser(name, email) {
-	db.create('users', { name: name, email: email });
-}
+	createUser(name, email) {
+		this.db.create('users', { name: name, email: email });
+	}
 
-export function deleteUser(id) {
-	db.delete('users', id);
+	deleteUser(id) {
+		this.db.delete('users', id);
+	}
 }
