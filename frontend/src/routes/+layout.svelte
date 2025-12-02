@@ -168,7 +168,7 @@
 	];
 </script>
 
-<div class="flex h-full min-h-[calc(100svh-71px)]">
+<div class="flex h-full">
 	<Sidebar
 		alwaysOpen
 		{activeUrl}
@@ -256,9 +256,11 @@
 		</div>
 	</Sidebar>
 
-	<div class="w-full m-10">
-		{@render children?.()}
+	<div class="min-h-svh justify-between flex flex-col w-full pt-10">
+		<div class=m-10 mb-0 mt-0>
+			{@render children?.()}
+		</div>
+		<Footer />
 	</div>
 </div>
 
-<Footer />
