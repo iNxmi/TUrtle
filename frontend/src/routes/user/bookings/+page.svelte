@@ -21,6 +21,7 @@
 			meridiem: 'short'
 		},
 		slotMinTime: '6:00:00',
+		slotMaxTime: '20:00:00',
 		allDaySlot: false,
 		view: 'timeGridWeek',
 		headerToolbar: {
@@ -39,9 +40,10 @@
 
 	$effect(() => {
 
-		if(calendar){
+		calendar.setOption('locale', localeString);
+		/* if(calendar){
 			calendar.setOption('locale', localeString);
-		}
+		} */
 
 	})
 	/* onMount(() => {
