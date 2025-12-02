@@ -2,17 +2,19 @@ package de.csw.turtle.api.service.door
 
 import de.csw.turtle.TUrtleProperties
 import net.schmizz.sshj.SSHClient
+import net.schmizz.sshj.transport.verification.HostKeyVerifier
+import net.schmizz.sshj.transport.verification.PromiscuousVerifier
+import java.time.Duration
 
 class SSHDoorControlService(
     private val properties: TUrtleProperties
 ) : DoorControlService {
 
-    private val duration = 3
-
-    override fun trigger(): String {
-        val input = "~/doorOpen.sh $duration"
+    override fun trigger(duration: Duration): String {
+        val input = "~/doorOpen.sh ${duration.seconds}"
 
         return SSHClient().use { client ->
+            client.addHostKeyVerifier(PromiscuousVerifier())
             client.connect(properties.ssh.door.host, properties.ssh.door.port)
             client.authPassword(properties.ssh.door.username, properties.ssh.door.password)
 
