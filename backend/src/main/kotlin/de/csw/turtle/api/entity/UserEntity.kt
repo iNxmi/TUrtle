@@ -33,7 +33,13 @@ data class UserEntity(
     val roles: MutableSet<RoleEntity> = mutableSetOf(),
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val auditLogs: Collection<AuditLogEntity> = emptyList(),
+    val auditLogs: Collection<AuditLogEntity> = emptySet(),
+
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val roomBookings: Collection<RoomBookingEntity> = emptySet(),
+
+    @ManyToMany(mappedBy = "room_bookings")
+    val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf(),
 
     @Id
     @GeneratedValue
