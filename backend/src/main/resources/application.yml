@@ -29,6 +29,9 @@ spring:
           starttls:
             enable: false
 
+  mustache:
+    check-template-location: false
+
 springdoc:
   api-docs:
     path: /openapi/api-docs

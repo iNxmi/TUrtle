@@ -11,6 +11,8 @@ class FAQEntity(
     @Column(unique = true)
     var name: String,
 
+    var title: String,
+
     @Column(columnDefinition = "TEXT")
     var content: String
 

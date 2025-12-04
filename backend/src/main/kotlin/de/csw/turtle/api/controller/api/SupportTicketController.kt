@@ -2,10 +2,10 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
-import de.csw.turtle.api.controller.CreateController
-import de.csw.turtle.api.controller.DeleteController
-import de.csw.turtle.api.controller.GetController
-import de.csw.turtle.api.controller.PatchController
+import de.csw.turtle.api.controller.CRUDCreateController
+import de.csw.turtle.api.controller.CRUDDeleteController
+import de.csw.turtle.api.controller.CRUDGetController
+import de.csw.turtle.api.controller.CRUDPatchController
 import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.get.GetSupportTicketResponse
 import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
@@ -29,7 +29,7 @@ class SupportTicketController(
     override val service: SupportTicketService,
     override val mapper: SupportTicketMapper,
     override val securityService: SecurityService
-) : CreateController<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse>,
-    GetController<SupportTicketEntity, GetSupportTicketResponse>,
-    PatchController<SupportTicketEntity, PatchSupportTicketRequest, GetSupportTicketResponse>,
-    DeleteController<SupportTicketEntity>
+) : CRUDCreateController<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse>,
+    CRUDGetController<SupportTicketEntity, GetSupportTicketResponse>,
+    CRUDPatchController<SupportTicketEntity, PatchSupportTicketRequest, GetSupportTicketResponse>,
+    CRUDDeleteController<SupportTicketEntity>

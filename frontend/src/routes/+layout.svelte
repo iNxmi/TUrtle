@@ -92,6 +92,10 @@
         href: '/support',
         icon: UserHeadsetSolid
     }, {
+        label: m.sidebar_public_faq(),
+        href: '/faq',
+        icon: UserHeadsetSolid
+    }, {
         label: m.sidebar_public_about(),
         href: '/about',
         icon: InfoCircleSolid
@@ -150,7 +154,7 @@
 
 </script>
 
-<div class="flex h-full">
+<div class="flex">
     <Sidebar
             alwaysOpen
             {activeUrl}
@@ -234,8 +238,8 @@
         </div>
     </Sidebar>
 
-    <div class="min-h-svh justify-between flex flex-col w-full pt-10">
-        <div class=m-10 mb-0 mt-0>
+    <div class="min-h-svh justify-between flex flex-col w-full">
+        <div class="m-10 w-full">
             {@render children?.()}
         </div>
         <Footer/>

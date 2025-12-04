@@ -2,10 +2,10 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
-import de.csw.turtle.api.controller.CreateController
-import de.csw.turtle.api.controller.DeleteController
-import de.csw.turtle.api.controller.GetController
-import de.csw.turtle.api.controller.PatchController
+import de.csw.turtle.api.controller.CRUDCreateController
+import de.csw.turtle.api.controller.CRUDDeleteController
+import de.csw.turtle.api.controller.CRUDGetController
+import de.csw.turtle.api.controller.CRUDPatchController
 import de.csw.turtle.api.dto.create.CreateDeviceRequest
 import de.csw.turtle.api.dto.get.GetDeviceResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceRequest
@@ -29,7 +29,7 @@ class DeviceController(
     override val service: DeviceService,
     override val mapper: DeviceMapper,
     override val securityService: SecurityService
-) : CreateController<DeviceEntity, CreateDeviceRequest, GetDeviceResponse>,
-    GetController<DeviceEntity, GetDeviceResponse>,
-    PatchController<DeviceEntity, PatchDeviceRequest, GetDeviceResponse>,
-    DeleteController<DeviceEntity>
+) : CRUDCreateController<DeviceEntity, CreateDeviceRequest, GetDeviceResponse>,
+    CRUDGetController<DeviceEntity, GetDeviceResponse>,
+    CRUDPatchController<DeviceEntity, PatchDeviceRequest, GetDeviceResponse>,
+    CRUDDeleteController<DeviceEntity>

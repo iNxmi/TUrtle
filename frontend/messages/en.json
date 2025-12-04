@@ -9,6 +9,7 @@
   "sidebar_public_login": "Login",
   "sidebar_public_register": "Register",
   "sidebar_public_support": "Support",
+  "sidebar_public_faq": "FAQ",
   "sidebar_public_about": "About",
   "sidebar_user_dashboard": "Dashboard",
   "sidebar_user_bookings": "Bookings",
@@ -65,7 +66,9 @@
   "support__description_placeholder": "Describe your issue...",
   "support__button": "Submit Ticket",
   "support__i_agree_to_tos": "I agree to the TOS",
-  "support__faq_title": "Frequently Asked Questions",
+
+  "faq__title": "Frequently Asked Questions",
+  "faq__problem_not_solved": "Problem not solved? Contact us.",
 
   "admin_users__title": "Manage Users",
   "admin_users__student_id_label": "Student ID",

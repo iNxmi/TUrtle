@@ -2,10 +2,10 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
-import de.csw.turtle.api.controller.CreateController
-import de.csw.turtle.api.controller.DeleteController
-import de.csw.turtle.api.controller.GetController
-import de.csw.turtle.api.controller.PatchController
+import de.csw.turtle.api.controller.CRUDCreateController
+import de.csw.turtle.api.controller.CRUDDeleteController
+import de.csw.turtle.api.controller.CRUDGetController
+import de.csw.turtle.api.controller.CRUDPatchController
 import de.csw.turtle.api.dto.create.CreateTemplateRequest
 import de.csw.turtle.api.dto.get.GetTemplateResponse
 import de.csw.turtle.api.dto.patch.PatchTemplateRequest
@@ -29,7 +29,7 @@ class TemplateController(
     override val service: TemplateService,
     override val mapper: TemplateMapper,
     override val securityService: SecurityService
-) : CreateController<TemplateEntity, CreateTemplateRequest, GetTemplateResponse>,
-    GetController<TemplateEntity, GetTemplateResponse>,
-    PatchController<TemplateEntity, PatchTemplateRequest, GetTemplateResponse>,
-    DeleteController<TemplateEntity>
+) : CRUDCreateController<TemplateEntity, CreateTemplateRequest, GetTemplateResponse>,
+    CRUDGetController<TemplateEntity, GetTemplateResponse>,
+    CRUDPatchController<TemplateEntity, PatchTemplateRequest, GetTemplateResponse>,
+    CRUDDeleteController<TemplateEntity>

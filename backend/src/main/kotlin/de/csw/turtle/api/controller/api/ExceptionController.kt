@@ -2,8 +2,8 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
-import de.csw.turtle.api.controller.DeleteController
-import de.csw.turtle.api.controller.GetController
+import de.csw.turtle.api.controller.CRUDDeleteController
+import de.csw.turtle.api.controller.CRUDGetController
 import de.csw.turtle.api.dto.get.GetExceptionResponse
 import de.csw.turtle.api.entity.ExceptionEntity
 import de.csw.turtle.api.mapper.ExceptionMapper
@@ -21,5 +21,5 @@ class ExceptionController(
     override val service: ExceptionService,
     override val mapper: ExceptionMapper,
     override val securityService: SecurityService
-) : GetController<ExceptionEntity, GetExceptionResponse>,
-    DeleteController<ExceptionEntity>
+) : CRUDGetController<ExceptionEntity, GetExceptionResponse>,
+    CRUDDeleteController<ExceptionEntity>

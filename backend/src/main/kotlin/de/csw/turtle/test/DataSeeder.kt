@@ -121,14 +121,20 @@ class DataSeeder(
     fun seedCategories() {
         val repository = deviceCategoryRepository
 
-        val categoryLaptops = DeviceCategoryEntity("Laptops")
-        repository.save(categoryLaptops)
+        if(repository.findByName("Laptops") == null) {
+            val category = DeviceCategoryEntity("Laptops")
+            repository.save(category)
+        }
 
-        val categoryConsoles = DeviceCategoryEntity("Consoles")
-        repository.save(categoryConsoles)
+        if(repository.findByName("Consoles") == null) {
+            val category = DeviceCategoryEntity("Consoles")
+            repository.save(category)
+        }
 
-        val categoryProjectors = DeviceCategoryEntity("Projectors")
-        repository.save(categoryProjectors)
+        if(repository.findByName("Projectors") == null) {
+            val category = DeviceCategoryEntity("Projectors")
+            repository.save(category)
+        }
     }
 
     @Order(2)

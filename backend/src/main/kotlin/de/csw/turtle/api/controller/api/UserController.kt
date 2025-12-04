@@ -2,10 +2,10 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
-import de.csw.turtle.api.controller.CreateController
-import de.csw.turtle.api.controller.DeleteController
-import de.csw.turtle.api.controller.GetController
-import de.csw.turtle.api.controller.PatchController
+import de.csw.turtle.api.controller.CRUDCreateController
+import de.csw.turtle.api.controller.CRUDDeleteController
+import de.csw.turtle.api.controller.CRUDGetController
+import de.csw.turtle.api.controller.CRUDPatchController
 import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
@@ -29,7 +29,7 @@ class UserController(
     override val service: UserService,
     override val mapper: UserMapper,
     override val securityService: SecurityService
-) : CreateController<UserEntity, CreateUserRequest, GetUserResponse>,
-    GetController<UserEntity, GetUserResponse>,
-    PatchController<UserEntity, PatchUserRequest, GetUserResponse>,
-    DeleteController<UserEntity>
+) : CRUDCreateController<UserEntity, CreateUserRequest, GetUserResponse>,
+    CRUDGetController<UserEntity, GetUserResponse>,
+    CRUDPatchController<UserEntity, PatchUserRequest, GetUserResponse>,
+    CRUDDeleteController<UserEntity>

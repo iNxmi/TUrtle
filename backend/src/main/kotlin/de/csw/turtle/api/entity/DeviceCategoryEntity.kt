@@ -1,7 +1,6 @@
 package de.csw.turtle.api.entity
 
 import jakarta.persistence.*
-import java.time.Instant
 
 @Entity
 @Table(name = "device_categories")

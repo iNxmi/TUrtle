@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import java.net.URI
 
-interface CreateController<
+interface CRUDCreateController<
         Entity : CRUDEntity,
         CreateRequest : CRUDCreateRequest,
         GetResponse : CRUDGetResponse
