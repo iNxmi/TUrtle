@@ -35,10 +35,10 @@ data class UserEntity(
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val auditLogs: Collection<AuditLogEntity> = emptySet(),
 
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "creator", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val roomBookings: Collection<RoomBookingEntity> = emptySet(),
 
-    @ManyToMany(mappedBy = "room_bookings")
+    @ManyToMany(mappedBy = "whitelist")
     val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf(),
 
     @Id

@@ -20,10 +20,10 @@ data class RoomBookingEntity(
     var title: String,
 
     @Column(nullable = false)
-    var start: Instant,
+    var startTime: Instant,
 
     @Column(nullable = false)
-    var end: Instant,
+    var endTime: Instant,
 
     @Column(nullable = false)
     var description: String,
@@ -34,9 +34,9 @@ data class RoomBookingEntity(
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "user_room_bookings",
-        joinColumns = [JoinColumn(name = "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "room_booking_id")]
+        name = "user_whitelisted_room_bookings",
+        joinColumns = [JoinColumn(name = "room_booking_id")],
+        inverseJoinColumns = [JoinColumn(name = "user_id")]
     )
     val whitelist: MutableSet<UserEntity>? = null,
 
@@ -47,6 +47,4 @@ data class RoomBookingEntity(
     @Column(nullable = false, updatable = false)
     override val createdAt: Instant = Instant.now()
 
-) : CRUDEntity(){
-
-}
+) : CRUDEntity()

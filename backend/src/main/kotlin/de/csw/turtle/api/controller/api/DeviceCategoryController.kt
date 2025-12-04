@@ -1,6 +1,7 @@
 package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
+import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -20,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController
 class DeviceCategoryController(
     override val endpoint: String = "/api/devicecategories",
 
-    override val createPermission: Permission = Permission.BACKEND__API_DEVICECATEGORIES__CREATE,
-    override val getPermission: Permission = Permission.BACKEND__API_DEVICECATEGORIES__GET,
-    override val patchPermission: Permission = Permission.BACKEND__API_DEVICECATEGORIES__PATCH,
-    override val deletePermission: Permission = Permission.BACKEND__API_DEVICECATEGORIES__DELETE,
+    override val createPermission: Permission = BACKEND__API_DEVICECATEGORIES__CREATE,
+    override val getPermission: Permission = BACKEND__API_DEVICECATEGORIES__GET,
+    override val patchPermission: Permission = BACKEND__API_DEVICECATEGORIES__PATCH,
+    override val deletePermission: Permission = BACKEND__API_DEVICECATEGORIES__DELETE,
 
     override val service: DeviceCategoryService,
     override val mapper: DeviceCategoryMapper,

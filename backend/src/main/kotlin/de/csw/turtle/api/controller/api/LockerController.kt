@@ -1,6 +1,7 @@
 package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
+import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -20,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController
 class LockerController(
     override val endpoint: String = "/api/lockers",
 
-    override val createPermission: Permission = Permission.BACKEND__API_LOCKERS__CREATE,
-    override val getPermission: Permission = Permission.BACKEND__API_LOCKERS__GET,
-    override val patchPermission: Permission = Permission.BACKEND__API_LOCKERS__PATCH,
-    override val deletePermission: Permission = Permission.BACKEND__API_LOCKERS__DELETE,
+    override val createPermission: Permission = BACKEND__API_LOCKERS__CREATE,
+    override val getPermission: Permission = BACKEND__API_LOCKERS__GET,
+    override val patchPermission: Permission = BACKEND__API_LOCKERS__PATCH,
+    override val deletePermission: Permission = BACKEND__API_LOCKERS__DELETE,
 
     override val service: LockerService,
     override val mapper: LockerMapper,
