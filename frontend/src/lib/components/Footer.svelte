@@ -4,7 +4,7 @@
     import {m} from '$lib/paraglide/messages.js';
 </script>
 
-<Footer>
+<Footer class="border-none rounded-none">
     <FooterCopyright href="/" by="CSW TUrtle" year={2025}/>
     <FooterLinkGroup class="mt-3 flex flex-wrap items-center text-sm text-gray-500 sm:mt-0 dark:text-gray-400">
         <FooterLink href="/about">{m.footer_about()}</FooterLink>
