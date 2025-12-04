@@ -28,7 +28,6 @@ data class RoomBookingEntity(
     @Column(nullable = false)
     var description: String,
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     var creator: UserEntity,

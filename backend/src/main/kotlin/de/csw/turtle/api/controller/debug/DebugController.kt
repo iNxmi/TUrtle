@@ -1,5 +1,6 @@
-package de.csw.turtle.api.controller
+package de.csw.turtle.api.controller.debug
 
+import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.exception.exceptions.debug.DebugException
 import de.csw.turtle.api.exception.exceptions.locker.LockerNotFoundException
@@ -10,7 +11,10 @@ import de.csw.turtle.api.service.locker.LockerControlService
 import de.csw.turtle.api.service.locker.LockerService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 import java.time.Duration
 
