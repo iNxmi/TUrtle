@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
+import java.time.Duration
 
 @RestController
 @RequestMapping("/debug")
@@ -36,15 +37,15 @@ class DebugController(
     }
 
     @GetMapping("/door")
-    fun door(): ResponseEntity<String> {
+    fun door(@RequestParam duration: Duration): ResponseEntity<String> {
         securityService.hasPermission(BACKEND__DEBUG__DOOR)
 
-        val response = doorControlService.trigger()
+        val response = doorControlService.trigger(duration)
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("/locker/{id}")
-    fun door(@PathVariable id: Long): ResponseEntity<String> {
+    @GetMapping("/locker")
+    fun door(@RequestParam id: Long): ResponseEntity<String> {
         securityService.hasPermission(BACKEND__DEBUG__LOCKER)
 
         val locker = lockerService.getOrNull(id)
