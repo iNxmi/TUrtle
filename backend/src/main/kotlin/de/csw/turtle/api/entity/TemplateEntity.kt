@@ -1,5 +1,6 @@
 package de.csw.turtle.api.entity
 
+import com.samskivert.mustache.Mustache
 import jakarta.persistence.*
 import java.time.Instant
 
@@ -21,4 +22,11 @@ data class TemplateEntity(
 
     @Column(nullable = false)
     override val createdAt: Instant = Instant.now()
-) : CRUDEntity()
+) : CRUDEntity() {
+
+    fun getCompiledContent(id: Long, variables: Map<String, Any?>): String {
+        val template = Mustache.compiler().compile(content)
+        return template.execute(variables)
+    }
+
+}

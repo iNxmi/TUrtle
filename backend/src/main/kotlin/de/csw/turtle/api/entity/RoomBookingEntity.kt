@@ -13,7 +13,7 @@ import jakarta.persistence.Table
 import java.time.Instant
 
 @Entity
-@Table(name = "room_booking")
+@Table(name = "room_bookings")
 data class RoomBookingEntity(
 
     @Column(nullable = false)
@@ -34,11 +34,11 @@ data class RoomBookingEntity(
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "user_whitelisted_room_bookings",
+        name = "room_bookings_whitelist",
         joinColumns = [JoinColumn(name = "room_booking_id")],
         inverseJoinColumns = [JoinColumn(name = "user_id")]
     )
-    val whitelist: MutableSet<UserEntity>? = null,
+    var whitelist: MutableSet<UserEntity>? = null,
 
     @Id
     @GeneratedValue
