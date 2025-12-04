@@ -1,15 +1,22 @@
 <script>
-    import '../app.css';
-    import {
-        Heading,
-        Hr,
-        Select,
-        Sidebar,
-        SidebarDropdownItem,
-        SidebarDropdownWrapper,
-        Span,
-        Toggle
-    } from 'flowbite-svelte';
+	import '../app.css';
+	import { page } from '$app/state';
+	import { onMount, setContext } from 'svelte';
+	import { goto } from '$app/navigation';
+
+	let { data, children } = $props();
+	const user = data.user;
+
+	import {
+		Heading,
+		Hr,
+		Select,
+		Sidebar,
+		SidebarDropdownItem,
+		SidebarDropdownWrapper,
+		Span,
+		Toggle
+	} from 'flowbite-svelte';
 
     import {m} from '$lib/paraglide/messages.js';
     import {setLocale} from '$lib/paraglide/runtime.js';
@@ -32,45 +39,41 @@
         LockSolid
     } from 'flowbite-svelte-icons';
 
-    import {page} from '$app/state';
-    import {onMount} from 'svelte';
 
-    let {data, children} = $props();
-    const user = data.user;
+	const languages = [
+		{ value: 'en', name: 'English' },
+		{ value: 'de', name: 'Deutsch' },
+		{ value: 'ja', name: '日本語' },
+		{ value: 'ar', name: '_arabic' },
+		{ value: 'ru', name: '_russian' },
+		{ value: 'vi', name: '_vietnamese' },
+		{ value: 'hu', name: '_hungarian' },
+		{ value: 'ro', name: '_romanian' }
+	];
 
-    const languages = [
-        {value: "en", name: "English"},
-        {value: "de", name: "Deutsch"},
-        {value: "ja", name: "日本語"},
-        {value: "ar", name: "_arabic"},
-        {value: "ru", name: "_russian"},
-        {value: "vi", name: "_vietnamese"},
-        {value: "hu", name: "_hungarian"},
-        {value: "ro", name: "_romanian"}
-    ];
-    let language = $state("en");
+	let language = $state(page.url.searchParams.get('locale') || 'de');
 
-    function updateLanguage(event) {
-        event.preventDefault();
-        setLocale(language);
-    }
+	setContext('locale', () => language);
 
-    let activeUrl = $state(page.url.pathname);
-    $effect(() => {
-        activeUrl = page.url.pathname;
-    });
+	function updateLanguage(event) {
+		event.preventDefault();
 
-    let darkmode = $state(false);
-    onMount(() => {
-        if (document.documentElement.className === 'dark')
-            darkmode = true;
-    });
+        goto(`?locale=${language}`);
+        setTimeout(() => setLocale(language));
+	}
 
-    function toggleDarkMode() {
-        document.documentElement.classList.remove(darkmode ? "dark" : "light");
-        document.documentElement.classList.add(darkmode ? "light" : "dark");
-        darkmode = !darkmode;
-    }
+	let activeUrl = $derived(page.url.pathname);
+
+	let darkmode = $state(false);
+	onMount(() => {
+		if (document.documentElement.className === 'dark') darkmode = true;
+	});
+
+	function toggleDarkMode() {
+		document.documentElement.classList.remove(darkmode ? 'dark' : 'light');
+		document.documentElement.classList.add(darkmode ? 'light' : 'dark');
+		darkmode = !darkmode;
+	}
 
     const theme = {
         sidebar: {
@@ -154,55 +157,63 @@
 </script>
 
 <div class="flex h-full">
-    <Sidebar
-            alwaysOpen
-            {activeUrl}
-            isSingle={false}
-            backdrop={false}
-            isOpen={true}
-            position="static"
-            class="min-w-64"
-    >
-        <div class="flex flex-col gap-3">
-            <div class="flex flex-col items-center">
-                <TUrtleLogo/>
-            </div>
+	<Sidebar
+		alwaysOpen
+		{activeUrl}
+		isSingle={false}
+		backdrop={false}
+		isOpen={true}
+		position="static"
+		class="min-w-64 min-h-[calc(100svh-71px)]"
+	>
+		<div class="flex flex-col gap-3">
+			<div class="flex flex-col items-center">
+				<TUrtleLogo />
+			</div>
 
-            <Hr class="m-0 p-0"/>
+			<Hr class="m-0 p-0" />
 
-            {#if user}
-                <Heading tag="h5" class="text-center">
-                    <Span class="text-csw">
-                        {`${user.firstName} ${user.lastName}`}
-                    </Span>
-                </Heading>
+			{#if user}
+				<Heading tag="h5" class="text-center">
+					<Span class="text-csw">
+						{`${user.firstName} ${user.lastName}`}
+					</Span>
+				</Heading>
 
-                <Hr class="m-0 p-0"/>
-            {/if}
+				<Hr class="m-0 p-0" />
+			{/if}
 
-            <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
-                                    label={m.sidebar_category_public()}>
-                {#each itemsPublic as item}
-                    <SidebarDropdownItem label={item.label} href={item.href}>
-                        {#snippet icon()}
-                            <item.icon class="text-csw h-5 w-5"/>
-                        {/snippet}
-                    </SidebarDropdownItem>
-                {/each}
-            </SidebarDropdownWrapper>
+			<SidebarDropdownWrapper
+				class="list-none"
+				classes={{ span: 'font-bold' }}
+				isOpen={true}
+				label={m.sidebar_category_public()}
+			>
+				{#each itemsPublic as item}
+					<SidebarDropdownItem label={item.label} href={item.href}>
+						{#snippet icon()}
+							<item.icon class="text-csw h-5 w-5" />
+						{/snippet}
+					</SidebarDropdownItem>
+				{/each}
+			</SidebarDropdownWrapper>
 
-            {#if user}
-                <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
-                                        label={m.sidebar_category_user()}>
-                    {#each itemsUser as item}
-                        <SidebarDropdownItem label={item.label} href={item.href}>
-                            {#snippet icon()}
-                                <item.icon class="text-csw h-5 w-5"/>
-                            {/snippet}
-                        </SidebarDropdownItem>
-                    {/each}
-                </SidebarDropdownWrapper>
-            {/if}
+			{#if user}
+				<SidebarDropdownWrapper
+					class="list-none"
+					classes={{ span: 'font-bold' }}
+					isOpen={true}
+					label={m.sidebar_category_user()}
+				>
+					{#each itemsUser as item}
+						<SidebarDropdownItem label={item.label} href={item.href}>
+							{#snippet icon()}
+								<item.icon class="text-csw h-5 w-5" />
+							{/snippet}
+						</SidebarDropdownItem>
+					{/each}
+				</SidebarDropdownWrapper>
+			{/if}
 
             {#if user && user.permissions.includes("FRONTEND__VIEW_ADMINISTRATOR")}
                 <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
@@ -217,18 +228,22 @@
                 </SidebarDropdownWrapper>
             {/if}
 
-            <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
-                                    label={m.sidebar_category_settings()}>
-                <Select items={languages} bind:value={language} onchange={updateLanguage}/>
-                <Toggle onchange={toggleDarkMode}>_toggle_darkmode</Toggle>
-            </SidebarDropdownWrapper>
-        </div>
-    </Sidebar>
+			<SidebarDropdownWrapper
+				class="list-none"
+				classes={{ span: 'font-bold' }}
+				isOpen={true}
+				label={m.sidebar_category_settings()}
+			>
+				<Select items={languages} bind:value={language} onchange={updateLanguage}/>
+				<Toggle onchange={toggleDarkMode}>_toggle_darkmode</Toggle>
+			</SidebarDropdownWrapper>
+		</div>
+	</Sidebar>
 
-    <div class="w-full m-10">
-        {@render children?.()}
-    </div>
-
+	<div class="min-h-svh justify-between flex flex-col w-full pt-10">
+		<div class=m-10 mb-0 mt-0>
+			{@render children?.()}
+		</div>
+		<Footer />
+	</div>
 </div>
-
-<Footer/>
