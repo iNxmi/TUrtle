@@ -8,7 +8,8 @@ import java.time.Instant
 @Entity
 @Table(name = "roles")
 class RoleEntity(
-    @Column(nullable = false, unique = true)
+
+    @Column(unique = true)
     var name: String,
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -20,13 +21,8 @@ class RoleEntity(
     val permissions: MutableSet<Permission> = mutableSetOf(),
 
     @ManyToMany(mappedBy = "roles")
-    val users: MutableSet<UserEntity> = mutableSetOf(),
+    val users: MutableSet<UserEntity> = mutableSetOf()
 
-    @Id @GeneratedValue
-    override val id: Long = 0,
-
-    @Column(nullable = false, updatable = false)
-    override val createdAt: Instant = Instant.now()
 ) : CRUDEntity() {
 
     fun authorities() = permissions.map { SimpleGrantedAuthority(it.name) }

@@ -19,14 +19,7 @@ data class AuditLogEntity(
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    var httpMethod: HttpMethod,
-
-    @Id
-    @GeneratedValue
-    override val id: Long = 0,
-
-    @Column(updatable = false)
-    override val createdAt: Instant = Instant.now()
+    var httpMethod: HttpMethod
 
 ) : CRUDEntity() {
 

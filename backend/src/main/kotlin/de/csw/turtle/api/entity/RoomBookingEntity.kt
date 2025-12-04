@@ -16,20 +16,17 @@ import java.time.Instant
 @Table(name = "room_bookings")
 data class RoomBookingEntity(
 
-    @Column(nullable = false)
     var title: String,
 
-    @Column(nullable = false)
     var startTime: Instant,
 
-    @Column(nullable = false)
     var endTime: Instant,
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT")
     var description: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     var creator: UserEntity,
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -38,13 +35,6 @@ data class RoomBookingEntity(
         joinColumns = [JoinColumn(name = "room_booking_id")],
         inverseJoinColumns = [JoinColumn(name = "user_id")]
     )
-    var whitelist: MutableSet<UserEntity>? = null,
-
-    @Id
-    @GeneratedValue
-    override val id: Long = 0,
-
-    @Column(nullable = false, updatable = false)
-    override val createdAt: Instant = Instant.now()
+    var whitelist: MutableSet<UserEntity>? = null
 
 ) : CRUDEntity()

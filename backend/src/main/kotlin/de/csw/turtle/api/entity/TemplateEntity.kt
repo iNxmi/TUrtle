@@ -7,21 +7,16 @@ import java.time.Instant
 @Entity
 @Table(name = "templates")
 data class TemplateEntity(
-    @Column(nullable = false, unique = true)
+
+    @Column(unique = true)
     var name: String,
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT")
     var description: String,
 
-    @Column(nullable = false)
-    var content: String,
+    @Column(columnDefinition = "TEXT")
+    var content: String
 
-    @Id
-    @GeneratedValue
-    override val id: Long = 0,
-
-    @Column(nullable = false)
-    override val createdAt: Instant = Instant.now()
 ) : CRUDEntity() {
 
     fun getCompiledContent(id: Long, variables: Map<String, Any?>): String {

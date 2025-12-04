@@ -6,22 +6,20 @@ import java.time.Instant
 @Entity
 @Table(name = "users")
 data class UserEntity(
-    @Column(nullable = false, unique = true)
+
+    @Column(unique = true)
     var username: String,
 
-    @Column(nullable = false)
     var firstName: String,
 
-    @Column(nullable = false)
     var lastName: String,
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     var email: String,
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     var studentId: Long,
 
-    @Column(nullable = false)
     var password: String,
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -39,12 +37,6 @@ data class UserEntity(
     val roomBookings: Collection<RoomBookingEntity> = emptySet(),
 
     @ManyToMany(mappedBy = "whitelist")
-    val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf(),
+    val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf()
 
-    @Id
-    @GeneratedValue
-    override val id: Long = 0,
-
-    @Column(nullable = false, updatable = false)
-    override val createdAt: Instant = Instant.now()
 ) : CRUDEntity()

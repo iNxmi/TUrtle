@@ -1,10 +1,17 @@
 package de.csw.turtle.api.entity
 
+import jakarta.persistence.Column
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
 import jakarta.persistence.MappedSuperclass
 import java.time.Instant
 
 @MappedSuperclass
 abstract class CRUDEntity {
-    abstract val id: Long
-    abstract val createdAt: Instant
+    @Id
+    @GeneratedValue
+    val id: Long = 0
+
+    @Column(updatable = false)
+    val createdAt: Instant = Instant.now()
 }
