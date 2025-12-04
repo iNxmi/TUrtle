@@ -1,6 +1,10 @@
-package de.csw.turtle.api.controller.crud
+package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
+import de.csw.turtle.api.controller.CreateController
+import de.csw.turtle.api.controller.DeleteController
+import de.csw.turtle.api.controller.GetController
+import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.create.CreateDeviceCategoryRequest
 import de.csw.turtle.api.dto.get.GetDeviceCategoryResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceCategoryRequest

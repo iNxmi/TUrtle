@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller.crud
+package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.get.CRUDGetResponse

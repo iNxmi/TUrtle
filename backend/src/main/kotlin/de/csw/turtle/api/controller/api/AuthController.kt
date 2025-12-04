@@ -1,6 +1,6 @@
-package de.csw.turtle.api.controller
+package de.csw.turtle.api.controller.api
 
-import de.csw.turtle.api.Permission.*
+import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.LoginUserRequest
 import de.csw.turtle.api.dto.RegisterUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
@@ -11,7 +11,11 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
@@ -26,7 +30,7 @@ class AuthController(
     fun register(
         @RequestBody request: RegisterUserRequest
     ): ResponseEntity<GetUserResponse> {
-        securityService.hasPermission(BACKEND__API_AUTH__REGISTER)
+        securityService.hasPermission(Permission.BACKEND__API_AUTH__REGISTER)
 
         val user = authService.register(request)
 
@@ -40,7 +44,7 @@ class AuthController(
         @RequestBody loginUserRequest: LoginUserRequest,
         httpRequest: HttpServletRequest
     ): ResponseEntity<GetUserResponse> {
-        securityService.hasPermission(BACKEND__API_AUTH__LOGIN)
+        securityService.hasPermission(Permission.BACKEND__API_AUTH__LOGIN)
 
         val user = authService.login(loginUserRequest, httpRequest)
         return ResponseEntity.ok(userMapper.get(user))
@@ -52,7 +56,7 @@ class AuthController(
         httpResponse: HttpServletResponse,
         authentication: Authentication
     ): ResponseEntity<Void> {
-        securityService.hasPermission(BACKEND__API_AUTH__LOGOUT)
+        securityService.hasPermission(Permission.BACKEND__API_AUTH__LOGOUT)
 
         authService.logout(httpRequest, httpResponse, authentication)
         return ResponseEntity.noContent().build()
