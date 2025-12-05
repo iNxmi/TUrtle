@@ -6,8 +6,5 @@ interface UserRepository : CRUDRepository<UserEntity> {
 
     fun findByUsername(username: String): UserEntity?
     fun findByEmail(email: String): UserEntity?
-    fun findByStudentId(studentId: Long): UserEntity?
-
-    fun deleteByUsername(username: String)
 
 }

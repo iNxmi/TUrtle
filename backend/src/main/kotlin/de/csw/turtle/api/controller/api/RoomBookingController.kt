@@ -22,9 +22,9 @@ class RoomBookingController(
     override val endpoint: String = "/api/roombookings",
 
     override val createPermission: Permission = BACKEND__API_ROOMBOOKINGS__CREATE,
-    override val getPermission: Permission = BACKEND__API_TEMPLATES__GET,
-    override val patchPermission: Permission = BACKEND__API_TEMPLATES__PATCH,
-    override val deletePermission: Permission = BACKEND__API_TEMPLATES__DELETE,
+    override val getPermission: Permission = BACKEND__API_ROOMBOOKINGS__GET,
+    override val patchPermission: Permission = BACKEND__API_ROOMBOOKINGS__PATCH,
+    override val deletePermission: Permission = BACKEND__API_ROOMBOOKINGS__DELETE,
 
     override val service: RoomBookingService,
     override val mapper: RoomBookingMapper,

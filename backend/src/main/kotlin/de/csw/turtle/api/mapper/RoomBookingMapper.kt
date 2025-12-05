@@ -1,11 +1,9 @@
 package de.csw.turtle.api.mapper
 
 import de.csw.turtle.api.dto.create.CreateRoomBookingRequest
-import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.get.GetRoomBookingResponse
 import de.csw.turtle.api.dto.patch.PatchRoomBookingRequest
 import de.csw.turtle.api.entity.RoomBookingEntity
-import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.service.UserService
 import org.mapstruct.Mapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,6 +13,7 @@ abstract class RoomBookingMapper : CRUDMapper<RoomBookingEntity, CreateRoomBooki
 
     @Autowired
     protected lateinit var userService: UserService
+
     @Autowired
     protected lateinit var userMapper: UserMapper
 
