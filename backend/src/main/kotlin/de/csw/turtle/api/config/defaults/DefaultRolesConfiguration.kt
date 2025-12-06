@@ -16,7 +16,9 @@ class DefaultRolesConfiguration(
     private val guest = setOf(
         BACKEND__API_AUTH__LOGIN,
         BACKEND__API_AUTH__REGISTER,
-        BACKEND__API_SUPPORTTICKETS__CREATE
+
+        BACKEND__API_SUPPORTTICKETS__CREATE,
+        BACKEND__API_FAQ__GET
     )
 
     private val student = setOf(
@@ -26,7 +28,8 @@ class DefaultRolesConfiguration(
         BACKEND__API_USER_PROFILE__PATCH,
         BACKEND__API_USER_PROFILE__DELETE,
 
-        BACKEND__API_SUPPORTTICKETS__CREATE
+        BACKEND__API_SUPPORTTICKETS__CREATE,
+        BACKEND__API_FAQ__GET
     )
 
     private val professor = setOf(
@@ -36,7 +39,8 @@ class DefaultRolesConfiguration(
         BACKEND__API_USER_PROFILE__PATCH,
         BACKEND__API_USER_PROFILE__DELETE,
 
-        BACKEND__API_SUPPORTTICKETS__CREATE
+        BACKEND__API_SUPPORTTICKETS__CREATE,
+        BACKEND__API_FAQ__GET
     )
 
     private val administrator = Permission.entries.toSet()
