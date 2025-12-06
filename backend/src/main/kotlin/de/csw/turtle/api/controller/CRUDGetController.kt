@@ -23,8 +23,8 @@ interface CRUDGetController<
     val securityService: SecurityService
     val getPermission: Permission
 
-    @GetMapping("/one/{id}")
-    fun get(@PathVariable id: Long): ResponseEntity<GetResponse> {
+    @GetMapping("/one")
+    fun get(@RequestParam id: Long): ResponseEntity<GetResponse> {
         securityService.hasPermission(getPermission)
 
         val entity = service.get(id)

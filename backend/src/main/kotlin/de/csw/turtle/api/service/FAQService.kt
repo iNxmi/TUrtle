@@ -12,4 +12,4 @@ import org.springframework.stereotype.Service
 class FAQService(
     override val repository: FAQRepository,
     override val mapper: FAQMapper
-) : CRUDService<FAQEntity, CreateFAQRequest, GetFAQResponse, PatchFAQRequest>()
+) : CRUDService<FAQEntity, CreateFAQRequest, GetFAQResponse, PatchFAQRequest>("FAQ")

@@ -1,7 +1,9 @@
 package de.csw.turtle.test
 
+import de.csw.turtle.api.dto.create.CreateFAQRequest
 import de.csw.turtle.api.entity.*
 import de.csw.turtle.api.repository.*
+import de.csw.turtle.api.service.FAQService
 import de.csw.turtle.api.service.RoleService
 import io.github.serpro69.kfaker.Faker
 import org.springframework.boot.context.event.ApplicationReadyEvent
@@ -22,7 +24,8 @@ class DataSeeder(
     private val deviceRepository: DeviceRepository,
     private val passwordEncoder: PasswordEncoder,
     private val supportTicketRepository: SupportTicketRepository,
-    private val roleService: RoleService
+    private val roleService: RoleService,
+    private val faqService: FAQService
 ) {
 
     private val minimumEntries = 128
@@ -98,6 +101,24 @@ class DataSeeder(
         }
     }
 
+    @EventListener(ApplicationReadyEvent::class)
+    @Transactional
+    fun seedFAQ() {
+        val service = faqService
+        while (service.count() < 7) {
+            val createRequest = CreateFAQRequest(
+                "test_faq_${service.count()}",
+                "Test FAQ ${service.count()}",
+                """
+                   [link](https://example.com)
+                   # heading
+                   ---
+               """.trimIndent()
+            )
+            service.create(createRequest)
+        }
+    }
+
     @Order(1)
     @EventListener(ApplicationReadyEvent::class)
     @Transactional
@@ -121,17 +142,17 @@ class DataSeeder(
     fun seedCategories() {
         val repository = deviceCategoryRepository
 
-        if(repository.findByName("Laptops") == null) {
+        if (repository.findByName("Laptops") == null) {
             val category = DeviceCategoryEntity("Laptops")
             repository.save(category)
         }
 
-        if(repository.findByName("Consoles") == null) {
+        if (repository.findByName("Consoles") == null) {
             val category = DeviceCategoryEntity("Consoles")
             repository.save(category)
         }
 
-        if(repository.findByName("Projectors") == null) {
+        if (repository.findByName("Projectors") == null) {
             val category = DeviceCategoryEntity("Projectors")
             repository.save(category)
         }

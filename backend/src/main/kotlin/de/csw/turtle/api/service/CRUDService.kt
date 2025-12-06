@@ -18,7 +18,7 @@ abstract class CRUDService<
         CreateRequest : CRUDCreateRequest,
         GetResponse : CRUDGetResponse,
         PatchRequest : CRUDPatchRequest
-        > {
+        >(private val name: String) {
 
     protected abstract val repository: CRUDRepository<Entity>
     protected abstract val mapper: CRUDMapper<Entity, CreateRequest, GetResponse, PatchRequest>
@@ -30,7 +30,7 @@ abstract class CRUDService<
     }
 
     fun getOrNull(id: Long): Entity? = repository.findById(id).getOrNull()
-    fun get(id: Long): Entity = getOrNull(id) ?: throw CRUDResourceNotFoundException(id)
+    fun get(id: Long): Entity = getOrNull(id) ?: throw CRUDResourceNotFoundException(name, id)
 
     fun getAll(): List<Entity> = repository.findAll()
 

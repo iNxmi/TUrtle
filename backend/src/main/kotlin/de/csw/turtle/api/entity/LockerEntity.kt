@@ -7,7 +7,7 @@ import java.time.Instant
 @Table(name = "lockers")
 data class LockerEntity(
 
-    @Column( unique = true)
+    @Column(unique = true)
     var index: Int,
 
     var name: String,

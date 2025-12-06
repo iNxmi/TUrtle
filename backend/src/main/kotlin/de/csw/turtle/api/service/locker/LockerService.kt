@@ -13,4 +13,4 @@ import org.springframework.stereotype.Service
 class LockerService(
     override val repository: LockerRepository,
     override val mapper: LockerMapper,
-) : CRUDService<LockerEntity, CreateLockerRequest, GetLockerResponse, PatchLockerRequest>()
+) : CRUDService<LockerEntity, CreateLockerRequest, GetLockerResponse, PatchLockerRequest>("Locker")

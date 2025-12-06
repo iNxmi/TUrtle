@@ -13,4 +13,4 @@ import org.springframework.stereotype.Service
 class TemplateService(
     override val repository: TemplateRepository,
     override val mapper: TemplateMapper
-) : CRUDService<TemplateEntity, CreateTemplateRequest, GetTemplateResponse, PatchTemplateRequest>()
+) : CRUDService<TemplateEntity, CreateTemplateRequest, GetTemplateResponse, PatchTemplateRequest>("Template")
