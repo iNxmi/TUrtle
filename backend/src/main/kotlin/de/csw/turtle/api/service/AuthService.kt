@@ -31,7 +31,6 @@ class AuthService(
             registerUserRequest.firstName,
             registerUserRequest.lastName,
             registerUserRequest.email,
-            registerUserRequest.studentId,
             registerUserRequest.password,
         )
 

@@ -8,7 +8,6 @@ data class RegisterUserRequest(
     val firstName: String,
     val lastName: String,
     val email: String,
-    val studentId: Long,
     val password: String
 ) {
 
@@ -18,7 +17,6 @@ data class RegisterUserRequest(
         firstName = firstName,
         lastName = lastName,
         email = email,
-        studentId = studentId,
         password = passwordEncoder.encode(password)
     )
 

@@ -39,7 +39,6 @@ class UserService(
         request.firstName?.let { user.firstName = it }
         request.lastName?.let { user.lastName = it }
         request.email?.let { user.email = it }
-        request.studentId?.let { user.studentId = it }
         request.password?.let { user.password = passwordEncoder.encode(it) }
 
         return repository.save(user)

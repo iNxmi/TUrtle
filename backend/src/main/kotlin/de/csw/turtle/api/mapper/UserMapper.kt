@@ -19,7 +19,6 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
         firstName = request.firstName,
         lastName = request.lastName,
         email = request.email,
-        studentId = request.studentId,
         password = request.password
     )
 
@@ -29,7 +28,6 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
         firstName = entity.firstName,
         lastName = entity.lastName,
         email = entity.email,
-        studentId = entity.studentId,
         roles = entity.roles.map { GetUserResponse.GetRoleResponse(it.id, it.name) }.toSortedSet(compareBy { it.id }),
         permissions = entity.roles.flatMap { it.permissions }.toSortedSet(compareBy { it.name }),
         createdAt = entity.createdAt
@@ -44,7 +42,6 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
         request.lastName?.let { entity.lastName = it }
         request.lastName?.let { entity.lastName = it }
         request.email?.let { entity.email = it }
-        request.studentId?.let { entity.studentId = it }
         request.password?.let { entity.password = it }
 
         if (request.roleIds != null) {

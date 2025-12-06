@@ -49,7 +49,6 @@ class DataSeeder(
                 firstName = firstName,
                 lastName = lastName,
                 email = email,
-                studentId = faker.random.unique.nextInt().absoluteValue.toLong(),
                 password = passwordEncoder.encode("password"),
                 roles = setOf(role).toMutableSet()
             )
@@ -62,7 +61,6 @@ class DataSeeder(
                 firstName = "admin",
                 lastName = "admin",
                 email = "admin@csw.de",
-                studentId = 42069,
                 password = passwordEncoder.encode("admin"),
                 roles = mutableSetOf(roleService.getByName("Administrator")!!)
             )

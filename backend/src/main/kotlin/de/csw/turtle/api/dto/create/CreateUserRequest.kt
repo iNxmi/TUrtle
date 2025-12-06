@@ -5,6 +5,5 @@ data class CreateUserRequest(
     val firstName: String,
     val lastName: String,
     val email: String,
-    val studentId: Long,
     val password: String
 ) : CRUDCreateRequest

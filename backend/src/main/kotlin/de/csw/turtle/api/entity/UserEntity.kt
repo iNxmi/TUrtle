@@ -16,9 +16,6 @@ data class UserEntity(
     @Column(unique = true)
     var email: String,
 
-    @Column(unique = true)
-    var studentId: Long,
-
     var password: String,
 
     @ManyToMany(fetch = FetchType.LAZY)
