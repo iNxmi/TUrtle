@@ -2,7 +2,6 @@ package de.csw.turtle.api.service.door
 
 import de.csw.turtle.TUrtleProperties
 import net.schmizz.sshj.SSHClient
-import net.schmizz.sshj.transport.verification.HostKeyVerifier
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier
 import java.time.Duration
 

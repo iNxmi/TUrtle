@@ -1,6 +1,5 @@
 package de.csw.turtle.api.dto.patch
 
-import de.csw.turtle.api.dto.get.GetUserResponse
 import java.time.Instant
 
 data class PatchRoomBookingRequest(

@@ -1,8 +1,9 @@
 package de.csw.turtle.api.entity
 
 import com.samskivert.mustache.Mustache
-import jakarta.persistence.*
-import java.time.Instant
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Table
 
 @Entity
 @Table(name = "templates")
@@ -15,12 +16,12 @@ data class TemplateEntity(
     var description: String,
 
     @Column(columnDefinition = "TEXT")
-    var content: String
+    var markdown: String
 
 ) : CRUDEntity() {
 
     fun getCompiledContent(id: Long, variables: Map<String, Any?>): String {
-        val template = Mustache.compiler().compile(content)
+        val template = Mustache.compiler().compile(markdown)
         return template.execute(variables)
     }
 

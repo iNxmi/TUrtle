@@ -6,6 +6,6 @@ data class GetTemplateResponse(
     override val id: Long,
     val name: String,
     val description: String,
-    val content: String,
+    val markdown: String,
     override val createdAt: Instant
 ) : CRUDGetResponse

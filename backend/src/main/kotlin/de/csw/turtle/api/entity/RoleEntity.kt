@@ -3,7 +3,6 @@ package de.csw.turtle.api.entity
 import de.csw.turtle.api.Permission
 import jakarta.persistence.*
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import java.time.Instant
 
 @Entity
 @Table(name = "roles")

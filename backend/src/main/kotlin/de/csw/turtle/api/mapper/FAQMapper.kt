@@ -12,14 +12,14 @@ abstract class FAQMapper : CRUDMapper<FAQEntity, CreateFAQRequest, GetFAQRespons
     override fun create(request: CreateFAQRequest) = FAQEntity(
         name = request.name,
         title = request.title,
-        content = request.content
+        markdown = request.content
     )
 
     override fun get(entity: FAQEntity) = GetFAQResponse(
         id = entity.id,
         name = entity.name,
         title = entity.title,
-        content = entity.content,
+        content = entity.markdown,
         createdAt = entity.createdAt
     )
 
@@ -29,7 +29,7 @@ abstract class FAQMapper : CRUDMapper<FAQEntity, CreateFAQRequest, GetFAQRespons
     ): FAQEntity {
         request.name?.let { entity.name = it }
         request.title?.let { entity.title = it }
-        request.content?.let { entity.content = it }
+        request.content?.let { entity.markdown = it }
         return entity
     }
 

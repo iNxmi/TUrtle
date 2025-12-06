@@ -14,7 +14,7 @@ class FAQEntity(
     var title: String,
 
     @Column(columnDefinition = "TEXT")
-    var content: String
+    var markdown: String
 
 ) : CRUDEntity()
 
