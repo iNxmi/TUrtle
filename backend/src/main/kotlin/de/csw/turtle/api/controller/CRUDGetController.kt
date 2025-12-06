@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Sort.Direction
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 
 interface CRUDGetController<
@@ -25,7 +24,7 @@ interface CRUDGetController<
 
     @GetMapping("/one")
     fun get(@RequestParam id: Long): ResponseEntity<GetResponse> {
-        securityService.hasPermission(getPermission)
+        securityService.check(getPermission)
 
         val entity = service.get(id)
         return ResponseEntity.ok(mapper.get(entity))
@@ -33,7 +32,7 @@ interface CRUDGetController<
 
     @GetMapping("/all")
     fun getAll(): ResponseEntity<Collection<GetResponse>> {
-        securityService.hasPermission(getPermission)
+        securityService.check(getPermission)
 
         val entities = service.getAll()
         return ResponseEntity.ok(entities.map { mapper.get(it) })
@@ -46,7 +45,7 @@ interface CRUDGetController<
         @RequestParam(name = "sort", required = false) sort: Array<String> = emptyArray(),
         @RequestParam(name = "direction", required = false) direction: Direction = Direction.DESC
     ): ResponseEntity<Page<GetResponse>> {
-        securityService.hasPermission(getPermission)
+        securityService.check(getPermission)
 
         val result = service.getPage(page, size, sort, direction)
         return ResponseEntity.ok(result.map { mapper.get(it) })

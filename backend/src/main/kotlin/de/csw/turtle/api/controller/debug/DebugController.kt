@@ -1,6 +1,5 @@
 package de.csw.turtle.api.controller.debug
 
-import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.exception.exceptions.debug.DebugException
 import de.csw.turtle.api.exception.exceptions.locker.LockerNotFoundException
@@ -32,7 +31,7 @@ class DebugController(
     fun debug(
         httpRequest: HttpServletRequest
     ): ResponseEntity<Map<String, String>> {
-        securityService.hasPermission(BACKEND__DEBUG__INFO)
+        securityService.check(BACKEND__DEBUG__INFO)
 
         val origin = URI.create(httpRequest.requestURL.toString()).host
 
@@ -42,7 +41,7 @@ class DebugController(
 
     @GetMapping("/door")
     fun door(@RequestParam duration: Duration): ResponseEntity<String> {
-        securityService.hasPermission(BACKEND__DEBUG__DOOR)
+        securityService.check(BACKEND__DEBUG__DOOR)
 
         val response = doorControlService.trigger(duration)
         return ResponseEntity.ok(response)
@@ -50,7 +49,7 @@ class DebugController(
 
     @GetMapping("/locker")
     fun door(@RequestParam id: Long): ResponseEntity<String> {
-        securityService.hasPermission(BACKEND__DEBUG__LOCKER)
+        securityService.check(BACKEND__DEBUG__LOCKER)
 
         val locker = lockerService.getOrNull(id)
             ?: throw LockerNotFoundException(id)
@@ -61,14 +60,14 @@ class DebugController(
 
     @GetMapping("/exception")
     fun exception(@RequestParam message: String?): Nothing {
-        securityService.hasPermission(BACKEND__DEBUG__EXCEPTION)
+        securityService.check(BACKEND__DEBUG__EXCEPTION)
 
         throw DebugException(message)
     }
 
     @GetMapping("/email")
     fun exception(@RequestParam to: String, @RequestParam subject: String, @RequestParam text: String) {
-        securityService.hasPermission(BACKEND__DEBUG__EMAIL)
+        securityService.check(BACKEND__DEBUG__EMAIL)
 
         emailService.sendSimpleEmail(to, subject, text)
     }

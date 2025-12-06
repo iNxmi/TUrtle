@@ -25,7 +25,7 @@ interface CRUDPatchController<
 
     @PatchMapping("/{id}")
     fun patch(@PathVariable id: Long, @RequestBody request: PatchRequest): ResponseEntity<GetResponse> {
-        securityService.hasPermission(patchPermission)
+        securityService.check(patchPermission)
 
         val entity = service.patch(id, request)
         return ResponseEntity.ok(mapper.get(entity))

@@ -1,6 +1,5 @@
 package de.csw.turtle.api.controller.api
 
-import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.dto.LoginUserRequest
 import de.csw.turtle.api.dto.RegisterUserRequest
@@ -31,7 +30,7 @@ class AuthController(
     fun register(
         @RequestBody request: RegisterUserRequest
     ): ResponseEntity<GetUserResponse> {
-        securityService.hasPermission(BACKEND__API_AUTH__REGISTER)
+        securityService.check(BACKEND__API_AUTH__REGISTER)
 
         val user = authService.register(request)
 
@@ -45,7 +44,7 @@ class AuthController(
         @RequestBody loginUserRequest: LoginUserRequest,
         httpRequest: HttpServletRequest
     ): ResponseEntity<GetUserResponse> {
-        securityService.hasPermission(BACKEND__API_AUTH__LOGIN)
+        securityService.check(BACKEND__API_AUTH__LOGIN)
 
         val user = authService.login(loginUserRequest, httpRequest)
         return ResponseEntity.ok(userMapper.get(user))
@@ -57,7 +56,7 @@ class AuthController(
         httpResponse: HttpServletResponse,
         authentication: Authentication
     ): ResponseEntity<Void> {
-        securityService.hasPermission(BACKEND__API_AUTH__LOGOUT)
+        securityService.check(BACKEND__API_AUTH__LOGOUT)
 
         authService.logout(httpRequest, httpResponse, authentication)
         return ResponseEntity.noContent().build()

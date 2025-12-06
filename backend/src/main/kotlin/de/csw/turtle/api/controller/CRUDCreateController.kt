@@ -26,7 +26,7 @@ interface CRUDCreateController<
 
     @PostMapping
     fun create(@RequestBody request: CreateRequest): ResponseEntity<GetResponse> {
-        securityService.hasPermission(createPermission)
+        securityService.check(createPermission)
 
         val entity = service.create(request)
         val response = mapper.get(entity)
