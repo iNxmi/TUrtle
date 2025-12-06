@@ -30,11 +30,6 @@
     </Label>
 
     <Label>
-        <span>{m.admin_users_id__student_id_label()}</span>
-        <Input type="text" value={user.studentId} disabled/>
-    </Label>
-
-    <Label>
         <span>{m.admin_users_id__roles_label()}</span>
         <Input type="text" value={JSON.stringify(user.roles)} disabled/>
     </Label>

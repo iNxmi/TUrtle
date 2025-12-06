@@ -1,23 +1,12 @@
 <script>
     import {m} from '$lib/paraglide/messages.js';
-    import {
-        FloatingLabelInput,
-        Heading,
-        Table,
-        TableBody,
-        TableBodyCell,
-        TableBodyRow,
-        TableHead,
-        TableHeadCell,
-        Input
-    } from 'flowbite-svelte';
+    import {FloatingLabelInput, Heading, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell} from 'flowbite-svelte';
 
     const headCells = [
         {id: "input_username", label: m.admin_users__username_label()},
         {id: "input_first_name", label: m.admin_users__first_name_label()},
         {id: "input_last_name", label: m.admin_users__last_name_label()},
         {id: "input_email", label: m.admin_users__email_label()},
-        {id: "input_student_id", label: m.admin_users__student_id_label()},
         {id: "input_roles", label: m.admin_users__roles_label()},
         {id: "input_created_at", label: m.admin_users__created_at_label()},
     ]
@@ -48,7 +37,6 @@
                     <TableBodyCell>{user.lastName}</TableBodyCell>
                     <TableBodyCell>{user.firstName}</TableBodyCell>
                     <TableBodyCell>{user.email}</TableBodyCell>
-                    <TableBodyCell>{user.studentId}</TableBodyCell>
                     <TableBodyCell>{JSON.stringify(user.roles)}</TableBodyCell>
                     <TableBodyCell>{(new Date(user.createdAt)).toLocaleString()}</TableBodyCell>
                 </TableBodyRow>

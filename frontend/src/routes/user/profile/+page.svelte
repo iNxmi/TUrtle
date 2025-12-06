@@ -40,21 +40,6 @@
         <Input name="email" type="text" value={user.email} disabled/>
     </Label>
 
-    <!--    <Label>-->
-    <!--        <span>_profile__study_field</span>-->
-    <!--        <Input name="study_field" type="text" value="__BWL" disabled/>-->
-    <!--    </Label>-->
-
-    <!--    <Label>-->
-    <!--        <span>_profile__department</span>-->
-    <!--        <Input name="department" type="text" value="__67" disabled/>-->
-    <!--    </Label>-->
-
-    <Label>
-        <span>{m.profile__student_id_label()}</span>
-        <Input name="studentID" type="text" value={user.studentId} disabled/>
-    </Label>
-
     <Label>
         <span>{m.profile__role_label()}</span>
         <Input name="role" type="text" value={user.role} disabled/>
