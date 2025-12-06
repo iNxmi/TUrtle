@@ -20,11 +20,11 @@ interface CRUDGetController<
     val service: CRUDService<Entity, *, GetResponse, *>
     val mapper: CRUDMapper<Entity, *, GetResponse, *>
     val securityService: SecurityService
-    val getPermission: Permission
+    val permissionGet: Permission
 
     @GetMapping("/one")
     fun get(@RequestParam id: Long): ResponseEntity<GetResponse> {
-        securityService.check(getPermission)
+        securityService.check(permissionGet)
 
         val entity = service.get(id)
         return ResponseEntity.ok(mapper.get(entity))
@@ -32,7 +32,7 @@ interface CRUDGetController<
 
     @GetMapping("/all")
     fun getAll(): ResponseEntity<Collection<GetResponse>> {
-        securityService.check(getPermission)
+        securityService.check(permissionGet)
 
         val entities = service.getAll()
         return ResponseEntity.ok(entities.map { mapper.get(it) })
@@ -45,7 +45,7 @@ interface CRUDGetController<
         @RequestParam(name = "sort", required = false) sort: Array<String> = emptyArray(),
         @RequestParam(name = "direction", required = false) direction: Direction = Direction.DESC
     ): ResponseEntity<Page<GetResponse>> {
-        securityService.check(getPermission)
+        securityService.check(permissionGet)
 
         val result = service.getPage(page, size, sort, direction)
         return ResponseEntity.ok(result.map { mapper.get(it) })

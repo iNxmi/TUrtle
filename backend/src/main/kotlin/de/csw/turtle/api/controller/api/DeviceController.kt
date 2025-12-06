@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController
 class DeviceController(
     override val endpoint: String = "/api/devices",
 
-    override val createPermission: Permission = BACKEND__API_DEVICES__CREATE,
-    override val getPermission: Permission = BACKEND__API_DEVICES__GET,
-    override val patchPermission: Permission = BACKEND__API_DEVICES__PATCH,
-    override val deletePermission: Permission = BACKEND__API_DEVICES__DELETE,
+    override val permissionCreate: Permission = BACKEND__API_DEVICES__CREATE,
+    override val permissionGet: Permission = BACKEND__API_DEVICES__GET,
+    override val permissionPatch: Permission = BACKEND__API_DEVICES__PATCH,
+    override val permissionDelete: Permission = BACKEND__API_DEVICES__DELETE,
 
     override val service: DeviceService,
     override val mapper: DeviceMapper,

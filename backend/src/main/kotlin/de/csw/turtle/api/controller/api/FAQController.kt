@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController
 class FAQController(
     override val endpoint: String = "/api/faq",
 
-    override val createPermission: Permission = BACKEND__API_FAQ__CREATE,
-    override val getPermission: Permission = BACKEND__API_FAQ__GET,
-    override val patchPermission: Permission = BACKEND__API_FAQ__PATCH,
-    override val deletePermission: Permission = BACKEND__API_FAQ__DELETE,
+    override val permissionCreate: Permission = BACKEND__API_FAQ__CREATE,
+    override val permissionGet: Permission = BACKEND__API_FAQ__GET,
+    override val permissionPatch: Permission = BACKEND__API_FAQ__PATCH,
+    override val permissionDelete: Permission = BACKEND__API_FAQ__DELETE,
 
     override val service: FAQService,
     override val mapper: FAQMapper,

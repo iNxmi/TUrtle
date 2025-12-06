@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/auditlogs")
 class AuditLogController(
-    override val getPermission: Permission = BACKEND__API_AUDITLOGS__GET,
+    override val permissionGet: Permission = BACKEND__API_AUDITLOGS__GET,
 
     override val service: AuditLogService,
     override val mapper: AuditLogMapper,

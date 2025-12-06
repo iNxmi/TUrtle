@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/exceptions")
 class ExceptionController(
-    override val getPermission: Permission = BACKEND__API_EXCEPTIONS__GET,
-    override val deletePermission: Permission = BACKEND__API_EXCEPTIONS__DELETE,
+    override val permissionGet: Permission = BACKEND__API_EXCEPTIONS__GET,
+    override val permissionDelete: Permission = BACKEND__API_EXCEPTIONS__DELETE,
 
     override val service: ExceptionService,
     override val mapper: ExceptionMapper,
