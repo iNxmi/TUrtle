@@ -114,7 +114,7 @@
         icon: DesktopPcSolid
     }, {
         label: m.sidebar_user_bookings(),
-        href: '/user/bookings',
+        href: '/user/room',
         icon: CalendarMonthSolid
     }];
 
@@ -239,7 +239,7 @@
     </Sidebar>
 
     <div class="min-h-svh justify-between flex flex-col w-full">
-        <div class="m-10 w-full">
+        <div class="m-10">
             {@render children?.()}
         </div>
         <Footer/>
