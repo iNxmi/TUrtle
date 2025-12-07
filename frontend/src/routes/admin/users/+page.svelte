@@ -1,6 +1,7 @@
 <script>
     import {m} from '$lib/paraglide/messages.js';
     import {FloatingLabelInput, Heading, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell} from 'flowbite-svelte';
+    import TUrtleTableFetch from '$lib/components/TUrtleTableFetch.svelte';
 
     const headCells = [
         {id: "input_username", label: m.admin_users__username_label()},
@@ -18,7 +19,9 @@
 <div>
     <Heading tag="h3" class="text-center">{m.admin_users__title()}</Heading>
 
-    <Table shadow hoverable={true}>
+    <TUrtleTableFetch tableData={page} columnNames={headCells.map((item) => item.label)} itemType={m.admin_users__title()} apiResource='users'></TUrtleTableFetch>
+
+  <!--   <Table shadow hoverable={true}>
         <TableHead>
             {#each headCells as cell}
                 <TableHeadCell>
@@ -42,5 +45,5 @@
                 </TableBodyRow>
             {/each}
         </TableBody>
-    </Table>
+    </Table> -->
 </div>
