@@ -12,7 +12,7 @@ import de.csw.turtle.api.dto.patch.PatchRoleRequest
 import de.csw.turtle.api.entity.RoleEntity
 import de.csw.turtle.api.mapper.RoleMapper
 import de.csw.turtle.api.service.RoleService
-import de.csw.turtle.api.service.SecurityService
+import de.csw.turtle.api.service.PermissionService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -28,7 +28,7 @@ class RoleController(
 
     override val service: RoleService,
     override val mapper: RoleMapper,
-    override val securityService: SecurityService
+    override val permissionService: PermissionService
 ) : CRUDCreateController<RoleEntity, CreateRoleRequest, GetRoleResponse>,
     CRUDGetController<RoleEntity, GetRoleResponse>,
     CRUDPatchController<RoleEntity, PatchRoleRequest, GetRoleResponse>,

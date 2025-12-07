@@ -11,7 +11,7 @@ import de.csw.turtle.api.dto.get.GetSupportTicketResponse
 import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
 import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.mapper.SupportTicketMapper
-import de.csw.turtle.api.service.SecurityService
+import de.csw.turtle.api.service.PermissionService
 import de.csw.turtle.api.service.SupportTicketService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -28,7 +28,7 @@ class SupportTicketController(
 
     override val service: SupportTicketService,
     override val mapper: SupportTicketMapper,
-    override val securityService: SecurityService
+    override val permissionService: PermissionService
 ) : CRUDCreateController<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse>,
     CRUDGetController<SupportTicketEntity, GetSupportTicketResponse>,
     CRUDPatchController<SupportTicketEntity, PatchSupportTicketRequest, GetSupportTicketResponse>,

@@ -142,7 +142,7 @@
   "profile__username_label": "Username",
   "profile__first_name_label": "First Name",
   "profile__last_name_label": "Last Name",
-  "profile__role_label": "Role",
+  "profile__roles_label": "Roles",
   "profile__email_label": "Email",
   "profile__student_id_label": "Student ID",
   "profile__created_at_label": "Created At",

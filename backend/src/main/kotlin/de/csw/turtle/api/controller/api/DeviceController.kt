@@ -12,7 +12,7 @@ import de.csw.turtle.api.dto.patch.PatchDeviceRequest
 import de.csw.turtle.api.entity.DeviceEntity
 import de.csw.turtle.api.mapper.DeviceMapper
 import de.csw.turtle.api.service.DeviceService
-import de.csw.turtle.api.service.SecurityService
+import de.csw.turtle.api.service.PermissionService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -28,7 +28,7 @@ class DeviceController(
 
     override val service: DeviceService,
     override val mapper: DeviceMapper,
-    override val securityService: SecurityService
+    override val permissionService: PermissionService
 ) : CRUDCreateController<DeviceEntity, CreateDeviceRequest, GetDeviceResponse>,
     CRUDGetController<DeviceEntity, GetDeviceResponse>,
     CRUDPatchController<DeviceEntity, PatchDeviceRequest, GetDeviceResponse>,

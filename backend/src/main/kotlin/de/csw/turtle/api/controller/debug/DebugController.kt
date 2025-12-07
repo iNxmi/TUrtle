@@ -4,7 +4,7 @@ import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.exception.exceptions.debug.DebugException
 import de.csw.turtle.api.exception.exceptions.locker.LockerNotFoundException
 import de.csw.turtle.api.service.EmailService
-import de.csw.turtle.api.service.SecurityService
+import de.csw.turtle.api.service.PermissionService
 import de.csw.turtle.api.service.door.DoorControlService
 import de.csw.turtle.api.service.locker.LockerControlService
 import de.csw.turtle.api.service.locker.LockerService
@@ -24,14 +24,14 @@ class DebugController(
     private val lockerControlService: LockerControlService,
     private val emailService: EmailService,
     private val lockerService: LockerService,
-    private val securityService: SecurityService
+    private val permissionService: PermissionService
 ) {
 
     @GetMapping("/info")
     fun debug(
         httpRequest: HttpServletRequest
     ): ResponseEntity<Map<String, String>> {
-        securityService.check(BACKEND__DEBUG__INFO)
+        permissionService.check(BACKEND__DEBUG__INFO)
 
         val origin = URI.create(httpRequest.requestURL.toString()).host
 
@@ -41,7 +41,7 @@ class DebugController(
 
     @GetMapping("/door")
     fun door(@RequestParam duration: Duration): ResponseEntity<String> {
-        securityService.check(BACKEND__DEBUG__DOOR)
+        permissionService.check(BACKEND__DEBUG__DOOR)
 
         val response = doorControlService.trigger(duration)
         return ResponseEntity.ok(response)
@@ -49,7 +49,7 @@ class DebugController(
 
     @GetMapping("/locker")
     fun door(@RequestParam id: Long): ResponseEntity<String> {
-        securityService.check(BACKEND__DEBUG__LOCKER)
+        permissionService.check(BACKEND__DEBUG__LOCKER)
 
         val locker = lockerService.getOrNull(id)
             ?: throw LockerNotFoundException(id)
@@ -60,14 +60,14 @@ class DebugController(
 
     @GetMapping("/exception")
     fun exception(@RequestParam message: String?): Nothing {
-        securityService.check(BACKEND__DEBUG__EXCEPTION)
+        permissionService.check(BACKEND__DEBUG__EXCEPTION)
 
         throw DebugException(message)
     }
 
     @GetMapping("/email")
     fun exception(@RequestParam to: String, @RequestParam subject: String, @RequestParam text: String) {
-        securityService.check(BACKEND__DEBUG__EMAIL)
+        permissionService.check(BACKEND__DEBUG__EMAIL)
 
         emailService.sendSimpleEmail(to, subject, text)
     }

@@ -6,7 +6,7 @@ import de.csw.turtle.api.dto.get.CRUDGetResponse
 import de.csw.turtle.api.entity.CRUDEntity
 import de.csw.turtle.api.mapper.CRUDMapper
 import de.csw.turtle.api.service.CRUDService
-import de.csw.turtle.api.service.SecurityService
+import de.csw.turtle.api.service.PermissionService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -21,12 +21,12 @@ interface CRUDCreateController<
     val endpoint: String
     val service: CRUDService<Entity, CreateRequest, GetResponse, *>
     val mapper: CRUDMapper<Entity, CreateRequest, GetResponse, *>
-    val securityService: SecurityService
+    val permissionService: PermissionService
     val permissionCreate: Permission
 
     @PostMapping
     fun create(@RequestBody request: CreateRequest): ResponseEntity<GetResponse> {
-        securityService.check(permissionCreate)
+        permissionService.check(permissionCreate)
 
         val entity = service.create(request)
         val response = mapper.get(entity)

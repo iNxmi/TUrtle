@@ -60,8 +60,8 @@
     </Label>
 
     <Label>
-        <span>{m.profile__role_label()}</span>
-        <Input id="role" type="text" value={user.role} disabled/>
+        <span>{m.profile__roles_label()}</span>
+        <Input name="roles" type="text" value={JSON.stringify(user.roles)} disabled/>
     </Label>
 
     <Label>
@@ -87,7 +87,7 @@
         </Label>
         <Label>
             <span>{m.profile__password_change__new_password_repeat_label()}</span>
-            <Input id="new_password_repeat" type="password" required/>
+            <Input name="new_password_repeat" type="password" value="" required/>
         </Label>
 
         {#snippet footer()}
@@ -95,6 +95,5 @@
         {/snippet}
     </Modal>
 </form>
-
 
 
