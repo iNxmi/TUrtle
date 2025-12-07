@@ -2,6 +2,7 @@
 	import { getContext, onMount } from 'svelte';
 	import { dev } from '$app/environment';
 	import request from '$lib/api/api';
+	import { convertEventToBackend } from '$lib/utils';
 	import {Label, Input, Datepicker, Button, ThemeProvider} from 'flowbite-svelte';
 
 	import {TrashBinSolid} from 'flowbite-svelte-icons';
@@ -63,6 +64,19 @@
 		return tempEndDate;
 	}); 
 
+	async function fetchRoomBookings(info){
+		const response = await request(`/roombookings/page?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`, {
+			method: 'GET',
+			headers: {'Content-Type': 'application/json'},
+		});
+
+		if(!response.ok){
+			return false;
+		}
+		const events = await response.json();
+		return events.content;
+	}
+
 	onMount(() => {
 		let calendarEl = document.getElementById('calendar');
 		calendar = new Calendar(calendarEl, {
@@ -70,17 +84,33 @@
 			locale: 'de',
 			aspectRatio: 2.1,
 			editable: true,
-			events: dev ? '/dev/api/events' : '/api/events',
+			events: /* dev ? '/dev/api/events' : '/api/roombookings/page' */async function(info, successCallback, failureCallback) {
+				const fetchedData = await fetchRoomBookings(info);
+
+				if(fetchedData){
+					const events = fetchedData.map(event => ({
+						...event,
+						start: event.startTime,
+						end: event.endTime,
+						startTime: undefined,
+						endTime: undefined
+					}));
+					successCallback(events);
+				} else {
+					failureCallback("Error");
+				}
+
+			},
 			eventDrop: function (eventDropInfo) {
 				eventDropInfo.jsEvent.preventDefault();
-				request('/events', {
+				request('/roombookings/page', {
 					method: "PATCH",
 					body: JSON.stringify(eventDropInfo.event)
 				});
 			},
 			eventResize: function (eventResizeInfo){
 				eventResizeInfo.jsEvent.preventDefault();
-				request('/events', {
+				request('/roombookings/page', {
 					method: "PATCH",
 					body: JSON.stringify(eventResizeInfo.event)
 				});
@@ -118,27 +148,37 @@
 		selectedEvent = {
 			title: "_New Event_",
 			start: date,
-			end:  endDate
+			end:  endDate,
+			new: true
 		};
-		calendar.addEvent(selectedEvent);
+		/* calendar.addEvent(selectedEvent); */
+		selectedEvent.new = true;
 
 	}
 	function removeEvent() {
-		request('/events', {
-			method: 'DELETE',
-			body: selectedEvent.id
+		request(`/roombookings/${selectedEvent.id}`, {
+			method: 'DELETE'
 		});
 		selectedEvent.remove();
 		selectedEvent = false;
 	};
 
 	function updateDate(){
-		calendar.getEventById(selectedEvent.id).setProp('title', eventTitle);
-		calendar.getEventById(selectedEvent.id).setStart(newStartDate);
-		calendar.getEventById(selectedEvent.id).setEnd(newEndDate);
-		request('/events', {
-			method: 'PATCH',
-			body : JSON.stringify(calendar.getEventById(selectedEvent.id))
+		if(selectedEvent.new){
+			calendar.addEvent({
+				title: eventTitle,
+				start: newStartDate,
+				end: newEndDate
+			})
+		} else {
+			calendar.getEventById(selectedEvent.id).setProp('title', eventTitle);
+			calendar.getEventById(selectedEvent.id).setStart(newStartDate);
+			calendar.getEventById(selectedEvent.id).setEnd(newEndDate);
+		}
+		request( selectedEvent.new ? '/roombookings' : `/roombookings/${selectedEvent.id}`, {
+			method: selectedEvent.new ? 'POST': 'PATCH',
+			body : JSON.stringify( selectedEvent.new ? {title: eventTitle, startTime: newStartDate, endTime: newEndDate, creator: 1, description: ""} : convertEventToBackend(calendar.getEventById(selectedEvent.id))),
+			headers: {'Content-Type': 'application/json'}
 		});
 	};
 	
