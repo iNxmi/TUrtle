@@ -102,16 +102,16 @@
                     _Entries_
                 </div>
                 <div class="flex items-center space-x-2">
-                    <Button class=" hover:cursor-pointer disabled:cursor-not-allowed" onclick={firstPage} disabled={currentPage == 1}>              
+                    <Button class="size-6 hover:cursor-pointer disabled:cursor-not-allowed" onclick={firstPage} disabled={currentPage == 1}>              
                         <ChevronDoubleLeftOutline class="size-4"/>           
                     </Button>
-                    <Button class="hover:cursor-pointer disabled:cursor-not-allowed" onclick={previousPage} disabled={currentPage == 1}>
+                    <Button class="size-6 hover:cursor-pointer disabled:cursor-not-allowed" onclick={previousPage} disabled={currentPage == 1}>
                         <AngleLeftOutline class="size-4"/>              
                     </Button>
-                    <Button class="hover:cursor-pointer disabled:cursor-not-allowed" onclick={nextPage} disabled={currentPage == totalPages}>
+                    <Button class="size-6 hover:cursor-pointer disabled:cursor-not-allowed" onclick={nextPage} disabled={currentPage == totalPages}>
                         <AngleRightOutline class="size-4"/>                 
                     </Button>
-                    <Button class="hover:cursor-pointer disabled:cursor-not-allowed" onclick={lastPage} disabled={currentPage == totalPages}>                 
+                    <Button class="size-6 hover:cursor-pointer disabled:cursor-not-allowed" onclick={lastPage} disabled={currentPage == totalPages}>                 
                         <ChevronDoubleRightOutline class="size-4"/>                
                     </Button>
                 </div>
