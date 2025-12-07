@@ -5,7 +5,7 @@ import de.csw.turtle.api.dto.get.CRUDGetResponse
 import de.csw.turtle.api.entity.CRUDEntity
 import de.csw.turtle.api.mapper.CRUDMapper
 import de.csw.turtle.api.service.CRUDService
-import de.csw.turtle.api.service.SecurityService
+import de.csw.turtle.api.service.PermissionService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Sort.Direction
 import org.springframework.http.ResponseEntity
@@ -19,12 +19,12 @@ interface CRUDGetController<
 
     val service: CRUDService<Entity, *, GetResponse, *>
     val mapper: CRUDMapper<Entity, *, GetResponse, *>
-    val securityService: SecurityService
+    val permissionService: PermissionService
     val permissionGet: Permission
 
     @GetMapping("/one")
     fun get(@RequestParam id: Long): ResponseEntity<GetResponse> {
-        securityService.check(permissionGet)
+        permissionService.check(permissionGet)
 
         val entity = service.get(id)
         return ResponseEntity.ok(mapper.get(entity))
@@ -32,7 +32,7 @@ interface CRUDGetController<
 
     @GetMapping("/all")
     fun getAll(): ResponseEntity<Collection<GetResponse>> {
-        securityService.check(permissionGet)
+        permissionService.check(permissionGet)
 
         val entities = service.getAll()
         return ResponseEntity.ok(entities.map { mapper.get(it) })
@@ -45,7 +45,7 @@ interface CRUDGetController<
         @RequestParam(name = "sort", required = false) sort: Array<String> = emptyArray(),
         @RequestParam(name = "direction", required = false) direction: Direction = Direction.DESC
     ): ResponseEntity<Page<GetResponse>> {
-        securityService.check(permissionGet)
+        permissionService.check(permissionGet)
 
         val result = service.getPage(page, size, sort, direction)
         return ResponseEntity.ok(result.map { mapper.get(it) })

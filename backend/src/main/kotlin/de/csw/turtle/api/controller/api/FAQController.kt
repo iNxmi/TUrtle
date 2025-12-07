@@ -12,7 +12,7 @@ import de.csw.turtle.api.dto.patch.PatchFAQRequest
 import de.csw.turtle.api.entity.FAQEntity
 import de.csw.turtle.api.mapper.FAQMapper
 import de.csw.turtle.api.service.FAQService
-import de.csw.turtle.api.service.SecurityService
+import de.csw.turtle.api.service.PermissionService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -28,7 +28,7 @@ class FAQController(
 
     override val service: FAQService,
     override val mapper: FAQMapper,
-    override val securityService: SecurityService
+    override val permissionService: PermissionService
 ) : CRUDCreateController<FAQEntity, CreateFAQRequest, GetFAQResponse>,
     CRUDGetController<FAQEntity, GetFAQResponse>,
     CRUDPatchController<FAQEntity, PatchFAQRequest, GetFAQResponse>,

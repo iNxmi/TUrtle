@@ -12,7 +12,7 @@ import de.csw.turtle.api.dto.patch.PatchRoomBookingRequest
 import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.mapper.RoomBookingMapper
 import de.csw.turtle.api.service.RoomBookingService
-import de.csw.turtle.api.service.SecurityService
+import de.csw.turtle.api.service.PermissionService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -28,7 +28,7 @@ class RoomBookingController(
 
     override val service: RoomBookingService,
     override val mapper: RoomBookingMapper,
-    override val securityService: SecurityService
+    override val permissionService: PermissionService
 
 ) : CRUDCreateController<RoomBookingEntity, CreateRoomBookingRequest, GetRoomBookingResponse>,
     CRUDGetController<RoomBookingEntity, GetRoomBookingResponse>,

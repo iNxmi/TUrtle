@@ -12,7 +12,7 @@ import de.csw.turtle.api.dto.patch.PatchLockerRequest
 import de.csw.turtle.api.entity.LockerEntity
 import de.csw.turtle.api.mapper.LockerMapper
 import de.csw.turtle.api.service.locker.LockerService
-import de.csw.turtle.api.service.SecurityService
+import de.csw.turtle.api.service.PermissionService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -28,7 +28,7 @@ class LockerController(
 
     override val service: LockerService,
     override val mapper: LockerMapper,
-    override val securityService: SecurityService
+    override val permissionService: PermissionService
 ) : CRUDCreateController<LockerEntity, CreateLockerRequest, GetLockerResponse>,
     CRUDGetController<LockerEntity, GetLockerResponse>,
     CRUDPatchController<LockerEntity, PatchLockerRequest, GetLockerResponse>,

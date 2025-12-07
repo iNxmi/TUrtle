@@ -11,7 +11,7 @@ import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.mapper.UserMapper
-import de.csw.turtle.api.service.SecurityService
+import de.csw.turtle.api.service.PermissionService
 import de.csw.turtle.api.service.UserService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -28,7 +28,7 @@ class UserController(
 
     override val service: UserService,
     override val mapper: UserMapper,
-    override val securityService: SecurityService
+    override val permissionService: PermissionService
 ) : CRUDCreateController<UserEntity, CreateUserRequest, GetUserResponse>,
     CRUDGetController<UserEntity, GetUserResponse>,
     CRUDPatchController<UserEntity, PatchUserRequest, GetUserResponse>,

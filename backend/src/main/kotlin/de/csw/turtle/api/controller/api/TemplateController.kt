@@ -11,7 +11,7 @@ import de.csw.turtle.api.dto.get.GetTemplateResponse
 import de.csw.turtle.api.dto.patch.PatchTemplateRequest
 import de.csw.turtle.api.entity.TemplateEntity
 import de.csw.turtle.api.mapper.TemplateMapper
-import de.csw.turtle.api.service.SecurityService
+import de.csw.turtle.api.service.PermissionService
 import de.csw.turtle.api.service.TemplateService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -28,7 +28,7 @@ class TemplateController(
 
     override val service: TemplateService,
     override val mapper: TemplateMapper,
-    override val securityService: SecurityService
+    override val permissionService: PermissionService
 ) : CRUDCreateController<TemplateEntity, CreateTemplateRequest, GetTemplateResponse>,
     CRUDGetController<TemplateEntity, GetTemplateResponse>,
     CRUDPatchController<TemplateEntity, PatchTemplateRequest, GetTemplateResponse>,

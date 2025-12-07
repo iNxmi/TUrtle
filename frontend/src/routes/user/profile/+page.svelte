@@ -41,8 +41,8 @@
     </Label>
 
     <Label>
-        <span>{m.profile__role_label()}</span>
-        <Input name="role" type="text" value={user.role} disabled/>
+        <span>{m.profile__roles_label()}</span>
+        <Input name="roles" type="text" value={JSON.stringify(user.roles)} disabled/>
     </Label>
 
     <Label>

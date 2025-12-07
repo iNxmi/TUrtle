@@ -7,7 +7,7 @@ import de.csw.turtle.api.dto.get.GetAuditLogResponse
 import de.csw.turtle.api.entity.AuditLogEntity
 import de.csw.turtle.api.mapper.AuditLogMapper
 import de.csw.turtle.api.service.AuditLogService
-import de.csw.turtle.api.service.SecurityService
+import de.csw.turtle.api.service.PermissionService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -18,5 +18,5 @@ class AuditLogController(
 
     override val service: AuditLogService,
     override val mapper: AuditLogMapper,
-    override val securityService: SecurityService,
+    override val permissionService: PermissionService,
 ) : CRUDGetController<AuditLogEntity, GetAuditLogResponse>
