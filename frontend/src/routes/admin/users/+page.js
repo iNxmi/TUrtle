@@ -1,6 +1,6 @@
 import request from "$lib/api/api.js"
 
-export async function load({url, fetch}) {
+export async function load({url}) {
     const parameters = {}
 
     const page = url.searchParams.get("page")
