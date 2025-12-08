@@ -19,8 +19,8 @@ abstract class RoomBookingMapper : CRUDMapper<RoomBookingEntity, CreateRoomBooki
 
     override fun create(request: CreateRoomBookingRequest) = RoomBookingEntity(
         title = request.title,
-        startTime = request.startTime,
-        endTime = request.endTime,
+        start = request.start,
+        end = request.end,
         description = request.description,
         creator = userService.get(request.creator)
     )
@@ -28,8 +28,8 @@ abstract class RoomBookingMapper : CRUDMapper<RoomBookingEntity, CreateRoomBooki
     override fun get(entity: RoomBookingEntity) = GetRoomBookingResponse (
         id = entity.id,
         title = entity.title,
-        startTime =  entity.startTime,
-        endTime = entity.endTime,
+        start =  entity.start,
+        end = entity.end,
         description = entity.description,
         creator = entity.creator.id,
         whitelist = entity.whitelist?.map { user -> user.id }?.toSet(),
@@ -38,8 +38,8 @@ abstract class RoomBookingMapper : CRUDMapper<RoomBookingEntity, CreateRoomBooki
 
     override fun patch(entity: RoomBookingEntity, request: PatchRoomBookingRequest) : RoomBookingEntity {
         request.title?.let { entity.title = it }
-        request.startTime?.let { entity.startTime = it }
-        request.endTime?.let { entity.endTime = it }
+        request.start?.let { entity.start = it }
+        request.end?.let { entity.end = it }
         request.description?.let {entity.description = it}
         request.creator?.let { entity.creator = userService.get(it) }
         request.whitelist?.let { entity.whitelist = it.map { user -> userService.get(user)}.toMutableSet() }

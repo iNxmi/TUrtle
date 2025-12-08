@@ -5,8 +5,8 @@ import java.time.Instant
 data class CreateRoomBookingRequest(
     val title: String,
     val description: String,
-    val startTime: Instant,
-    val endTime: Instant,
+    val start: Instant,
+    val end: Instant,
     val creator: Long,
     val whitelist: Set<Long>? = null
 ) : CRUDCreateRequest

@@ -5,8 +5,8 @@ import java.time.Instant
 data class GetRoomBookingResponse(
     override val id: Long,
     val title: String,
-    val startTime: Instant,
-    val endTime: Instant,
+    val start: Instant,
+    val end: Instant,
     val description: String,
     val creator: Long,
     val whitelist: Set<Long>?,

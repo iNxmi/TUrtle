@@ -9,9 +9,11 @@ data class RoomBookingEntity(
 
     var title: String,
 
-    var startTime: Instant,
+    @Column(name = "start_time")
+    var start: Instant,
 
-    var endTime: Instant,
+    @Column(name = "end_time")
+    var end: Instant,
 
     @Column(columnDefinition = "TEXT")
     var description: String,

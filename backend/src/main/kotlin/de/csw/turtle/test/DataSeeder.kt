@@ -93,8 +93,8 @@ class DataSeeder(
             val createRequest = CreateRoomBookingRequest(
                 title = "${service.count()}: this is an event",
                 description = "this is the very long description",
-                startTime = start,
-                endTime = end,
+                start = start,
+                end = end,
                 creator = userService.get("admin").id
             )
             roomBookingService.create(createRequest)
