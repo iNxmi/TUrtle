@@ -1,10 +1,13 @@
 package de.csw.turtle.test
 
 import de.csw.turtle.api.dto.create.CreateFAQRequest
+import de.csw.turtle.api.dto.create.CreateRoomBookingRequest
 import de.csw.turtle.api.entity.*
 import de.csw.turtle.api.repository.*
 import de.csw.turtle.api.service.FAQService
 import de.csw.turtle.api.service.RoleService
+import de.csw.turtle.api.service.RoomBookingService
+import de.csw.turtle.api.service.UserService
 import io.github.serpro69.kfaker.Faker
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
@@ -12,8 +15,11 @@ import org.springframework.core.annotation.Order
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalUnit
 import kotlin.jvm.optionals.getOrNull
-import kotlin.math.absoluteValue
 import kotlin.math.floor
 
 @Component
@@ -25,7 +31,9 @@ class DataSeeder(
     private val passwordEncoder: PasswordEncoder,
     private val supportTicketRepository: SupportTicketRepository,
     private val roleService: RoleService,
-    private val faqService: FAQService
+    private val faqService: FAQService,
+    private val roomBookingService: RoomBookingService,
+    private val userService: UserService
 ) {
 
     private val minimumEntries = 128
@@ -33,6 +41,7 @@ class DataSeeder(
 
     @EventListener(ApplicationReadyEvent::class)
     @Transactional
+    @Order(1)
     fun seedUsers() {
         while (userRepository.count() < minimumEntries) {
             val firstName = faker.name.firstName()
@@ -65,6 +74,30 @@ class DataSeeder(
                 roles = mutableSetOf(roleService.getByName("Administrator")!!)
             )
             userRepository.save(admin)
+        }
+    }
+
+    @EventListener(ApplicationReadyEvent::class)
+    @Transactional
+    @Order(2)
+    fun seedRoomBookings() {
+        val service = roomBookingService
+        while (service.count() < 52) {
+            // minutes * hours * days * weeks * months
+            val offset = ((60 * 24 * 7 * 4 * 3) / 2 * Math.random()).toLong()
+            val start = Instant.now().plus(offset, ChronoUnit.MINUTES)
+
+            val duration = Duration.ofMinutes((Math.random() * 150 + 30).toLong())
+            val end = start.plus(duration.toMinutes(), ChronoUnit.MINUTES)
+
+            val createRequest = CreateRoomBookingRequest(
+                title = "${service.count()}: this is an event",
+                description = "this is the very long description",
+                startTime = start,
+                endTime = end,
+                creator = userService.get("admin").id
+            )
+            roomBookingService.create(createRequest)
         }
     }
 

@@ -13,8 +13,12 @@ import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.mapper.RoomBookingMapper
 import de.csw.turtle.api.service.RoomBookingService
 import de.csw.turtle.api.service.PermissionService
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.Instant
 
 @RestController
 @RequestMapping("/api/roombookings")
@@ -28,9 +32,26 @@ class RoomBookingController(
 
     override val service: RoomBookingService,
     override val mapper: RoomBookingMapper,
-    override val permissionService: PermissionService
+    override val permissionService: PermissionService,
+
+    private val roomBookingService: RoomBookingService,
+    private val roomBookingMapper: RoomBookingMapper
 
 ) : CRUDCreateController<RoomBookingEntity, CreateRoomBookingRequest, GetRoomBookingResponse>,
     CRUDGetController<RoomBookingEntity, GetRoomBookingResponse>,
     CRUDPatchController<RoomBookingEntity, PatchRoomBookingRequest, GetRoomBookingResponse>,
-    CRUDDeleteController<RoomBookingEntity>
+    CRUDDeleteController<RoomBookingEntity> {
+
+    @GetMapping("/overlapping")
+    fun getOverlapping(
+        @RequestParam start: Instant,
+        @RequestParam end: Instant
+    ): ResponseEntity<Set<GetRoomBookingResponse>> {
+        permissionService.check(permissionGet)
+
+        val all = roomBookingService.getAllOverlapping(start, end)
+        val mapped = all.map { roomBookingMapper.get(it) }.toSet()
+        return ResponseEntity.ok(mapped)
+    }
+
+}

@@ -8,7 +8,7 @@ data class GetRoomBookingResponse(
     val startTime: Instant,
     val endTime: Instant,
     val description: String,
-    val creator: GetUserResponse,
-    val whitelist: Set<GetUserResponse>?,
+    val creator: Long,
+    val whitelist: Set<Long>?,
     override val createdAt: Instant
 ) : CRUDGetResponse

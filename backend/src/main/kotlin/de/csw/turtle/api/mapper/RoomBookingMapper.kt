@@ -31,8 +31,8 @@ abstract class RoomBookingMapper : CRUDMapper<RoomBookingEntity, CreateRoomBooki
         startTime =  entity.startTime,
         endTime = entity.endTime,
         description = entity.description,
-        creator = userMapper.get(entity.creator),
-        whitelist = entity.whitelist?.map { user -> userMapper.get(user) }?.toSet(),
+        creator = entity.creator.id,
+        whitelist = entity.whitelist?.map { user -> user.id }?.toSet(),
         createdAt = entity.createdAt
     )
 
