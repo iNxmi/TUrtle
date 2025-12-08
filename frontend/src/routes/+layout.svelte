@@ -67,12 +67,14 @@
     let darkmode = $state(false);
     onMount(() => {
         if (document.documentElement.className === 'dark') darkmode = true;
+        delete document.documentElement.dataset.theme;
     });
 
     function toggleDarkMode() {
         document.documentElement.classList.remove(darkmode ? 'dark' : 'light');
         document.documentElement.classList.add(darkmode ? 'light' : 'dark');
         darkmode = !darkmode;
+        document.documentElement.data
     }
 
     const itemsPublic = [{
@@ -95,16 +97,6 @@
         label: m.sidebar_public_support(),
         href: '/support',
         icon: UserHeadsetSolid
-    }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__FAQ",
-        label: m.sidebar_public_faq(),
-        href: '/faq',
-        icon: UserHeadsetSolid
-    }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__ABOUT",
-        label: m.sidebar_public_about(),
-        href: '/about',
-        icon: InfoCircleSolid
     }];
     const itemsUser = [{
         permission: "FRONTEND__SIDEBAR_ITEM__DASHBOARD",
@@ -180,7 +172,7 @@
             backdrop={false}
             isOpen={true}
             position="static"
-            class="min-w-64 min-h-[calc(100svh-71px)]"
+            class="min-w-64 min-h-svh"
     >
         <div class="flex flex-col gap-3">
             <div class="flex flex-col items-center">
@@ -264,7 +256,7 @@
         </div>
     </Sidebar>
 
-    <div class="min-h-svh justify-between flex flex-col w-full">
+    <div class="min-h-svh justify-between flex flex-col w-full dark:bg-gray-900">
         <div class="m-10">
             {@render children?.()}
         </div>
