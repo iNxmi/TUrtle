@@ -1,18 +1,34 @@
-export function convertEventToBackend(calendarEvent){
-    return {
-        title: calendarEvent.title,
-        startTime: calendarEvent.start,
-        endTime: calendarEvent.end,
-        creator: calendarEvent.extendedProps.creator.id,
-        description: calendarEvent.extendedProps.description
-    }
+import request from './api/api';
+export function convertEventToBackend(calendarEvent) {
+	return {
+		title: calendarEvent.title,
+		startTime: calendarEvent.start,
+		endTime: calendarEvent.end,
+		creator: calendarEvent.extendedProps.creator.id,
+		description: calendarEvent.extendedProps.description
+	};
 }
-export function convertEventToFrontend(backendEvent){
-    return {
-        ...backendEvent,
-        start: backendEvent.startTime,
-        end: backendEvent.endTime,
-        startTime: undefined,
-        endTime: undefined
-    }
+export function convertEventToFrontend(backendEvent) {
+	return {
+		...backendEvent,
+		start: backendEvent.startTime,
+		end: backendEvent.endTime,
+		startTime: undefined,
+		endTime: undefined
+	};
+}
+export async function fetchRoomBookings(info) {
+	const response = await request(
+		`/roombookings/overlapping?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`,
+		{
+			method: 'GET',
+			headers: { 'Content-Type': 'application/json' }
+		}
+	);
+
+	if (!response.ok) {
+		return false;
+	}
+	const events = await response.json();
+	return events;
 }
