@@ -9,7 +9,7 @@
     <FooterLinkGroup class="mt-3 flex flex-wrap items-center text-sm text-gray-500 sm:mt-0 dark:text-gray-400">
         <FooterLink href="/about">{m.footer_about()}</FooterLink>
         <FooterLink href="/privacy">{m.footer_privacy_policy()}</FooterLink>
-        <FooterLink href="/license">{m.footer_licensing()}</FooterLink>
+        <FooterLink href="/faq">{m.support__faq_title()}</FooterLink>
         <FooterLink href="/support">{m.footer_contact()}</FooterLink>
     </FooterLinkGroup>
     <div class="flex gap-5">
