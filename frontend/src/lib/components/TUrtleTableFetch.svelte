@@ -101,7 +101,7 @@
 	<div class="flex flex-row justify-between">
 		<ButtonGroup class="w-full max-w-1/6 m-3">
 			<Input
-				class="dark:bg-background-50 focus:ring-csw! focus:border-csw! dark:focus:ring-csw! dark:focus:border-csw!"
+				class="dark:bg-background-50"
 				placeholder={`_Search_ ${itemType}`}
 				bind:value={searchTerm}
 			/>
@@ -110,7 +110,7 @@
 			</Button>
 		</ButtonGroup>
 		<Button
-			class="m-3 bg-csw text-white hover:bg-orange-500 hover:cursor-pointer"
+			class="m-3 text-white hover:cursor-pointer"
 			onclick={newItem}
 		>
 			<PlusOutline class="h-5 w-5" />
@@ -137,9 +137,6 @@
 		<Label class="w-16">
 			<Select
 			class="mt-5"
-				classes= {{
-					select: "focus:ring-csw! focus:border-csw! dark:focus:ring-csw! dark:focus:border-csw!"
-				}}
 				items={[
 					{
 						value: 10,
@@ -175,28 +172,28 @@
 				</div>
 				<div class="flex items-center space-x-2">
 					<Button
-						class="size-6 bg-csw hover:cursor-pointer disabled:cursor-not-allowed"
+						class="size-6 hover:cursor-pointer disabled:cursor-not-allowed"
 						onclick={firstPage}
 						disabled={currentPage == 1}
 					>
 						<ChevronDoubleLeftOutline class="size-4" />
 					</Button>
 					<Button
-						class="size-6 bg-csw hover:cursor-pointer disabled:cursor-not-allowed"
+						class="size-6 hover:cursor-pointer disabled:cursor-not-allowed"
 						onclick={previousPage}
 						disabled={currentPage == 1}
 					>
 						<AngleLeftOutline class="size-4" />
 					</Button>
 					<Button
-						class="size-6 bg-csw hover:cursor-pointer disabled:cursor-not-allowed"
+						class="size-6 hover:cursor-pointer disabled:cursor-not-allowed"
 						onclick={nextPage}
 						disabled={currentPage == totalPages}
 					>
 						<AngleRightOutline class="size-4" />
 					</Button>
 					<Button
-						class="size-6 bg-csw hover:cursor-pointer disabled:cursor-not-allowed"
+						class="size-6 hover:cursor-pointer disabled:cursor-not-allowed"
 						onclick={lastPage}
 						disabled={currentPage == totalPages}
 					>

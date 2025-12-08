@@ -2,8 +2,9 @@
 	import { getContext, onMount } from 'svelte';
 /* 	import { dev } from '$app/environment'; */
 	import request from '$lib/api/api';
-	import { convertEventToBackend, fetchRoomBookings } from '$lib/utils';
+	import { convertEventToBackend, convertEventToFrontend, fetchRoomBookings } from '$lib/utils';
 	import {Label, Input, Datepicker, Button, ThemeProvider} from 'flowbite-svelte';
+	import {m} from '$lib/paraglide/messages.js';
 
 	import {TrashBinSolid} from 'flowbite-svelte-icons';
 
@@ -74,13 +75,7 @@
 			events: /* dev ? '/dev/api/events' : '/api/roombookings/page' */async function(info, successCallback, failureCallback) {
 				const fetchedData = await fetchRoomBookings(info);
 				if(fetchedData){
-					const events = fetchedData.map(event => ({
-						...event,
-						start: event.startTime,
-						end: event.endTime,
-						startTime: undefined,
-						endTime: undefined
-					}));
+					const events = fetchedData.map(event => (convertEventToFrontend(event)));
 					successCallback(events);
 				} else {
 					failureCallback("Error");
@@ -196,29 +191,27 @@
 		<div bind:this={eventCard} class="w-full bg-white border rounded-lg max-w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col mt-17 p-5 gap-5">
 				{#if selectedEvent}
 				<div class="flex flex-row justify-between h-10">
-					<input type="test" class="text-2xl h-full mr-auto rounded-lg focus:ring-2 focus:ring-csw focus:outline-hidden" bind:value={eventTitle} /> 
+					<input type="text" class="text-2xl w-9/10 h-full mr-auto rounded-lg focus:ring-2 focus:ring-csw border-hidden outline-hidden focus:outline-hidden" bind:value={eventTitle} /> 
 					<button class="h-full w-10 inline-flex justify-end items-center" onclick={removeEvent}>
 						<TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
 					</button>
 				</div>
 				<Label class="space-y-2"> <span>_Start_</span>
-					<Datepicker inputClass="focus:ring-csw! focus:border-csw!" monthBtn="hover:text-csw!" monthBtnSelected="bg-csw! hover:text-white!" classes={{
-						dayButton:"aria-selected:bg-csw! aria-selected:text-white! hover:text-csw!"
-					}} bind:value={startDate}></Datepicker>
-					<Input class="focus:ring-csw! focus:border-csw!" type="time" bind:value={startTime}/>
+					<Datepicker  monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
+					<Input type="time" bind:value={startTime}/>
 				</Label>
 				<Label class="space-y-2"> <span>_End_</span>
-					<Datepicker inputClass="focus:ring-csw! focus:border-csw!" classes={{dayButton:"aria-selected:bg-csw! aria-selected:hover:bg-csw!"}} bind:value={endDate}></Datepicker>
-					<Input class="focus:ring-csw! focus:border-csw!" type="time" bind:value={endTime}/>
+					<Datepicker monthBtnSelected="bg-csw! hover:text-white!" bind:value={endDate}></Datepicker>
+					<Input type="time" bind:value={endTime}/>
 				</Label>
 				<ThemeProvider {theme}>
-					<Button onclick={updateDate}>_Speichern_</Button>
+					<Button onclick={updateDate}>{m.save()}</Button>
 				</ThemeProvider>
 				{:else}
 				<div class="flex flex-col h-full justify-center items-center">
-					<h1 class="text-2xl text-gray-500">_Select Event_</h1>
-					<span class="mb-2.5">_or_</span>
-					<Button class="bg-csw!" onclick={createEvent}>_Create new Event_</Button>
+					<h1 class="text-2xl text-gray-500">{m.admin_bookings__select_event()}</h1>
+					<span class="mb-2.5">{m.or()}</span>
+					<Button onclick={createEvent}>{m.admin_bookings__create_new_event()}</Button>
 				</div>
 				{/if}
 		</div>

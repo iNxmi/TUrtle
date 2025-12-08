@@ -1,7 +1,7 @@
 <script>
 	import { getContext, onMount } from 'svelte';
 	import request from '$lib/api/api';
-	import {fetchRoomBookings} from '$lib/utils'
+	import {fetchRoomBookings, convertEventToFrontend} from '$lib/utils'
 	import { Calendar } from '@fullcalendar/core';
 	import timeGridPlugin from '@fullcalendar/timegrid';
 	import listPlugin from '@fullcalendar/list';
@@ -72,13 +72,7 @@
 				const fetchedData = await fetchRoomBookings(info);
 
 				if(fetchedData){
-					const events = fetchedData.map(event => ({
-						...event,
-						start: event.startTime,
-						end: event.endTime,
-						startTime: undefined,
-						endTime: undefined
-					}));
+					const events = fetchedData.map(event => (convertEventToFrontend(event)));
 					successCallback(events);
 				} else {
 					failureCallback("Error");

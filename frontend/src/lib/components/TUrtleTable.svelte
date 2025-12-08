@@ -49,7 +49,7 @@
             placeholder={`_Search_ ${itemType}`}
             bind:value={searchTerm}
         ></Input>
-        <Button class="m-3 bg-csw text-white hover:bg-orange-500 hover:cursor-pointer" onclick={newItem}>
+        <Button class="m-3 text-white hover:cursor-pointer" onclick={newItem}>
             <PlusOutline class="h-5 w-5" />
             _Create_ {itemType}
         </Button>
