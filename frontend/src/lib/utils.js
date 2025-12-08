@@ -1,4 +1,5 @@
 import request from './api/api';
+import { dev } from '$app/environment';
 export function convertEventToBackend(calendarEvent) {
 	return {
 		title: calendarEvent.title,
@@ -9,13 +10,16 @@ export function convertEventToBackend(calendarEvent) {
 	};
 }
 export function convertEventToFrontend(backendEvent) {
-	return {
-		...backendEvent,
-		start: backendEvent.startTime,
-		end: backendEvent.endTime,
-		startTime: undefined,
-		endTime: undefined
-	};
+	if (dev) {
+		return backendEvent;
+	}
+    return {
+			...backendEvent,
+			start: backendEvent.startTime,
+			end: backendEvent.endTime,
+			startTime: undefined,
+			endTime: undefined
+		};
 }
 export async function fetchRoomBookings(info) {
 	const response = await request(
