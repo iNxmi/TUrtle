@@ -1,8 +1,8 @@
 <script>
 	import { getContext, onMount } from 'svelte';
-	import { dev } from '$app/environment';
+/* 	import { dev } from '$app/environment'; */
 	import request from '$lib/api/api';
-	import { convertEventToBackend } from '$lib/utils';
+	import { convertEventToBackend, fetchRoomBookings } from '$lib/utils';
 	import {Label, Input, Datepicker, Button, ThemeProvider} from 'flowbite-svelte';
 
 	import {TrashBinSolid} from 'flowbite-svelte-icons';
@@ -64,19 +64,6 @@
 		return tempEndDate;
 	}); 
 
-	async function fetchRoomBookings(info){
-		const response = await request(`/roombookings/page?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`, {
-			method: 'GET',
-			headers: {'Content-Type': 'application/json'},
-		});
-
-		if(!response.ok){
-			return false;
-		}
-		const events = await response.json();
-		return events.content;
-	}
-
 	onMount(() => {
 		let calendarEl = document.getElementById('calendar');
 		calendar = new Calendar(calendarEl, {
@@ -86,7 +73,6 @@
 			editable: true,
 			events: /* dev ? '/dev/api/events' : '/api/roombookings/page' */async function(info, successCallback, failureCallback) {
 				const fetchedData = await fetchRoomBookings(info);
-
 				if(fetchedData){
 					const events = fetchedData.map(event => ({
 						...event,
@@ -103,16 +89,18 @@
 			},
 			eventDrop: function (eventDropInfo) {
 				eventDropInfo.jsEvent.preventDefault();
-				request('/roombookings/page', {
+				request(`/roombookings/${eventDropInfo.event.id}`, {
 					method: "PATCH",
-					body: JSON.stringify(eventDropInfo.event)
+					body: JSON.stringify(convertEventToBackend(eventDropInfo.event)),
+					headers: {'Content-Type': 'application/json'}
 				});
 			},
 			eventResize: function (eventResizeInfo){
 				eventResizeInfo.jsEvent.preventDefault();
-				request('/roombookings/page', {
+				request(`/roombookings/${eventResizeInfo.event.id}`, {
 					method: "PATCH",
-					body: JSON.stringify(eventResizeInfo.event)
+					body: JSON.stringify(convertEventToBackend(eventResizeInfo.event)),
+					headers: {'Content-Type': 'application/json'}
 				});
 			},
 			eventClick: function (info) {

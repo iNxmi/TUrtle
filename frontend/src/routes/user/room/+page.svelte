@@ -1,18 +1,34 @@
 <script>
 	import { getContext, onMount } from 'svelte';
-	import { dev } from '$app/environment';
-	/* import { Calendar } from '@fullcalendar/core';
+	import request from '$lib/api/api';
+	import {fetchRoomBookings} from '$lib/utils'
+	import { Calendar } from '@fullcalendar/core';
 	import timeGridPlugin from '@fullcalendar/timegrid';
 	import listPlugin from '@fullcalendar/list';
-	import deLocale from '@fullcalendar/core/locales/de'; */
-	import { Calendar, TimeGrid, List } from '@event-calendar/core';
+	import deLocale from '@fullcalendar/core/locales/de';
+	/* import { Calendar, TimeGrid, List } from '@event-calendar/core'; */
 
-	let options = $state({
+
+	/* let options = $state({
 		aspectRatio: 2.1,
-		eventSources:[ {
-			url: dev ? '/dev/api/events' : '/api/events'
-		}
-	],
+		eventSources:[ 
+			{
+			events: async function(fetchInfo, successCallback, failureCallback) {
+				const fetchedData = await fetchRoomBookings(fetchInfo);
+
+				if(fetchedData){
+					const events = fetchedData.map(event => ({
+						...event,
+						start: event.startTime,
+						end: event.endTime,
+						startTime: undefined,
+						endTime: undefined
+					}));
+					successCallback(events);
+				} else {
+					failureCallback("Error");
+				}	
+			}}],
 		eventColor: 'oklch(75% 0.183 55.934)',
 		slotLabelFormat: {
 			hour: 'numeric',
@@ -30,7 +46,7 @@
 			end: 'timeGridWeek,listWeek'
 		}
 
-	})
+	}) */
 
 	let calendar = $state();
 
@@ -40,19 +56,34 @@
 
 	$effect(() => {
 
-		calendar.setOption('locale', localeString);
-		/* if(calendar){
+		/* calendar.setOption('locale', localeString); */
+		if(calendar){
 			calendar.setOption('locale', localeString);
-		} */
+		}
 
 	})
-	/* onMount(() => {
+	onMount(() => {
 		let calendarEl = document.getElementById('calendar');
 		calendar = new Calendar(calendarEl, {
 			plugins: [timeGridPlugin, listPlugin],
 			locale: deLocale,
 			aspectRatio: 2.1,
-			events: dev ? '/dev/api/events' : '/api/events',
+			events:async function(info, successCallback, failureCallback) {
+				const fetchedData = await fetchRoomBookings(info);
+
+				if(fetchedData){
+					const events = fetchedData.map(event => ({
+						...event,
+						start: event.startTime,
+						end: event.endTime,
+						startTime: undefined,
+						endTime: undefined
+					}));
+					successCallback(events);
+				} else {
+					failureCallback("Error");
+				}	
+			},
 			eventColor: 'oklch(75% 0.183 55.934)',
 			slotLabelFormat: {
 				hour: 'numeric',
@@ -77,10 +108,10 @@
 		} else {
 			calendar.setOption('locale', localeString);
 		}
-	}); */
+	});
 
 </script>
 
-<Calendar bind:this={calendar} plugins={[TimeGrid, List]} {options} />
+<!-- <Calendar bind:this={calendar} plugins={[TimeGrid, List]} {options} /> -->
 
 <div id="calendar"></div>
