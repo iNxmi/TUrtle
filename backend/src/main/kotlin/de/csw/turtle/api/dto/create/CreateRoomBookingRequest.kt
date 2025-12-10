@@ -8,5 +8,6 @@ data class CreateRoomBookingRequest(
     val start: Instant,
     val end: Instant,
     val creator: Long,
+    val enableWhitelist: Boolean,
     val whitelist: Set<Long>? = null
 ) : CRUDCreateRequest

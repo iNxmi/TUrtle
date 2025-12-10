@@ -18,6 +18,9 @@ data class RoomBookingEntity(
     @Column(columnDefinition = "TEXT")
     var description: String,
 
+    @Column(nullable = false)
+    var enableWhitelist: Boolean,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     var creator: UserEntity,
@@ -28,6 +31,6 @@ data class RoomBookingEntity(
         joinColumns = [JoinColumn(name = "room_booking_id")],
         inverseJoinColumns = [JoinColumn(name = "user_id")]
     )
-    var whitelist: MutableSet<UserEntity>? = null
+    var whitelist: MutableSet<UserEntity>
 
 ) : CRUDEntity()
