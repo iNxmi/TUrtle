@@ -10,6 +10,6 @@ data class GetRoomBookingResponse(
     val description: String,
     val creator: Long,
     val enableWhitelist: Boolean,
-    val whitelist: Set<Long>?,
+    val whitelist: Set<Long>,
     override val createdAt: Instant
 ) : CRUDGetResponse

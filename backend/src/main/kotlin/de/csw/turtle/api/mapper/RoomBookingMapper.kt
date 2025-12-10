@@ -22,6 +22,7 @@ abstract class RoomBookingMapper : CRUDMapper<RoomBookingEntity, CreateRoomBooki
         start = request.start,
         end = request.end,
         description = request.description,
+        enableWhitelist = request.enableWhitelist,
         creator = userService.get(request.creator)
     )
 
@@ -32,7 +33,8 @@ abstract class RoomBookingMapper : CRUDMapper<RoomBookingEntity, CreateRoomBooki
         end = entity.end,
         description = entity.description,
         creator = entity.creator.id,
-        whitelist = entity.whitelist?.map { user -> user.id }?.toSet(),
+        whitelist = entity.whitelist.map { user -> user.id }.toSet(),
+        enableWhitelist = entity.enableWhitelist,
         createdAt = entity.createdAt
     )
 
