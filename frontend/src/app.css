@@ -49,6 +49,7 @@
     --color-table-dark: #d1f3d1;
     --color-accent: #3dff4a;
     --color-csw: #FF6A00;
+
 }
 
 .dark {
@@ -65,7 +66,7 @@
     --color-primary-800: var(--color-csw); /*#cc4522;*/
     --color-primary-900: var(--color-csw); /*#a5371b; */
 
-    --color-secondary-50:  var(--color-orange-50;);
+    --color-secondary-50:  var(--color-orange-50);
     --color-secondary-100: var(--color-orange-100);
     --color-secondary-200: var(--color-orange-200);
     --color-secondary-300: var(--color-orange-300);
@@ -97,11 +98,24 @@
     font-style: normal;
     font-display: swap;
 }
+
+.overflow-y-scroll {
+    scrollbar-color: #c2c2c2 #ffffff;
+}
+
+.dark .fc-scrollgrid {
+    scrollbar-color: auto;
+}
+.fc-scrollgrid  {
+    scrollbar-color: #c2c2c2 #e2e1e1;
+}
+
 .dark .fc {
   --fc-border-color: theme(--color-gray-800);
 }
 .dark .fc-timegrid-event-harness-inset .fc-timegrid-event, .fc-timegrid-event.fc-event-mirror, .fc-timegrid-more-link {
     box-shadow: none;
+    
 }
 .fc .fc-timegrid-slot-minor{
   border-top-style: none;
