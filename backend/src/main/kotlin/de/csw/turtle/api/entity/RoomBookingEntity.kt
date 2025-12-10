@@ -18,7 +18,6 @@ data class RoomBookingEntity(
     @Column(columnDefinition = "TEXT")
     var description: String,
 
-    @Column(nullable = false)
     var enableWhitelist: Boolean,
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -2,6 +2,7 @@ volumes:
   database_volume:
   certbot_etc:
   certbot_var:
+  logs:
 
 networks:
   network:
@@ -34,12 +35,12 @@ services:
   backend:
     build: backend
     container_name: backend
-    restart: no
-    ports:
-      - "8080:8080"
     depends_on:
       - postgres
       - mailhog
+    restart: no
+    ports:
+      - "8080:8080"
     networks:
       - network
     environment:
@@ -55,7 +56,6 @@ services:
   frontend:
     build: frontend
     container_name: frontend
-    restart: no
     depends_on:
       - backend
     networks:

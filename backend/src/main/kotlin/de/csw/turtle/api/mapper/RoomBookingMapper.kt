@@ -14,9 +14,6 @@ abstract class RoomBookingMapper : CRUDMapper<RoomBookingEntity, CreateRoomBooki
     @Autowired
     protected lateinit var userService: UserService
 
-    @Autowired
-    protected lateinit var userMapper: UserMapper
-
     override fun create(request: CreateRoomBookingRequest) = RoomBookingEntity(
         title = request.title,
         start = request.start,
