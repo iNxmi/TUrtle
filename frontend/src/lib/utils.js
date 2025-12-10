@@ -1,15 +1,17 @@
 import request from './api/api';
 import { dev } from '$app/environment';
 export function convertEventToBackend(calendarEvent) {
+	if (dev) {
+		return calendarEvent;
+	}
 	return {
 		title: calendarEvent.title,
 		start: calendarEvent.start,
 		end: calendarEvent.end,
 		creator: calendarEvent.extendedProps.creator.id,
 		description: calendarEvent.extendedProps.description,
-		...(calendarEvent.extendedProps.whitelist && {
-			whitelist: calendarEvent.extendedProps.whitelist
-		})
+		enableWhitelist: calendarEvent.extendedProps.enableWhitelist,
+		whitelist: calendarEvent.extendedProps.whitelist
 	};
 }
 export function convertEventToFrontend(backendEvent) {

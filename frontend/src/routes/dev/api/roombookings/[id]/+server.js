@@ -15,7 +15,7 @@ export async function PATCH({ request }) {
 
 export async function POST({ request }) {
     const event = await request.json();
-    eventDatabase.createEvent(event.title, event.start, event.end);
+    eventDatabase.createEvent(event);
     return new Response(null, { status: 200 });
 }
 

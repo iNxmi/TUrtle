@@ -1,5 +1,4 @@
 import { events } from './sampleEvents';
-import SimpleDB from '../SimpleDB.js';
 
 export class EventDatabase {
 	constructor(db) {
@@ -12,21 +11,18 @@ export class EventDatabase {
 		events.forEach((event, index) => {
 			this.db.create(this.collection, {
 				id: index.toString(),
-				title: event.title,
-				start: event.start,
-				end: event.end
+				...event
 			});
 			this.id += 1;
 		});
 	}
 
-	createEvent(title, start, end) {
-		this.this.db.create(this.collection, this.collection, {
+	createEvent(event) {
+		this.db.create(this.collection, {
 			id: this.id.toString(),
-			title,
-			start,
-			end
+			...event
 		});
+		this.is += 1;
 	}
 
 	getEvents() {
