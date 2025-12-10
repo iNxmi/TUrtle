@@ -1,6 +1,6 @@
 <script>
 	import { getContext, onMount } from 'svelte';
-/* 	import { dev } from '$app/environment'; */
+	import { dev } from '$app/environment';
 	import request from '$lib/api/api';
 	import { convertEventToBackend, convertEventToFrontend, fetchRoomBookings } from '$lib/utils';
 	import {Label, Input, Datepicker, Button, Textarea, Toggle, MultiSelect} from 'flowbite-svelte';
@@ -46,7 +46,7 @@
 	let eventTitle = $derived(selectedEvent.title);
 	let eventDescription = $derived(selectedEvent.extendedProps.description);
 	let eventWhitelist = $derived(selectedEvent.extendedProps.whitelist || []);
-	let useWhitelist = $state(false);
+	let useWhitelist = $derived(selectedEvent.extendedProps.enableWhitelist);
 	
 	let startTime = $derived.by(() => {
 		const tempHour = selectedEvent.start.getHours() < 10  ? "0"+selectedEvent.start.getHours().toString() : selectedEvent.start.getHours().toString();
@@ -143,7 +143,13 @@
 			title: "_New Event_",
 			start: date,
 			end:  endDate,
-			new: true
+			new: true,
+			extendedProps: {
+				creator: 1,
+				description: "",
+				enableWhitelist: false,
+				whitelist: []
+			}
 		};
 
 	}
@@ -155,21 +161,53 @@
 		selectedEvent = false;
 	};
 
+	function createNewBackendEvent(){
+		if(dev) {
+			return {
+				title: eventTitle, 
+				start: newStartDate, 
+				end: newEndDate,
+				extendedProps: {
+					creator: {
+						id: 1
+					},
+					description: "", 
+					enableWhitelist: useWhitelist, 
+					whitelist: eventWhitelist
+				}
+			}
+		}
+		return {
+			title: eventTitle, 
+			start: newStartDate, 
+			end: newEndDate, 
+			creator: 1, 
+			description: "", 
+			enableWhitelist: useWhitelist, 
+			whitelist: eventWhitelist
+		}
+	};
 	function updateDate(){
 		if(selectedEvent.new){
 			calendar.addEvent({
 				title: eventTitle,
 				start: newStartDate,
-				end: newEndDate
-			})
+				end: newEndDate,
+				description: eventDescription,
+				enableWhitelist: useWhitelist,
+				whitelist: eventWhitelist
+			});
 		} else {
 			calendar.getEventById(selectedEvent.id).setProp('title', eventTitle);
 			calendar.getEventById(selectedEvent.id).setStart(newStartDate);
 			calendar.getEventById(selectedEvent.id).setEnd(newEndDate);
-		}
+			calendar.getEventById(selectedEvent.id).setExtendedProp('description', eventDescription);
+			calendar.getEventById(selectedEvent.id).setExtendedProp('enableWhitelist', useWhitelist);
+			calendar.getEventById(selectedEvent.id).setExtendedProp('whitelist', eventWhitelist);
+			}
 		request( selectedEvent.new ? '/roombookings' : `/roombookings/${selectedEvent.id}`, {
 			method: selectedEvent.new ? 'POST': 'PATCH',
-			body : JSON.stringify( selectedEvent.new ? {title: eventTitle, start: newStartDate, end: newEndDate, creator: 1, description: ""} : convertEventToBackend(calendar.getEventById(selectedEvent.id))),
+			body : JSON.stringify( selectedEvent.new ? createNewBackendEvent() : convertEventToBackend(calendar.getEventById(selectedEvent.id))),
 			headers: {'Content-Type': 'application/json'}
 		});
 	};
