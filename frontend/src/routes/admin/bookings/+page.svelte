@@ -3,7 +3,7 @@
 /* 	import { dev } from '$app/environment'; */
 	import request from '$lib/api/api';
 	import { convertEventToBackend, convertEventToFrontend, fetchRoomBookings } from '$lib/utils';
-	import {Label, Input, Datepicker, Button, ThemeProvider} from 'flowbite-svelte';
+	import {Label, Input, Datepicker, Button, Textarea, Toggle, MultiSelect} from 'flowbite-svelte';
 	import {m} from '$lib/paraglide/messages.js';
 
 	import {TrashBinSolid} from 'flowbite-svelte-icons';
@@ -21,6 +21,14 @@
 	let clientX;
 	let clientY;
 
+	const participants = [
+		{value: 0, name: "Jan"},
+		{value: 1, name: "Memphis"},
+		{value: 2, name: "Sanel"},
+		{value: 3, name: "Tanh Lam"},
+		{value: 4, name: "Lucas"}
+	];
+
 	function onPageClick(e) {
 		if (e.clientX !== clientX && e.clientY + window.scrollY !== clientY && !eventCard.contains(e.target)) {
 			selectedEvent = false;
@@ -36,6 +44,9 @@
 	let endDate = $derived(selectedEvent.end);
 
 	let eventTitle = $derived(selectedEvent.title);
+	let eventDescription = $derived(selectedEvent.extendedProps.description);
+	let eventWhitelist = $derived(selectedEvent.extendedProps.whitelist || []);
+	let useWhitelist = $state(false);
 	
 	let startTime = $derived.by(() => {
 		const tempHour = selectedEvent.start.getHours() < 10  ? "0"+selectedEvent.start.getHours().toString() : selectedEvent.start.getHours().toString();
@@ -134,8 +145,6 @@
 			end:  endDate,
 			new: true
 		};
-		/* calendar.addEvent(selectedEvent); */
-		selectedEvent.new = true;
 
 	}
 	function removeEvent() {
@@ -160,15 +169,9 @@
 		}
 		request( selectedEvent.new ? '/roombookings' : `/roombookings/${selectedEvent.id}`, {
 			method: selectedEvent.new ? 'POST': 'PATCH',
-			body : JSON.stringify( selectedEvent.new ? {title: eventTitle, startTime: newStartDate, endTime: newEndDate, creator: 1, description: ""} : convertEventToBackend(calendar.getEventById(selectedEvent.id))),
+			body : JSON.stringify( selectedEvent.new ? {title: eventTitle, start: newStartDate, end: newEndDate, creator: 1, description: ""} : convertEventToBackend(calendar.getEventById(selectedEvent.id))),
 			headers: {'Content-Type': 'application/json'}
 		});
-	};
-	
-	const theme = {
-		button: {
-			base: "bg-csw hover:bg-orange-800"
-		}
 	};
 	/* $effect(() => {
 		if(selectedEvent && calendar) console.log("Test "+ "EventDate: "+JSON.stringify($state.snapshot(eventDate)));
@@ -204,9 +207,15 @@
 					<Datepicker monthBtnSelected="bg-csw! hover:text-white!" bind:value={endDate}></Datepicker>
 					<Input type="time" bind:value={endTime}/>
 				</Label>
-				<ThemeProvider {theme}>
-					<Button onclick={updateDate}>{m.save()}</Button>
-				</ThemeProvider>
+				<Label for="description" class="mb-0">_Description_
+					<Textarea id="description" placeholder="_Sample description_" rows={3} class="w-full" bind:value={eventDescription} />
+				</Label>
+				<Toggle size="small" bind:checked={useWhitelist}>_Use whitelist_</Toggle>
+				{#if useWhitelist}
+				<MultiSelect items={participants} bind:value={eventWhitelist} placeholder="_Select participants" />
+			
+				{/if}
+				<Button onclick={updateDate}>{m.save()}</Button>
 				{:else}
 				<div class="flex flex-col h-full justify-center items-center">
 					<h1 class="text-2xl text-gray-500">{m.admin_bookings__select_event()}</h1>
