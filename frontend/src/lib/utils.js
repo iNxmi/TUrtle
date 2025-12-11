@@ -1,25 +1,30 @@
 import request from './api/api';
 import { dev } from '$app/environment';
 export function convertEventToBackend(calendarEvent) {
+	if (dev) {
+		return calendarEvent;
+	}
 	return {
 		title: calendarEvent.title,
-		startTime: calendarEvent.start,
-		endTime: calendarEvent.end,
+		start: calendarEvent.start,
+		end: calendarEvent.end,
 		creator: calendarEvent.extendedProps.creator.id,
-		description: calendarEvent.extendedProps.description
+		description: calendarEvent.extendedProps.description,
+		enableWhitelist: calendarEvent.extendedProps.enableWhitelist,
+		whitelist: calendarEvent.extendedProps.whitelist
 	};
 }
 export function convertEventToFrontend(backendEvent) {
 	if (dev) {
 		return backendEvent;
 	}
-    return {
-			...backendEvent,
-			start: backendEvent.startTime,
+	return {
+		...backendEvent
+		/* start: backendEvent.startTime,
 			end: backendEvent.endTime,
 			startTime: undefined,
-			endTime: undefined
-		};
+			endTime: undefined */
+	};
 }
 export async function fetchRoomBookings(info) {
 	const response = await request(

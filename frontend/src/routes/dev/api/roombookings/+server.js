@@ -12,8 +12,8 @@ export async function DELETE({ request }) {
 	return new Response(null, { status: 204 });
 }
 
-export async function PATCH({ request }) {
+export async function POST({ request }) {
 	const event = await request.json();
-	eventDatabase.updateEventByID(event.id, event);
+	eventDatabase.createEvent(event);
 	return new Response(null, { status: 200 });
 }
