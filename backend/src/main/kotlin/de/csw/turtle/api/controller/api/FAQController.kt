@@ -22,7 +22,7 @@ class FAQController(
     override val endpoint: String = "/api/faq",
 
     override val permissionCreate: Permission = BACKEND__API_FAQ__CREATE,
-    override val permissionGet: Permission = BACKEND__API_FAQ__GET,
+    override val permissionGet: Permission? = null,
     override val permissionPatch: Permission = BACKEND__API_FAQ__PATCH,
     override val permissionDelete: Permission = BACKEND__API_FAQ__DELETE,
 

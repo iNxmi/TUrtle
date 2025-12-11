@@ -18,7 +18,7 @@ data class UserEntity(
 
     var password: String,
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_roles",
         joinColumns = [JoinColumn(name = "user_id")],
@@ -26,13 +26,13 @@ data class UserEntity(
     )
     val roles: MutableSet<RoleEntity> = mutableSetOf(),
 
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     val auditLogs: Collection<AuditLogEntity> = emptySet(),
 
-    @OneToMany(mappedBy = "creator", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "creator")
     val roomBookings: Collection<RoomBookingEntity> = emptySet(),
 
-    @ManyToMany(mappedBy = "whitelist")
+    @ManyToMany(mappedBy = "whitelistedUsers")
     val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf()
 
 ) : CRUDEntity()

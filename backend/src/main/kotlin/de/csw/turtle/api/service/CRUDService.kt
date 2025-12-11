@@ -51,8 +51,9 @@ abstract class CRUDService<
 
     @Transactional
     open fun patch(id: Long, request: PatchRequest): Entity {
-        val entity = mapper.patch(get(id), request)
-        return repository.save(entity)
+        val entity = get(id)
+        val updated = mapper.patch(entity, request)
+        return repository.save(updated)
     }
 
     @Transactional

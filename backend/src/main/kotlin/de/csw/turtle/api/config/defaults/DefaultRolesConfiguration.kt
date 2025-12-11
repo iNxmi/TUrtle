@@ -14,12 +14,6 @@ class DefaultRolesConfiguration(
 ) : CommandLineRunner {
 
     private val guest = setOf(
-        BACKEND__API_AUTH__LOGIN,
-        BACKEND__API_AUTH__REGISTER,
-
-        BACKEND__API_SUPPORTTICKETS__CREATE,
-        BACKEND__API_FAQ__GET,
-
         FRONTEND__SIDEBAR_CATEGORY__PUBLIC,
         FRONTEND__SIDEBAR_ITEM__HOME,
         FRONTEND__SIDEBAR_ITEM__LOGIN,
@@ -30,14 +24,9 @@ class DefaultRolesConfiguration(
     )
 
     private val student = setOf(
-        BACKEND__API_AUTH__LOGOUT,
-
         BACKEND__API_USER_PROFILE__GET,
         BACKEND__API_USER_PROFILE__PATCH,
         BACKEND__API_USER_PROFILE__DELETE,
-
-        BACKEND__API_SUPPORTTICKETS__CREATE,
-        BACKEND__API_FAQ__GET,
 
         FRONTEND__SIDEBAR_CATEGORY__PUBLIC,
         FRONTEND__SIDEBAR_ITEM__HOME,
@@ -52,14 +41,9 @@ class DefaultRolesConfiguration(
     )
 
     private val professor = setOf(
-        BACKEND__API_AUTH__LOGOUT,
-
         BACKEND__API_USER_PROFILE__GET,
         BACKEND__API_USER_PROFILE__PATCH,
         BACKEND__API_USER_PROFILE__DELETE,
-
-        BACKEND__API_SUPPORTTICKETS__CREATE,
-        BACKEND__API_FAQ__GET,
 
         FRONTEND__SIDEBAR_CATEGORY__PUBLIC,
         FRONTEND__SIDEBAR_ITEM__HOME,

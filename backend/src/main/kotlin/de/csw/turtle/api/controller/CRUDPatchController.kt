@@ -21,11 +21,12 @@ interface CRUDPatchController<
     val service: CRUDService<Entity, *, GetResponse, PatchRequest>
     val mapper: CRUDMapper<Entity, *, GetResponse, PatchRequest>
     val permissionService: PermissionService
-    val permissionPatch: Permission
+    val permissionPatch: Permission?
 
     @PatchMapping("/{id}")
     fun patch(@PathVariable id: Long, @RequestBody request: PatchRequest): ResponseEntity<GetResponse> {
-        permissionService.check(permissionPatch)
+        if (permissionPatch != null)
+            permissionService.check(permissionPatch!!)
 
         val entity = service.patch(id, request)
         return ResponseEntity.ok(mapper.get(entity))

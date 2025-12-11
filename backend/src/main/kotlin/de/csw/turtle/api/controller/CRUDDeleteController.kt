@@ -12,11 +12,12 @@ interface CRUDDeleteController<Entity : CRUDEntity> {
 
     val service: CRUDService<Entity, *, *, *>
     val permissionService: PermissionService
-    val permissionDelete: Permission
+    val permissionDelete: Permission?
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseEntity<Void> {
-        permissionService.check(permissionDelete)
+        if (permissionDelete != null)
+            permissionService.check(permissionDelete!!)
 
         service.delete(id)
         return ResponseEntity.noContent().build()

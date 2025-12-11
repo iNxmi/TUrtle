@@ -18,18 +18,18 @@ data class RoomBookingEntity(
     @Column(columnDefinition = "TEXT")
     var description: String,
 
-    var enableWhitelist: Boolean,
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     var creator: UserEntity,
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    var enableWhitelist: Boolean,
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "room_bookings_whitelist",
+        name = "room_booking_whitelist",
         joinColumns = [JoinColumn(name = "room_booking_id")],
         inverseJoinColumns = [JoinColumn(name = "user_id")]
     )
-    var whitelist: MutableSet<UserEntity> = mutableSetOf()
+    val whitelistedUsers: MutableSet<UserEntity> = mutableSetOf()
 
 ) : CRUDEntity()

@@ -22,11 +22,12 @@ interface CRUDCreateController<
     val service: CRUDService<Entity, CreateRequest, GetResponse, *>
     val mapper: CRUDMapper<Entity, CreateRequest, GetResponse, *>
     val permissionService: PermissionService
-    val permissionCreate: Permission
+    val permissionCreate: Permission?
 
     @PostMapping
     fun create(@RequestBody request: CreateRequest): ResponseEntity<GetResponse> {
-        permissionService.check(permissionCreate)
+        if (permissionCreate != null)
+            permissionService.check(permissionCreate!!)
 
         val entity = service.create(request)
         val response = mapper.get(entity)
