@@ -3,7 +3,7 @@ package de.csw.turtle.api.service
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.exceptions.auth.UnauthorizedException
-import de.csw.turtle.api.exception.exceptions.security.InsufficientPermissionException
+import de.csw.turtle.api.exception.exceptions.auth.InsufficientPermissionException
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service

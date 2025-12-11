@@ -6,7 +6,7 @@ import de.csw.turtle.api.dto.RegisterUserRequest
 import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.exceptions.auth.BadCredentialsException
-import de.csw.turtle.api.exception.exceptions.security.InsufficientPermissionException
+import de.csw.turtle.api.exception.exceptions.auth.InsufficientPermissionException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.AuthenticationManager

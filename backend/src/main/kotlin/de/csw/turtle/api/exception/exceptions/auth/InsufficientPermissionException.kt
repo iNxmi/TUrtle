@@ -1,4 +1,4 @@
-package de.csw.turtle.api.exception.exceptions.security
+package de.csw.turtle.api.exception.exceptions.auth
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.exception.exceptions.TUrtleException
