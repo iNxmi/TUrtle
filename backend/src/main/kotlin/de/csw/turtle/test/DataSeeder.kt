@@ -95,8 +95,7 @@ class DataSeeder(
                 description = "this is the very long description",
                 start = start,
                 end = end,
-                creator = userService.get("admin").id,
-                enableWhitelist = false
+                creator = userService.get("admin").id
             )
             roomBookingService.create(createRequest)
         }

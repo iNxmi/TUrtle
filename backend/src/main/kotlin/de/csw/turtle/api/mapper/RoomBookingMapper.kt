@@ -22,15 +22,8 @@ abstract class RoomBookingMapper :
             start = request.start,
             end = request.end,
             description = request.description,
-            creator = userService.get(request.creator),
-            enableWhitelist = request.enableWhitelist
+            creator = userService.get(request.creator)
         )
-
-        if (request.whitelist != null) {
-            val users = request.whitelist.map { userService.get(it) }
-            entity.whitelistedUsers.clear()
-            entity.whitelistedUsers.addAll(users)
-        }
 
         return entity
     }
@@ -42,9 +35,7 @@ abstract class RoomBookingMapper :
         end = entity.end,
         description = entity.description,
         creator = entity.creator.id,
-        createdAt = entity.createdAt,
-        enableWhitelist = entity.enableWhitelist,
-        whitelist = entity.whitelistedUsers.map { user -> user.id }.toSet()
+        createdAt = entity.createdAt
     )
 
     override fun patch(entity: RoomBookingEntity, request: PatchRoomBookingRequest): RoomBookingEntity {
@@ -54,14 +45,6 @@ abstract class RoomBookingMapper :
         request.end?.let { entity.end = it }
         request.description?.let { entity.description = it }
         request.creator?.let { entity.creator = userService.get(it) }
-        request.enableWhitelist?.let { entity.enableWhitelist = it }
-
-        if (request.whitelist != null) {
-            entity.whitelistedUsers.clear()
-
-            for (id in request.whitelist)
-                entity.whitelistedUsers.add(userService.get(id))
-        }
 
         return entity
     }

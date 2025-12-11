@@ -20,16 +20,6 @@ data class RoomBookingEntity(
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    var creator: UserEntity,
-
-    var enableWhitelist: Boolean,
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "room_booking_whitelist",
-        joinColumns = [JoinColumn(name = "room_booking_id")],
-        inverseJoinColumns = [JoinColumn(name = "user_id")]
-    )
-    val whitelistedUsers: MutableSet<UserEntity> = mutableSetOf()
+    var creator: UserEntity
 
 ) : CRUDEntity()

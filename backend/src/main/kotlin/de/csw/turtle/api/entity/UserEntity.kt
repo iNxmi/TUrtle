@@ -27,12 +27,6 @@ data class UserEntity(
     val roles: MutableSet<RoleEntity> = mutableSetOf(),
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    val auditLogs: Collection<AuditLogEntity> = emptySet(),
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "creator")
-    val roomBookings: Collection<RoomBookingEntity> = emptySet(),
-
-    @ManyToMany(mappedBy = "whitelistedUsers")
-    val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf()
+    val auditLogs: Collection<AuditLogEntity> = emptySet()
 
 ) : CRUDEntity()
