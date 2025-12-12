@@ -2,6 +2,13 @@ spring:
   application:
     name: TUrtleAPI
 
+  security:
+    oauth2:
+      client:
+#        identity-provider-of-technical-university-of-darmstadt:
+
+
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${DATASOURCE_SERVER}/${DATASOURCE_DATABASE}

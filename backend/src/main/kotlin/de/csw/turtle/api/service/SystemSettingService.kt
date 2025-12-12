@@ -14,6 +14,9 @@ class SystemSettingService(
     override val mapper: SystemSettingMapper
 ) : CRUDService<SystemSettingEntity, CreateSystemSettingRequest, GetSystemSettingResponse, PatchSystemSettingRequest>("SystemSetting") {
 
+    fun getByKeyOrNull(key: String) = repository.findByKey(key)
 
+    fun getValueOrDefault(key: String, default: Any): Any = getByKeyOrNull(key)?.value ?: default
+    fun getValueOrNull(key: String): Any? = getByKeyOrNull(key)?.value
 
 }
