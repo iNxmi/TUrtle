@@ -1,9 +1,11 @@
 <script>
 	import { getContext, onMount } from 'svelte';
 	import { dev } from '$app/environment';
+	import { fade } from 'svelte/transition';
 	import request from '$lib/api/api';
 	import { convertEventToBackend, convertEventToFrontend, fetchRoomBookings } from '$lib/utils';
 	import {Label, Input, Datepicker, Button, Textarea, Toggle, MultiSelect} from 'flowbite-svelte';
+	import WhitelistDropdown from '$lib/components/WhitelistDropdown.svelte';
 	import {m} from '$lib/paraglide/messages.js';
 
 	import {TrashBinSolid} from 'flowbite-svelte-icons';
@@ -14,7 +16,16 @@
 	import listPlugin from '@fullcalendar/list';
 	import interactionPlugin from '@fullcalendar/interaction';
 
-	let contextMenu;
+	let { data } = $props();
+
+	const users = $derived(data.users);
+	const dropdownUsers = $derived(users.map(user =>  ({
+		firstName: user.firstName,
+		lastName: user.lastName,
+		value: user.id
+	})));
+
+	let successRequest = $state(false);
 	let calendar;
 	let eventCard;
 
@@ -81,7 +92,7 @@
 		calendar = new Calendar(calendarEl, {
 			plugins: [timeGridPlugin, listPlugin, interactionPlugin],
 			locale: 'de',
-			aspectRatio: 2.1,
+			aspectRatio: 1.9,
 			editable: true,
 			events: /* dev ? '/dev/api/events' : '/api/roombookings/page' */async function(info, successCallback, failureCallback) {
 				const fetchedData = await fetchRoomBookings(info);
@@ -124,6 +135,7 @@
 			},
 			slotMinTime: '6:00:00',
 			allDaySlot: false,
+			weekends: false,
 			initialView: 'timeGridWeek',
 			headerToolbar: {
 				left: 'prev,next today',
@@ -154,7 +166,7 @@
 
 	}
 	function removeEvent() {
-		request(`/roombookings/${selectedEvent.id}`, {
+		const response = request(`/roombookings/${selectedEvent.id}`, {
 			method: 'DELETE'
 		});
 		selectedEvent.remove();
@@ -187,7 +199,7 @@
 			whitelist: eventWhitelist
 		}
 	};
-	function updateDate(){
+	async function saveEvent(){
 		if(selectedEvent.new){
 			calendar.addEvent({
 				title: eventTitle,
@@ -205,11 +217,17 @@
 			calendar.getEventById(selectedEvent.id).setExtendedProp('enableWhitelist', useWhitelist);
 			calendar.getEventById(selectedEvent.id).setExtendedProp('whitelist', eventWhitelist);
 			}
-		request( selectedEvent.new ? '/roombookings' : `/roombookings/${selectedEvent.id}`, {
+		const response = await request( selectedEvent.new ? '/roombookings' : `/roombookings/${selectedEvent.id}`, {
 			method: selectedEvent.new ? 'POST': 'PATCH',
 			body : JSON.stringify( selectedEvent.new ? createNewBackendEvent() : convertEventToBackend(calendar.getEventById(selectedEvent.id))),
 			headers: {'Content-Type': 'application/json'}
 		});
+
+		successRequest = {
+			ok: response.ok
+		}
+
+		setTimeout(() => successRequest = undefined, 1500);
 	};
 	/* $effect(() => {
 		if(selectedEvent && calendar) console.log("Test "+ "EventDate: "+JSON.stringify($state.snapshot(eventDate)));
@@ -250,10 +268,15 @@
 				</Label>
 				<Toggle size="small" bind:checked={useWhitelist}>_Use whitelist_</Toggle>
 				{#if useWhitelist}
-				<MultiSelect items={participants} bind:value={eventWhitelist} placeholder="_Select participants" />
+				<WhitelistDropdown users={dropdownUsers} bind:value={eventWhitelist} />
 			
 				{/if}
-				<Button onclick={updateDate}>{m.save()}</Button>
+				<Button onclick={saveEvent}>{m.save()}</Button>
+				{#if successRequest}
+					<p out:fade class={(successRequest.ok ? "text-green-600" : "text-red-500")+" text-xs"}>
+						{successRequest.ok ? "_Event successfully saved_": "An error uccured, please try again"}
+					</p>
+				{/if}
 				{:else}
 				<div class="flex flex-col h-full justify-center items-center">
 					<h1 class="text-2xl text-gray-500">{m.admin_bookings__select_event()}</h1>
