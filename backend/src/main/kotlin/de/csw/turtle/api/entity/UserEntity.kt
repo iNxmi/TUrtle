@@ -35,4 +35,21 @@ data class UserEntity(
     @ManyToMany(mappedBy = "whitelist")
     val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf()
 
-) : CRUDEntity()
+) : CRUDEntity() {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is UserEntity) return false
+
+        if (username != other.username) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return username.hashCode()
+    }
+
+    override fun toString(): String {
+        return "UserEntity(id=$id, username='$username', firstName='$firstName', lastName='$lastName', email='$email')"
+    }
+}
