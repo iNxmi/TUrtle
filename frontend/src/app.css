@@ -18,13 +18,13 @@
 @theme {
     --font-sans: "Inter";
 
-    --color-primary-50: var(--color-csw);
-        --color-primary-100: var(--color-csw);
-        --color-primary-200: var(--color-csw);
-        --color-primary-300: var(--color-csw);
-        --color-primary-400: var(--color-csw);
-        --color-primary-500: var(--color-csw);
-        --color-primary-600: var(--color-csw);
+    --color-primary-50: var(--color-orange-50);
+        --color-primary-100: var(--color-orange-100);
+        --color-primary-200: var(--color-orange-200);
+        --color-primary-300: var(--color-orange-300);
+        --color-primary-400: var(--color-orange-400);
+        --color-primary-500: var(--color-orange-400);
+        --color-primary-600: var(--color-orange-400);
         --color-primary-700: var(--color-orange-400);
         --color-primary-800: var(--color-csw);
         --color-primary-900: var(--color-csw);
