@@ -7,7 +7,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -20,7 +20,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -33,7 +33,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -46,7 +46,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -59,7 +59,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -72,7 +72,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -85,7 +85,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -98,7 +98,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -111,7 +111,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -124,7 +124,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -137,7 +137,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -150,7 +150,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -163,7 +163,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -176,7 +176,7 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -189,8 +189,8 @@ export const events = [
 			creator: {
 				id: 1
 			},
-			description: '',
-			enableWhitelist: false,
+			description: 'Test Description',
+			enableWhitelist: true,
 			whitelist: []
 		}
 	}
