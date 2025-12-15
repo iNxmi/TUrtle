@@ -1,4 +1,4 @@
-import request from "$lib/api/api.js"
+import request from "$lib/api/api"
 
 export async function load({url}) {
     const parameters = {}
