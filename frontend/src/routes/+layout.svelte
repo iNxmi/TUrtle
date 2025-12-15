@@ -67,7 +67,6 @@
     let darkmode = $state(false);
     onMount(() => {
         if (document.documentElement.className === 'dark') darkmode = true;
-        delete document.documentElement.dataset.theme;
     });
 
     function toggleDarkMode() {
@@ -174,7 +173,7 @@
             position="static"
             class="min-w-64 min-h-svh"
     >
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-2">
             <div class="flex flex-col items-center">
                 <TUrtleLogo/>
             </div>
@@ -194,7 +193,7 @@
             {#if permissions.includes("FRONTEND__SIDEBAR_CATEGORY__PUBLIC")}
                 <SidebarDropdownWrapper
                         class="list-none"
-                        classes={{ span: 'font-bold' }}
+                        classes={{ span: 'font-bold', ul: 'py-0' }}
                         isOpen={true}
                         label={m.sidebar_category_public()}
                 >
@@ -213,7 +212,7 @@
             {#if permissions.includes("FRONTEND__SIDEBAR_CATEGORY__USER")}
                 <SidebarDropdownWrapper
                         class="list-none"
-                        classes={{ span: 'font-bold' }}
+                        classes={{ span: 'font-bold', ul: 'py-0' }}
                         isOpen={true}
                         label={m.sidebar_category_user()}
                 >
@@ -230,7 +229,7 @@
             {/if}
 
             {#if permissions.includes("FRONTEND__SIDEBAR_CATEGORY__ADMINISTRATOR")}
-                <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold" }} isOpen={true}
+                <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold", ul: 'py-0' }} isOpen={true}
                                         label={m.sidebar_category_admin()}>
                     {#each itemsAdmin as item}
                         {#if permissions.includes(item.permission)}
@@ -246,7 +245,7 @@
 
             <SidebarDropdownWrapper
                     class="list-none"
-                    classes={{ span: 'font-bold' }}
+                    classes={{ span: 'font-bold', ul: 'py-0' }}
                     isOpen={true}
                     label={m.sidebar_category_settings()}
             >
