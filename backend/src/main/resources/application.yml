@@ -5,9 +5,26 @@ spring:
   security:
     oauth2:
       client:
-#        identity-provider-of-technical-university-of-darmstadt:
+        registration:
+          tu-darmstadt:
+            client-name: TU Darmstadt Login
+            client-id: a
+            client-secret: b
+            redirect-uri: "{baseUrl}/auth/oauth2/code/{registrationId}" # http://localhost/api/auth/oauth2/code/tu-darmstadt
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+              - profile
+              - email
 
-
+        provider:
+          tu-darmstadt:
+            issuer-uri: https://login-test.hrz.tu-darmstadt.de
+            authorization-uri: https://login-test.hrz.tu-darmstadt.de/idp/profile/oidc/authorize
+            token-uri: https://login-test.hrz.tu-darmstadt.de/idp/profile/oidc/token
+            user-info-uri: https://login-test.hrz.tu-darmstadt.de/idp/profile/oidc/userinfo
+            jwk-set-uri: https://login-test.hrz.tu-darmstadt.de/idp/profile/oidc/keyset
+            user-name-attribute: sub
 
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -47,8 +64,13 @@ springdoc:
     path: /docs
 
 server:
+  forward-headers-strategy: framework
   servlet:
     session:
+      cookie:
+        path: /api
+        same-site: none
+        secure: false # TODO change to true when in production
       timeout: 30m
 
 turtle:
