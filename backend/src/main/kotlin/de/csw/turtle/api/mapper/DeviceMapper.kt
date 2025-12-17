@@ -21,18 +21,18 @@ abstract class DeviceMapper : CRUDMapper<DeviceEntity, CreateDeviceRequest, GetD
     override fun create(request: CreateDeviceRequest) = DeviceEntity(
         name = request.name,
         description = request.description,
-        inventoryId = request.inventoryId,
         category = deviceCategoryService.get(request.categoryId),
-        locker = lockerService.get(request.lockerId)
+        locker = lockerService.get(request.lockerId),
+        acquiredAt = request.acquiredAt
     )
 
     override fun get(entity: DeviceEntity) = GetDeviceResponse(
         id = entity.id,
         name = entity.name,
         description = entity.description,
-        inventoryId = entity.inventoryId,
         category = entity.category.id,
         locker = entity.locker.id,
+        acquiredAt = entity.acquiredAt,
         createdAt = entity.createdAt
     )
 
@@ -42,9 +42,9 @@ abstract class DeviceMapper : CRUDMapper<DeviceEntity, CreateDeviceRequest, GetD
     ): DeviceEntity {
         request.name?.let { entity.name = it }
         request.description?.let { entity.description = it }
-        request.inventoryId?.let { entity.inventoryId = it }
         request.categoryId?.let { entity.category = deviceCategoryService.get(it) }
         request.lockerId?.let { entity.locker = lockerService.get(it) }
+        request.acquiredAt?.let { entity.acquiredAt = it }
         return entity
     }
 

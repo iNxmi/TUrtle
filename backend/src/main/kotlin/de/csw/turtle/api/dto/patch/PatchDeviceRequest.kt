@@ -1,9 +1,11 @@
 package de.csw.turtle.api.dto.patch
 
+import java.time.Instant
+
 data class PatchDeviceRequest(
     val name: String? = null,
     val description: String? = null,
-    val inventoryId: String? = null,
     val categoryId: Long? = null,
-    val lockerId: Long? = null
-) : CRUDPatchRequest
+    val lockerId: Long? = null,
+    val acquiredAt: Instant? = null
+) : PatchRequest

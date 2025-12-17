@@ -2,10 +2,10 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
-import de.csw.turtle.api.controller.CRUDCreateController
-import de.csw.turtle.api.controller.CRUDDeleteController
-import de.csw.turtle.api.controller.CRUDGetController
-import de.csw.turtle.api.controller.CRUDPatchController
+import de.csw.turtle.api.controller.CreateController
+import de.csw.turtle.api.controller.DeleteController
+import de.csw.turtle.api.controller.GetController
+import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.create.CreateDeviceCategoryRequest
 import de.csw.turtle.api.dto.get.GetDeviceCategoryResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceCategoryRequest
@@ -29,7 +29,7 @@ class DeviceCategoryController(
     override val service: DeviceCategoryService,
     override val mapper: DeviceCategoryMapper,
     override val permissionService: PermissionService
-) : CRUDCreateController<DeviceCategoryEntity, CreateDeviceCategoryRequest, GetDeviceCategoryResponse>,
-    CRUDGetController<DeviceCategoryEntity, GetDeviceCategoryResponse>,
-    CRUDPatchController<DeviceCategoryEntity, PatchDeviceCategoryRequest, GetDeviceCategoryResponse>,
-    CRUDDeleteController<DeviceCategoryEntity>
+) : CreateController<DeviceCategoryEntity, CreateDeviceCategoryRequest, GetDeviceCategoryResponse>,
+    GetController<DeviceCategoryEntity, GetDeviceCategoryResponse>,
+    PatchController<DeviceCategoryEntity, PatchDeviceCategoryRequest, GetDeviceCategoryResponse>,
+    DeleteController<DeviceCategoryEntity>

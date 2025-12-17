@@ -6,4 +6,4 @@ data class GetDeviceCategoryResponse(
     override val id: Long,
     val name: String,
     override val createdAt: Instant
-) : CRUDGetResponse
+) : GetResponse

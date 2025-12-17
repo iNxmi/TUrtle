@@ -1,9 +1,11 @@
 package de.csw.turtle.api.dto.create
 
+import java.time.Instant
+
 data class CreateDeviceRequest(
     val name: String,
     val description: String,
-    val inventoryId: String,
     val categoryId: Long,
-    val lockerId: Long
-) : CRUDCreateRequest
+    val lockerId: Long,
+    val acquiredAt: Instant
+) : CreateRequest

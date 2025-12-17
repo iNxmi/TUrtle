@@ -7,4 +7,4 @@ data class PatchAuditLogRequest(
     val ipAddress: String? = null,
     val endpoint: String? = null,
     val httpMethod: HttpMethod? = null
-) : CRUDPatchRequest
+) : PatchRequest

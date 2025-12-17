@@ -4,4 +4,4 @@ class PatchFAQRequest(
     val name: String? = null,
     val title: String? = null,
     val content: String? = null
-) : CRUDPatchRequest
+) : PatchRequest

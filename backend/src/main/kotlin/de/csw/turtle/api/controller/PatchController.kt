@@ -1,8 +1,6 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.dto.get.CRUDGetResponse
-import de.csw.turtle.api.dto.patch.CRUDPatchRequest
 import de.csw.turtle.api.entity.CRUDEntity
 import de.csw.turtle.api.mapper.CRUDMapper
 import de.csw.turtle.api.service.CRUDService
@@ -12,10 +10,10 @@ import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 
-interface CRUDPatchController<
+interface PatchController<
         Entity : CRUDEntity,
-        PatchRequest : CRUDPatchRequest,
-        GetResponse : CRUDGetResponse
+        PatchRequest : de.csw.turtle.api.dto.patch.PatchRequest,
+        GetResponse : de.csw.turtle.api.dto.get.GetResponse
         > {
 
     val service: CRUDService<Entity, *, GetResponse, PatchRequest>

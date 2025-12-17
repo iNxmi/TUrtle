@@ -1,6 +1,7 @@
 package de.csw.turtle.api.entity
 
 import jakarta.persistence.*
+import java.time.Instant
 
 @Entity
 @Table(name = "devices")
@@ -12,14 +13,14 @@ data class DeviceEntity(
     @Column(columnDefinition = "TEXT")
     var description: String,
 
-    var inventoryId: String,
-
     @ManyToOne
     @JoinColumn(name = "category_id")
     var category: DeviceCategoryEntity,
 
     @ManyToOne
     @JoinColumn(name = "locker_id")
-    var locker: LockerEntity
+    var locker: LockerEntity,
+
+    var acquiredAt: Instant
 
 ) : CRUDEntity()

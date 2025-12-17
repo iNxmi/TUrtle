@@ -10,4 +10,4 @@ data class GetRoomBookingResponse(
     val description: String,
     val creator: Long,
     override val createdAt: Instant
-) : CRUDGetResponse
+) : GetResponse

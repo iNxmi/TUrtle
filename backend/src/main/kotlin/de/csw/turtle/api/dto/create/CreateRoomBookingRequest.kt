@@ -8,4 +8,4 @@ data class CreateRoomBookingRequest(
     val start: Instant,
     val end: Instant,
     val creator: Long
-) : CRUDCreateRequest
+) : CreateRequest

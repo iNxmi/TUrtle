@@ -4,4 +4,4 @@ data class CreateTemplateRequest(
     val name: String,
     val description: String,
     val markdown: String
-) : CRUDCreateRequest
+) : CreateRequest

@@ -9,4 +9,4 @@ data class PatchSupportTicketRequest(
     val subject: String? = null,
     val description: String? = null,
     val status: SupportTicketEntity.Status? = null
-) : CRUDPatchRequest
+) : PatchRequest

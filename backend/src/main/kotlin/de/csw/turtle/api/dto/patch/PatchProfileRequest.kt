@@ -7,4 +7,4 @@ data class PatchProfileRequest(
     val email: String? = null,
     val studentId: Long? = null,
     val password: String? = null
-) : CRUDPatchRequest
+) : PatchRequest

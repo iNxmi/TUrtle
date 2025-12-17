@@ -8,4 +8,4 @@ data class PatchRoomBookingRequest(
     val end: Instant? = null,
     val description: String? = null,
     val creator: Long? = null
-) : CRUDPatchRequest
+) : PatchRequest

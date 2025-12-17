@@ -1,3 +1,3 @@
 package de.csw.turtle.api.dto.patch
 
-interface CRUDPatchRequest
+interface PatchRequest

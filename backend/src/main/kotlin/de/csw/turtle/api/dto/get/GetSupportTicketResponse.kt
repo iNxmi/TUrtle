@@ -12,4 +12,4 @@ data class GetSupportTicketResponse(
     val description: String,
     val status: SupportTicketEntity.Status,
     override val createdAt: Instant
-) : CRUDGetResponse
+) : GetResponse

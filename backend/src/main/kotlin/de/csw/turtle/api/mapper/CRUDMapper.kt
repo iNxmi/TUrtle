@@ -1,15 +1,12 @@
 package de.csw.turtle.api.mapper
 
-import de.csw.turtle.api.dto.create.CRUDCreateRequest
-import de.csw.turtle.api.dto.get.CRUDGetResponse
-import de.csw.turtle.api.dto.patch.CRUDPatchRequest
 import de.csw.turtle.api.entity.CRUDEntity
 
 interface CRUDMapper<
         Entity : CRUDEntity,
-        CreateRequest : CRUDCreateRequest,
-        GetResponse : CRUDGetResponse,
-        PatchRequest : CRUDPatchRequest
+        CreateRequest : de.csw.turtle.api.dto.create.CreateRequest,
+        GetResponse : de.csw.turtle.api.dto.get.GetResponse,
+        PatchRequest : de.csw.turtle.api.dto.patch.PatchRequest
         > {
 
     fun create(request: CreateRequest): Entity

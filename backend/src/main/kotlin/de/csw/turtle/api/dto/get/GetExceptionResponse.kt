@@ -9,4 +9,4 @@ data class GetExceptionResponse(
     val message: String?,
     val stackTrace: String,
     override val createdAt: Instant
-) : CRUDGetResponse
+) : GetResponse

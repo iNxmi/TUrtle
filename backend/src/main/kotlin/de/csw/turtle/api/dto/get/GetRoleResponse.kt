@@ -8,4 +8,4 @@ data class GetRoleResponse(
     val name: String,
     val permissions: Set<Permission>,
     override val createdAt: Instant
-) : CRUDGetResponse
+) : GetResponse

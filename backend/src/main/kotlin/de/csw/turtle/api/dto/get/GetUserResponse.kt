@@ -12,7 +12,7 @@ data class GetUserResponse(
     val roles: Set<GetRoleResponse>,
     val permissions: Set<Permission>,
     override val createdAt: Instant
-) : CRUDGetResponse {
+) : GetResponse {
 
     data class GetRoleResponse(
         val id: Long,

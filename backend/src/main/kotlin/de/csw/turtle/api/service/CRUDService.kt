@@ -1,8 +1,5 @@
 package de.csw.turtle.api.service
 
-import de.csw.turtle.api.dto.create.CRUDCreateRequest
-import de.csw.turtle.api.dto.get.CRUDGetResponse
-import de.csw.turtle.api.dto.patch.CRUDPatchRequest
 import de.csw.turtle.api.entity.CRUDEntity
 import de.csw.turtle.api.exception.exceptions.crud.CRUDResourceNotFoundException
 import de.csw.turtle.api.mapper.CRUDMapper
@@ -15,9 +12,9 @@ import kotlin.jvm.optionals.getOrNull
 
 abstract class CRUDService<
         Entity : CRUDEntity,
-        CreateRequest : CRUDCreateRequest,
-        GetResponse : CRUDGetResponse,
-        PatchRequest : CRUDPatchRequest
+        CreateRequest : de.csw.turtle.api.dto.create.CreateRequest,
+        GetResponse : de.csw.turtle.api.dto.get.GetResponse,
+        PatchRequest : de.csw.turtle.api.dto.patch.PatchRequest
         >(private val name: String) {
 
     abstract val repository: CRUDRepository<Entity>

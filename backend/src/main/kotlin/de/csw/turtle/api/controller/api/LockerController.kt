@@ -2,10 +2,10 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
-import de.csw.turtle.api.controller.CRUDCreateController
-import de.csw.turtle.api.controller.CRUDDeleteController
-import de.csw.turtle.api.controller.CRUDGetController
-import de.csw.turtle.api.controller.CRUDPatchController
+import de.csw.turtle.api.controller.CreateController
+import de.csw.turtle.api.controller.DeleteController
+import de.csw.turtle.api.controller.GetController
+import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.create.CreateLockerRequest
 import de.csw.turtle.api.dto.get.GetLockerResponse
 import de.csw.turtle.api.dto.patch.PatchLockerRequest
@@ -29,7 +29,7 @@ class LockerController(
     override val service: LockerService,
     override val mapper: LockerMapper,
     override val permissionService: PermissionService
-) : CRUDCreateController<LockerEntity, CreateLockerRequest, GetLockerResponse>,
-    CRUDGetController<LockerEntity, GetLockerResponse>,
-    CRUDPatchController<LockerEntity, PatchLockerRequest, GetLockerResponse>,
-    CRUDDeleteController<LockerEntity>
+) : CreateController<LockerEntity, CreateLockerRequest, GetLockerResponse>,
+    GetController<LockerEntity, GetLockerResponse>,
+    PatchController<LockerEntity, PatchLockerRequest, GetLockerResponse>,
+    DeleteController<LockerEntity>

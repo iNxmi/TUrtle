@@ -5,4 +5,4 @@ data class CreateExceptionRequest(
     val exception: String,
     val message: String?,
     val stackTrace: String
-) : CRUDCreateRequest
+) : CreateRequest

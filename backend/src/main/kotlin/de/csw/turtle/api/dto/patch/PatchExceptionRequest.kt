@@ -5,4 +5,4 @@ data class PatchExceptionRequest(
     val exception: String? = null,
     val message: String? = null,
     val stackTrace: String? = null
-) : CRUDPatchRequest
+) : PatchRequest

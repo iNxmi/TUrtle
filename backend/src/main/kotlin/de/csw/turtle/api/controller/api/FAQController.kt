@@ -2,10 +2,10 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
-import de.csw.turtle.api.controller.CRUDCreateController
-import de.csw.turtle.api.controller.CRUDDeleteController
-import de.csw.turtle.api.controller.CRUDGetController
-import de.csw.turtle.api.controller.CRUDPatchController
+import de.csw.turtle.api.controller.CreateController
+import de.csw.turtle.api.controller.DeleteController
+import de.csw.turtle.api.controller.GetController
+import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.create.CreateFAQRequest
 import de.csw.turtle.api.dto.get.GetFAQResponse
 import de.csw.turtle.api.dto.patch.PatchFAQRequest
@@ -29,7 +29,7 @@ class FAQController(
     override val service: FAQService,
     override val mapper: FAQMapper,
     override val permissionService: PermissionService
-) : CRUDCreateController<FAQEntity, CreateFAQRequest, GetFAQResponse>,
-    CRUDGetController<FAQEntity, GetFAQResponse>,
-    CRUDPatchController<FAQEntity, PatchFAQRequest, GetFAQResponse>,
-    CRUDDeleteController<FAQEntity>
+) : CreateController<FAQEntity, CreateFAQRequest, GetFAQResponse>,
+    GetController<FAQEntity, GetFAQResponse>,
+    PatchController<FAQEntity, PatchFAQRequest, GetFAQResponse>,
+    DeleteController<FAQEntity>

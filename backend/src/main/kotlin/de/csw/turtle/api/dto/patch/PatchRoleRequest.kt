@@ -5,4 +5,4 @@ import de.csw.turtle.api.Permission
 class PatchRoleRequest(
     val name: String? = null,
     val permissions: Set<Permission>? = null,
-) : CRUDPatchRequest
+) : PatchRequest

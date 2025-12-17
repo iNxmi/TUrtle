@@ -2,10 +2,10 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
-import de.csw.turtle.api.controller.CRUDCreateController
-import de.csw.turtle.api.controller.CRUDDeleteController
-import de.csw.turtle.api.controller.CRUDGetController
-import de.csw.turtle.api.controller.CRUDPatchController
+import de.csw.turtle.api.controller.CreateController
+import de.csw.turtle.api.controller.DeleteController
+import de.csw.turtle.api.controller.GetController
+import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.create.CreateRoleRequest
 import de.csw.turtle.api.dto.get.GetRoleResponse
 import de.csw.turtle.api.dto.patch.PatchRoleRequest
@@ -29,7 +29,7 @@ class RoleController(
     override val service: RoleService,
     override val mapper: RoleMapper,
     override val permissionService: PermissionService
-) : CRUDCreateController<RoleEntity, CreateRoleRequest, GetRoleResponse>,
-    CRUDGetController<RoleEntity, GetRoleResponse>,
-    CRUDPatchController<RoleEntity, PatchRoleRequest, GetRoleResponse>,
-    CRUDDeleteController<RoleEntity>
+) : CreateController<RoleEntity, CreateRoleRequest, GetRoleResponse>,
+    GetController<RoleEntity, GetRoleResponse>,
+    PatchController<RoleEntity, PatchRoleRequest, GetRoleResponse>,
+    DeleteController<RoleEntity>

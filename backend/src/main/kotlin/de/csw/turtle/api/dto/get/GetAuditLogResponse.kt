@@ -10,4 +10,4 @@ data class GetAuditLogResponse(
     val endpoint: String,
     val httpMethod: AuditLogEntity.HttpMethod,
     override val createdAt: Instant
-) : CRUDGetResponse
+) : GetResponse

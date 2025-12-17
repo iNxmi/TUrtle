@@ -4,4 +4,4 @@ class CreateFAQRequest(
     val name: String,
     val title: String,
     val content: String
-) : CRUDCreateRequest
+) : CreateRequest

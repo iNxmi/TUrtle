@@ -4,7 +4,8 @@ import java.time.Instant
 
 data class GetLockerResponse(
     override val id: Long,
-    val index: Int,
     val name: String,
+    val index: Int,
+    val isSoftwareUnlockable: Boolean,
     override val createdAt: Instant
-) : CRUDGetResponse
+) : GetResponse

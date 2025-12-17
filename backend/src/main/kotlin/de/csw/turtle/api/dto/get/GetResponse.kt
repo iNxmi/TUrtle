@@ -2,7 +2,7 @@ package de.csw.turtle.api.dto.get
 
 import java.time.Instant
 
-interface CRUDGetResponse {
+interface GetResponse {
     val id: Long
     val createdAt: Instant
 }

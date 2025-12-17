@@ -7,4 +7,4 @@ class GetSystemSettingResponse(
     val key: String,
     val value: String,
     override val createdAt: Instant
-) : CRUDGetResponse
+) : GetResponse

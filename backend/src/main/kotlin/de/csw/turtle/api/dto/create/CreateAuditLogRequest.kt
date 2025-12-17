@@ -7,4 +7,4 @@ data class CreateAuditLogRequest(
     val ipAddress: String,
     val endpoint: String,
     val httpMethod: HttpMethod
-) : CRUDCreateRequest
+) : CreateRequest

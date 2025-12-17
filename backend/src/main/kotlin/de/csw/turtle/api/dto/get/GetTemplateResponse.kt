@@ -8,4 +8,4 @@ data class GetTemplateResponse(
     val description: String,
     val markdown: String,
     override val createdAt: Instant
-) : CRUDGetResponse
+) : GetResponse

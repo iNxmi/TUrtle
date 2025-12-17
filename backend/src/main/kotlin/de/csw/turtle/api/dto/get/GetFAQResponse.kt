@@ -8,4 +8,4 @@ class GetFAQResponse(
     val title: String,
     val content: String,
     override val createdAt: Instant
-) : CRUDGetResponse
+) : GetResponse
