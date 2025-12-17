@@ -32,7 +32,7 @@
     }
 </script>
 
-<div>
+<div class="flex justify-center w-[45rem] h-[50rem] border-1 border-neutral-300 dark:border-gray-700 bg-neutral-100 dark:bg-[#1E2939] rounded-xl p-20 pt-20 mx-auto max-w-full shadow-xl">
     <form class="flex flex-col gap-5" onsubmit={register}>
         <Heading tag="h3" class="text-center">
             {m.register__title()}
