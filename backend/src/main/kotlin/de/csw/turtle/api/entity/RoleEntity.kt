@@ -11,7 +11,7 @@ class RoleEntity(
     @Column(unique = true)
     var name: String,
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
         name = "role_permissions",
         joinColumns = [JoinColumn(name = "role_id")],

@@ -1,5 +1,6 @@
 package de.csw.turtle.api.dto.patch
 
+import de.csw.turtle.api.entity.RoomBookingEntity
 import java.time.Instant
 
 data class PatchRoomBookingRequest(
@@ -7,5 +8,7 @@ data class PatchRoomBookingRequest(
     val start: Instant? = null,
     val end: Instant? = null,
     val description: String? = null,
-    val creator: Long? = null
+    val creator: Long? = null,
+    val accessibility: RoomBookingEntity.Accessibility? = null,
+    val whitelist: Set<Long>? = null,
 ) : PatchRequest

@@ -18,8 +18,25 @@ data class RoomBookingEntity(
     @Column(columnDefinition = "TEXT")
     var description: String,
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    var creator: UserEntity
+    var creator: UserEntity,
 
-) : CRUDEntity()
+    @Enumerated(EnumType.STRING)
+    var accessibility: Accessibility = Accessibility.LOCKED,
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "room_booking_whitelist",
+        joinColumns = [JoinColumn(name = "room_booking_id")],
+        inverseJoinColumns = [JoinColumn(name = "user_id")]
+    )
+    val whitelist: MutableSet<UserEntity> = mutableSetOf()
+
+) : CRUDEntity() {
+
+    enum class Accessibility {
+        LOCKED, WHITELIST, UNLOCKED
+    }
+
+}

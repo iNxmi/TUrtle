@@ -18,7 +18,7 @@ data class UserEntity(
 
     var password: String,
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "user_roles",
         joinColumns = [JoinColumn(name = "user_id")],
@@ -26,7 +26,7 @@ data class UserEntity(
     )
     val roles: MutableSet<RoleEntity> = mutableSetOf(),
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     val auditLogs: Collection<AuditLogEntity> = emptySet()
 
 ) : CRUDEntity()

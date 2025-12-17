@@ -25,6 +25,12 @@ abstract class RoomBookingMapper :
             creator = userService.get(request.creator)
         )
 
+        request.accessibility?.let { entity.accessibility = it }
+        request.whitelist?.let { whitelist ->
+            entity.whitelist.clear()
+            entity.whitelist.addAll(whitelist.map { userService.get(it) })
+        }
+
         return entity
     }
 
@@ -35,6 +41,8 @@ abstract class RoomBookingMapper :
         end = entity.end,
         description = entity.description,
         creator = entity.creator.id,
+        accessibility = entity.accessibility,
+        whitelist = entity.whitelist.map { it.id }.toSet(),
         createdAt = entity.createdAt
     )
 
@@ -45,6 +53,12 @@ abstract class RoomBookingMapper :
         request.end?.let { entity.end = it }
         request.description?.let { entity.description = it }
         request.creator?.let { entity.creator = userService.get(it) }
+        request.accessibility?.let { entity.accessibility = it }
+
+        request.whitelist?.let { whitelist ->
+            entity.whitelist.clear()
+            entity.whitelist.addAll(whitelist.map { userService.get(it) })
+        }
 
         return entity
     }
