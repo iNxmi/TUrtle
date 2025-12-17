@@ -29,9 +29,10 @@
 	let calendar;
 	let eventCard;
 
+	let whitelistDisableOverride = $state(false);
+
 	let clientX;
 	let clientY;
-
 	const participants = [
 		{value: 0, name: "Jan"},
 		{value: 1, name: "Memphis"},
@@ -45,6 +46,10 @@
 			selectedEvent = false;
 		}
 	};
+
+	function setOpenToEveryone(){
+		useWhitelist = false;
+	}
 
 	let localeFunction = getContext('locale');
 
@@ -92,9 +97,10 @@
 		calendar = new Calendar(calendarEl, {
 			plugins: [timeGridPlugin, listPlugin, interactionPlugin],
 			locale: 'de',
-			aspectRatio: 1.9,
+			height: window.innerHeight - 80,
+			width: window.innerWidth,
 			editable: true,
-			events: /* dev ? '/dev/api/events' : '/api/roombookings/page' */async function(info, successCallback, failureCallback) {
+			events: async function(info, successCallback, failureCallback) {
 				const fetchedData = await fetchRoomBookings(info);
 				if(fetchedData){
 					const events = fetchedData.map(event => (convertEventToFrontend(event)));
@@ -245,11 +251,11 @@
 		}
 	});
 </script>
-<div class="flex flex-col md:flex-row  gap-2">
+<div class="flex flex-col xl:flex-row  gap-2">
 	<div class="grow" id="calendar"></div>
-		<div bind:this={eventCard} class="w-full bg-white border rounded-lg max-w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col mt-17 p-5 gap-5">
+		<div bind:this={eventCard} class=" bg-white border rounded-lg min-w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col mt-17 p-5 gap-5">
 				{#if selectedEvent}
-				<div class="flex flex-row justify-between h-10">
+				<div class="flex flex-col sm:flex-row justify-between h-10">
 					<input type="text" class="text-2xl w-9/10 h-full mr-auto rounded-lg focus:ring-2 focus:ring-csw border-hidden outline-hidden focus:outline-hidden" bind:value={eventTitle} /> 
 					<button class="h-full w-10 inline-flex justify-end items-center" onclick={removeEvent}>
 						<TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
@@ -266,7 +272,8 @@
 				<Label for="description" class="mb-0">_Description_
 					<Textarea id="description" placeholder="_Sample description_" rows={3} class="w-full" bind:value={eventDescription} />
 				</Label>
-				<Toggle size="small" bind:checked={useWhitelist}>_Use whitelist_</Toggle>
+				<Toggle size="small" bind:checked={whitelistDisableOverride} onchange={setOpenToEveryone}>_Open to everyone_</Toggle>
+				<Toggle disabled={whitelistDisableOverride} size="small" bind:checked={useWhitelist}>_Use whitelist_</Toggle>
 				{#if useWhitelist}
 				<WhitelistDropdown users={dropdownUsers} bind:value={eventWhitelist} />
 			
