@@ -14,13 +14,20 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
     @Autowired
     protected lateinit var roleService: RoleService
 
-    override fun create(request: CreateUserRequest) = UserEntity(
-        username = request.username,
-        firstName = request.firstName,
-        lastName = request.lastName,
-        email = request.email,
-        password = request.password
-    )
+    override fun create(request: CreateUserRequest): UserEntity {
+        val entity = UserEntity(
+            username = request.username,
+            firstName = request.firstName,
+            lastName = request.lastName,
+            email = request.email,
+            password = request.password
+        )
+
+        val roles = request.roleIds.map { roleService.get(it) }.toSet()
+        entity.roles.addAll(roles)
+
+        return entity
+    }
 
     override fun get(entity: UserEntity) = GetUserResponse(
         id = entity.id,
@@ -28,8 +35,7 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
         firstName = entity.firstName,
         lastName = entity.lastName,
         email = entity.email,
-        roles = entity.roles.map { GetUserResponse.GetRoleResponse(it.id, it.name) }.toSortedSet(compareBy { it.id }),
-        permissions = entity.roles.flatMap { it.permissions }.toSortedSet(compareBy { it.name }),
+        roles = entity.roles.map { it.id }.toSet(),
         createdAt = entity.createdAt
     )
 

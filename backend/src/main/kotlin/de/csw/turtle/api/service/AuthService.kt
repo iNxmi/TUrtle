@@ -1,12 +1,10 @@
 package de.csw.turtle.api.service
 
-import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.LoginUserRequest
 import de.csw.turtle.api.dto.RegisterUserRequest
 import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.exceptions.auth.BadCredentialsException
-import de.csw.turtle.api.exception.exceptions.auth.InsufficientPermissionException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.AuthenticationManager
@@ -30,11 +28,11 @@ class AuthService(
         registerUserRequest: RegisterUserRequest
     ): UserEntity {
         val createUserRequest = CreateUserRequest(
-            registerUserRequest.username,
-            registerUserRequest.firstName,
-            registerUserRequest.lastName,
-            registerUserRequest.email,
-            registerUserRequest.password,
+            username = registerUserRequest.username,
+            firstName =  registerUserRequest.firstName,
+            lastName = registerUserRequest.lastName,
+            email = registerUserRequest.email,
+            password = registerUserRequest.password,
         )
 
         return userService.create(createUserRequest)
