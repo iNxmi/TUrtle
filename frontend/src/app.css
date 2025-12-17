@@ -109,6 +109,9 @@
 .fc-scrollgrid  {
     scrollbar-color: #c2c2c2 #e2e1e1;
 }
+.fc-event {
+    cursor: pointer;
+}
 
 .dark .fc {
   --fc-border-color: theme(--color-gray-800);
