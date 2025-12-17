@@ -4,7 +4,7 @@
 	import { fade } from 'svelte/transition';
 	import request from '$lib/api/api';
 	import { convertEventToBackend, convertEventToFrontend, fetchRoomBookings } from '$lib/utils';
-	import {Label, Input, Datepicker, Button, Textarea, Toggle, MultiSelect} from 'flowbite-svelte';
+	import {Label, Input, Datepicker, Button, Textarea, Toggle, MultiSelect, Timepicker} from 'flowbite-svelte';
 	import WhitelistDropdown from '$lib/components/WhitelistDropdown.svelte';
 	import {m} from '$lib/paraglide/messages.js';
 
@@ -253,7 +253,7 @@
 </script>
 <div class="flex flex-col xl:flex-row  gap-2">
 	<div class="grow" id="calendar"></div>
-		<div bind:this={eventCard} class=" bg-white border rounded-lg min-w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col mt-17 p-5 gap-5">
+		<div bind:this={eventCard} class=" bg-white border rounded-lg min-w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-row xl:flex-col mt-17 p-5 gap-5">
 				{#if selectedEvent}
 				<div class="flex flex-col sm:flex-row justify-between h-10">
 					<input type="text" class="text-2xl w-9/10 h-full mr-auto rounded-lg focus:ring-2 focus:ring-csw border-hidden outline-hidden focus:outline-hidden" bind:value={eventTitle} /> 
@@ -262,12 +262,12 @@
 					</button>
 				</div>
 				<Label class="space-y-2"> <span>_Start_</span>
-					<Datepicker  monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
-					<Input type="time" bind:value={startTime}/>
+					<Datepicker monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
+					<Timepicker divClass="shadow-none!" bind:value={startTime}/>
 				</Label>
 				<Label class="space-y-2"> <span>_End_</span>
 					<Datepicker monthBtnSelected="bg-csw! hover:text-white!" bind:value={endDate}></Datepicker>
-					<Input type="time" bind:value={endTime}/>
+					<Timepicker divClass="shadow-none!" bind:value={endTime}/>
 				</Label>
 				<Label for="description" class="mb-0">_Description_
 					<Textarea id="description" placeholder="_Sample description_" rows={3} class="w-full" bind:value={eventDescription} />
