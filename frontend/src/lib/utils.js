@@ -10,7 +10,7 @@ export function convertEventToBackend(calendarEvent) {
 		end: calendarEvent.end,
 		creator: calendarEvent.extendedProps.creator.id,
 		description: calendarEvent.extendedProps.description,
-		enableWhitelist: calendarEvent.extendedProps.enableWhitelist,
+		accessibility: calendarEvent.extendedProps.enableWhitelist ? "WHITELIST" : calendarEvent.extendedProps.openToEveryone ? "UNLOCKED" : "LOCKED",
 		whitelist: calendarEvent.extendedProps.whitelist
 	};
 }
@@ -19,11 +19,11 @@ export function convertEventToFrontend(backendEvent) {
 		return backendEvent;
 	}
 	return {
-		...backendEvent
-		/* start: backendEvent.startTime,
-			end: backendEvent.endTime,
-			startTime: undefined,
-			endTime: undefined */
+		...backendEvent,
+		...(backendEvent.accessibility === "WHITELIST" ? {enableWhitelist: true, openForEveryone: false} : 
+			backendEvent.accessibility === "UNLOCKED" ? {openToEveryone: true, enableWhitelist: false} : 
+			{enableWhitelist: false, openForEveryone: false}),
+			accessibility: undefined
 	};
 }
 export async function fetchRoomBookings(info) {

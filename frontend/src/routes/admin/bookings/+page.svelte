@@ -29,7 +29,7 @@
 	let calendar;
 	let eventCard;
 
-	let whitelistDisableOverride = $state(false);
+	let whitelistDisableOverride = $derived(selectedEvent.extendedProps.openToEveryone);
 
 	let clientX;
 	let clientY;
@@ -166,6 +166,7 @@
 				creator: 1,
 				description: "",
 				enableWhitelist: false,
+				openToEveryone: false,
 				whitelist: []
 			}
 		};
@@ -187,11 +188,14 @@
 				end: newEndDate,
 				extendedProps: {
 					creator: {
+						firstName: "Admin",
+						lastName: "",
 						id: 1
 					},
 					description: "", 
 					enableWhitelist: useWhitelist, 
-					whitelist: eventWhitelist
+					whitelist: eventWhitelist,
+					openToEveryone: whitelistDisableOverride
 				}
 			}
 		}
@@ -199,9 +203,9 @@
 			title: eventTitle, 
 			start: newStartDate, 
 			end: newEndDate, 
-			creator: 1, 
-			description: "", 
-			enableWhitelist: useWhitelist, 
+			creator: 129, 
+			description: eventDescription, 
+			accessibility: useWhitelist ? "WHITELIST" : whitelistDisableOverride ? "UNLOCKED" : "LOCKED",
 			whitelist: eventWhitelist
 		}
 	};
@@ -213,7 +217,8 @@
 				end: newEndDate,
 				description: eventDescription,
 				enableWhitelist: useWhitelist,
-				whitelist: eventWhitelist
+				whitelist: eventWhitelist,
+				openToEveryone: whitelistDisableOverride
 			});
 		} else {
 			calendar.getEventById(selectedEvent.id).setProp('title', eventTitle);
@@ -222,6 +227,7 @@
 			calendar.getEventById(selectedEvent.id).setExtendedProp('description', eventDescription);
 			calendar.getEventById(selectedEvent.id).setExtendedProp('enableWhitelist', useWhitelist);
 			calendar.getEventById(selectedEvent.id).setExtendedProp('whitelist', eventWhitelist);
+			calendar.getEventById(selectedEvent.id).setExtendedProp('openToEveryone', whitelistDisableOverride);
 			}
 		const response = await request( selectedEvent.new ? '/roombookings' : `/roombookings/${selectedEvent.id}`, {
 			method: selectedEvent.new ? 'POST': 'PATCH',
