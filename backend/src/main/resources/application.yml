@@ -5,6 +5,15 @@ spring:
   security:
     oauth2:
       client:
+        provider:
+          tu-darmstadt:
+            issuer-uri: https://login-test.hrz.tu-darmstadt.de
+            authorization-uri: https://login-test.hrz.tu-darmstadt.de/idp/profile/oidc/authorize
+            token-uri: https://login-test.hrz.tu-darmstadt.de/idp/profile/oidc/token
+            user-info-uri: https://login-test.hrz.tu-darmstadt.de/idp/profile/oidc/userinfo
+            jwk-set-uri: https://login-test.hrz.tu-darmstadt.de/idp/profile/oidc/keyset
+            user-name-attribute: sub
+
         registration:
           tu-darmstadt:
             client-name: TU Darmstadt Login
@@ -16,15 +25,6 @@ spring:
               - openid
               - profile
               - email
-
-        provider:
-          tu-darmstadt:
-            issuer-uri: https://login-test.hrz.tu-darmstadt.de
-            authorization-uri: https://login-test.hrz.tu-darmstadt.de/idp/profile/oidc/authorize
-            token-uri: https://login-test.hrz.tu-darmstadt.de/idp/profile/oidc/token
-            user-info-uri: https://login-test.hrz.tu-darmstadt.de/idp/profile/oidc/userinfo
-            jwk-set-uri: https://login-test.hrz.tu-darmstadt.de/idp/profile/oidc/keyset
-            user-name-attribute: sub
 
   datasource:
     driver-class-name: org.postgresql.Driver
