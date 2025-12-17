@@ -85,12 +85,12 @@
     }, {
         permission: "FRONTEND__SIDEBAR_ITEM__LOGIN",
         label: m.sidebar_public_login(),
-        href: '/login',
+        href: '/auth/login',
         icon: UserSolid
     }, {
         permission: "FRONTEND__SIDEBAR_ITEM__REGISTER",
         label: m.sidebar_public_register(),
-        href: '/register',
+        href: '/auth/register',
         icon: UserSolid
     }, {
         permission: "FRONTEND__SIDEBAR_ITEM__SUPPORT",
