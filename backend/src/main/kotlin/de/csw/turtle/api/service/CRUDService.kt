@@ -29,12 +29,12 @@ abstract class CRUDService<
         return repository.save(entity)
     }
 
-    open fun getOrNull(id: Long): Entity? = repository.findById(id).getOrNull()
-    open fun get(id: Long): Entity = getOrNull(id) ?: throw CRUDResourceNotFoundException(name, id)
+    fun getOrNull(id: Long): Entity? = repository.findById(id).getOrNull()
+    fun get(id: Long): Entity = getOrNull(id) ?: throw CRUDResourceNotFoundException(name, id)
 
-    open fun getAll(): List<Entity> = repository.findAll()
+    fun getAll(): List<Entity> = repository.findAll()
 
-    open fun getPage(
+    fun getPage(
         page: Int = 0,
         size: Int = 0,
         sort: Array<String> = emptyArray(),

@@ -40,12 +40,8 @@ abstract class RoomBookingMapper : CRUDMapper<RoomBookingEntity, CreateRoomBooki
         request.start?.let { entity.start = it }
         request.end?.let { entity.end = it }
         request.description?.let {entity.description = it}
-        request.enableWhitelist?.let { entity.enableWhitelist = it }
         request.creator?.let { entity.creator = userService.get(it) }
-        request.whitelist?.let {
-            entity.whitelist.clear()
-            entity.whitelist.addAll(it.map { user -> userService.get(user)})
-        }
+        request.whitelist?.let { entity.whitelist = it.map { user -> userService.get(user)}.toMutableSet() }
 
         return entity
     }

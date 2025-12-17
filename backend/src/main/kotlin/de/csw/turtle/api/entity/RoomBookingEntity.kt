@@ -32,16 +32,4 @@ data class RoomBookingEntity(
     )
     var whitelist: MutableSet<UserEntity> = mutableSetOf()
 
-) : CRUDEntity() {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is RoomBookingEntity) return false
-        return id != 0L && id == other.id
-    }
-
-    override fun hashCode(): Int = javaClass.hashCode()
-
-    override fun toString(): String {
-        return "RoomBookingEntity(id=$id, title='$title', start=$start, end=$end)"
-    }
-}
+) : CRUDEntity()
