@@ -59,7 +59,7 @@
 			<A href="/register" class="text-sm text-blue-700 hover:underline dark:text-blue-500"
 				>{m.login__no_account()}</A
 			>
-			<A href="/" class="text-sm text-blue-700 hover:underline dark:text-blue-500"
+			<A href="/frontend/static" class="text-sm text-blue-700 hover:underline dark:text-blue-500"
 				>{m.login__forgot_password()}</A
 			>
 		</div>
