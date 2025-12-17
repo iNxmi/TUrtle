@@ -4,6 +4,8 @@ import java.time.Instant
 
 data class GetDeviceCategoryResponse(
     override val id: Long,
-    val name: String,
+
+    val name: String?,
+
     override val createdAt: Instant
 ) : GetResponse
