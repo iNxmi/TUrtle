@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "users")
-data class UserEntity(
+class UserEntity(
 
     @Column(unique = true)
     var username: String,
@@ -18,7 +18,7 @@ data class UserEntity(
 
     var password: String,
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "user_roles",
         joinColumns = [JoinColumn(name = "user_id")],
@@ -26,7 +26,10 @@ data class UserEntity(
     )
     val roles: MutableSet<RoleEntity> = mutableSetOf(),
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val auditLogs: Collection<AuditLogEntity> = emptySet()
+    @OneToMany(mappedBy = "user")
+    val auditLogs: Collection<AuditLogEntity> = emptySet(),
+
+    @ManyToMany(mappedBy = "whitelist")
+    val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf()
 
 ) : CRUDEntity()

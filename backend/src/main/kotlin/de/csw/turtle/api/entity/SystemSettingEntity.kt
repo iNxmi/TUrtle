@@ -6,7 +6,7 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "system_settings")
-data class SystemSettingEntity(
+class SystemSettingEntity(
 
     @Column(unique = true)
     var key: String,

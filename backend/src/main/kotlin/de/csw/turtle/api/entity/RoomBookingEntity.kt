@@ -5,7 +5,7 @@ import java.time.Instant
 
 @Entity
 @Table(name = "room_bookings")
-data class RoomBookingEntity(
+class RoomBookingEntity(
 
     var title: String,
 
@@ -18,14 +18,14 @@ data class RoomBookingEntity(
     @Column(columnDefinition = "TEXT")
     var description: String,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     var creator: UserEntity,
 
     @Enumerated(EnumType.STRING)
     var accessibility: Accessibility = Accessibility.LOCKED,
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "room_booking_whitelist",
         joinColumns = [JoinColumn(name = "room_booking_id")],

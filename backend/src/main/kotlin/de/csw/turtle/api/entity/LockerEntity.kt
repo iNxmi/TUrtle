@@ -7,7 +7,7 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "lockers")
-data class LockerEntity(
+class LockerEntity(
 
     @Column(unique = true)
     var name: String,

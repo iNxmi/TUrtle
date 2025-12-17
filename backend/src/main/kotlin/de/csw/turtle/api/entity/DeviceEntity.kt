@@ -5,8 +5,7 @@ import java.time.Instant
 
 @Entity
 @Table(name = "devices")
-
-data class DeviceEntity(
+class DeviceEntity(
 
     var name: String,
 

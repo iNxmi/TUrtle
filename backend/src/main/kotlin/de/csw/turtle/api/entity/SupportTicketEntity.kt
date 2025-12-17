@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "support_tickets")
-data class SupportTicketEntity(
+class SupportTicketEntity(
 
     @Enumerated(EnumType.STRING)
     var urgency: Urgency,

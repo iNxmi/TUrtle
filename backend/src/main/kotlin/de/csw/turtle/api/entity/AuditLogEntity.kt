@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "auditlogs")
-data class AuditLogEntity(
+class AuditLogEntity(
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
