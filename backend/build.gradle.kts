@@ -36,6 +36,9 @@ dependencies {
     implementation("org.springframework.session:spring-session-jdbc")
     runtimeOnly("org.postgresql:postgresql")
 
+    // RSQL JPA support
+    implementation("io.github.perplexhub:rsql-jpa-spring-boot-starter:6.0.33")
+
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
 

@@ -32,11 +32,13 @@ interface GetController<
     }
 
     @GetMapping("/all")
-    fun getAll(): ResponseEntity<Collection<GetResponse>> {
+    fun getAll(
+        @RequestParam(required = false) filter: String? = null
+    ): ResponseEntity<Collection<GetResponse>> {
         if (permissionGet != null)
             permissionService.check(permissionGet!!)
 
-        val entities = service.getAll()
+        val entities = service.getAll(filter)
         return ResponseEntity.ok(entities.map { mapper.get(it) })
     }
 
@@ -45,12 +47,13 @@ interface GetController<
         @RequestParam(name = "page", required = false) page: Int = 0,
         @RequestParam(name = "size", required = false) size: Int = 20,
         @RequestParam(name = "sort", required = false) sort: Array<String> = emptyArray(),
-        @RequestParam(name = "direction", required = false) direction: Direction = Direction.DESC
+        @RequestParam(name = "direction", required = false) direction: Direction = Direction.DESC,
+        @RequestParam(required = false) filter: String? = null
     ): ResponseEntity<Page<GetResponse>> {
         if (permissionGet != null)
             permissionService.check(permissionGet!!)
 
-        val result = service.getPage(page, size, sort, direction)
+        val result = service.getPage(page, size, sort, direction, filter)
         return ResponseEntity.ok(result.map { mapper.get(it) })
     }
 
