@@ -9,8 +9,8 @@ class SSHDoorControlService(
     private val properties: TUrtleProperties
 ) : DoorControlService {
 
-    override fun trigger(duration: Duration): String {
-        val input = "~/doorOpen.sh ${duration.seconds}"
+    override fun trigger(seconds: Int): String {
+        val input = "~/doorOpen.sh $seconds"
 
         return SSHClient().use { client ->
             client.addHostKeyVerifier(PromiscuousVerifier())

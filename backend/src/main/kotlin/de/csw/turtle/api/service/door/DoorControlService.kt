@@ -6,6 +6,6 @@ import java.time.Duration
 @Service
 interface DoorControlService {
 
-    fun trigger(duration: Duration): String
+    fun trigger(seconds: Int): String
 
 }
