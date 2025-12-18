@@ -1,5 +1,6 @@
 import request from './api/api';
 import { dev } from '$app/environment';
+import { error, redirect } from '@sveltejs/kit';
 export function convertEventToBackend(calendarEvent) {
 	if (dev) {
 		return calendarEvent;
@@ -40,4 +41,16 @@ export async function fetchRoomBookings(info) {
 	}
 	const events = await response.json();
 	return events;
+}
+
+/**
+ * Checks authorization and errors
+ * @param {Response} response - the fetch response to check
+ * @param {string} redirectURL - the pathname of this page e.g. url.pathname
+ * @returns 
+ */
+export function checkAuthorization(response, redirectURL){
+	if(response.ok) return;
+	if(response.status == 401) return redirect(307, `/auth/login?redirectTo=${redirectURL}`);
+	return error(response.status, response.statusText);
 }

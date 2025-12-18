@@ -1,5 +1,5 @@
 import request from "$lib/api/api"
-
+import { checkAuthorization } from "$lib/utils"
 export async function load({url}) {
     const parameters = {}
 
@@ -22,7 +22,11 @@ export async function load({url}) {
     const urlParameters = new URLSearchParams(parameters)
 
     const response = await request(`/users/page?${urlParameters.toString()}`);
+
+    checkAuthorization(response, url.pathname);
     const payload = await response.json();
 
+
     return {page: payload};
+   
 }
