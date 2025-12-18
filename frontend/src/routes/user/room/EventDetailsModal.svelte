@@ -2,7 +2,8 @@
     import { Modal, P, Label } from 'flowbite-svelte';
     import {CalendarMonthOutline, ClockOutline, ClockArrowOutline} from 'flowbite-svelte-icons';
 
-    let {showEventDetailsModal = $bindable(), selectedEvent} = $props();
+    let {showEventDetailsModal = $bindable(), selectedEvent, creator} = $props();
+
 
 </script>
 {#if selectedEvent}
@@ -22,7 +23,7 @@
             </div>
         </div>
         <Label  class="font-bold">_Creator_</Label>
-        <P>{selectedEvent.extendedProps.creator.firstName+" "+selectedEvent.extendedProps.creator.lastName}</P>
+        <P>{creator.firstName+" "+creator.lastName}</P>
         <P class="font-bold">_Description_</P>
         <P>{selectedEvent.extendedProps.description}</P>
     </Modal>

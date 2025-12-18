@@ -18,6 +18,8 @@
 
 	let selectedEvent = $state();
 
+	let selectedEventCreatorName;
+
 	$effect(() => {
 
 		if(calendar){
@@ -42,10 +44,12 @@
 					failureCallback("Error");
 				}	
 			},
-			eventClick: function (info){
+			eventClick: async function (info){
 				info.jsEvent.preventDefault();
 				selectedEvent = info.event;
-				
+
+				const response = await request(`/users/one/${selectedEvent.extendedProps.creator}`);
+				selectedEventCreatorName = await response.json();
 				showEventDetailsModal = true;
 			},
 			eventColor: 'oklch(75% 0.183 55.934)',
@@ -79,5 +83,5 @@
 
 <div id="calendar"></div>
 
-<EventDetailsModal bind:showEventDetailsModal={showEventDetailsModal} {selectedEvent} />
+<EventDetailsModal bind:showEventDetailsModal={showEventDetailsModal} {selectedEvent} creator={selectedEventCreatorName} />
  
