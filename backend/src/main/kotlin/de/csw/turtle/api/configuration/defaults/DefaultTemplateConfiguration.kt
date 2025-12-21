@@ -1,11 +1,13 @@
-package de.csw.turtle.api.config.defaults
+package de.csw.turtle.api.configuration.defaults
 
 import de.csw.turtle.api.dto.create.CreateTemplateRequest
 import de.csw.turtle.api.service.TemplateService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.transaction.annotation.Transactional
 
+@Order(1)
 @Configuration
 class DefaultTemplateConfiguration(
     private val service: TemplateService
@@ -75,7 +77,7 @@ class DefaultTemplateConfiguration(
         Sesink, Werner und Zentgraf, Claudia (2009): Die ComputerStudienWerkstatt eine Lern- und Arbeitsumgebung mit Atmosphäre. Darmstadt: Technische Universität Darmstadt.
     """.trimIndent()
 
-    private val datenschutzverordnung = """
+    private val dsgvo = """
         **Informationen nach Artikel 13 der Datenschutzgrundverordnung (DSGVO)**
 
         1. Verantwortlicher der Datenverarbeitung
@@ -118,7 +120,7 @@ class DefaultTemplateConfiguration(
         service.create(CreateTemplateRequest("contact", "default value by ag", contact))
         service.create(CreateTemplateRequest("agb", "default value by ag", agb))
         service.create(CreateTemplateRequest("about", "default value by ag", about))
-        service.create(CreateTemplateRequest("datenschutzverordnung", "default value by ag", datenschutzverordnung))
+        service.create(CreateTemplateRequest("dsgvo", "default value by ag", dsgvo))
     }
 
 }

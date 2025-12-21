@@ -1,4 +1,4 @@
-package de.csw.turtle.api.config.defaults
+package de.csw.turtle.api.configuration.defaults
 
 import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.service.RoleService

@@ -1,4 +1,4 @@
-package de.csw.turtle.api.config
+package de.csw.turtle.api.configuration
 
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info

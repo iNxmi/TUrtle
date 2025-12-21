@@ -16,11 +16,25 @@ class ContentController(
 
     //TODO implement proper null checks
 
-    @GetMapping("/imprint")
-    fun imprint(): ResponseEntity<String> {
-        val id = systemSettingService.getByKeyOrNull("template.imprint")!!.value.toLong()
-        val content = templateService.get(id).getCompiledContent()
-        return ResponseEntity.ok(content)
+    fun getContent(key: String): String {
+        val id = systemSettingService.getByKeyOrNull(key)!!.value.toLong()
+        val template = templateService.get(id)
+        return template.getCompiledContent()
     }
+
+    @GetMapping("/imprint")
+    fun imprint() = ResponseEntity.ok(getContent("template.imprint"))
+
+    @GetMapping("/agb")
+    fun agb() = ResponseEntity.ok(getContent("template.agb"))
+
+    @GetMapping("/about")
+    fun about() = ResponseEntity.ok(getContent("template.about"))
+
+    @GetMapping("/dsgvo")
+    fun dsgvo() = ResponseEntity.ok(getContent("template.dsgvo"))
+
+    @GetMapping("/contact")
+    fun contact() = ResponseEntity.ok(getContent("template.contact"))
 
 }

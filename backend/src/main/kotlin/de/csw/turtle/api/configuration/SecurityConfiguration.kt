@@ -1,4 +1,4 @@
-package de.csw.turtle.api.config
+package de.csw.turtle.api.configuration
 
 import de.csw.turtle.TUrtleProperties
 import de.csw.turtle.api.service.CustomUserDetailsService
