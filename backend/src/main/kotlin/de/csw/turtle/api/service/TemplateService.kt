@@ -1,6 +1,5 @@
 package de.csw.turtle.api.service
 
-import com.samskivert.mustache.Mustache
 import de.csw.turtle.api.dto.create.CreateTemplateRequest
 import de.csw.turtle.api.dto.get.GetTemplateResponse
 import de.csw.turtle.api.dto.patch.PatchTemplateRequest
@@ -13,4 +12,8 @@ import org.springframework.stereotype.Service
 class TemplateService(
     override val repository: TemplateRepository,
     override val mapper: TemplateMapper
-) : CRUDService<TemplateEntity, CreateTemplateRequest, GetTemplateResponse, PatchTemplateRequest>("Template")
+) : CRUDService<TemplateEntity, CreateTemplateRequest, GetTemplateResponse, PatchTemplateRequest>("Template") {
+
+    fun getByName(name: String): TemplateEntity = repository.findByName(name) ?: TODO("implement exception")
+
+}

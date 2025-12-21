@@ -63,18 +63,6 @@ class DataSeeder(
             )
             userRepository.save(user)
         }
-
-        if (userRepository.findByUsername("admin") == null) {
-            val admin = UserEntity(
-                username = "admin",
-                firstName = "admin",
-                lastName = "admin",
-                email = "admin@csw.de",
-                password = passwordEncoder.encode("admin"),
-                roles = mutableSetOf(roleService.getByName("Administrator")!!)
-            )
-            userRepository.save(admin)
-        }
     }
 
     @EventListener(ApplicationReadyEvent::class)

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.Transactional
 
 @Configuration
-class DefaultSystemSettingsConfig(
+class DefaultSystemSettingsConfiguration(
     private val service: SystemSettingService
 ) : CommandLineRunner {
 

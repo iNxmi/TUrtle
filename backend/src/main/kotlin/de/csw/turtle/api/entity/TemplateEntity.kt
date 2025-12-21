@@ -20,7 +20,10 @@ class TemplateEntity(
 
 ) : CRUDEntity() {
 
-    fun getCompiledContent(id: Long, variables: Map<String, Any?>): String {
+    fun getCompiledContent(): String {
+        //TODO add variables to insert into template
+        val variables: Map<String, Any?> = mapOf()
+
         val template = Mustache.compiler().compile(markdown)
         return template.execute(variables)
     }

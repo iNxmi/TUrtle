@@ -6,8 +6,10 @@ import de.csw.turtle.api.dto.create.CreateRoleRequest
 import de.csw.turtle.api.service.RoleService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.transaction.annotation.Transactional
 
+@Order(1)
 @Configuration
 class DefaultRolesConfiguration(
     private val service: RoleService
