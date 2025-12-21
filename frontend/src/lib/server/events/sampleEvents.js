@@ -5,9 +5,11 @@ export const events = [
 		end: '2025-11-17T12:00:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -18,9 +20,11 @@ export const events = [
 		end: '2025-11-18T16:30:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -31,9 +35,11 @@ export const events = [
 		end: '2025-11-19T10:30:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -44,9 +50,11 @@ export const events = [
 		end: '2025-11-20T11:00:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -57,9 +65,11 @@ export const events = [
 		end: '2025-11-21T15:30:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -70,9 +80,11 @@ export const events = [
 		end: '2025-11-22T09:30:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -83,9 +95,11 @@ export const events = [
 		end: '2025-11-23T17:00:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -96,9 +110,11 @@ export const events = [
 		end: '2025-11-24T12:30:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -109,9 +125,11 @@ export const events = [
 		end: '2025-11-24T14:30:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -122,9 +140,11 @@ export const events = [
 		end: '2025-11-25T17:00:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -135,9 +155,11 @@ export const events = [
 		end: '2025-11-26T12:00:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -148,9 +170,11 @@ export const events = [
 		end: '2025-11-27T16:30:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -161,9 +185,11 @@ export const events = [
 		end: '2025-11-28T10:30:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -174,9 +200,11 @@ export const events = [
 		end: '2025-11-29T10:30:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
+			description: 'Test Description',
 			enableWhitelist: false,
 			whitelist: []
 		}
@@ -187,10 +215,12 @@ export const events = [
 		end: '2025-11-30T17:30:00',
 		extendedProps: {
 			creator: {
+				lastName: "Rappe",
+				firstName: "Jan",
 				id: 1
 			},
-			description: '',
-			enableWhitelist: false,
+			description: 'Test Description',
+			enableWhitelist: true,
 			whitelist: []
 		}
 	}

@@ -1,9 +1,11 @@
 <script>
 	import { getContext, onMount } from 'svelte';
 	import { dev } from '$app/environment';
+	import { fade } from 'svelte/transition';
 	import request from '$lib/api/api';
 	import { convertEventToBackend, convertEventToFrontend, fetchRoomBookings } from '$lib/utils';
-	import {Label, Input, Datepicker, Button, Textarea, Toggle, MultiSelect} from 'flowbite-svelte';
+	import {Label, Input, Datepicker, Button, Textarea, Toggle, MultiSelect, Timepicker} from 'flowbite-svelte';
+	import WhitelistDropdown from '$lib/components/WhitelistDropdown.svelte';
 	import {m} from '$lib/paraglide/messages.js';
 
 	import {TrashBinSolid} from 'flowbite-svelte-icons';
@@ -14,13 +16,23 @@
 	import listPlugin from '@fullcalendar/list';
 	import interactionPlugin from '@fullcalendar/interaction';
 
-	let contextMenu;
+	let { data } = $props();
+
+	const users = $derived(data.users);
+	const dropdownUsers = $derived(users.map(user =>  ({
+		firstName: user.firstName,
+		lastName: user.lastName,
+		value: user.id
+	})));
+
+	let successRequest = $state(false);
 	let calendar;
 	let eventCard;
 
+	let whitelistDisableOverride = $derived(selectedEvent.extendedProps.openToEveryone);
+
 	let clientX;
 	let clientY;
-
 	const participants = [
 		{value: 0, name: "Jan"},
 		{value: 1, name: "Memphis"},
@@ -34,6 +46,10 @@
 			selectedEvent = false;
 		}
 	};
+
+	function setOpenToEveryone(){
+		useWhitelist = false;
+	}
 
 	let localeFunction = getContext('locale');
 
@@ -81,9 +97,10 @@
 		calendar = new Calendar(calendarEl, {
 			plugins: [timeGridPlugin, listPlugin, interactionPlugin],
 			locale: 'de',
-			aspectRatio: 2.1,
+			height: window.innerHeight - 80,
+			width: window.innerWidth,
 			editable: true,
-			events: /* dev ? '/dev/api/events' : '/api/roombookings/page' */async function(info, successCallback, failureCallback) {
+			events: async function(info, successCallback, failureCallback) {
 				const fetchedData = await fetchRoomBookings(info);
 				if(fetchedData){
 					const events = fetchedData.map(event => (convertEventToFrontend(event)));
@@ -124,6 +141,7 @@
 			},
 			slotMinTime: '6:00:00',
 			allDaySlot: false,
+			weekends: false,
 			initialView: 'timeGridWeek',
 			headerToolbar: {
 				left: 'prev,next today',
@@ -148,13 +166,14 @@
 				creator: 1,
 				description: "",
 				enableWhitelist: false,
+				openToEveryone: false,
 				whitelist: []
 			}
 		};
 
 	}
 	function removeEvent() {
-		request(`/roombookings/${selectedEvent.id}`, {
+		const response = request(`/roombookings/${selectedEvent.id}`, {
 			method: 'DELETE'
 		});
 		selectedEvent.remove();
@@ -169,11 +188,14 @@
 				end: newEndDate,
 				extendedProps: {
 					creator: {
+						firstName: "Admin",
+						lastName: "",
 						id: 1
 					},
 					description: "", 
 					enableWhitelist: useWhitelist, 
-					whitelist: eventWhitelist
+					whitelist: eventWhitelist,
+					openToEveryone: whitelistDisableOverride
 				}
 			}
 		}
@@ -181,13 +203,13 @@
 			title: eventTitle, 
 			start: newStartDate, 
 			end: newEndDate, 
-			creator: 1, 
-			description: "", 
-			enableWhitelist: useWhitelist, 
+			creator: 129, 
+			description: eventDescription, 
+			accessibility: useWhitelist ? "WHITELIST" : whitelistDisableOverride ? "UNLOCKED" : "LOCKED",
 			whitelist: eventWhitelist
 		}
 	};
-	function updateDate(){
+	async function saveEvent(){
 		if(selectedEvent.new){
 			calendar.addEvent({
 				title: eventTitle,
@@ -195,7 +217,8 @@
 				end: newEndDate,
 				description: eventDescription,
 				enableWhitelist: useWhitelist,
-				whitelist: eventWhitelist
+				whitelist: eventWhitelist,
+				openToEveryone: whitelistDisableOverride
 			});
 		} else {
 			calendar.getEventById(selectedEvent.id).setProp('title', eventTitle);
@@ -204,12 +227,19 @@
 			calendar.getEventById(selectedEvent.id).setExtendedProp('description', eventDescription);
 			calendar.getEventById(selectedEvent.id).setExtendedProp('enableWhitelist', useWhitelist);
 			calendar.getEventById(selectedEvent.id).setExtendedProp('whitelist', eventWhitelist);
+			calendar.getEventById(selectedEvent.id).setExtendedProp('openToEveryone', whitelistDisableOverride);
 			}
-		request( selectedEvent.new ? '/roombookings' : `/roombookings/${selectedEvent.id}`, {
+		const response = await request( selectedEvent.new ? '/roombookings' : `/roombookings/${selectedEvent.id}`, {
 			method: selectedEvent.new ? 'POST': 'PATCH',
 			body : JSON.stringify( selectedEvent.new ? createNewBackendEvent() : convertEventToBackend(calendar.getEventById(selectedEvent.id))),
 			headers: {'Content-Type': 'application/json'}
 		});
+
+		successRequest = {
+			ok: response.ok
+		}
+
+		setTimeout(() => successRequest = undefined, 1500);
 	};
 	/* $effect(() => {
 		if(selectedEvent && calendar) console.log("Test "+ "EventDate: "+JSON.stringify($state.snapshot(eventDate)));
@@ -227,33 +257,39 @@
 		}
 	});
 </script>
-<div class="flex flex-col md:flex-row  gap-2">
+<div class="flex flex-col xl:flex-row  gap-2">
 	<div class="grow" id="calendar"></div>
-		<div bind:this={eventCard} class="w-full bg-white border rounded-lg max-w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col mt-17 p-5 gap-5">
+		<div bind:this={eventCard} class=" bg-white border rounded-lg min-w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-row xl:flex-col mt-17 p-5 gap-5">
 				{#if selectedEvent}
-				<div class="flex flex-row justify-between h-10">
+				<div class="flex flex-col sm:flex-row justify-between h-10">
 					<input type="text" class="text-2xl w-9/10 h-full mr-auto rounded-lg focus:ring-2 focus:ring-csw border-hidden outline-hidden focus:outline-hidden" bind:value={eventTitle} /> 
 					<button class="h-full w-10 inline-flex justify-end items-center" onclick={removeEvent}>
 						<TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
 					</button>
 				</div>
 				<Label class="space-y-2"> <span>_Start_</span>
-					<Datepicker  monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
-					<Input type="time" bind:value={startTime}/>
+					<Datepicker monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
+					<Timepicker divClass="shadow-none!" bind:value={startTime}/>
 				</Label>
 				<Label class="space-y-2"> <span>_End_</span>
 					<Datepicker monthBtnSelected="bg-csw! hover:text-white!" bind:value={endDate}></Datepicker>
-					<Input type="time" bind:value={endTime}/>
+					<Timepicker divClass="shadow-none!" bind:value={endTime}/>
 				</Label>
 				<Label for="description" class="mb-0">_Description_
 					<Textarea id="description" placeholder="_Sample description_" rows={3} class="w-full" bind:value={eventDescription} />
 				</Label>
-				<Toggle size="small" bind:checked={useWhitelist}>_Use whitelist_</Toggle>
+				<Toggle size="small" bind:checked={whitelistDisableOverride} onchange={setOpenToEveryone}>_Open to everyone_</Toggle>
+				<Toggle disabled={whitelistDisableOverride} size="small" bind:checked={useWhitelist}>_Use whitelist_</Toggle>
 				{#if useWhitelist}
-				<MultiSelect items={participants} bind:value={eventWhitelist} placeholder="_Select participants" />
+				<WhitelistDropdown users={dropdownUsers} bind:value={eventWhitelist} />
 			
 				{/if}
-				<Button onclick={updateDate}>{m.save()}</Button>
+				<Button onclick={saveEvent}>{m.save()}</Button>
+				{#if successRequest}
+					<p out:fade class={(successRequest.ok ? "text-green-600" : "text-red-500")+" text-xs"}>
+						{successRequest.ok ? "_Event successfully saved_": "An error uccured, please try again"}
+					</p>
+				{/if}
 				{:else}
 				<div class="flex flex-col h-full justify-center items-center">
 					<h1 class="text-2xl text-gray-500">{m.admin_bookings__select_event()}</h1>

@@ -1,5 +1,6 @@
 import request from './api/api';
 import { dev } from '$app/environment';
+import { error, redirect } from '@sveltejs/kit';
 export function convertEventToBackend(calendarEvent) {
 	if (dev) {
 		return calendarEvent;
@@ -10,7 +11,7 @@ export function convertEventToBackend(calendarEvent) {
 		end: calendarEvent.end,
 		creator: calendarEvent.extendedProps.creator.id,
 		description: calendarEvent.extendedProps.description,
-		enableWhitelist: calendarEvent.extendedProps.enableWhitelist,
+		accessibility: calendarEvent.extendedProps.enableWhitelist ? "WHITELIST" : calendarEvent.extendedProps.openToEveryone ? "UNLOCKED" : "LOCKED",
 		whitelist: calendarEvent.extendedProps.whitelist
 	};
 }
@@ -19,11 +20,11 @@ export function convertEventToFrontend(backendEvent) {
 		return backendEvent;
 	}
 	return {
-		...backendEvent
-		/* start: backendEvent.startTime,
-			end: backendEvent.endTime,
-			startTime: undefined,
-			endTime: undefined */
+		...backendEvent,
+		...(backendEvent.accessibility === "WHITELIST" ? {enableWhitelist: true, openForEveryone: false} : 
+			backendEvent.accessibility === "UNLOCKED" ? {openToEveryone: true, enableWhitelist: false} : 
+			{enableWhitelist: false, openForEveryone: false}),
+			accessibility: undefined
 	};
 }
 export async function fetchRoomBookings(info) {
@@ -40,4 +41,16 @@ export async function fetchRoomBookings(info) {
 	}
 	const events = await response.json();
 	return events;
+}
+
+/**
+ * Checks authorization and errors
+ * @param {Response} response - the fetch response to check
+ * @param {string} redirectURL - the pathname of this page e.g. url.pathname
+ * @returns 
+ */
+export function checkAuthorization(response, redirectURL){
+	if(response.ok) return;
+	if(response.status == 401) return redirect(307, `/auth/login?redirectTo=${redirectURL}`);
+	return error(response.status, response.statusText);
 }

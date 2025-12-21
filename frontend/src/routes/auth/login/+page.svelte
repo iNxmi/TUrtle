@@ -2,6 +2,8 @@
 	import { A, Button, Checkbox, Heading, Input, Label, Modal, P } from 'flowbite-svelte';
 	import { m } from '$lib/paraglide/messages.js';
 	import request from '$lib/api/api.js';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 
 	let apiResponse = $state(null);
 	let modal = $state(false);
@@ -27,6 +29,7 @@
 		apiResponse = await response.json();
 		modal = true;
 
+		goto(page.url.searchParams.get('redirectTo') || '/user/dashboard');
 		// window.location.reload()
 	}
 </script>
