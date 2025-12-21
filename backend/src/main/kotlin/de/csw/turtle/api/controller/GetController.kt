@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
+import java.util.SortedSet
 
 interface GetController<
         Entity : CRUDEntity,
@@ -31,6 +32,16 @@ interface GetController<
         return ResponseEntity.ok(mapper.get(entity))
     }
 
+    @GetMapping("/multiple")
+    fun get(@RequestParam ids: Set<Long>): ResponseEntity<Collection<GetResponse>> {
+        if (permissionGet != null)
+            permissionService.check(permissionGet!!)
+
+        val entities = service.getMultiple(ids)
+        val result = entities.map { mapper.get(it) }
+        return ResponseEntity.ok(result)
+    }
+
     @GetMapping("/all")
     fun getAll(
         @RequestParam(required = false) filter: String? = null
@@ -39,7 +50,8 @@ interface GetController<
             permissionService.check(permissionGet!!)
 
         val entities = service.getAll(filter)
-        return ResponseEntity.ok(entities.map { mapper.get(it) })
+        val result = entities.map { mapper.get(it) }
+        return ResponseEntity.ok(result)
     }
 
     @GetMapping("/page")

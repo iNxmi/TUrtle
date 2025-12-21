@@ -32,6 +32,8 @@ abstract class CRUDService<
     fun getOrNull(id: Long): Entity? = repository.findById(id).getOrNull()
     fun get(id: Long): Entity = getOrNull(id) ?: throw CRUDResourceNotFoundException(name, id)
 
+    fun getMultiple(ids: Set<Long>) = repository.findAllById(ids).toSet()
+
     fun getAll(
         filter: String? = null
     ): List<Entity> {
