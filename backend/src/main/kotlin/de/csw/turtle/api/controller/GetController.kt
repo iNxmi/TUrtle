@@ -37,16 +37,16 @@ interface GetController<Entity : CRUDEntity, Response : GetResponse> {
         @RequestParam pageNumber: Int? = null,
         @RequestParam pageSize: Int = 25,
 
-        @RequestParam sortProperties: Array<String> = emptyArray(),
+        @RequestParam sortProperty: String? = null,
         @RequestParam sortDirection: Direction = Direction.DESC
     ): ResponseEntity<Any> {
         if (permissionGet != null)
             permissionService.check(permissionGet!!)
 
-        val sort = if (sortProperties.isEmpty()) {
+        val sort = if (sortProperty == null) {
             Sort.unsorted()
         } else {
-            Sort.by(sortDirection, *sortProperties)
+            Sort.by(sortDirection, sortProperty)
         }
 
         if (pageNumber != null) {

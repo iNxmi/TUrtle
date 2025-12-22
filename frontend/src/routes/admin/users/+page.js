@@ -1,9 +1,31 @@
 import request from "$lib/api/api"
-import { checkAuthorization } from "$lib/utils"
+import {checkAuthorization} from "$lib/utils"
+
 export async function load({url}) {
-    const page = url.searchParams.get("page") || "0";
-    const filter = url.searchParams.get("filter") || "";
-    const response = await request(`/users/page?page=${page}&filter=${filter}`);
+
+    const parameters = new URLSearchParams()
+
+    const rsql = url.searchParams.get("rsql");
+    if(rsql != null)
+        parameters.set("rsql", rsql)
+
+    const pageNumber = url.searchParams.get("pageNumber") || "0";
+    if(pageNumber != null)
+        parameters.set("pageNumber", pageNumber)
+
+    const pageSize = url.searchParams.get("pageSize");
+    if(pageSize != null)
+        parameters.set("pageSize", pageSize)
+
+    const sortProperty = url.searchParams.get("sortProperty");
+    if(sortProperty != null)
+        parameters.set("sortProperty", sortProperty)
+
+    const sortDirection = url.searchParams.get("sortDirection");
+    if(sortDirection != null)
+        parameters.set("sortDirection", sortDirection)
+
+    const response = await request(`/users?${parameters}`);
 
     checkAuthorization(response, url.pathname);
     const payload = await response.json();

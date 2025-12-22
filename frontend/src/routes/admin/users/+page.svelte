@@ -45,10 +45,10 @@
             headers={headers}
             items={items}
             page={pageInfo}
-            onFirstPage={() => window.location.href = "/admin/users?page=0"}
-            onPreviousPage={() => window.location.href = `/admin/users?page=${pageInfo.number - 1}`}
-            onNextPage={() => window.location.href = `/admin/users?page=${pageInfo.number + 1}`}
-            onLastPage={() => window.location.href = `/admin/users?page=${pageInfo.totalPages - 1}`}
-            onSearch={(search) => window.location.href = `/admin/users?filter=username=like=${search},firstName=like=${search},lastName=like=${search},email=like=${search}`}
+            onFirstPage={() => window.location.href = "/admin/users?pageNumber=0"}
+            onPreviousPage={() => window.location.href = `/admin/users?pageNumber=${pageInfo.number - 1}`}
+            onNextPage={() => window.location.href = `/admin/users?pageNumber=${pageInfo.number + 1}`}
+            onLastPage={() => window.location.href = `/admin/users?pageNumber=${pageInfo.totalPages - 1}`}
+            onSearch={(search) => window.location.href = `/admin/users?rsql=username=like=${search},firstName=like=${search},lastName=like=${search},email=like=${search}`}
     />
 </div>
