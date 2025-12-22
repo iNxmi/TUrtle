@@ -13,4 +13,8 @@ import org.springframework.stereotype.Service
 class LockerService(
     override val repository: LockerRepository,
     override val mapper: LockerMapper,
-) : CRUDService<LockerEntity, CreateLockerRequest, GetLockerResponse, PatchLockerRequest>("Locker")
+) : CRUDService<LockerEntity, CreateLockerRequest, GetLockerResponse, PatchLockerRequest>("Locker") {
+
+    fun getByIndex(index: Int) = repository.findByIndex(index)
+
+}

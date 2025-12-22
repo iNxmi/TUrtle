@@ -1,49 +1,38 @@
 package de.csw.turtle.test
 
-import de.csw.turtle.api.dto.create.CreateFAQRequest
-import de.csw.turtle.api.dto.create.CreateRoomBookingRequest
-import de.csw.turtle.api.entity.*
-import de.csw.turtle.api.repository.*
-import de.csw.turtle.api.service.FAQService
-import de.csw.turtle.api.service.RoleService
-import de.csw.turtle.api.service.RoomBookingService
-import de.csw.turtle.api.service.UserService
+import de.csw.turtle.api.dto.create.*
+import de.csw.turtle.api.entity.SupportTicketEntity
+import de.csw.turtle.api.service.*
+import de.csw.turtle.api.service.locker.LockerService
 import io.github.serpro69.kfaker.Faker
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
 import org.springframework.core.annotation.Order
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalUnit
-import kotlin.jvm.optionals.getOrNull
 import kotlin.math.floor
 
 @Component
 class DataSeeder(
-    private val userRepository: UserRepository,
-    private val lockerRepository: LockerRepository,
-    private val deviceCategoryRepository: DeviceCategoryRepository,
-    private val deviceRepository: DeviceRepository,
-    private val passwordEncoder: PasswordEncoder,
-    private val supportTicketRepository: SupportTicketRepository,
+    private val lockerService: LockerService,
+    private val deviceCategoryService: DeviceCategoryService,
+    private val deviceService: DeviceService,
+    private val supportTicketService: SupportTicketService,
     private val roleService: RoleService,
-    private val faqService: FAQService,
     private val roomBookingService: RoomBookingService,
     private val userService: UserService
 ) {
 
-    private val minimumEntries = 128
     private val faker = Faker()
 
     @EventListener(ApplicationReadyEvent::class)
     @Transactional
     @Order(1)
     fun seedUsers() {
-        while (userRepository.count() < minimumEntries) {
+        while (userService.count() < 512) {
             val firstName = faker.name.firstName()
             val lastName = faker.name.lastName()
             val email = faker.internet.email("$firstName $lastName")
@@ -53,21 +42,21 @@ class DataSeeder(
             val index = floor(Math.random() * (roles.size - 1)).toInt() + 1
             val role = roles[index]
 
-            val user = UserEntity(
+            val request = CreateUserRequest(
                 username = username,
                 firstName = firstName,
                 lastName = lastName,
                 email = email,
-                password = passwordEncoder.encode("password"),
-                roles = setOf(role).toMutableSet()
+                password = "password",
+                roleIds = setOf(role.id)
             )
-            userRepository.save(user)
+            userService.create(request)
         }
     }
 
+    @Order(2)
     @EventListener(ApplicationReadyEvent::class)
     @Transactional
-    @Order(2)
     fun seedRoomBookings() {
         val service = roomBookingService
         while (service.count() < 52) {
@@ -92,8 +81,7 @@ class DataSeeder(
     @EventListener(ApplicationReadyEvent::class)
     @Transactional
     fun seedSupportTickets() {
-        val repository = supportTicketRepository
-        while (repository.count() < minimumEntries) {
+        while (supportTicketService.count() < 32) {
             val entriesUrgency = SupportTicketEntity.Urgency.entries
             val indexUrgency = floor(Math.random() * entriesUrgency.size).toInt()
             val urgency = entriesUrgency[indexUrgency]
@@ -109,36 +97,13 @@ class DataSeeder(
             val subject = "This is a support ticket about Something"
             val description = "I am facing an issue with Something. Please help!"
 
-            val ticket = SupportTicketEntity(
+            supportTicketService.create(CreateSupportTicketRequest(
                 urgency = urgency,
                 category = category,
                 email = email,
                 subject = subject,
                 description = description
-            )
-            repository.save(ticket)
-        }
-    }
-
-    @Order(1)
-    @EventListener(ApplicationReadyEvent::class)
-    @Transactional
-    fun seedCategories() {
-        val repository = deviceCategoryRepository
-
-        if (repository.findByName("Laptops") == null) {
-            val category = DeviceCategoryEntity("Laptops")
-            repository.save(category)
-        }
-
-        if (repository.findByName("Consoles") == null) {
-            val category = DeviceCategoryEntity("Consoles")
-            repository.save(category)
-        }
-
-        if (repository.findByName("Projectors") == null) {
-            val category = DeviceCategoryEntity("Projectors")
-            repository.save(category)
+            ))
         }
     }
 
@@ -146,34 +111,35 @@ class DataSeeder(
     @EventListener(ApplicationReadyEvent::class)
     @Transactional
     fun seedDevices() {
-        val repository = deviceRepository
+        if (deviceService.count() > 0)
+            return
 
-        val xbox360 = DeviceEntity(
+        val xbox360 = CreateDeviceRequest(
             name = "Xbox 360",
             description = "The Xbox 360 (we love it)",
-            category = deviceCategoryRepository.findById(2).getOrNull()!!,
-            locker = lockerRepository.findByIndex(3)!!,
+            categoryId = deviceCategoryService.getByName("Gaming")!!.id,
+            lockerId = lockerService.getByIndex(6)!!.id,
             acquiredAt = Instant.now()
         )
-        repository.save(xbox360)
+        deviceService.create(xbox360)
 
-        val ps4 = DeviceEntity(
+        val ps4 = CreateDeviceRequest(
             name = "PlayStation 4",
             description = "The PS4 (we love it not as much as the 360)",
-            category = deviceCategoryRepository.findById(2).getOrNull()!!,
-            locker = lockerRepository.findByIndex(4)!!,
+            categoryId = deviceCategoryService.getByName("Gaming")!!.id,
+            lockerId = lockerService.getByIndex(6)!!.id,
             acquiredAt = Instant.now()
         )
-        repository.save(ps4)
+        deviceService.create(ps4)
 
-        val laptop = DeviceEntity(
+        val laptop = CreateDeviceRequest(
             name = "Dell Laptop",
             description = "laptop from dell",
-            category = deviceCategoryRepository.findById(1).getOrNull()!!,
-            locker = lockerRepository.findByIndex(7)!!,
+            categoryId = deviceCategoryService.getByName("Laptop")!!.id,
+            lockerId = lockerService.getByIndex(7)!!.id,
             acquiredAt = Instant.now()
         )
-        repository.save(laptop)
+        deviceService.create(laptop)
     }
 
 }

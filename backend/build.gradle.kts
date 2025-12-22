@@ -34,27 +34,19 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.session:spring-session-jdbc")
-    runtimeOnly("org.postgresql:postgresql")
-
-    // RSQL JPA support
     implementation("io.github.perplexhub:rsql-jpa-spring-boot-starter:6.0.33")
-
-    implementation("org.mapstruct:mapstruct:1.5.5.Final")
-    kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
-
-//    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
-//    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
-//    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
-
     implementation("com.hierynomus:sshj:0.37.0")
     implementation("io.github.serpro69:kotlin-faker:1.16.0")
+    implementation("org.mapstruct:mapstruct:1.5.5.Final")
 
-    //implementation("com.twelvemonkeys.imageio:imageio-core:3.10.1")
-    //implementation("com.twelvemonkeys.imageio:imageio-webp:3.10.1")
+    kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
+
+    runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework.security:spring-security-test")
+
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
