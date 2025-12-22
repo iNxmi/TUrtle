@@ -16,7 +16,7 @@ class ContentController(
 
     //TODO implement proper null checks
 
-    fun getContent(key: String): String {
+    private fun getContent(key: String): String {
         val id = systemSettingService.getByKeyOrNull(key)!!.value.toLong()
         val template = templateService.get(id)
         return template.getCompiledContent()
