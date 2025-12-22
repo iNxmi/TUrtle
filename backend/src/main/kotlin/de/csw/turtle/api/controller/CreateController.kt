@@ -1,6 +1,8 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
+import de.csw.turtle.api.dto.create.CreateRequest
+import de.csw.turtle.api.dto.get.GetResponse
 import de.csw.turtle.api.entity.CRUDEntity
 import de.csw.turtle.api.mapper.CRUDMapper
 import de.csw.turtle.api.service.CRUDService
@@ -10,20 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import java.net.URI
 
-interface CreateController<
-        Entity : CRUDEntity,
-        CreateRequest : de.csw.turtle.api.dto.create.CreateRequest,
-        GetResponse : de.csw.turtle.api.dto.get.GetResponse
-        > {
+interface CreateController<Entity : CRUDEntity, Request : CreateRequest, Response : GetResponse> {
 
     val endpoint: String
-    val service: CRUDService<Entity, CreateRequest, GetResponse, *>
-    val mapper: CRUDMapper<Entity, CreateRequest, GetResponse, *>
+    val service: CRUDService<Entity, Request, Response, *>
+    val mapper: CRUDMapper<Entity, Request, Response, *>
     val permissionService: PermissionService
     val permissionCreate: Permission?
 
     @PostMapping
-    fun create(@RequestBody request: CreateRequest): ResponseEntity<GetResponse> {
+    fun create(@RequestBody request: Request): ResponseEntity<Response> {
         if (permissionCreate != null)
             permissionService.check(permissionCreate!!)
 

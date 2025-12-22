@@ -38,7 +38,7 @@ class DataSeeder(
             val email = faker.internet.email("$firstName $lastName")
             val username = ("$firstName.$lastName").lowercase()
 
-            val roles = roleService.getAll()
+            val roles = roleService.getAll().toList()
             val index = floor(Math.random() * (roles.size - 1)).toInt() + 1
             val role = roles[index]
 
