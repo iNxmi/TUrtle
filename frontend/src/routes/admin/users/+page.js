@@ -1,32 +1,12 @@
 import request from "$lib/api/api"
 import { checkAuthorization } from "$lib/utils"
 export async function load({url}) {
-    const parameters = {}
-
-    const page = url.searchParams.get("page")
-    if (page)
-        parameters.page = page
-
-    const size = url.searchParams.get("size")
-    if (size)
-        parameters.size = size
-
-    const sort = url.searchParams.get("sort")
-    if (sort)
-        parameters.sort = sort
-
-    const direction = url.searchParams.get("direction")
-    if (direction)
-        parameters.direction = direction
-
-    const urlParameters = new URLSearchParams(parameters)
-
-    const response = await request(`/users/page?${urlParameters.toString()}`);
+    const page = url.searchParams.get("page") || "0";
+    const filter = url.searchParams.get("filter") || "";
+    const response = await request(`/users/page?page=${page}&filter=${filter}`);
 
     checkAuthorization(response, url.pathname);
     const payload = await response.json();
 
-
     return {page: payload};
-   
 }

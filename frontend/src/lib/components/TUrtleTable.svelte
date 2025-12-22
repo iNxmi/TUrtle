@@ -1,121 +1,146 @@
 <script>
-    import { TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Table, Input, Button, Pagination, PaginationNav, PaginationItem, Select, Label, Card } from "flowbite-svelte";
-    import { AngleLeftOutline, AngleRightOutline, ArrowLeftOutline, ArrowRightOutline, ChevronDoubleLeftOutline, ChevronDoubleRightOutline, PlusOutline } from 'flowbite-svelte-icons';
-   
-    /* Props:
-        tableDate: Array of data objects : Array[Object]
-        columnNames: Column Names of the table on chronological order : Array[String] 
-        itemType: Localized name of the data : String
-        newItemModal: bindable boolean to show the Model for creating a new Item : boolean
-        */
-    let { tableData, columnNames, itemType = "Item", newItemModal = $bindable(false) } = $props();
-    let searchTerm = $state("");
-    let itemKeys = $derived(Object.keys(tableData[0]));
-    let currentPage =$state(1);
-    let pageSize = $state(10);
-    let totalPages = $derived(Math.ceil(filteredItems.length / pageSize));
-    let helper =  $derived({start: (currentPage - 1)* pageSize + 1, end: currentPage * pageSize, total: filteredItems.length});
-    let filteredItems = $derived.by(() => 
-    tableData.filter((item) => 
-        !searchTerm || itemKeys.filter((key) =>
-            item[key].toLowerCase().includes(searchTerm.toLowerCase())).length != 0));
-    
-    let paginatedItems = $derived(filteredItems.slice((currentPage - 1) * pageSize, currentPage * pageSize));
+    import {
+        TableBody,
+        TableBodyCell,
+        TableBodyRow,
+        TableHead,
+        TableHeadCell,
+        Table,
+        Input,
+        Button,
+        P,
+        Hr,
+        Card,
+        ButtonGroup
+    } from 'flowbite-svelte';
 
-    function newItem(){ 
-        newItemModal = true;
-    }
-    const firstPage = () => {
-        currentPage = 1;
-    }
-    const lastPage = () => {
-        currentPage = totalPages;
-    }
+    import {
+        AngleLeftOutline,
+        AngleRightOutline,
+        ChevronDoubleLeftOutline,
+        ChevronDoubleRightOutline,
+        PlusOutline,
+        SearchOutline,
+        RefreshOutline
+    } from 'flowbite-svelte-icons';
 
-    const previousPage = () => {   
-        currentPage = currentPage > 1 ? currentPage -1 : currentPage;
-    }
-       
-    const nextPage = () => {
-        currentPage = currentPage < totalPages  ? currentPage + 1 : currentPage;
-    }
-    
+    const sizes = [25, 50, 100, 200]
+
+    const noop = () => {
+    };
+
+    let {
+        headers = [],
+        items = [],
+        page = {},
+
+        onCreate = noop,
+        onSearch = noop,
+        onReload = noop,
+        onFirstPage = noop,
+        onPreviousPage = noop,
+        onNextPage = noop,
+        onLastPage = noop,
+
+        hideAdd = false,
+        hideReload = false,
+        hidePagination = false,
+        hideCount = false,
+        hideSearch = false,
+
+        disableAdd = false,
+        disableReload = false,
+        disablePagination = false,
+        disableSearch = false
+    } = $props();
+
+    let search = $state("");
 </script>
 
-<Card shadow={false} class="min-w-full max-h-full p-2">
-    <div class="flex flex-row justify-between">
-        <Input
-            class="max-w-1/6 m-3 dark:bg-background-50"
-            placeholder={`_Search_ ${itemType}`}
-            bind:value={searchTerm}
-        ></Input>
-        <Button class="m-3 text-white hover:cursor-pointer" onclick={newItem}>
-            <PlusOutline class="h-5 w-5" />
-            _Create_ {itemType}
-        </Button>
-    </div>
-    <Table border={false} hoverable striped bind:inputValue={searchTerm}>
+<Card class="min-w-full max-h-full overflow-clip">
+
+    {#if !hideSearch || !hideAdd || !hideReload}
+        <div class="flex flex-row justify-end p-2 gap-2">
+            {#if !hideSearch}
+                <ButtonGroup class="flex-1" disabled={disableSearch}>
+                    <Input placeholder={`_search_`} bind:value={search} disabled={disableSearch}/>
+                    <Button onclick={() => onSearch(search)}>
+                        <SearchOutline/>
+                    </Button>
+                </ButtonGroup>
+            {/if}
+
+            {#if !hideReload}
+                <Button class="hover:cursor-pointer" onclick={() => onReload()} disabled={disableReload}>
+                    <RefreshOutline/>
+                </Button>
+            {/if}
+
+            {#if !hideAdd}
+                <Button class="hover:cursor-pointer" onclick={() => onCreate()} disabled={disableAdd}>
+                    <PlusOutline/>
+                </Button>
+            {/if}
+        </div>
+
+        <Hr class="m-0 p-0"/>
+    {/if}
+
+    <Table hoverable>
         <TableHead>
-            {#each columnNames as cell}
-                <TableHeadCell>{cell}</TableHeadCell>
+            {#each headers as header}
+                <TableHeadCell>{header}</TableHeadCell>
             {/each}
         </TableHead>
         <TableBody>
-            {#each paginatedItems as item, i}
-                <TableBodyRow>
-                    {#each itemKeys as key}
-                        <TableBodyCell class="hover:text-csw">{item[key]}</TableBodyCell>
+            {#each items as item}
+                <TableBodyRow class="hover:cursor-pointer" onclick={() => item.onClick()}>
+                    {#each item.values as value}
+                        <TableBodyCell>{value}</TableBodyCell>
                     {/each}
                 </TableBodyRow>
             {/each}
         </TableBody>
     </Table>
-    <div class="flex  justify-between">
-        <Label class="w-16">
-            <Select class="mt-5" items={[{
-                value: 10,
-                name: "10"
-            },
-            {
-                value: 25,
-                name: "25"
-            },
-            {
-                value: 50,
-                name: "50"
-            },
-            {
-                value: 100,
-                name: "100"
-            },
-            ]} bind:value={pageSize}/>
-        </Label>
-        
-        <div class="flex flex-col items-center justify-center gap-3">
-            <div class="flex flex-col items-center justify-center gap-2">
-                <div class="text-sm text-gray-700 dark:text-gray-400">
-                    _Showing_ <span class="font-semibold text-gray-900 dark:text-white">{helper.start}</span>
-                    _to_
-                    <span class="font-semibold text-gray-900 dark:text-white">{helper.end}</span>
-                    _of_
-                    <span class="font-semibold text-gray-900 dark:text-white">{helper.total}</span>
-                    _Entries_
-                </div>
-                <div class="flex items-center space-x-2">
-                    <Button class="size-6 hover:cursor-pointer disabled:cursor-not-allowed" onclick={firstPage} disabled={currentPage == 1}>              
-                        <ChevronDoubleLeftOutline class="size-4"/>           
+
+    {#if !hideCount || !hidePagination}
+        <Hr class="m-0 p-0"/>
+
+        <div class="flex justify-between p-2">
+            {#if !hideCount}
+                <!--TODO remove or fix the numbers being shown-->
+                <P class="flex items-center">
+                    {page.totalPages * page.size} - {page.totalElements + page.number + 25} ({page.totalElements})
+                </P>
+            {/if}
+
+            {#if !hidePagination}
+                <ButtonGroup disabled={disablePagination}>
+                    <Button class="hover:cursor-pointer disabled:cursor-not-allowed" disabled={page.number <= 0}
+                            onclick={() => onFirstPage()}>
+                        <ChevronDoubleLeftOutline/>
                     </Button>
-                    <Button class="size-6 hover:cursor-pointer disabled:cursor-not-allowed" onclick={previousPage} disabled={currentPage == 1}>
-                        <AngleLeftOutline class="size-4"/>              
+
+                    <Button class="hover:cursor-pointer disabled:cursor-not-allowed" disabled={page.number <= 0}
+                            onclick={() => onPreviousPage()}>
+                        <AngleLeftOutline/>
                     </Button>
-                    <Button class="size-6 hover:cursor-pointer disabled:cursor-not-allowed" onclick={nextPage} disabled={currentPage == totalPages}>
-                        <AngleRightOutline class="size-4"/>                 
+
+                    <Button class="hover:cursor-pointer disabled:cursor-not-allowed" disabled={true}>
+                        {`${page.number} / ${page.totalPages - 1}`}
                     </Button>
-                    <Button class="size-6 hover:cursor-pointer disabled:cursor-not-allowed" onclick={lastPage} disabled={currentPage == totalPages}>                 
-                        <ChevronDoubleRightOutline class="size-4"/>                
+
+                    <Button class="hover:cursor-pointer disabled:cursor-not-allowed"
+                            disabled={page.number >= page.totalPages - 1} onclick={() => onNextPage()}>
+                        <AngleRightOutline/>
                     </Button>
-                </div>
-            </div> 
+
+                    <Button class="hover:cursor-pointer disabled:cursor-not-allowed"
+                            disabled={page.number >= page.totalPages - 1} onclick={() => onLastPage()}>
+                        <ChevronDoubleRightOutline/>
+                    </Button>
+                </ButtonGroup>
+            {/if}
         </div>
-    </div>
+    {/if}
 </Card>
