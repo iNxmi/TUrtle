@@ -47,12 +47,15 @@ interface GetController<Entity : CRUDEntity, Response : GetResponse> {
             Sort.by(sortDirection, sortProperty)
         } ?: Sort.unsorted()
 
-        val collection = pageNumber?.let {
+        if(pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            service.getPage(rsql = rsql, pageable = pageable)
-        } ?: service.getAll(rsql = rsql, sort = sort)
+            val page = service.getPage(rsql = rsql, pageable = pageable)
+            val result = page.map { mapper.get(it) }
+            return ResponseEntity.ok(result)
+        }
 
-        val result = collection.map { mapper.get(it) }
+        val entities =  service.getAll(rsql = rsql, sort = sort)
+        val result = entities.map { mapper.get(it) }
         return ResponseEntity.ok(result)
     }
 
