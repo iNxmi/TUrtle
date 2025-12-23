@@ -1,5 +1,5 @@
 import SimpleDB from './SimpleDB';
-import { UserDatabase } from './UserDatabase';
+import { UserDatabase } from './users/UserDatabase';
 import { EventDatabase } from './events/EventDatabase';
 const sharedDB = new SimpleDB();
 

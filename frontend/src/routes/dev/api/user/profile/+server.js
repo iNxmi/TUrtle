@@ -1,4 +1,4 @@
-import * as db from '$lib/server/UserDatabase.js';
+import * as db from '$lib/server/users/UserDatabase.js';
 import {json} from '@sveltejs/kit';
 
 export async function GET({request}) {

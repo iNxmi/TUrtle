@@ -1,5 +1,4 @@
-import { data } from './sampleUsers.js';
-import SimpleDB from './SimpleDB.js';
+import { users } from './sampleUsers.js';
 
 export class UserDatabase {
 	constructor(db) {
@@ -8,8 +7,9 @@ export class UserDatabase {
 	}
 
 	seedDatabase() {
-		data.forEach((user) =>
+		users.forEach((user) =>
 			this.db.create('users', {
+				id: user.id,
 				firstName: user.firstName,
 				lastName: user.lastName,
 				studentId: user.studentId,

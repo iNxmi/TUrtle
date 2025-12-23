@@ -1,5 +1,6 @@
-export const data = [
+export const users = [
 	{
+		id: "0",
 		firstName: 'Olivia',
 		lastName: 'Martin',
 		email: 'olivia.m@example.edu',
@@ -7,6 +8,7 @@ export const data = [
 		username: 'omartin'
 	},
 	{
+		id: "1",
 		firstName: 'Liam',
 		lastName: 'Garcia',
 		email: 'liam.garcia@example.edu',
@@ -14,6 +16,7 @@ export const data = [
 		username: 'liam.g'
 	},
 	{
+		id: "2",
 		firstName: 'Sophia',
 		lastName: 'Rodriguez',
 		email: 'sophia.rod@example.edu',
@@ -21,6 +24,7 @@ export const data = [
 		username: 'srodriguez'
 	},
 	{
+		id: "3",
 		firstName: 'Noah',
 		lastName: 'Miller',
 		email: 'noah.miller@example.edu',
@@ -28,6 +32,7 @@ export const data = [
 		username: 'nmiller04'
 	},
 	{
+		id: "4",
 		firstName: 'Emma',
 		lastName: 'Martinez',
 		email: 'emma.martinez@example.edu',
@@ -35,6 +40,7 @@ export const data = [
 		username: 'emartinez'
 	},
 	{
+		id: "5",
 		firstName: 'Jackson',
 		lastName: 'Hernandez',
 		email: 'jackson.h@example.edu',
@@ -42,6 +48,7 @@ export const data = [
 		username: 'jhernandez'
 	},
 	{
+		id: "6",
 		firstName: 'Ava',
 		lastName: 'Lopez',
 		email: 'ava.lopez@example.edu',
@@ -49,6 +56,7 @@ export const data = [
 		username: 'alopez'
 	},
 	{
+		id: "7",
 		firstName: 'Lucas',
 		lastName: 'Gonzales',
 		email: 'lucas.gon@example.edu',
@@ -56,6 +64,7 @@ export const data = [
 		username: 'lgonsales'
 	},
 	{
+		id: "8",
 		firstName: 'Isabella',
 		lastName: 'Wilson',
 		email: 'isabella.w@example.edu',
@@ -63,6 +72,7 @@ export const data = [
 		username: 'isawilson'
 	},
 	{
+		id: "9",
 		firstName: 'Ethan',
 		lastName: 'Anderson',
 		email: 'ethan.a@example.edu',
