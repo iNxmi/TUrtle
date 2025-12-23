@@ -192,7 +192,7 @@
 
             {#if user !== {} }
                 <Heading tag="h5" class="text-center">
-					<Span class="text-csw">
+					<Span class="text-csw!">
 						{`${user.firstName} ${user.lastName}`}
 					</Span>
                 </Heading>

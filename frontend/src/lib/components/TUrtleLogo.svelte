@@ -22,13 +22,13 @@
 
 <button id="export-target" class="flex flex-col items-center select-none w-max h-max" onclick={rotate}>
     <Heading class="inline-block">
-        <Span class="text-7xl text-csw">
+        <Span class="text-7xl text-csw!">
             CSW
         </Span>
     </Heading>
 
     <Heading class="inline-block text-2xl tracking-[.35em]">
-        <Span class="text-csw">
+        <Span class="text-csw!">
             TUrtle
         </Span>
     </Heading>
