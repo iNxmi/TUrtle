@@ -172,7 +172,6 @@
 
 </script>
 
-{@debug isOpen}
 <SidebarButton onclick={() => isOpen = !isOpen} class="mb-2" />
 <div class="flex">
     <Sidebar
