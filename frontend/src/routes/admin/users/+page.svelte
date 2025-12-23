@@ -40,19 +40,14 @@
 
     import {page} from "$app/state";
 
-    const sortProperty = $derived(
-        () => $page.url.searchParams.get("sortProperty")
-    );
-
-    const sortDirection = $derived(
-        () => $page.url.searchParams.get("sortDirection")
-    );
+    const sortProperty = page.url.searchParams.get("sortProperty")
+    const sortDirection = page.url.searchParams.get("sortDirection")
 </script>
 
 <div class="flex flex-col gap-10">
     <Heading tag="h2" class="text-center">{m.admin_users__title()}</Heading>
 
-    <!-- TODO improve redirect maybe with svelte or js props and js dynamis (this removes the feature to copy any url with search or pagination queries) -->
+    <!-- TODO improve redirect maybe with svelte or js props and js dynamis (this removes the feature to copy any url with search, pagination or sort queries) -->
     <TUrtleTable
             headers={headers}
             items={items}

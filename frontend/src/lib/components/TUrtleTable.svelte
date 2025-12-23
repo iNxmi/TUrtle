@@ -27,8 +27,6 @@
         ArrowDownOutline
     } from 'flowbite-svelte-icons';
 
-    const sizes = [25, 50, 100, 200]
-
     const noop = () => {
     };
 
@@ -96,15 +94,18 @@
     <Table hoverable>
         <TableHead>
             {#each headers as header}
-                <TableHeadCell onclick={() => onHeaderClicked(header.id)}>
-                    {header.display}
-                    {#if header.id === sortProperty && sortDirection === "ASC"}
-                        <ArrowUpOutline/>
-                    {:else if header.id === sortProperty && sortDirection === "DESC"}
-                        <ArrowDownOutline/>
-                    {:else}
-                        <CaretSortOutline/>
-                    {/if}
+                <TableHeadCell class="hover:cursor-pointer" onclick={() => onHeaderClicked(header.id)}>
+                    <div class="flex items-center gap-1">
+                        <span>{header.display}</span>
+
+                        {#if header.id === sortProperty && sortDirection === "ASC"}
+                            <ArrowUpOutline/>
+                        {:else if header.id === sortProperty && sortDirection === "DESC"}
+                            <ArrowDownOutline/>
+                        {:else}
+                            <CaretSortOutline/>
+                        {/if}
+                    </div>
                 </TableHeadCell>
             {/each}
         </TableHead>
@@ -124,7 +125,7 @@
 
         <div class="flex justify-between p-2">
             {#if !hideCount}
-                <!--TODO remove or fix the numbers being shown-->
+                <!--TODO fix the numbers being shown-->
                 <P class="flex items-center">
                     {page.totalPages * page.size} - {page.totalElements + page.number + 25} ({page.totalElements})
                 </P>
