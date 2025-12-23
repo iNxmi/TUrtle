@@ -16,7 +16,7 @@ class TemplateEntity(
     var description: String,
 
     @Column(columnDefinition = "TEXT")
-    var markdown: String
+    var content: String
 
 ) : CRUDEntity() {
 
@@ -24,7 +24,7 @@ class TemplateEntity(
         //TODO add variables to insert into template
         val variables: Map<String, Any?> = mapOf()
 
-        val template = Mustache.compiler().compile(markdown)
+        val template = Mustache.compiler().compile(content)
         return template.execute(variables)
     }
 

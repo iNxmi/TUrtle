@@ -12,14 +12,14 @@ abstract class TemplateMapper : CRUDMapper<TemplateEntity, CreateTemplateRequest
     override fun create(request: CreateTemplateRequest) = TemplateEntity(
         name = request.name,
         description = request.description,
-        markdown = request.markdown
+        content = request.content
     )
 
     override fun get(entity: TemplateEntity) = GetTemplateResponse(
         id = entity.id,
         name = entity.name,
         description = entity.description,
-        markdown = entity.markdown,
+        content = entity.content,
         createdAt = entity.createdAt
     )
 
@@ -29,7 +29,7 @@ abstract class TemplateMapper : CRUDMapper<TemplateEntity, CreateTemplateRequest
     ): TemplateEntity {
         request.name?.let { entity.name = it }
         request.description?.let { entity.description = it }
-        request.markdown?.let { entity.markdown = it }
+        request.content?.let { entity.content = it }
         return entity
     }
 

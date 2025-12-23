@@ -31,7 +31,7 @@
         CalendarMonthSolid,
         DesktopPcSolid,
         HomeSolid,
-        InfoCircleSolid,
+        PaperClipOutline,
         NewspaperSolid,
         UserHeadsetSolid,
         UserSettingsSolid,
@@ -159,6 +159,11 @@
         label: m.sidebar_admin_roles(),
         href: '/admin/roles',
         icon: LockSolid
+    }, {
+        permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_TEMPLATES",
+        label: "_manage_templates_",
+        href: '/admin/templates',
+        icon: PaperClipOutline
     }];
 
 </script>

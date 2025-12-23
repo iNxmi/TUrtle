@@ -1,13 +1,12 @@
 import {create} from "$lib/page.js"
 
 export const load = create(
-    "/support",
+    "/templates",
     [
         "id",
-        "urgency",
-        "category",
-        "subject",
-        "email",
+        "name",
+        "description",
+        "content",
         "createdAt"
     ]
 )

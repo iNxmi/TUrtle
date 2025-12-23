@@ -1,10 +1,12 @@
-import request from "$lib/api/api.js";
-import { checkAuthorization } from "$lib/utils";
+import {create} from "$lib/page.js"
 
-export async function load({url}) {
-    const response = await request("/exceptions?pageNumber=0");
-    checkAuthorization(response, url.pathname);
-    const payload = await response.json();
-
-    return {page: payload};
-}
+export const load = create(
+    "/exceptions",
+    [
+        "id",
+        "endpoint",
+        "exception",
+        "message",
+        "createdAt"
+    ]
+)

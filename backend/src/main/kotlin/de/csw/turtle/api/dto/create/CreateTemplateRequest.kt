@@ -3,5 +3,5 @@ package de.csw.turtle.api.dto.create
 data class CreateTemplateRequest(
     val name: String,
     val description: String,
-    val markdown: String
+    val content: String
 ) : CreateRequest

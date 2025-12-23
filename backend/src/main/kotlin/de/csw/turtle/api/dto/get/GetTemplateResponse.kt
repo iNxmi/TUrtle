@@ -7,7 +7,7 @@ data class GetTemplateResponse(
 
     val name: String?,
     val description: String?,
-    val markdown: String?,
+    val content: String?,
 
     override val createdAt: Instant?
 ) : GetResponse
