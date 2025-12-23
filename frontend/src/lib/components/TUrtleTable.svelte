@@ -125,7 +125,6 @@
 
         <div class="flex justify-between p-2">
             {#if !hideCount}
-                <!--TODO fix the numbers being shown-->
                 <P class="flex items-center">
                     {page.number * page.size + 1} - {Math.min((page.number + 1) * page.size, page.totalElements)} ({page.totalElements})
                 </P>
