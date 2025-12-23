@@ -2,7 +2,7 @@
 	import { getContext, onMount } from 'svelte';
 	import request from '$lib/api/api';
 	import {fetchRoomBookings, convertEventToFrontend} from '$lib/utils'
-	import EventDetailsModal from './EventDetailsModal.svelte';
+	import EventDetailsModal from '$lib/components/EventDetailsModal.svelte';
 	import { Calendar } from '@fullcalendar/core';
 	import timeGridPlugin from '@fullcalendar/timegrid';
 	import listPlugin from '@fullcalendar/list';

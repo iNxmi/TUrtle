@@ -13,6 +13,7 @@
         Hr,
         Select,
         Sidebar,
+        SidebarButton,
         SidebarDropdownItem,
         SidebarDropdownWrapper,
         Span,
@@ -75,6 +76,9 @@
         darkmode = !darkmode;
         document.documentElement.data
     }
+
+    let innerWidth = $state();
+    let isOpen = $derived(!innerWidth || innerWidth >= 768);
 
     const itemsPublic = [{
         permission: "FRONTEND__SIDEBAR_ITEM__HOME",
@@ -168,13 +172,15 @@
 
 </script>
 
+{@debug isOpen}
+<SidebarButton onclick={() => isOpen = !isOpen} class="mb-2" />
 <div class="flex">
     <Sidebar
-            alwaysOpen
             {activeUrl}
+            isOpen={isOpen}
             isSingle={false}
             backdrop={false}
-            isOpen={true}
+            closeSidebar={() => isOpen = false}
             position="static"
             class="min-w-64 min-h-svh"
     >
@@ -267,3 +273,5 @@
         <Footer/>
     </div>
 </div>
+
+<svelte:window bind:innerWidth={innerWidth} />
