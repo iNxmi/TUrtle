@@ -17,7 +17,7 @@
 </script>
 
 <div class="flex flex-col gap-10">
-    <Heading tag="h2" class="text-center">{m.admin_users__title()}</Heading>
+    <Heading tag="h2" class="text-center">{m.admin_auditlogs__title()}</Heading>
 
     <TableView
             endpoint="/admin/auditlogs"

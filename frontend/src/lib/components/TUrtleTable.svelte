@@ -127,7 +127,7 @@
             {#if !hideCount}
                 <!--TODO fix the numbers being shown-->
                 <P class="flex items-center">
-                    {page.totalPages * page.number} - {page.totalElements + page.number + 25} ({page.totalElements})
+                    {page.number * page.size + 1} - {Math.min((page.number + 1) * page.size, page.totalElements)} ({page.totalElements})
                 </P>
             {/if}
 

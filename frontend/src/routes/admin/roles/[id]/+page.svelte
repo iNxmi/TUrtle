@@ -18,11 +18,6 @@
     </Label>
 
     <Label>
-        <span>{m.admin_roles_id__color_label()}</span>
-        <Input type="text" value={role.color} disabled/>
-    </Label>
-
-    <Label>
         <span>{m.admin_roles_id__permissions_label()}</span>
         <Textarea class="w-full" value={role.permissions.join("\r\n")} disabled/>
     </Label>
