@@ -144,6 +144,140 @@
     box-shadow: none !important;
 }
 
+.markdown { 
+    a:link{
+    color: var(--color-blue-500);
+    text-decoration: underline;
+    cursor: auto;
+    }
+    blockquote{
+        display: block;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+    del{
+        text-decoration: line-through;
+    }
+    em{
+        font-style: italic;
+    }
+    h1{
+        display: block;
+        font-size: 2em;
+        margin-top: 0.67em;
+        margin-bottom: 0.67em;
+        margin-left: 0;
+        margin-right: 0;
+        font-weight: bold;
+    }
+    h2{
+        display: block;
+        font-size: 1.5em;
+        margin-top: 0.83em;
+        margin-bottom: 0.83em;
+        margin-left: 0;
+        margin-right: 0;
+        font-weight: bold;
+    }
+    h3{
+        display: block;
+        font-size: 1.17em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-left: 0;
+        margin-right: 0;
+        font-weight: bold;
+    }
+    img{
+        display: inline-block;
+    }
+    p{
+        display: block;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    hr{
+        display: block;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        margin-left: auto;
+        margin-right: auto;
+        border-style: inset;
+        border-width: 1px;
+    }
+    code{
+        font-family: monospace;
+    }
+    pre{
+        display: block;
+        font-family: monospace;
+        white-space: pre;
+        margin: 1em 0;
+    }
+    li{
+        display: list-item;
+    }
+    ol{
+        display: block;
+        list-style-type: decimal;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 40px;
+    }
+    span{
+        display: inline;
+    }
+    strong{
+        font-weight: bold;
+    }
+    table{
+        display: table;
+        border-collapse: separate;
+        border-spacing: 2px;
+        border-color: gray;
+    }
+    tbody{
+        display: table-row-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+    td{
+        display: table-cell;
+        vertical-align: inherit;
+    }
+    th{
+        display: table-cell;
+        vertical-align: inherit;
+        font-weight: bold;
+        text-align: center;
+    }
+    thead{
+        display: table-header-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+    tr{
+        display: table-row;
+        vertical-align: inherit;
+        border-color: inherit;
+    }
+    ul{
+        display: block;
+        list-style-type: disc;
+        margin-top: 1em;
+        margin-bottom: 1 em;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 40px;
+    }
+    
+}
 @layer base {
     /* disable chrome cancel button */
     input[type="search"]::-webkit-search-cancel-button {

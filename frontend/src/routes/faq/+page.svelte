@@ -1,22 +1,21 @@
 <script>
     import {Heading, A, Accordion, AccordionItem} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
-    import Markdown from "svelte-exmarkdown";
-
+    import Markdown from '$lib/components/Markdown.svelte';
     let {data} = $props();
-    const all = data.all;
+    let all = $derived(data.all);
 </script>
 
 <div class="flex flex-col align-center gap-10">
     <Heading class="text-center m-0 p-0" tag="h3">
         {m.faq__title()}
     </Heading>
-
+    
     <Accordion flush>
         {#each all as faq, index}
             <AccordionItem>
                 {#snippet header()}{`${index + 1}. ${faq.title}`}{/snippet}
-                <Markdown md={faq.content}/>
+               <Markdown md={faq.content}/>
             </AccordionItem>
         {/each}
     </Accordion>
