@@ -43,20 +43,16 @@ interface GetController<Entity : CRUDEntity, Response : GetResponse> {
         if (permissionGet != null)
             permissionService.check(permissionGet!!)
 
-        val sort = if (sortProperty == null) {
-            Sort.unsorted()
-        } else {
+        val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
-        }
+        } ?: Sort.unsorted()
 
-        if (pageNumber != null) {
+        val collection = pageNumber?.let {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = service.getPage(rsql = rsql, pageable = pageable)
-            return ResponseEntity.ok(page.map { mapper.get(it) })
-        }
+            service.getPage(rsql = rsql, pageable = pageable)
+        } ?: service.getAll(rsql = rsql, sort = sort)
 
-        val entities = service.getAll(rsql = rsql, sort = sort)
-        val result = entities.map { mapper.get(it) }
+        val result = collection.map { mapper.get(it) }
         return ResponseEntity.ok(result)
     }
 
