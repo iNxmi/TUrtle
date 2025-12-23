@@ -21,7 +21,10 @@
         ChevronDoubleRightOutline,
         PlusOutline,
         SearchOutline,
-        RefreshOutline
+        RefreshOutline,
+        CaretSortOutline,
+        ArrowUpOutline,
+        ArrowDownOutline
     } from 'flowbite-svelte-icons';
 
     const sizes = [25, 50, 100, 200]
@@ -34,6 +37,9 @@
         items = [],
         page = {},
 
+        sortProperty,
+        sortDirection,
+
         onCreate = noop,
         onSearch = noop,
         onReload = noop,
@@ -41,6 +47,7 @@
         onPreviousPage = noop,
         onNextPage = noop,
         onLastPage = noop,
+        onHeaderClicked = noop,
 
         hideAdd = false,
         hideReload = false,
@@ -60,7 +67,7 @@
 <Card class="min-w-full max-h-full overflow-clip">
 
     {#if !hideSearch || !hideAdd || !hideReload}
-        <div class="flex flex-row justify-end p-2 gap-2">
+        <div class="flex flex-row gap-2 justify-end p-2 ">
             {#if !hideSearch}
                 <ButtonGroup class="flex-1" disabled={disableSearch}>
                     <Input placeholder={`_search_`} bind:value={search} disabled={disableSearch}/>
@@ -89,7 +96,16 @@
     <Table hoverable>
         <TableHead>
             {#each headers as header}
-                <TableHeadCell>{header}</TableHeadCell>
+                <TableHeadCell onclick={() => onHeaderClicked(header.id)}>
+                    {header.display}
+                    {#if header.id === sortProperty && sortDirection === "ASC"}
+                        <ArrowUpOutline/>
+                    {:else if header.id === sortProperty && sortDirection === "DESC"}
+                        <ArrowDownOutline/>
+                    {:else}
+                        <CaretSortOutline/>
+                    {/if}
+                </TableHeadCell>
             {/each}
         </TableHead>
         <TableBody>

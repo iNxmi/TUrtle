@@ -4,10 +4,10 @@
     import TUrtleTable from '$lib/components/TUrtleTable.svelte';
 
     const headers = [
-        "_template_id_",
-        "_template_name_",
-        "_template_description_",
-        "_template_created_at_",
+        m.admin_templates__id_label(),
+        m.admin_templates__name_label(),
+        m.admin_templates__description_label(),
+        m.admin_templates__created_at_label()
     ]
 
     let {data} = $props();
@@ -36,7 +36,7 @@
 </script>
 
 <div class="flex flex-col gap-10">
-    <Heading tag="h2" class="text-center">_manage_templates_</Heading>
+    <Heading tag="h2" class="text-center">{m.admin_templates__title()}</Heading>
 
     <!-- TODO improve redirect maybe with svelte or js props and js dynamis (this removes the feature to copy any url with search or pagination queries) -->
     <TUrtleTable
