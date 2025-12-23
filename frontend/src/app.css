@@ -94,6 +94,14 @@
     font-style: normal;
     font-display: swap;
 }
+.dark span{
+    color: #fff;
+}
+.dark .fc{
+    div{
+        color: #fff;
+    }
+}
 
 .overflow-y-scroll {
     scrollbar-color: #c2c2c2 #ffffff;
