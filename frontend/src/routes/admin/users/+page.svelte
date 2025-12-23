@@ -39,9 +39,7 @@
     }
 
     import {page} from "$app/state";
-
-    const sortProperty = page.url.searchParams.get("sortProperty")
-    const sortDirection = page.url.searchParams.get("sortDirection")
+    const searchParams = page.url.searchParams
 </script>
 
 <div class="flex flex-col gap-10">
@@ -49,24 +47,43 @@
 
     <!-- TODO improve redirect maybe with svelte or js props and js dynamis (this removes the feature to copy any url with search, pagination or sort queries) -->
     <TUrtleTable
-            headers={headers}
-            items={items}
-            page={pageInfo}
+        headers={headers}
+        items={items}
+        page={pageInfo}
 
-            sortProperty={sortProperty}
-            sortDirection={sortDirection}
+        sortProperty={searchParams.get("sortProperty")}
+        sortDirection={searchParams.get("sortDirection")}
 
-            onFirstPage={() => window.location.href = "/admin/users?pageNumber=0"}
-            onPreviousPage={() => window.location.href = `/admin/users?pageNumber=${pageInfo.number - 1}`}
-            onNextPage={() => window.location.href = `/admin/users?pageNumber=${pageInfo.number + 1}`}
-            onLastPage={() => window.location.href = `/admin/users?pageNumber=${pageInfo.totalPages - 1}`}
-            onSearch={(search) => window.location.href = `/admin/users?search=${search}`}
-            onHeaderClicked={(header) => {
-                if(sortDirection === "DESC") {
-                    window.location.href = `/admin/users?sortProperty=${header}&sortDirection=ASC`
-                } else {
-                    window.location.href = `/admin/users?sortProperty=${header}&sortDirection=DESC`
-                }
-            }}
+        onFirstPage={() => {
+            searchParams.set("pageNumber", 0)
+            window.location.href = `/admin/users?${searchParams.toString()}`
+        }}
+        onPreviousPage={() => {
+            searchParams.set("pageNumber", pageInfo.number - 1)
+            window.location.href = `/admin/users?${searchParams.toString()}`
+        }}
+        onNextPage={() => {
+            searchParams.set("pageNumber", pageInfo.number + 1)
+            window.location.href = `/admin/users?${searchParams.toString()}`
+        }}
+        onLastPage={() => {
+            searchParams.set("pageNumber", pageInfo.totalPages - 1)
+            window.location.href = `/admin/users?${searchParams.toString()}`
+        }}
+        onSearch={(search) => {
+            searchParams.set("search", search)
+            window.location.href = `/admin/users?${searchParams.toString()}`
+        }}
+        onHeaderClicked={(header) => {
+            searchParams.set("sortProperty", header)
+
+            if(searchParams.get("sortDirection") === "DESC") {
+                searchParams.set("sortDirection", "ASC")
+            } else {
+                searchParams.set("sortDirection", "DESC")
+            }
+
+            window.location.href = `/admin/users?${searchParams.toString()}`
+        }}
     />
 </div>

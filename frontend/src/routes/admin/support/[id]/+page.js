@@ -1,34 +1,9 @@
-import request from "$lib/api/api.js"
-import { checkAuthorization } from "$lib/utils";
+import request from "$lib/api/api.js";
 
-
-export async function load({url}) {
-    const parameters = new URLSearchParams()
-
-    const rsql = url.searchParams.get("rsql");
-    if(rsql != null)
-        parameters.set("rsql", rsql)
-
-    const pageNumber = url.searchParams.get("pageNumber") || "0";
-    if(pageNumber != null)
-        parameters.set("pageNumber", pageNumber)
-
-    const pageSize = url.searchParams.get("pageSize");
-    if(pageSize != null)
-        parameters.set("pageSize", pageSize)
-
-    const sortProperty = url.searchParams.get("sortProperty");
-    if(sortProperty != null)
-        parameters.set("sortProperty", sortProperty)
-
-    const sortDirection = url.searchParams.get("sortDirection");
-    if(sortDirection != null)
-        parameters.set("sortDirection", sortDirection)
-
-    const response = await request(`/support?${parameters}`);
-
-    checkAuthorization(response, url.pathname);
+export async function load({params}) {
+    const url = `/support/${params.id}`;
+    const response = await request(url);
     const payload = await response.json();
 
-    return {page: payload};
+    return {ticket: payload};
 }

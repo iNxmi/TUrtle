@@ -14,5 +14,11 @@ export default defineConfig({
             outdir: './src/lib/paraglide',
             strategy: ['localStorage', 'preferredLanguage', 'baseLocale']
         })
-    ]
+    ],
+    build: {
+        sourcemap: true, // 🔹 important for readable debugger
+    },
+    server: {
+        open: true, // optional: opens browser on dev
+    }
 });

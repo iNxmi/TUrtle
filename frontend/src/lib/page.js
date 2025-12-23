@@ -16,8 +16,7 @@ export function create(
         }
 
         const pageNumber = url.searchParams.get("pageNumber") || "0";
-        if (pageNumber != null)
-            parameters.set("pageNumber", pageNumber)
+        parameters.set("pageNumber", pageNumber)
 
         const pageSize = url.searchParams.get("pageSize");
         if (pageSize != null)
