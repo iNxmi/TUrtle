@@ -29,7 +29,7 @@
 		apiResponse = await response.json();
 		modal = true;
 
-		goto(page.url.searchParams.get('redirectTo') || '/user/dashboard');
+		goto(page.url.searchParams.get('redirectTo') || '/user/dashboard',{invalidateAll: true,});
 		// window.location.reload()
 	}
 </script>

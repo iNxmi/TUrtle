@@ -4,9 +4,9 @@
     import {onMount, setContext} from 'svelte';
     import {goto} from '$app/navigation';
 
-    let {data, children} = $props();
-    const permissions = data.permissions;
-    const user = data.user;
+    let {data, children} = $props();  
+    let permissions = $derived(data.permissions);
+    let user = $derived(data.user);
 
     import {
         Heading,
