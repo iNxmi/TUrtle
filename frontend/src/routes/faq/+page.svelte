@@ -12,7 +12,8 @@
 
     <Accordion flush multiple>
         {#each all as faq, index}
-            <AccordionItem contentClass="p-0 m-0">
+            <!-- <AccordionItem contentClass="p-0 m-0"> remove padding and margin but introduce some flowbite incompatibility which makes the animation choppy -->
+            <AccordionItem>
                 {#snippet header()}{`${index + 1}. ${faq.title}`}{/snippet}
                 <Markdown content={faq.content}/>
             </AccordionItem>

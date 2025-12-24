@@ -25,14 +25,14 @@ class ContentController(
     @GetMapping("/imprint")
     fun imprint() = ResponseEntity.ok(getContent("template.imprint"))
 
-    @GetMapping("/agb")
-    fun agb() = ResponseEntity.ok(getContent("template.agb"))
+    @GetMapping("/tos")
+    fun agb() = ResponseEntity.ok(getContent("template.tos"))
 
     @GetMapping("/about")
     fun about() = ResponseEntity.ok(getContent("template.about"))
 
-    @GetMapping("/dsgvo")
-    fun dsgvo() = ResponseEntity.ok(getContent("template.dsgvo"))
+    @GetMapping("/gdpr")
+    fun dsgvo() = ResponseEntity.ok(getContent("template.gdpr"))
 
     @GetMapping("/contact")
     fun contact() = ResponseEntity.ok(getContent("template.contact"))

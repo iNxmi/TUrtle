@@ -7,10 +7,11 @@
 <Footer class="border-none rounded-none">
     <FooterCopyright href="/" by="CSW TUrtle" year={2025}/>
     <FooterLinkGroup class="mt-3 flex flex-wrap items-center text-sm text-gray-500 sm:mt-0 dark:text-gray-400">
+        <FooterLink href="/imprint">{m.footer_imprint()}</FooterLink>
+        <FooterLink href="/tos">{m.footer_tos()}</FooterLink>
+        <FooterLink href="/gdpr">{m.footer_gdpr()}</FooterLink>
         <FooterLink href="/about">{m.footer_about()}</FooterLink>
-        <FooterLink href="/privacy">{m.footer_privacy_policy()}</FooterLink>
-        <FooterLink href="/faq">{m.support__faq_title()}</FooterLink>
-        <FooterLink href="/support">{m.footer_contact()}</FooterLink>
+        <FooterLink href="/contact">{m.footer_contact()}</FooterLink>
     </FooterLinkGroup>
     <div class="flex gap-5">
         <FooterIcon href="https://github.com/CSWTeam/TUrtle" target="_blank">

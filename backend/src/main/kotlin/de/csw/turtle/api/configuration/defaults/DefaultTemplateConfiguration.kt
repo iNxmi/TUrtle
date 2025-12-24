@@ -49,7 +49,7 @@ class DefaultTemplateConfiguration(
         Wir freuen uns auf Ihre Nachricht!
     """.trimIndent()
 
-    private val agb = """
+    private val tos = """
         Voraussetzung und Bedingung für den Zugang zur ComputerStudienWerkstatt und zur Nutzung ihrer Ressourcen ist die Anerkennung und Einhaltung der Hausordnung der TU Darmstadt sowie der Allgemeinen Benutzerordnung für die Informationsverarbeitungs- und Kommunikations-Infrastruktur der TU Darmstadt (online einsehbar).
         Die Zugangsberechtigung umfasst:
         - den Zutritt in die ComputerStudienWerkstatt durch das elektronische Zugangssystem,
@@ -77,7 +77,7 @@ class DefaultTemplateConfiguration(
         Sesink, Werner und Zentgraf, Claudia (2009): Die ComputerStudienWerkstatt eine Lern- und Arbeitsumgebung mit Atmosphäre. Darmstadt: Technische Universität Darmstadt.
     """.trimIndent()
 
-    private val dsgvo = """
+    private val gdpr = """
         **Informationen nach Artikel 13 der Datenschutzgrundverordnung (DSGVO)**
 
         1. Verantwortlicher der Datenverarbeitung
@@ -118,9 +118,9 @@ class DefaultTemplateConfiguration(
 
         service.create(CreateTemplateRequest("imprint", "default value by ag", imprint))
         service.create(CreateTemplateRequest("contact", "default value by ag", contact))
-        service.create(CreateTemplateRequest("agb", "default value by ag", agb))
+        service.create(CreateTemplateRequest("tos", "default value by ag", tos))
         service.create(CreateTemplateRequest("about", "default value by ag", about))
-        service.create(CreateTemplateRequest("dsgvo", "default value by ag", dsgvo))
+        service.create(CreateTemplateRequest("gdpr", "default value by ag", gdpr))
     }
 
 }

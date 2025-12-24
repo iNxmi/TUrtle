@@ -31,14 +31,14 @@ class DefaultSystemSettingsConfiguration(
             service.create(CreateSystemSettingRequest("template.imprint", template.id.toString()))
         }
 
-        if(service.getByKeyOrNull("template.dsgvo") == null) {
-            val template = templateService.getByName("dsgvo")
-            service.create(CreateSystemSettingRequest("template.dsgvo", template.id.toString()))
+        if(service.getByKeyOrNull("template.gdpr") == null) {
+            val template = templateService.getByName("gdpr")
+            service.create(CreateSystemSettingRequest("template.gdpr", template.id.toString()))
         }
 
-        if(service.getByKeyOrNull("template.agb") == null) {
-            val template = templateService.getByName("agb")
-            service.create(CreateSystemSettingRequest("template.agb", template.id.toString()))
+        if(service.getByKeyOrNull("template.tos") == null) {
+            val template = templateService.getByName("tos")
+            service.create(CreateSystemSettingRequest("template.tos", template.id.toString()))
         }
 
         if(service.getByKeyOrNull("template.contact") == null) {

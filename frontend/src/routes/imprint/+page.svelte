@@ -8,7 +8,7 @@
 </script>
 
 <div class="flex flex-col align-center gap-10">
-    <Heading class="text-center m-0 p-0" tag="h3">{m.about__title()}</Heading>
+    <Heading class="text-center m-0 p-0" tag="h3">{m.imprint__title()}</Heading>
 
     <Markdown {content}/>
 </div>

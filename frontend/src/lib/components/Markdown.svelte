@@ -4,6 +4,6 @@
     const {content} = $props();
 </script>
 
-<article class="prose">
+<div class="prose max-w-full text-justify">
     {@html marked.parse(content)}
-</article>
+</div>
