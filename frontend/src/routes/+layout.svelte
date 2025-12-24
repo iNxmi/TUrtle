@@ -38,7 +38,8 @@
         UserSettingsSolid,
         UsersGroupSolid,
         UserSolid,
-        LockSolid
+        LockSolid,
+        QuestionCircleSolid
     } from 'flowbite-svelte-icons';
 
     const languages = [
@@ -96,10 +97,10 @@
         href: '/auth/register',
         icon: UserSolid
     }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__SUPPORT",
-        label: m.sidebar_public_support(),
-        href: '/support',
-        icon: UserHeadsetSolid
+        permission: "FRONTEND__SIDEBAR_ITEM__FAQ",
+        label: m.sidebar_public_faq(),
+        href: '/faq',
+        icon: QuestionCircleSolid
     }];
     const itemsUser = [{
         permission: "FRONTEND__SIDEBAR_ITEM__DASHBOARD",

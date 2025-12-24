@@ -3,7 +3,6 @@
     import {m} from '$lib/paraglide/messages.js';
     import ReCAPTCHA from '$lib/components/ReCAPTCHA.svelte';
     import request from "$lib/api/api.js";
-    import Markdown from "svelte-exmarkdown";
 
     const urgencies = [
         {value: "LOW", name: m.support__urgency_low()},

@@ -1,9 +1,9 @@
 <script>
-    import Markdown from 'svelte-exmarkdown';
-    import {gfmPlugin } from 'svelte-exmarkdown/gfm'
-    let { md } = $props();
-    const plugins = [gfmPlugin()];
+    import {marked} from 'marked';
+
+    const {content} = $props();
 </script>
-<div class="markdown">
-    <Markdown {md} {plugins} />
-</div>
+
+<article class="prose">
+    {@html marked.parse(content)}
+</article>

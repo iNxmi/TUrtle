@@ -2,20 +2,19 @@
     import {Heading, A, Accordion, AccordionItem} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
     import Markdown from '$lib/components/Markdown.svelte';
+
     let {data} = $props();
     let all = $derived(data.all);
 </script>
 
 <div class="flex flex-col align-center gap-10">
-    <Heading class="text-center m-0 p-0" tag="h3">
-        {m.faq__title()}
-    </Heading>
-    
-    <Accordion flush>
+    <Heading class="text-center m-0 p-0" tag="h3">{m.faq__title()}</Heading>
+
+    <Accordion flush multiple>
         {#each all as faq, index}
-            <AccordionItem>
+            <AccordionItem contentClass="p-0 m-0">
                 {#snippet header()}{`${index + 1}. ${faq.title}`}{/snippet}
-               <Markdown md={faq.content}/>
+                <Markdown content={faq.content}/>
             </AccordionItem>
         {/each}
     </Accordion>

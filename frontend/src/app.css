@@ -15,25 +15,25 @@
     --font-sans: "Inter";
 
     --color-primary-50: var(--color-orange-50);
-        --color-primary-100: var(--color-orange-100);
-        --color-primary-200: var(--color-orange-200);
-        --color-primary-300: var(--color-orange-300);
-        --color-primary-400: var(--color-orange-400);
-        --color-primary-500: var(--color-orange-400);
-        --color-primary-600: var(--color-orange-400);
-        --color-primary-700: var(--color-orange-400);
-        --color-primary-800: var(--color-csw);
-        --color-primary-900: var(--color-csw);
-        --color-secondary-50: var(--color-csw);
-        --color-secondary-100: var(--color-csw);
-        --color-secondary-200: var(--color-csw);
-        --color-secondary-300: var(--color-csw);
-        --color-secondary-400: var(--color-csw);
-        --color-secondary-500: var(--color-csw);
-        --color-secondary-600: var(--color-csw);
-        --color-secondary-700: var(--color-orange-400);
-        --color-secondary-800: var(--color-csw);
-        --color-secondary-900: var(--color-csw);
+    --color-primary-100: var(--color-orange-100);
+    --color-primary-200: var(--color-orange-200);
+    --color-primary-300: var(--color-orange-300);
+    --color-primary-400: var(--color-orange-400);
+    --color-primary-500: var(--color-orange-400);
+    --color-primary-600: var(--color-orange-400);
+    --color-primary-700: var(--color-orange-400);
+    --color-primary-800: var(--color-csw);
+    --color-primary-900: var(--color-csw);
+    --color-secondary-50: var(--color-csw);
+    --color-secondary-100: var(--color-csw);
+    --color-secondary-200: var(--color-csw);
+    --color-secondary-300: var(--color-csw);
+    --color-secondary-400: var(--color-csw);
+    --color-secondary-500: var(--color-csw);
+    --color-secondary-600: var(--color-csw);
+    --color-secondary-700: var(--color-orange-400);
+    --color-secondary-800: var(--color-csw);
+    --color-secondary-900: var(--color-csw);
     --color-background-50: #F4FFF2; /*#eefff1;*/
     --color-text: #091602;
     --color-primary: #98dc9e;
@@ -51,7 +51,7 @@
 .dark {
     --font-sans: "Inter";
 
-    --color-primary-50:  var(--color-orange-50);
+    --color-primary-50: var(--color-orange-50);
     --color-primary-100: var(--color-orange-100);
     --color-primary-200: var(--color-orange-200);
     --color-primary-300: var(--color-orange-300);
@@ -62,7 +62,7 @@
     --color-primary-800: var(--color-csw); /*#cc4522;*/
     --color-primary-900: var(--color-csw); /*#a5371b; */
 
-    --color-secondary-50:  var(--color-orange-50);
+    --color-secondary-50: var(--color-orange-50);
     --color-secondary-100: var(--color-orange-100);
     --color-secondary-200: var(--color-orange-200);
     --color-secondary-300: var(--color-orange-300);
@@ -83,7 +83,7 @@
     --color-table-dark: #053105;
     --color-accent: #00c20d;
     --color-csw: #FF6A00;
-    
+
 }
 
 @font-face {
@@ -94,11 +94,13 @@
     font-style: normal;
     font-display: swap;
 }
-.dark span{
+
+.dark span {
     color: #fff;
 }
-.dark .fc{
-    div{
+
+.dark .fc {
+    div {
         color: #fff;
     }
 }
@@ -110,182 +112,59 @@
 .dark .fc-scrollgrid {
     scrollbar-color: auto;
 }
-.fc-scrollgrid  {
+
+.fc-scrollgrid {
     scrollbar-color: #c2c2c2 #e2e1e1;
 }
+
 .fc-event {
     cursor: pointer;
 }
 
 .dark .fc {
-  --fc-border-color: theme(--color-gray-800);
+    --fc-border-color: theme(--color-gray-800);
 }
+
 .dark .fc-timegrid-event-harness-inset .fc-timegrid-event, .fc-timegrid-event.fc-event-mirror, .fc-timegrid-more-link {
     box-shadow: none;
-    
+
 }
-.fc .fc-timegrid-slot-minor{
-  border-top-style: none;
+
+.fc .fc-timegrid-slot-minor {
+    border-top-style: none;
 }
+
 .fc .fc-button-primary {
     background-color: var(--color-primary-700);
-        border-color: var(--color-primary-700);
+    border-color: var(--color-primary-700);
     color: var(--fc-button-text-color);
 }
+
 .fc .fc-button-primary:disabled {
     background-color: var(--color-orange-300);
     border-color: var(--color-orange-300);
     color: var(--fc-button-text-color);
 }
+
 .fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
     background-color: var(--color-primary-800);
     border-color: var(--color-primary-800);
     color: var(--fc-button-text-color);
 }
+
 .fc .fc-button-primary:hover {
     background-color: var(--color-csw);
     border-color: var(--color-csw);
     color: var(--fc-button-text-color);
 }
+
 .fc .fc-button-primary:focus:not(:focus-visible) {
     outline: none !important;
     box-shadow: none !important;
 }
 
-.markdown { 
-    a:link{
-    color: var(--color-blue-500);
-    text-decoration: underline;
-    cursor: auto;
-    }
-    blockquote{
-        display: block;
-        margin-top: 1em;
-        margin-bottom: 1em;
-        margin-left: 40px;
-        margin-right: 40px;
-    }
-    del{
-        text-decoration: line-through;
-    }
-    em{
-        font-style: italic;
-    }
-    h1{
-        display: block;
-        font-size: 2em;
-        margin-top: 0.67em;
-        margin-bottom: 0.67em;
-        margin-left: 0;
-        margin-right: 0;
-        font-weight: bold;
-    }
-    h2{
-        display: block;
-        font-size: 1.5em;
-        margin-top: 0.83em;
-        margin-bottom: 0.83em;
-        margin-left: 0;
-        margin-right: 0;
-        font-weight: bold;
-    }
-    h3{
-        display: block;
-        font-size: 1.17em;
-        margin-top: 1em;
-        margin-bottom: 1em;
-        margin-left: 0;
-        margin-right: 0;
-        font-weight: bold;
-    }
-    img{
-        display: inline-block;
-    }
-    p{
-        display: block;
-        margin-top: 1em;
-        margin-bottom: 1em;
-        margin-left: 0;
-        margin-right: 0;
-    }
-    hr{
-        display: block;
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-        margin-left: auto;
-        margin-right: auto;
-        border-style: inset;
-        border-width: 1px;
-    }
-    code{
-        font-family: monospace;
-    }
-    pre{
-        display: block;
-        font-family: monospace;
-        white-space: pre;
-        margin: 1em 0;
-    }
-    li{
-        display: list-item;
-    }
-    ol{
-        display: block;
-        list-style-type: decimal;
-        margin-top: 1em;
-        margin-bottom: 1em;
-        margin-left: 0;
-        margin-right: 0;
-        padding-left: 40px;
-    }
-    span{
-        display: inline;
-    }
-    strong{
-        font-weight: bold;
-    }
-    table{
-        display: table;
-        border-collapse: separate;
-        border-spacing: 2px;
-        border-color: gray;
-    }
-    tbody{
-        display: table-row-group;
-        vertical-align: middle;
-        border-color: inherit;
-    }
-    td{
-        display: table-cell;
-        vertical-align: inherit;
-    }
-    th{
-        display: table-cell;
-        vertical-align: inherit;
-        font-weight: bold;
-        text-align: center;
-    }
-    thead{
-        display: table-header-group;
-        vertical-align: middle;
-        border-color: inherit;
-    }
-    tr{
-        display: table-row;
-        vertical-align: inherit;
-        border-color: inherit;
-    }
-    ul{
-        display: block;
-        list-style-type: disc;
-        margin-top: 1em;
-        margin-bottom: 1 em;
-        margin-left: 0;
-        margin-right: 0;
-        padding-left: 40px;
-    }
-    
-}
+/* .markdown has been replaced by tailwindcss 'prose' class */
+
 @layer base {
     /* disable chrome cancel button */
     input[type="search"]::-webkit-search-cancel-button {
