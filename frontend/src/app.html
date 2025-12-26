@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="%lang%" class="dark">
+<html lang="%lang%" class="light">
 <head>
     <title>CSW TUrtle</title>
     <link rel="icon" href="/images/favicon.svg"/>
@@ -8,9 +8,9 @@
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-    <script>
-        if (window.matchMedia)
-            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    <script> 
+    const darkmode = localStorage.getItem('darkmode');
+            if ( darkmode) {
                 document.documentElement.classList.remove('light', 'dark');
                 document.documentElement.classList.add('dark');
             }

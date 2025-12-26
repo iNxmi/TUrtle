@@ -61,20 +61,23 @@
         event.preventDefault();
 
         goto(`?locale=${language}`);
-        setTimeout(() => setLocale(language));
+        setTimeout(() => setLocale(language),20);
     }
 
     let activeUrl = $derived(page.url.pathname);
 
-    let darkmode = $state(false);
-    onMount(() => {
-        if (document.documentElement.className === 'dark') darkmode = true;
-    });
+    let darkmode = $state(localStorage.getItem('darkmode') || false);
+    console.log(localStorage.getItem('darkmode'));
+    /* onMount(() => {
+        if (localStorage.getItem('darkmode')) darkmode = true;
+    }); */
 
     function toggleDarkMode() {
-        document.documentElement.classList.remove(darkmode ? 'dark' : 'light');
-        document.documentElement.classList.add(darkmode ? 'light' : 'dark');
-        darkmode = !darkmode;
+       /*  darkmode = !darkmode; */
+        localStorage.setItem('darkmode', darkmode? "true": "");
+        document.documentElement.classList.remove(darkmode ? 'light' : 'dark');
+        document.documentElement.classList.add(darkmode ? 'dark' : 'light');
+        
         document.documentElement.data
     }
 
@@ -261,7 +264,7 @@
                     label={m.sidebar_category_settings()}
             >
                 <Select items={languages} bind:value={language} onchange={updateLanguage}/>
-                <Toggle onchange={toggleDarkMode}>_toggle_darkmode</Toggle>
+                <Toggle bind:checked={darkmode} onchange={toggleDarkMode}>_toggle_darkmode</Toggle>
             </SidebarDropdownWrapper>
         </div>
     </Sidebar>
