@@ -2,6 +2,7 @@
 	import { span } from "flowbite-svelte";
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
 
+
     let emojis = $state(["😈", "😃", "🎩", "👽", "💩", "❤️", "💎", "👂", "👍", "🐋", "🐶", "🐸", "❄", "🎉", "💿",
                     "🍉", "☎", "🎥", "✂", "⚽", "🚀", "💄", "🌂", "🍄", "🍀", "🚗", "🍕", "🍔", "🍨", "💣","🐧", "💼", "🌍", "🐝", "🏠", "⏰"]);
 
@@ -36,17 +37,16 @@
         }
         return pwd;
     }
-    const shuffle = (array) => {
-        for(let i=0; i<array.length; i++){
-            let j = parseInt((Math.random() * (array.length - i))) + i;
-            tmp = array[i];
-            array[i] = array[j];
-            array[j] = tmp;
+    const shuffle = () => {
+        for(let i=0; i<emojis.length; i++){
+            let j = parseInt((Math.random() * (emojis.length - i))) + i;
+            let tmp = emojis[i];
+            emojis[i] = emojis[j];
+            emojis[j] = tmp;
         }
-        emojis = array;
-        return array;
     }
-    //emojis = shuffle(emojis);
+    shuffle();
+    $inspect(emojis);
 </script>
 
 <div class="flex">
@@ -76,7 +76,6 @@
                     <button type="button" class="key w-[4rem] h-[4rem]  m-[0.9rem] rounded-lg bg-neutral-100 text-5xl" onclick={addEmoji}>{emoji}</button>
                 {/each}
             </div>
-
         </div>
     </div>
 </div>
