@@ -1,31 +1,82 @@
 <script>
 	import { span } from "flowbite-svelte";
+    import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
 
-    const emojis = ["😈", "😃", "🎩", "👽", "💩", "❤️", "💎", "👂", "👍", "🐋", "🐶", "🐸", "❄", "🎉", "💿",
-                    "🍉", "☎", "🎥", "✂", "⚽", "🚀", "💄", "🌂", "🍄", "🍀", "🚗", "🍕", "🍔", "🍨", "💣","🐧", "💼", "🌍", "🐝", "🏠", "⏰"];
+    let emojis = $state(["😈", "😃", "🎩", "👽", "💩", "❤️", "💎", "👂", "👍", "🐋", "🐶", "🐸", "❄", "🎉", "💿",
+                    "🍉", "☎", "🎥", "✂", "⚽", "🚀", "💄", "🌂", "🍄", "🍀", "🚗", "🍕", "🍔", "🍨", "💣","🐧", "💼", "🌍", "🐝", "🏠", "⏰"]);
+
+    let password = $state(["", "", "", "", ""]);
+    let password_index = 0;
     let input = "";
+
     const addEmoji = e => {
-        input += e.target.textContent;
+        password[password_index] = e.target.textContent;
+        password_index += 1;
+        if(password_index==5){
+            submitInput();
+        }
     }
 
     //richtige Backend logik noch implementieren
     const submitInput = () => {
         console.log(input);
-        input = "";
+        password = ["", "", "", "", ""];
+        password_index = 0;
     }
+    $inspect(password);
+
+    const backspace = () =>{
+        password_index -= 1;
+        password[password_index] = "";
+    }
+    const getPassword = () => {
+        pwd = "";
+        for(let i=0; i<5; i++){
+            pwd += password[i];
+        }
+        return pwd;
+    }
+    const shuffle = (array) => {
+        for(let i=0; i<array.length; i++){
+            let j = parseInt((Math.random() * (array.length - i))) + i;
+            tmp = array[i];
+            array[i] = array[j];
+            array[j] = tmp;
+        }
+        emojis = array;
+        return array;
+    }
+    //emojis = shuffle(emojis);
 </script>
 
-<section>
-    <div id="my-form" class="input-box text-2xl mb-[0.5rem]">
-        <form class="form-container" on:submit|preventDefault={submitInput}>
-            <input type="text" maxlength=6 name="input-box" required bind:value={input} class="input-box rounded-xl text-2xl h-[4rem] w-[22.7rem] mr-[0.3rem]" />
-            <button type="submit" class="btn bg-green-500 rounded-xl text-2xl p-[0.2em] h-[4rem] w-[7rem]">Send</button>
-        </form>
+<div class="flex">
+    <div class="flex flex-col gap-2 justify-between bg-neutral-100 w-1/4 h-screen p-4 pb-1">
+        <div class="flex flex-col items-center mt-[1rem]">
+            <TUrtleLogo />
+        </div>
+        <div>
+            <div class="flex fkex-col w-full aspect-square rounded-xl bg-[#FF6A00] justify-center items-center">
+                <p>QR-Code (?)</p>
+            </div>
+            <div class="self-center w-full mt-3 mb-3">
+                <button type="button" class="flex flex-col  bg-[#FF6A00] rounded-xl w-full h-[5rem] justify-center">Problem melden</button>
+            </div>
+        </div>
     </div>
-    <div id="emoji-cont" class="keyboard w-[30rem]">
-        {#each emojis as emoji}
-            <button type="button" class="key w-[4rem] h-[4rem] m-[0.5rem] rounded-lg bg-neutral-100 text-2xl" on:click={addEmoji}>{emoji}</button>
-        {/each}
-    </div>
-</section>
+    <div class="container h-screen flex justify-center items-center">
+        <div class="login-box bg-neutral-100 rounded-xl shadow-xl border-1 border-neutral-300 w-[40rem] h-[45rem] flex flex-col justify-around items-center p-10">
+            <div class="input-row rounded-xl w-full bg-[white] flex justify-between p-[0.5rem] mb-[2rem]">
+                {#each password as emoji}
+                    <span class="text-5xl"> {emoji === "" ? "🐵" : "🙈"} </span>
+                {/each}
+                <button type = "button" class="text-5xl" onclick={backspace}>🔙</button>
+            </div>
+            <div class="emoji-keyboard w-fill flex flex-wrap justify-around">
+                {#each emojis as emoji}
+                    <button type="button" class="key w-[4rem] h-[4rem]  m-[0.9rem] rounded-lg bg-neutral-100 text-5xl" onclick={addEmoji}>{emoji}</button>
+                {/each}
+            </div>
 
+        </div>
+    </div>
+</div>
