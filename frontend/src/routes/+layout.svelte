@@ -1,8 +1,7 @@
 <script>
     import '../app.css';
     import {page} from '$app/state';
-    import {onMount, setContext} from 'svelte';
-    import {goto} from '$app/navigation';
+    import {setContext} from 'svelte';
 
     let {data, children} = $props();  
     let permissions = $derived(data.permissions);
@@ -53,32 +52,25 @@
         {value: 'ro', name: '_romanian'}
     ];
 
-    let language = $state(page.url.searchParams.get('locale') || 'de');
+    let language = $state(localStorage.getItem('PARAGLIDE_LOCALE') || 'de');
 
     setContext('locale', () => language);
 
     function updateLanguage(event) {
         event.preventDefault();
 
-        goto(`?locale=${language}`);
-        setTimeout(() => setLocale(language),20);
+        setLocale(language);
     }
 
     let activeUrl = $derived(page.url.pathname);
 
     let darkmode = $state(localStorage.getItem('darkmode') || false);
-    console.log(localStorage.getItem('darkmode'));
-    /* onMount(() => {
-        if (localStorage.getItem('darkmode')) darkmode = true;
-    }); */
 
     function toggleDarkMode() {
-       /*  darkmode = !darkmode; */
         localStorage.setItem('darkmode', darkmode? "true": "");
         document.documentElement.classList.remove(darkmode ? 'light' : 'dark');
         document.documentElement.classList.add(darkmode ? 'dark' : 'light');
         
-        document.documentElement.data
     }
 
     let innerWidth = $state();
@@ -118,7 +110,7 @@
     }, {
         permission: "FRONTEND__SIDEBAR_ITEM__BOOK_DEVICE",
         label: m.sidebar_user_reservations(),
-        href: '/user/reservation',
+        href: '/user/devices',
         icon: DesktopPcSolid
     }, {
         permission: "FRONTEND__SIDEBAR_ITEM__BOOK_ROOM",
@@ -183,6 +175,7 @@
             isOpen={isOpen}
             isSingle={false}
             backdrop={false}
+            alwaysOpen={innerWidth > 768}
             closeSidebar={() => isOpen = false}
             position="static"
             class="min-w-64 min-h-svh"
