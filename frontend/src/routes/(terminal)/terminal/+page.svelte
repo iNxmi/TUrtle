@@ -1,5 +1,4 @@
 <script>
-	import { span } from "flowbite-svelte";
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
 
 
@@ -8,7 +7,7 @@
 
     let password = $state(["", "", "", "", ""]);
     let password_index = 0;
-    let input = "";
+
 
     const addEmoji = e => {
         password[password_index] = e.target.textContent;
@@ -20,7 +19,7 @@
 
     //richtige Backend logik noch implementieren
     const submitInput = () => {
-        console.log(input);
+        console.log(getPassword());
         password = ["", "", "", "", ""];
         password_index = 0;
     }
@@ -31,20 +30,23 @@
         password[password_index] = "";
     }
     const getPassword = () => {
-        pwd = "";
+        let pwd = "";
         for(let i=0; i<5; i++){
             pwd += password[i];
         }
         return pwd;
     }
     const shuffle = () => {
-        for(let i=0; i<emojis.length; i++){
-            let j = parseInt((Math.random() * (emojis.length - i))) + i;
-            let tmp = emojis[i];
-            emojis[i] = emojis[j];
-            emojis[j] = tmp;
+        let arr = emojis;
+        for(let i=0; i<arr.length; i++){
+            let j = parseInt((Math.random() * (arr.length - i))) + i;
+            let tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
         }
+        emojis = arr;
     }
+
     shuffle();
     $inspect(emojis);
 </script>
