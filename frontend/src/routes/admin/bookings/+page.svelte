@@ -4,7 +4,7 @@
 	import { fade } from 'svelte/transition';
 	import request from '$lib/api/api';
 	import { convertEventToBackend, convertEventToFrontend, fetchRoomBookings } from '$lib/utils';
-	import {Label, Input, Datepicker, Button, Textarea, Toggle, MultiSelect, Timepicker} from 'flowbite-svelte';
+	import {Label, Input, Datepicker, Button, Textarea, Toggle, MultiSelect, Timepicker,Heading, P} from 'flowbite-svelte';
 	import WhitelistDropdown from '$lib/components/WhitelistDropdown.svelte';
 	import {m} from '$lib/paraglide/messages.js';
 
@@ -293,8 +293,8 @@
 				{/if}
 				{:else}
 				<div class="flex flex-col h-full justify-center items-center">
-					<h1 class="text-2xl text-gray-500 dark:text-gray-400">{m.admin_bookings__select_event()}</h1>
-					<span class="mb-2.5">{m.or()}</span>
+					<Heading tag="h4" class="text-gray-500! dark:text-gray-400!">{m.admin_bookings__select_event()}</Heading>
+					<P class="text-gray-400 dark:text-gray-500! mb-2.5">{m.or()}</P>
 					<Button onclick={createEvent}>{m.admin_bookings__create_new_event()}</Button>
 				</div>
 				{/if}
