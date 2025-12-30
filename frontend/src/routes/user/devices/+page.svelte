@@ -236,10 +236,11 @@ function openLocker(){
                                 </Card>
                             </div>
                         {/if}
-                    {/if}
-            </div>
-            <div class="grow" id="calendar" hidden={true}></div>
-        </div>
-    </Modal>
-
-<LockerOpenModal lockerOpen={showLockerOpenModal} lockerNumber={5} />
+                        <Button class="mt-2">Confirm Reservation</Button>
+                </Card>
+                {/if}
+            {/if}
+        {/if}
+    </div>
+        <div class="grow" id="calendar" hidden={true}></div>
+</div>
