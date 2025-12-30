@@ -2,7 +2,7 @@
     import '../app.css';
     import {page} from '$app/state';
     import {onMount, setContext} from 'svelte';
-    import {goto} from '$app/navigation';
+
 
     let {data, children} = $props();  
     let permissions = $derived(data.permissions);
@@ -53,15 +53,14 @@
         {value: 'ro', name: '_romanian'}
     ];
 
-    let language = $state(page.url.searchParams.get('locale') || 'de');
+    let language = $state(localStorage.getItem('PARAGLIDE_LOCALE') || 'de');
 
     setContext('locale', () => language);
 
     function updateLanguage(event) {
         event.preventDefault();
 
-        goto(`?locale=${language}`);
-        setTimeout(() => setLocale(language),20);
+        setLocale(language);
     }
 
     let activeUrl = $derived(page.url.pathname);
@@ -118,7 +117,7 @@
     }, {
         permission: "FRONTEND__SIDEBAR_ITEM__BOOK_DEVICE",
         label: m.sidebar_user_reservations(),
-        href: '/user/reservation',
+        href: '/user/devices',
         icon: DesktopPcSolid
     }, {
         permission: "FRONTEND__SIDEBAR_ITEM__BOOK_ROOM",
@@ -182,6 +181,7 @@
             {activeUrl}
             isOpen={isOpen}
             isSingle={false}
+            alwaysOpen={innerWidth > 768}
             backdrop={false}
             closeSidebar={() => isOpen = false}
             position="static"
