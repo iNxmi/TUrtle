@@ -174,6 +174,7 @@
             {activeUrl}
             isOpen={isOpen}
             isSingle={false}
+            alwaysOpen={innerWidth > 768}
             backdrop={false}
             alwaysOpen={innerWidth > 768}
             closeSidebar={() => isOpen = false}
