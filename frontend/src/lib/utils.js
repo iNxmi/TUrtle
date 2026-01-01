@@ -51,7 +51,7 @@ export function checkAuthorization(response, redirectURL) {
         return;
 
     if (response.status === 401)
-        return redirect(307, `/auth/login?redirectTo=${redirectURL}`);
+        return redirect(307, redirectURL ? `/auth/login?redirectTo=${redirectURL}` : '/user/dashboard');
 
     return error(response.status, response.statusText);
 }
