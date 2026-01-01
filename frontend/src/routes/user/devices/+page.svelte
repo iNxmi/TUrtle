@@ -240,7 +240,7 @@ function openLocker(){
                 </Card>
                 {/if}
             {/if}
-        {/if}
+       <!--  {/if} -->
     </div>
         <div class="grow" id="calendar" hidden={true}></div>
 </div>
