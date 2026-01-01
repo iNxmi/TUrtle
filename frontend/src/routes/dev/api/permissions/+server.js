@@ -41,6 +41,8 @@ export async function GET(){
         "FRONTEND__SIDEBAR_ITEM__MANAGE_AUDIT_LOGS",
     
         "FRONTEND__SIDEBAR_ITEM__MANAGE_ROLES",
+        
+        "FRONTEND__SIDEBAR_ITEM__MANAGE_TEMPLATES"
     ];
 
     return json(itemsPublic)
