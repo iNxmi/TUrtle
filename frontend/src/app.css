@@ -139,6 +139,9 @@
     strong{
         color: var(--color-text);
     }
+    strong{
+        color: #fff;
+    }
 }
 .dark .fc {
     div {
