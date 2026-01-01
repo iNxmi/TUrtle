@@ -3,7 +3,7 @@
     import {m} from '$lib/paraglide/messages.js';
 
     let {data} = $props();
-    const user = data.user;
+    let user = $derived(data.user);
 </script>
 
 <form class="flex flex-col gap-5">

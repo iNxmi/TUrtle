@@ -10,11 +10,18 @@
     import request from '$lib/api/api';
     import LockerOpenModal from "$lib/components/LockerOpenModal.svelte";
     let { data } = $props();
-
+    
+    let deviceCategories = $derived(data.deviceCategories);
+    let devices = $derived(data.devices);
     let calendar = $state();
     let localeFunction = getContext('locale');
+    
+    let filteredDevices = $derived(devices.filter((device) => device.category === selectedCategory));
+    let formattedDevices = $derived(filteredDevices.map((device) =>  ({name: device.name, value: device.id, description: device.description})));
 
-	let localeString = $derived(localeFunction());
+    let formattedDeviceCategories = $derived(deviceCategories.map((category) => ({name: category.name, value: category.id})));
+	
+    let localeString = $derived(localeFunction());
 
     let showLockerOpenModal = $state(false);
 
@@ -75,11 +82,11 @@
 		}
 	});
 
-    let selectedCategory = $state(false);
-    let selectedType = $state(false);
-    let selectedDevice = $state(false);
-    let bookingSuccess = $state(false);
-    let lockerOpen = $state(false);
+    let selectedCategory = $state();
+   /*  let selectedType = $state(false); */
+    let selectedDevice = $state();
+    let bookingSuccess = $state();
+    let lockerOpen = $state();
 
     let bookingType = $state(true); //Instant Booking
     
@@ -111,51 +118,6 @@
 
   }
 
-
-    let testDeviceCategories = [{
-        value: "laptop", name:"Laptop"
-    },
-    {
-        value: "tablet", name:"Tablet"
-    }];  
-    let testLaptopTypes = [{
-        value: "acerLaptop", name:"Acer Laptop"
-    },
-    {
-        value: "asusLaptop", name:"Asus Laptop"
-    }];
-    let testLaptopDevicesAcer = [{
-        value: "acerNitro", name:"Acer Nitro"
-    },
-    {
-        value: "acerPredator", name:"Acer Predator"
-    }];
-    let testLaptopDevicesAsus = [{
-        value: "asusVivobook", name:"Asus Vivobook"
-    },
-    {
-        value: "asusZephyrus", name:"Asus ROG Zephyrus"
-    }];
-
-    let testTabletTypes = [{
-        value: "samsungTablet", name:"Samsung Tablet"
-    },
-    {
-        value: "iPad", name:"Apple iPad"
-    }];  
-    let testTabletDevicesSamsung = [{
-        value: "samsungS10", name:"Samsung Tab S10"
-    },
-    {
-        value: "samsungA10", name:"Samsung Tab A 10"
-    }];
-    let testTabletDevicesApple = [{
-        value: "iPad", name:"iPad"
-    },
-    {
-        value: "iPadPro", name:"IPad Pro"
-    }];
-
     function getDeviceType(){ 
         if(selectedCategory){
            
@@ -167,16 +129,15 @@
         return [{value:"error", name:"Fehler"}];
     }
 ;
-function getDevices(){
-    if(selectedType){
-        switch(selectedType){
+/* function getDevices(){ */
+       /*  switch(selectedType){
             case "acerLaptop": return testLaptopDevicesAcer;
             case "asusLaptop": return testLaptopDevicesAsus;
             case "samsungTablet": return testTabletDevicesSamsung;
             case "iPad": return testTabletDevicesApple;
-        }
-    }
-};
+        } */
+      /*  return formattedDevices; */
+/* }; */
 
 function openLocker(){
     showLockerOpenModal = true;
@@ -194,23 +155,22 @@ function openLocker(){
  });
 
 </script>
-
-<Heading class="text-center" tag="h2">_Device Booking_</Heading>
+<Heading class="text-center mb-5" tag="h2">_Device Booking_</Heading>
 <div class="flex flex-row gap-10">
     <div class="flex flex-col ml-10">
-        <Card class="m-4 p-4"> 
+        <Card shadow={selectedCategory ? false : "md"} class="m-4 p-4"> 
             <Heading tag="h4" class="text-center mb-2">_Choose the device category_</Heading>
-            <Select bind:value={selectedCategory} items={testDeviceCategories}></Select>
+            <Select bind:value={selectedCategory} items={formattedDeviceCategories} onchange={() => selectedDevice= ""}></Select>
         </Card>
         {#if selectedCategory}
-            <Card class="m-4 p-4"> 
-                <Heading tag="h4" class="text-center mb-2">_Choose the device type_</Heading>
-                <Select bind:value={selectedType} items={getDeviceType()}></Select>
-            </Card>
-            {#if selectedType}
-                <Card class="m-4 p-4"> 
+           <!--  <Card class="m-4 p-4">  -->
+               <!--  <Heading tag="h4" class="text-center mb-2">_Choose the device type_</Heading> -->
+                <!-- <Select bind:value={selectedType} items={getDeviceType()}></Select> -->
+           <!--  </Card> -->
+            <!-- {#if selectedType} -->
+                <Card shadow={selectedDevice ? false : "md"} class="m-4 p-4"> 
                     <Heading tag="h4" class="text-center mb-2">_Choose the device_</Heading>
-                    <Select  bind:value={selectedDevice} items={getDevices()}></Select>
+                    <Select se bind:value={selectedDevice} items={formattedDevices}></Select>
                 </Card>
                 {#if selectedDevice && !bookingSuccess}
                     <Card class="m-4 p-4"> 
@@ -249,7 +209,7 @@ function openLocker(){
                     </div>
                 {/if}
             {/if}
-        {/if}
+       <!--  {/if} -->
     </div>
         <div class="grow" id="calendar" hidden={true}></div>
 </div>
