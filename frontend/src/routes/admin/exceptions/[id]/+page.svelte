@@ -3,7 +3,7 @@
     import {m} from '$lib/paraglide/messages.js';
 
     let {data} = $props();
-    const exception = data.exception;
+    let exception = $derived(data.exception);
 </script>
 
 <form class="flex flex-col gap-5">
