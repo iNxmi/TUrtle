@@ -27,7 +27,6 @@
 		});
 
 		apiResponse = await response.json();
-		modal = true;
 
 		goto(page.url.searchParams.get('redirectTo') || '/user/dashboard',{invalidateAll: true,});
 		// window.location.reload()
@@ -67,10 +66,4 @@
 			>
 		</div>
 	</form>
-
-	<Modal title="API Response" bind:open={modal}>
-		{#if apiResponse}
-			<P class="whitespace-pre">{JSON.stringify(apiResponse, null, 2)}</P>
-		{/if}
-	</Modal>
 </div>
