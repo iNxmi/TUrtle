@@ -1,32 +1,32 @@
 <script>
     import TUrtleTable from '$lib/components/TUrtleTable.svelte';
 
-    const {
+   let {
         endpoint,
         headers = [],
         contentPage
     } = $props();
 
-    const items = [];
-    for (const entity of contentPage.content) {
+    let items = $derived.by(() => {
 
-        const values = []
-        for (const header of headers)
-            values.push(entity[header.id])
+        let items = [];
+        for (const entity of contentPage.content) {
+    
+            const values = []
+            for (const header of headers)
+                values.push(entity[header.id])
+    
+            const item = {
+                onClick: () => window.location.href = `${endpoint}/${entity.id}`,
+                values: values
+            };
+            items.push(item);     
+        }
+        return items;
+});
+    
 
-        const item = {
-            onClick: () => window.location.href = `${endpoint}/${entity.id}`,
-            values: values
-        };
-        items.push(item);
-    }
-
-    const pageInfo = {
-        size: contentPage.page.size,
-        number: contentPage.page.number,
-        totalElements: contentPage.page.totalElements,
-        totalPages: contentPage.page.totalPages
-    }
+   let pageInfo = $derived(contentPage.page);
 
     import {page} from "$app/state";
     const searchParams = page.url.searchParams

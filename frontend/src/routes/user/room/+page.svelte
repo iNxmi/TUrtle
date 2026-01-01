@@ -18,7 +18,7 @@
 
 	let selectedEvent = $state();
 
-	let selectedEventCreatorName;
+	let selectedEventCreatorName = $state();
 
 	$effect(() => {
 
