@@ -129,6 +129,9 @@
     li::marker{
         color: #fff;
     }
+    strong{
+        color: #fff;
+    }
 }
 .dark .fc {
     div {
