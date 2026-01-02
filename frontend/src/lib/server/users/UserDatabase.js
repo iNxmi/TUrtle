@@ -30,8 +30,8 @@ export class UserDatabase {
 		return user;
 	}
 
-	createUser(name, email) {
-		this.db.create('users', { name: name, email: email });
+	createUser(user) {
+		this.db.create('users', user);
 	}
 
 	deleteUser(id) {
