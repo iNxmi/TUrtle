@@ -1,10 +1,12 @@
 <script>
     import {m} from '$lib/paraglide/messages.js';
     import TableView from "$lib/components/TableView.svelte"
+    import NewUserModal from '$lib/components/NewUserModal.svelte';
 
     import {Heading} from "flowbite-svelte";
 
-    const {data} = $props();
+    let {data} = $props();
+    let showNewElementModal = $state(false);
 
     const headers = [
         {id: "id", display: m.admin_users__id_label()},
@@ -15,13 +17,13 @@
         {id: "createdAt", display: m.admin_users__created_at_label()},
     ]
 </script>
-
 <div class="flex flex-col gap-10">
     <Heading tag="h2" class="text-center">{m.admin_users__title()}</Heading>
-
     <TableView
             endpoint="/admin/users"
             headers={headers}
             contentPage={data.page}
+            bind:showNewElementModal={showNewElementModal}
     />
 </div>
+<NewUserModal bind:showModal={showNewElementModal} />
