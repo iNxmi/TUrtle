@@ -10,6 +10,7 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -27,26 +28,21 @@ class TemplateServiceTest {
     @InjectMockKs
     lateinit var templateService: TemplateService
 
-    @BeforeEach
-    fun setUp() {
-        MockKAnnotations.init(this)
-    }
-
     @Test
     fun getByNameTest(){
 
         val name: String = "test"
+        val entity = TemplateEntity("test", "test", "test")
 
-        every{repository.findByName("test")} returns TemplateEntity("test", "test", "test")
+        every{repository.findByName("test")} returns entity
 
         val result = templateService.getByName(name)
 
         assertEquals("test", result.name)
 
+        verify(exactly = 1) { repository.findByName(name)}
+
     }
-
-
-
 
 
 
