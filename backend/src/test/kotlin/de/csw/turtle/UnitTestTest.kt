@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder
 
 @ExtendWith(MockKExtension::class)
 
+// remove this class
+
 class UnitTestTest {
     @MockK
     lateinit var repository: UserRepository
