@@ -16,28 +16,27 @@ import org.junit.jupiter.api.extension.ExtendWith
 
 
 @ExtendWith(MockKExtension::class)
-
 class SupportTicketServiceTest {
     @MockK
     lateinit var repository: SupportTicketRepository
 
     @MockK
-    lateinit var mapper : SupportTicketMapper
+    lateinit var mapper: SupportTicketMapper
 
     @InjectMockKs
     lateinit var supportTicketService: SupportTicketService
 
     @Test
-    fun saveTicketTest(){
+    fun `create support ticket test`() {
         val request = mockk<CreateSupportTicketRequest>()
         val entity = mockk<SupportTicketEntity>()
 
-        every {mapper.create(request)} returns entity
+        every { mapper.create(request) } returns entity
         every { repository.save(entity) } returns entity
 
         val result = supportTicketService.create(request)
 
-        assertEquals(result, result)
+        assertEquals(entity, result)
         verify(exactly = 1) { repository.save(entity) }
     }
 
