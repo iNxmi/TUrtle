@@ -1,20 +1,8 @@
-import { events } from './sampleEvents';
-
 export class EventDatabase {
 	constructor(db) {
 		this.db = db;
 		this.collection = 'events';
 		this.id = 0;
-	}
-
-	seedDatabase() {
-		events.forEach((event, index) => {
-			this.db.create(this.collection, {
-				id: index.toString(),
-				...event
-			});
-			this.id += 1;
-		});
 	}
 
 	createEvent(event) {
