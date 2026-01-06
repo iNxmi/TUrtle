@@ -70,16 +70,16 @@
 <Card class="min-w-full max-h-full overflow-clip">
 
     {#if !hideSearch || !hideAdd || !hideReload}
-        <div class="flex flex-row gap-2 justify-end p-2 ">
+        <div class="flex flex-row gap-2 justify-between p-2">
             {#if !hideSearch}
-                <ButtonGroup class="flex-1" disabled={disableSearch}>
+                <ButtonGroup disabled={disableSearch}>
                     <Input placeholder={`_search_`} bind:value={search} disabled={disableSearch}/>
-                    <Button onclick={() => onSearch(search)}>
-                        <SearchOutline/>
+                    <Button class="cursor-pointer bg-orange-400"  onclick={() => onSearch(search)}>
+                        <SearchOutline class="text-white"/>
                     </Button>
                 </ButtonGroup>
             {/if}
-
+                <div class="flex flex-row gap-2 justify-end">
             {#if !hideReload}
                 <Button class="hover:cursor-pointer" onclick={() => onReload()} disabled={disableReload}>
                     <RefreshOutline/>
@@ -91,16 +91,17 @@
                     <PlusOutline/>
                 </Button>
             {/if}
+            </div>
         </div>
 
         <Hr class="m-0 p-0"/>
     {/if}
 
-    <Table hoverable>
-        <TableHead>
+    <Table bor hoverable>
+        <TableHead color="default">
             {#each headers as header}
                 <TableHeadCell class="hover:cursor-pointer" onclick={() => onHeaderClicked(header.id)}>
-                    <div class="flex items-center gap-1">
+                    <div class={header.id === sortProperty ? "flex items-center gap-1 text-orange-400" : "flex items-center gap-1"}>
                         <span>{header.display}</span>
 
                         {#if header.id === sortProperty && sortDirection === "ASC"}
@@ -116,7 +117,7 @@
         </TableHead>
         <TableBody>
             {#each items as item}
-                <TableBodyRow class="hover:cursor-pointer" onclick={() => item.onClick()}>
+                <TableBodyRow class="hover:cursor-pointer hover:text-orange-400 border-gray-200" onclick={() => item.onClick()}>
                     {#each item.values as value}
                         <TableBodyCell>{value}</TableBodyCell>
                     {/each}
@@ -130,7 +131,7 @@
 
         <div class="flex justify-between p-2">
             {#if !hideCount}
-                <P class="flex items-center">
+                <P class="flex items-center text-gray-500">
                     {page.number * page.size + 1} - {Math.min((page.number + 1) * page.size, page.totalElements)} ({page.totalElements})
                 </P>
             {/if}
@@ -147,9 +148,9 @@
                         <AngleLeftOutline/>
                     </Button>
 
-                    <Button class="hover:cursor-pointer disabled:cursor-not-allowed" disabled={true}>
-                        {`${page.number} / ${page.totalPages - 1}`}
-                    </Button>
+                    <div class="border border-gray-100 dark:border-gray-700 text-orange-400 px-3 inline-flex items-center">
+                         {`${page.number + 1} / ${page.totalPages}`}
+                    </div>
 
                     <Button class="hover:cursor-pointer disabled:cursor-not-allowed"
                             disabled={page.number >= page.totalPages - 1} onclick={() => onNextPage()}>
