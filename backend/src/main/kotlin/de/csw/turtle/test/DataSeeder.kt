@@ -72,7 +72,7 @@ class DataSeeder(
                 description = "this is the very long description",
                 start = start,
                 end = end,
-                creator = userService.get("admin").id
+                creatorId = userService.get("admin").id
             )
             roomBookingService.create(createRequest)
         }

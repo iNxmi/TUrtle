@@ -22,7 +22,7 @@ abstract class RoomBookingMapper :
             start = request.start,
             end = request.end,
             description = request.description,
-            creator = userService.get(request.creator)
+            creator = userService.get(request.creatorId)
         )
 
         request.accessibility?.let { entity.accessibility = it }
@@ -40,7 +40,7 @@ abstract class RoomBookingMapper :
         start = entity.start,
         end = entity.end,
         description = entity.description,
-        creator = entity.creator.id,
+        creatorId = entity.creator.id,
         accessibility = entity.accessibility,
         whitelist = entity.whitelist.map { it.id }.toSet(),
         createdAt = entity.createdAt
@@ -52,7 +52,7 @@ abstract class RoomBookingMapper :
         request.start?.let { entity.start = it }
         request.end?.let { entity.end = it }
         request.description?.let { entity.description = it }
-        request.creator?.let { entity.creator = userService.get(it) }
+        request.creatorId?.let { entity.creator = userService.get(it) }
         request.accessibility?.let { entity.accessibility = it }
 
         request.whitelist?.let { whitelist ->

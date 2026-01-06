@@ -30,6 +30,9 @@ class UserEntity(
     val auditLogs: Collection<AuditLogEntity> = emptySet(),
 
     @ManyToMany(mappedBy = "whitelist")
-    val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf()
+    val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf(),
+
+    @OneToMany(mappedBy = "user")
+    val deviceBookings: MutableSet<DeviceBookingEntity> = mutableSetOf()
 
 ) : CRUDEntity()
