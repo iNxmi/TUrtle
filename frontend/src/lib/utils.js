@@ -17,11 +17,24 @@ export function convertEventToBackend(calendarEvent) {
     };
 }
 
-export function convertEventToFrontend(backendEvent) {
+export function convertEventToFrontend(backendEvent, creator) {
     if (dev)
-        return backendEvent;
+        return {
+    ...backendEvent,
+    isAuthor: true
+    };
 
+    if(creator){
     return {
+        ...backendEvent,
+        ...(backendEvent.accessibility === "WHITELIST" ? {enableWhitelist: true, openForEveryone: false} :
+            backendEvent.accessibility === "UNLOCKED" ? {openToEveryone: true, enableWhitelist: false} :
+                {enableWhitelist: false, openForEveryone: false}),
+        ...(creator.id === backendEvent.creator || creator.roles.includes(4) ? {editable: true, color: '#FF6A00', isAuthor: true} : {editable: false, color: '#89ABE4', isAuthor: false}),
+        accessibility: undefined
+    };
+} else {
+    return { 
         ...backendEvent,
         ...(backendEvent.accessibility === "WHITELIST" ? {enableWhitelist: true, openForEveryone: false} :
             backendEvent.accessibility === "UNLOCKED" ? {openToEveryone: true, enableWhitelist: false} :
@@ -29,7 +42,7 @@ export function convertEventToFrontend(backendEvent) {
         accessibility: undefined
     };
 }
-
+}
 export async function fetchRoomBookings(info) {
     const url = `/roombookings/overlapping?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`
     const response = await request(url);
