@@ -5,6 +5,6 @@ import java.time.Instant
 class CreateDeviceBookingRequest(
     val start: Instant,
     val end: Instant,
-    val device: Long,
-    val user: Long
+    val deviceId: Long,
+    val userId: Long
 ) : CreateRequest

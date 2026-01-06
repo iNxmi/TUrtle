@@ -5,6 +5,6 @@ import java.time.Instant
 class PatchDeviceBookingRequest(
     val start: Instant? = null,
     val end: Instant? = null,
-    val device: Long? = null,
-    val user: Long? = null
+    val deviceId: Long? = null,
+    val userId: Long? = null
 ) : PatchRequest

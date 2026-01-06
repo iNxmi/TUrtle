@@ -8,7 +8,7 @@ data class CreateRoomBookingRequest(
     val description: String,
     val start: Instant,
     val end: Instant,
-    val creator: Long,
+    val creatorId: Long,
     val accessibility: RoomBookingEntity.Accessibility? = null,
     val whitelist: Set<Long>? = null
 ) : CreateRequest

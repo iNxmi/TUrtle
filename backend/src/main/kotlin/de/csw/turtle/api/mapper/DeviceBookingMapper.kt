@@ -21,16 +21,16 @@ abstract class DeviceBookingMapper : CRUDMapper<DeviceBookingEntity, CreateDevic
     override fun create(request: CreateDeviceBookingRequest) = DeviceBookingEntity(
         start = request.start,
         end = request.end,
-        device = deviceService.get(request.device),
-        user = userService.get(request.user),
+        device = deviceService.get(request.deviceId),
+        user = userService.get(request.userId),
     )
 
     override fun get(entity: DeviceBookingEntity) = GetDeviceBookingResponse(
         id = entity.id,
         start = entity.start,
         end = entity.end,
-        device = entity.device.id,
-        user = entity.user.id,
+        deviceId = entity.device.id,
+        userId = entity.user.id,
         createdAt = entity.createdAt
     )
 
@@ -40,8 +40,8 @@ abstract class DeviceBookingMapper : CRUDMapper<DeviceBookingEntity, CreateDevic
     ): DeviceBookingEntity {
         request.start?.let { entity.start = it }
         request.end?.let { entity.end = it }
-        request.device?.let { entity.device = deviceService.get(it) }
-        request.user?.let { entity.user = userService.get(it) }
+        request.deviceId?.let { entity.device = deviceService.get(it) }
+        request.userId?.let { entity.user = userService.get(it) }
         return entity
     }
 

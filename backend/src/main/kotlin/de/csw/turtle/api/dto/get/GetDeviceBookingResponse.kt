@@ -6,7 +6,7 @@ class GetDeviceBookingResponse(
     override val id: Long,
     val start: Instant,
     val end: Instant,
-    val device: Long,
-    val user: Long,
+    val deviceId: Long,
+    val userId: Long,
     override val createdAt: Instant
 ) : GetResponse
