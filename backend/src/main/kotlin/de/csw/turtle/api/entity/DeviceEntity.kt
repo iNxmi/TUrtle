@@ -20,6 +20,9 @@ class DeviceEntity(
     @JoinColumn(name = "locker_id")
     var locker: LockerEntity,
 
-    var acquiredAt: Instant
+    var acquiredAt: Instant,
+
+    @OneToMany(mappedBy = "device")
+    val bookings: MutableSet<DeviceBookingEntity> = mutableSetOf()
 
 ) : CRUDEntity()

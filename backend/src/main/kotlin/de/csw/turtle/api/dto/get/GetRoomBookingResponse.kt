@@ -10,7 +10,7 @@ data class GetRoomBookingResponse(
     val start: Instant?,
     val end: Instant?,
     val description: String?,
-    val creator: Long?,
+    val creatorId: Long?,
     val accessibility: RoomBookingEntity.Accessibility?,
     val whitelist: Set<Long>?,
 
