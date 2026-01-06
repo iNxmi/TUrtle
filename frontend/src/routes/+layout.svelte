@@ -19,6 +19,7 @@
         Toggle,
         Dropdown,
         DropdownItem,
+        DropdownDivider,
         Avatar,
         Radio,
         RadioButton
@@ -82,6 +83,9 @@
     let activeUrl = $derived(page.url.pathname);
 
     let darkmode = $state(localStorage.getItem('darkmode') || false);
+    /* onMount(() => {
+        if (localStorage.getItem('darkmode')) darkmode = true;
+    }); */
 
     function toggleDarkMode() {
         darkmode = !darkmode;
@@ -161,12 +165,12 @@
         label: m.sidebar_admin_manage_support_tickets(),
         href: '/admin/support',
         icon: UserHeadsetSolid
-    }, {
+    }, /* {
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_EXCEPTIONS",
         label: m.sidebar_admin_manage_exceptions(),
         href: '/admin/exceptions',
         icon: BugSolid
-    }, {
+    }, */ {
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_NEWS",
         label: m.sidebar_admin_manage_news(),
         href: '/admin/news',
@@ -309,8 +313,8 @@
                         </span>
                     </button>
                     <Dropdown simple>
-                        <DropdownItem href='/user/profile'>_profile_</DropdownItem>
-                        <DropdownItem><div class="flex justify-center items-center"><LanguageOutline /> _Language_</div></DropdownItem>
+                        <DropdownItem class="w-50" href='/user/profile'>_profile_</DropdownItem>
+                        <DropdownItem><div class="flex items-center gap-2"><LanguageOutline /> _Language_</div></DropdownItem>
                         <Dropdown simple placement="right-start">
                             <li>
                                 <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="en">Englisch</RadioButton>
@@ -337,7 +341,8 @@
                                 <RadioButton on class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ro">'_romanian'</RadioButton>
                             </li>
                         </Dropdown>
-                        <DropdownItem onclick={logOut}><span class="text-red-600">_Log out_</span></DropdownItem>
+                        <DropdownDivider />
+                        <DropdownItem class onclick={logOut}><span class="text-red-600">_Log out_</span></DropdownItem>
                     </Dropdown>
                 {/if}
             </div>
