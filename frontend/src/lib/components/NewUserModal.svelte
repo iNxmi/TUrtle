@@ -18,6 +18,8 @@
     let acceptGDPR = $state(false);
     let passwordRepeat = $state('');
 
+    let hasAccepted = $derived(acceptGDPR && acceptTOS);
+
     async function createNewUser(){
         if(acceptGDPR && acceptTOS && user.password === passwordRepeat){
             const userResponse = await request('/users',{
@@ -36,21 +38,20 @@
 <Modal bind:open={showModal} title='_New User_'> 
     <form>
         <div class="mb-6 grid gap-6 md:grid-cols-2">
-            <div>
-                <Label for="firstname">_First name_</Label>
-                <Input id="firstname" required bind:value={user.firstName} />
-            </div>
-               <Label class="mb-2" >
+            <Label for="firstname">_First name_
+                <Input id="firstname" required placeholder="Max" bind:value={user.firstName} />
+            </Label>
+            <Label>
                 _Last name_
-                    <Input  required bind:value={user.lastName} />
-                </Label>
+                <Input required  placeholder="Mustermann" bind:value={user.lastName} />
+            </Label>
             <Label>
                 _Username_
-                <Input required bind:value={user.username}/>
+                <Input required placeholder="ProMax" bind:value={user.username}/>
             </Label>
             <Label>
                 _Email_
-                <Input class="ps-8" type="email" bind:value={user.email} required>
+                <Input class="ps-8" type="email" placeholder="max.mustermann@stud.tu-darmstadt.de" bind:value={user.email} required>
                     {#snippet left()}
                         <EnvelopeSolid />
                     {/snippet}
@@ -68,7 +69,7 @@
                 <Checkbox required bind:checked={acceptTOS}><span>_Accept_ <a class="text-csw" href="/tos">_Terms of Service_</a></span></Checkbox>
                 <Checkbox required bind:checked={acceptGDPR}> <span>_Accept_ <a class="text-csw" href="/gdpr">_GDPR Agreement_</a></span></Checkbox>
             </div>
-            <Button type="submit" onclick={createNewUser}>_Create new User_</Button>
+            <Button disabled={!hasAccepted} type="submit" onclick={createNewUser}>_Create new User_</Button>
         </div>
     </form>
 </Modal>
