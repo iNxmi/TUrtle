@@ -33,7 +33,6 @@
 			locale: deLocale,
 			/* aspectRatio: 2.1, */
 			height: window.innerHeight - 80,
-			width: window.innerWidth,
 			events:async function(info, successCallback, failureCallback) {
 				const fetchedData = await fetchRoomBookings(info);
 

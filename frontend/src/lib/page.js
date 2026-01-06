@@ -9,6 +9,7 @@ export function create(
     return async function load({url}) {
 
         const parameters = new URLSearchParams()
+        const finalEndpoint = url.searchParams.get('endpoint') || endpoint;
         const search = url.searchParams.get("search");
         if (search != null) {
             const rsql = properties.map(property => `${property}=like=${search}`).join(",")
@@ -30,7 +31,7 @@ export function create(
         if (sortDirection != null)
             parameters.set("sortDirection", sortDirection)
 
-        const response = await request(`${endpoint}?${parameters}`);
+        const response = await request(`${finalEndpoint}?${parameters}`);
 
         checkAuthorization(response, url.pathname);
         const payload = await response.json();

@@ -30,9 +30,11 @@
                 {`${durationInHours}:${durationInMinutes}`}
             </div>
         </div>
-        <Label  class="font-bold">_Creator_</Label>
-        <P>{creator.firstName+" "+creator.lastName}</P>
-        <P class="font-bold">_Description_</P>
-        <P>{selectedEvent.extendedProps.description}</P>
+        <Label  class="font-bold text-md">_Creator_
+            <P>{creator.firstName+" "+creator.lastName}</P>
+        </Label>
+        <Label class="font-bold text-md">_Description_ 
+            <P>{selectedEvent.extendedProps.description}</P>
+        </Label>
     </Modal>
 {/if}
