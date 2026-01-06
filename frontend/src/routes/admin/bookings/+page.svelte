@@ -18,7 +18,8 @@
 
 	let { data } = $props();
 
-	const users = $derived(data.users);
+	let creator = $derived(data.user);
+	let users = $derived(data.users);
 	const dropdownUsers = $derived(users.map(user =>  ({
 		firstName: user.firstName,
 		lastName: user.lastName,
@@ -98,12 +99,11 @@
 			plugins: [timeGridPlugin, listPlugin, interactionPlugin],
 			locale: 'de',
 			height: window.innerHeight - 80,
-			width: window.innerWidth,
 			editable: true,
 			events: async function(info, successCallback, failureCallback) {
 				const fetchedData = await fetchRoomBookings(info);
 				if(fetchedData){
-					const events = fetchedData.map(event => (convertEventToFrontend(event)));
+					const events = fetchedData.map(event => (convertEventToFrontend(event, creator)));
 					successCallback(events);
 				} else {
 					failureCallback("Error");
@@ -128,9 +128,11 @@
 			},
 			eventClick: function (info) {
 				info.jsEvent.preventDefault();
-				selectedEvent = info.event;
-				clientX = info.jsEvent.clientX;
-				clientY = info.jsEvent.clientY + window.scrollY;
+				if(info.event.extendedProps.isAuthor){
+					selectedEvent = info.event;
+					clientX = info.jsEvent.clientX;
+					clientY = info.jsEvent.clientY + window.scrollY;
+				}
 			},
 			eventColor: 'oklch(75% 0.183 55.934)',
 			slotLabelFormat: {
@@ -150,6 +152,7 @@
 			}
 		});
 		calendar.render();
+		calendar.getEvents().forEach((event) => event.backgroundColor)
 	});
 
 	function createEvent(e){
