@@ -1,6 +1,8 @@
 <script>
     import TUrtleTable from '$lib/components/TUrtleTable.svelte';
-
+    
+    import { page } from '$app/state';
+    import { goto, invalidateAll } from '$app/navigation';
    let {
         endpoint,
         headers = [],
@@ -18,7 +20,7 @@
                 values.push(entity[header.id])
     
             const item = {
-                onClick: () => window.location.href = `${endpoint}/${entity.id}`,
+                onClick: () => goto(`${("/admin"+page.url.searchParams.get('endpoint')) || endpoint}/${entity.id}`),
                 values: values
             };
             items.push(item);     
@@ -29,8 +31,7 @@
 
    let pageInfo = $derived(contentPage.page);
 
-    import {page} from "$app/state";
-    const searchParams = page.url.searchParams
+    let searchParams = $derived(page.url.searchParams);
 </script>
 
 <!-- TODO improve redirect maybe with svelte or js props and js dynamis (this removes the feature to copy any url with search, pagination or sort queries) -->
@@ -45,23 +46,23 @@
 
     onFirstPage={() => {
         searchParams.set("pageNumber", 0)
-        window.location.href = `${endpoint}?${searchParams.toString()}`
+        goto(`?${searchParams.toString()}`, {invalidateAll: true});
     }}
     onPreviousPage={() => {
         searchParams.set("pageNumber", pageInfo.number - 1)
-        window.location.href = `${endpoint}?${searchParams.toString()}`
+        goto(`?${searchParams.toString()}`, {invalidateAll: true});
     }}
     onNextPage={() => {
         searchParams.set("pageNumber", pageInfo.number + 1)
-        window.location.href = `${endpoint}?${searchParams.toString()}`
+        goto(`?${searchParams.toString()}`, {invalidateAll: true});
     }}
     onLastPage={() => {
         searchParams.set("pageNumber", pageInfo.totalPages - 1)
-        window.location.href = `${endpoint}?${searchParams.toString()}`
+        goto(`?${searchParams.toString()}`, {invalidateAll: true});
     }}
     onSearch={(search) => {
         searchParams.set("search", search)
-        window.location.href = `${endpoint}?${searchParams.toString()}`
+        goto(`?${searchParams.toString()}`, {invalidateAll: true});
     }}
     onHeaderClicked={(header) => {
         searchParams.set("sortProperty", header)
@@ -72,8 +73,8 @@
             searchParams.set("sortDirection", "DESC")
         }
 
-        window.location.href = `${endpoint}?${searchParams.toString()}`
+        goto(`?${searchParams.toString()}`, {invalidateAll: true});
     }}
-    onReload={() => window.location.reload()}
+    onReload={() => invalidateAll()}
 />
  
