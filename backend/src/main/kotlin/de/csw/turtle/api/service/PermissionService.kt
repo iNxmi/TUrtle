@@ -18,7 +18,7 @@ class PermissionService(
         roleService.getByName("Guest")!!.permissions
     }.toSet()
 
-    fun check(permission: Permission): UserEntity? {
+    fun check(permission: Permission): UserEntity {
         val user = authService.getAuthenticatedUser()
             ?: throw UnauthorizedException()
 

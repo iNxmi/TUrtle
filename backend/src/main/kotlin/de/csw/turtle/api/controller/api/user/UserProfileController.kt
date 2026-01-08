@@ -19,7 +19,7 @@ class UserProfileController(
 
     @GetMapping
     fun get(): ResponseEntity<GetUserResponse> {
-        val user = permissionService.check(BACKEND__API_USER_PROFILE__GET)!!
+        val user = permissionService.check(BACKEND__API_USER_PROFILE__GET)
         return ResponseEntity.ok(userMapper.get(user))
     }
 
@@ -27,14 +27,14 @@ class UserProfileController(
     fun patch(
         @RequestBody patchProfileRequest: PatchProfileRequest
     ): ResponseEntity<GetUserResponse> {
-        val user = permissionService.check(BACKEND__API_USER_PROFILE__PATCH)!!
+        val user = permissionService.check(BACKEND__API_USER_PROFILE__PATCH)
         val updated = userService.updateProfile(user.username, patchProfileRequest)
         return ResponseEntity.ok(userMapper.get(updated))
     }
 
     @DeleteMapping
     fun delete(): ResponseEntity<GetUserResponse> {
-        val user = permissionService.check(BACKEND__API_USER_PROFILE__DELETE)!!
+        val user = permissionService.check(BACKEND__API_USER_PROFILE__DELETE)
         userService.delete(user.id)
         return ResponseEntity.noContent().build()
     }

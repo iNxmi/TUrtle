@@ -9,7 +9,7 @@ data class GetUserResponse(
     val firstName: String?,
     val lastName: String?,
     val email: String?,
-    val roles: Set<Long>?,
+    val roleIds: Set<Long>?,
 
     override val createdAt: Instant?
 ) : GetResponse
