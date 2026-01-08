@@ -15,7 +15,13 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
 import java.util.Optional
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.domain.Specification
+
 
 @ExtendWith(MockKExtension::class)
 class TemplateServiceTest {
@@ -43,7 +49,56 @@ class TemplateServiceTest {
 
     @Test
     fun getByName_notFound_throwsAnError_TBI() {
-        // TBI
+        // TODO
+    }
+
+    @Test
+    fun getAll_withoutRsql_delegatesToRepositoryWithNullSpec() {
+        val list = listOf(TemplateEntity(name = "name", description = "description", content = "content"))
+        val sort = Sort.by(Sort.Order.asc("name"))
+        every { repository.findAll(null as Specification<TemplateEntity>?, sort) } returns list
+
+        val result = templateService.getAll(sort = sort, rsql = null)
+
+        assertEquals(list, result)
+        verify(exactly = 1) { repository.findAll(null as Specification<TemplateEntity>?, sort) }
+    }
+
+    @Test
+    fun getAll_withRsql_delegatesToRepositoryWithSpec() {
+        val list = listOf(TemplateEntity(name = "name", description = "description", content = "content"))
+        every { repository.findAll(any<Specification<TemplateEntity>>(), any<Sort>()) } returns list
+
+        val result = templateService.getAll(sort = Sort.unsorted(), rsql = "name=='a'")
+
+        assertEquals(1, result.size)
+        verify(exactly = 1) { repository.findAll(any<Specification<TemplateEntity>>(), any<Sort>()) }
+    }
+
+    @Test
+    fun getPage_withoutRsql_delegatesToRepositoryWithNullSpec() {
+        val pageable: Pageable = PageRequest.of(0, 10)
+        val list = listOf(TemplateEntity(name = "name", description = "description", content = "content"))
+        val page = PageImpl(list, pageable, list.size.toLong())
+        every { repository.findAll(null as Specification<TemplateEntity>?, pageable) } returns page
+
+        val result = templateService.getPage(pageable = pageable, rsql = null)
+
+        assertEquals(1, result.totalElements)
+        verify(exactly = 1) { repository.findAll(null as Specification<TemplateEntity>?, pageable) }
+    }
+
+    @Test
+    fun getPage_withRsql_delegatesToRepositoryWithSpec() {
+        val pageable: Pageable = PageRequest.of(0, 10)
+        val list = listOf(TemplateEntity(name = "name", description = "description", content = "content"))
+        val page = PageImpl(list, pageable, list.size.toLong())
+        every { repository.findAll(any<Specification<TemplateEntity>>(), pageable) } returns page
+
+        val result = templateService.getPage(pageable = pageable, rsql = "name=='b'")
+
+        assertEquals(1, result.content.size)
+        verify(exactly = 1) { repository.findAll(any<Specification<TemplateEntity>>(), pageable) }
     }
 
     @Test
