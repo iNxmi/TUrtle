@@ -1,6 +1,9 @@
 package de.csw.turtle.test
 
-import de.csw.turtle.api.dto.create.*
+import de.csw.turtle.api.dto.create.CreateDeviceRequest
+import de.csw.turtle.api.dto.create.CreateRoomBookingRequest
+import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
+import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.service.*
 import de.csw.turtle.api.service.locker.LockerService

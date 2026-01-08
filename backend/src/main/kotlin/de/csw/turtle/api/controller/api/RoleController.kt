@@ -11,8 +11,8 @@ import de.csw.turtle.api.dto.get.GetRoleResponse
 import de.csw.turtle.api.dto.patch.PatchRoleRequest
 import de.csw.turtle.api.entity.RoleEntity
 import de.csw.turtle.api.mapper.RoleMapper
-import de.csw.turtle.api.service.RoleService
 import de.csw.turtle.api.service.PermissionService
+import de.csw.turtle.api.service.RoleService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
