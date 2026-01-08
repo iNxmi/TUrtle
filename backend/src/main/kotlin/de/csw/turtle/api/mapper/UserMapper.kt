@@ -35,7 +35,7 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
         firstName = entity.firstName,
         lastName = entity.lastName,
         email = entity.email,
-        roles = entity.roles.map { it.id }.toSet(),
+        roleIds = entity.roles.map { it.id }.toSet(),
         createdAt = entity.createdAt
     )
 
