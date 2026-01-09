@@ -1,6 +1,7 @@
 <script>
     import {Input, Label, Textarea} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
+    import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
 
     let {data} = $props();
     const template = data.template;
@@ -24,7 +25,7 @@
 
     <Label>
         <span>{m.admin_templates_id__content_label()}</span>
-        <Textarea class="w-full" value={template.content} disabled/>
+        <MarkdownEditor class="w-full" content={template.content} disabled/>
     </Label>
 
     <Label>
