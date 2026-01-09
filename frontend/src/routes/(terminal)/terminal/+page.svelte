@@ -68,7 +68,7 @@
         </div>
     </div>
     <div class="container h-screen flex justify-center items-center">
-        <div class="login-box bg-neutral-100 rounded-xl shadow-xl border-1 border-neutral-300 w-[70vw] h-[95vh] flex flex-col justify-around items-center p-10">
+        <div class="login-box bg-neutral-100 rounded-xl shadow-xl border-1 border-neutral-300 w-[70vw] max-w-[40rem] h-[95vh] flex flex-col justify-around items-center p-10">
             <div class="input-row rounded-xl w-full bg-[white] flex justify-between p-[0.5rem] mb-[2rem]">
                 {#each password as emoji}
                     <span class="text-4xl"> {emoji === "" ? "🐵" : "🙈"} </span>
