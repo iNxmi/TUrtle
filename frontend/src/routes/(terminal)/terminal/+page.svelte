@@ -26,7 +26,9 @@
     $inspect(password);
 
     const backspace = () =>{
-        password_index -= 1;
+        if(password_index >= 1){
+            password_index -= 1;
+        }
         password[password_index] = "";
     }
     const getPassword = () => {
