@@ -54,8 +54,8 @@
 </script>
 
 <div class="flex">
-    <div class="flex flex-col gap-2 justify-between bg-neutral-100 w-1/4 h-screen p-4 pb-1">
-        <div class="flex flex-col items-center mt-[1rem]">
+    <div class="flex flex-col gap-2 justify-between bg-neutral-100 w-[25vw] h-screen p-4 pb-1 pt-2">
+        <div class="flex flex-col items-center">
             <TUrtleLogo />
         </div>
         <div>
@@ -68,16 +68,16 @@
         </div>
     </div>
     <div class="container h-screen flex justify-center items-center">
-        <div class="login-box bg-neutral-100 rounded-xl shadow-xl border-1 border-neutral-300 w-[40rem] h-[45rem] flex flex-col justify-around items-center p-10">
+        <div class="login-box bg-neutral-100 rounded-xl shadow-xl border-1 border-neutral-300 w-[70vw] h-[95vh] flex flex-col justify-around items-center p-10">
             <div class="input-row rounded-xl w-full bg-[white] flex justify-between p-[0.5rem] mb-[2rem]">
                 {#each password as emoji}
-                    <span class="text-5xl"> {emoji === "" ? "🐵" : "🙈"} </span>
+                    <span class="text-4xl"> {emoji === "" ? "🐵" : "🙈"} </span>
                 {/each}
-                <button type = "button" class="text-5xl" onclick={backspace}>🔙</button>
+                <button type = "button" class="text-4xl" onclick={backspace}>🔙</button>
             </div>
             <div class="emoji-keyboard w-fill flex flex-wrap justify-around">
                 {#each emojis as emoji}
-                    <button type="button" class="key w-[4rem] h-[4rem]  m-[0.9rem] rounded-lg bg-neutral-100 text-5xl" onclick={addEmoji}>{emoji}</button>
+                    <button type="button" class="key w-[3rem] h-[3rem]  m-[0.9rem] rounded-lg bg-neutral-100 text-4xl" onclick={addEmoji}>{emoji}</button>
                 {/each}
             </div>
         </div>
