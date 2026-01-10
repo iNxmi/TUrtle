@@ -44,12 +44,21 @@ export function convertEventToFrontend(backendEvent, creator) {
 }
 }
 export async function fetchRoomBookings(info) {
-    const url = `/roombookings/overlapping?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`
+    const url = `/roombookings?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`
     const response = await request(url);
 
     if (!response.ok)
         return false;
 
+    return await response.json();
+}
+
+export async function fetchDeviceBookings(info){
+    const url = `/devices?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`;
+    const response = await request(url);
+    if(!response.ok){
+        return false;
+    }
     return await response.json();
 }
 
