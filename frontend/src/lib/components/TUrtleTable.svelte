@@ -73,7 +73,7 @@
         <div class="flex flex-row gap-2 justify-between p-2">
             {#if !hideSearch}
                 <ButtonGroup disabled={disableSearch}>
-                    <Input placeholder={`_search_`} bind:value={search} disabled={disableSearch}/>
+                    <Input class="field-sizing-content min-w-50 max-w-7xl" placeholder={`_search_`} bind:value={search} disabled={disableSearch}/>
                     <Button class="cursor-pointer bg-orange-400"  onclick={() => onSearch(search)}>
                         <SearchOutline class="text-white"/>
                     </Button>
