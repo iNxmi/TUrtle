@@ -1,5 +1,6 @@
 <script>
     import {Label, Button, Card, Heading} from 'flowbite-svelte';
+	import { request } from '$lib/api/api';
 
     let {data} = $props();
 
@@ -8,13 +9,16 @@
         });
     
     async function openLocker(index){
-        //TODO: API/Backend Implementation
+        const response = await request(`/hardware/locker`);
     }
     async function lockLocker(index){
         //TODO: API/Backend Implementation
     }
     async function openDoor(){
-        //TODO: API/Backend Implementation
+        const response = await request(`/hardware/door`);
+        if(response.ok){
+            return true;
+        }
     }
     async function lockDoor(){
         //TODO: API/Backend Implementation
