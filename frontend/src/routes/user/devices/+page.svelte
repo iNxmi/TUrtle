@@ -1,6 +1,6 @@
 <script>
 
-    import { Heading, Card, Select, Checkbox, Datepicker, Label, Timepicker, Button } from "flowbite-svelte";
+    import { Heading, Card, Select, Checkbox, Datepicker, Label, Timepicker, Button, Modal } from "flowbite-svelte";
     import {onMount, getContext} from 'svelte';
     import { fade } from 'svelte/transition';
     import { Calendar } from '@fullcalendar/core';
@@ -9,8 +9,10 @@
 	import deLocale from '@fullcalendar/core/locales/de';
     import request from '$lib/api/api';
     import LockerOpenModal from "$lib/components/LockerOpenModal.svelte";
+    import { fetchDeviceBookings, convertEventToFrontend } from "$lib/utils";
     let { data } = $props();
     
+    let reservations = $derived(data.reservations);
     let deviceCategories = $derived(data.deviceCategories);
     let devices = $derived(data.devices);
     let calendar = $state();
@@ -22,6 +24,8 @@
     let formattedDeviceCategories = $derived(deviceCategories.map((category) => ({name: category.name, value: category.id})));
 	
     let localeString = $derived(localeFunction());
+
+    let showCreateNewReservationModal = $state(false);
 
     let showLockerOpenModal = $state(false);
 
@@ -40,7 +44,7 @@
 			height: window.innerHeight - 80,
 			width: window.innerWidth,
 			events:async function(info, successCallback, failureCallback) {
-				const fetchedData = await fetchRoomBookings(info);
+				const fetchedData = await fetchDeviceBookings(info);
 
 				if(fetchedData){
 					const events = fetchedData.map(event => (convertEventToFrontend(event)));
@@ -103,14 +107,14 @@
         end : bookingRange.to,
     }
 
-    calendar.addEvent(newBooking);
+    /* calendar.addEvent(newBooking);
 
     const response = request('/TODO', {
         method: 'POST',
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify(newBooking)
     });
-
+ */
     bookingSuccess = true;  //Test only
     if(response.ok){
         bookingSuccess = true;
@@ -140,6 +144,7 @@
 /* }; */
 
 function openLocker(){
+    showCreateNewReservationModal = false;
     showLockerOpenModal = true;
     //TODO 
 }
@@ -155,62 +160,79 @@ function openLocker(){
  });
 
 </script>
+{@debug showCreateNewReservationModal}
 <Heading class="text-center mb-5" tag="h2">_Device Booking_</Heading>
-<div class="flex flex-row gap-10">
-    <div class="flex flex-col ml-10">
-        <Card shadow={selectedCategory ? false : "md"} class="m-4 p-4"> 
-            <Heading tag="h4" class="text-center mb-2">_Choose the device category_</Heading>
-            <Select bind:value={selectedCategory} items={formattedDeviceCategories} onchange={() => selectedDevice= ""}></Select>
-        </Card>
-        {#if selectedCategory}
-           <!--  <Card class="m-4 p-4">  -->
-               <!--  <Heading tag="h4" class="text-center mb-2">_Choose the device type_</Heading> -->
-                <!-- <Select bind:value={selectedType} items={getDeviceType()}></Select> -->
-           <!--  </Card> -->
-            <!-- {#if selectedType} -->
-                <Card shadow={selectedDevice ? false : "md"} class="m-4 p-4"> 
-                    <Heading tag="h4" class="text-center mb-2">_Choose the device_</Heading>
-                    <Select se bind:value={selectedDevice} items={formattedDevices}></Select>
+<div class="flex justify-end pb-5">
+    <Button onclick={() => {showCreateNewReservationModal = true}}>_Create new Reservation_</Button>
+</div>
+<div class="flex flex-col gap-4">
+    {#each reservations as reservation, i}
+         <div class=" h-20 bg-gray-50 dark:bg-gray-700 border rounded-lg border-gray-100 dark:border-gray-800 shadow grid grid-flow-row grid-rows-1 grid-cols-4">
+            <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{reservation.deviceName}</span></div>
+            <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{reservation.start}</span></div>
+            <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{reservation.end}</span></div>
+            <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{reservation.locker}</span></div> 
+        </div>
+    {/each}
+            
+    <Modal classes={{body:"mr-10"}} size="xl" bind:open={showCreateNewReservationModal}>
+        <div class="flex flex-row gap-2 h-[calc(100svh-79px)]">
+            <div class="flex flex-col">
+                <Card shadow={selectedCategory ? false : "md"} class="m-4 p-4"> 
+                    <Heading tag="h4" class="text-center mb-2">_Choose the device category_</Heading>
+                    <Select bind:value={selectedCategory} items={formattedDeviceCategories} onchange={() => selectedDevice= ""}></Select>
                 </Card>
-                {#if selectedDevice && !bookingSuccess}
-                    <Card class="m-4 p-4"> 
-                        <Heading tag="h4" class="text-center mb-2">_Book Device_</Heading>
-                        <Checkbox class="mb-2" bind:checked={bookingType}>_Instant Booking_</Checkbox>
-                        {#if bookingType}
-                        <div class="flex flex-row w-full">
-                            <Label>
-                                _End Time_
-                                <Timepicker divClass="shadow-none!" />
-                            </Label>
-                        </div>
-                        {:else if !bookingType && ! bookingSuccess}
-                            <Label class={bookingType ? "text-gray-300 mb-2": "text-gray-700 mb-2"}>
-                                _Selected Range_
-                                <Datepicker disabled={bookingType} range bind:rangeFrom={bookingRange.from} bind:rangeTo={bookingRange.to} />  
-                            </Label>
-                            <div class="flex flex-row">
-                                <Label class={bookingType ? "text-gray-300": "text-gray-700"}>
-                                    _Start Time_
-                                    <Timepicker divClass="shadow-none!" disabled={bookingType} />  
-                                </Label>
-                                <Label class={bookingType ? "text-gray-300": "text-gray-700"}>
-                                    _End Time_
-                                    <Timepicker divClass="shadow-none!" disabled={bookingType} />  
-                                </Label>
+                {#if selectedCategory}
+                <!--  <Card class="m-4 p-4">  -->
+                    <!--  <Heading tag="h4" class="text-center mb-2">_Choose the device type_</Heading> -->
+                        <!-- <Select bind:value={selectedType} items={getDeviceType()}></Select> -->
+                <!--  </Card> -->
+                    <!-- {#if selectedType} -->
+                        <Card shadow={selectedDevice ? false : "md"} class="m-4 p-4"> 
+                            <Heading tag="h4" class="text-center mb-2">_Choose the device_</Heading>
+                            <Select se bind:value={selectedDevice} items={formattedDevices}></Select>
+                        </Card>
+                        {#if selectedDevice && !bookingSuccess}
+                            <Card class="m-4 p-4"> 
+                                <Heading tag="h4" class="text-center mb-2">_Book Device_</Heading>
+                                <Checkbox class="mb-2" bind:checked={bookingType}>_Instant Booking_</Checkbox>
+                                {#if bookingType}
+                                <div class="flex flex-row w-full">
+                                    <Label>
+                                        _End Time_
+                                        <Timepicker divClass="shadow-none!" />
+                                    </Label>
+                                </div>
+                                {:else if !bookingType && ! bookingSuccess}
+                                    <Label class={bookingType ? "text-gray-300 mb-2": "text-gray-700 mb-2"}>
+                                        _Selected Range_
+                                        <Datepicker disabled={bookingType} range bind:rangeFrom={bookingRange.from} bind:rangeTo={bookingRange.to} />  
+                                    </Label>
+                                    <div class="flex flex-row">
+                                        <Label class={bookingType ? "text-gray-300": "text-gray-700"}>
+                                            _Start Time_
+                                            <Timepicker divClass="shadow-none!" disabled={bookingType} />  
+                                        </Label>
+                                        <Label class={bookingType ? "text-gray-300": "text-gray-700"}>
+                                            _End Time_
+                                            <Timepicker divClass="shadow-none!" disabled={bookingType} />  
+                                        </Label>
+                                    </div>
+                                {/if}
+                                <Button class="mt-2" onclick={createNewBooking}>_Confirm Reservation_</Button>
+                            </Card>
+                        {:else if bookingSuccess}
+                            <div in:fade>
+                                <Card class="m-4 p-4">
+                                    <Button onclick={openLocker}>_Open Locker_</Button>
+                                </Card>
                             </div>
                         {/if}
-                        <Button class="mt-2" onclick={createNewBooking}>_Confirm Reservation_</Button>
-                    </Card>
-                {:else if bookingSuccess}
-                    <div in:fade>
-                        <Card class="m-4 p-4">
-                            <Button onclick={openLocker}>_Open Locker_</Button>
-                        </Card>
-                    </div>
-                {/if}
-            {/if}
-       <!--  {/if} -->
-    </div>
-        <div class="grow" id="calendar" hidden={true}></div>
+                    {/if}
+            <!--  {/if} -->
+            </div>
+            <div class="grow" id="calendar" hidden={true}></div>
+        </div>
+    </Modal>
 </div>
 <LockerOpenModal lockerOpen={showLockerOpenModal} lockerNumber={5} />
