@@ -1,6 +1,6 @@
 <script>
     import {Label, Button, Card, Heading} from 'flowbite-svelte';
-	import { request } from '$lib/api/api';
+	import request from '$lib/api/api';
 
     let {data} = $props();
 
