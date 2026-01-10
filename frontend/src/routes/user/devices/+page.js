@@ -6,6 +6,7 @@ export async function load({url}){
 
     let deviceCategories;
     let devices;
+    let reservations;
     const categories = await request('/devicecategories');
     checkAuthorization(categories, url.pathname);
     if(categories.ok){
@@ -20,5 +21,11 @@ export async function load({url}){
         devices = deviceData;
     }
 
-    return {deviceCategories, devices};
+    const reservationResponse = await request('/devicebookings?rsql='); //TODO
+    if(reservationResponse.ok){
+        const reservationData = await reservationResponse.json();
+        reservations = reservationData;
+
+    }
+    return {deviceCategories, devices, reservations};
 }
