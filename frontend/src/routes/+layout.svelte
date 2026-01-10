@@ -207,7 +207,6 @@
             isSingle={false}
             alwaysOpen={innerWidth > 768}
             backdrop={false}
-            alwaysOpen={innerWidth > 768}
             closeSidebar={() => isOpen = false}
             position="static"
             class="min-w-64 min-h-svh"
