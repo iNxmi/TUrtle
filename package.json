@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@aurelle/svelte-twemoji": "^0.1.4"
+  }
+}

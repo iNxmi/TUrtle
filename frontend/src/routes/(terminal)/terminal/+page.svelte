@@ -1,5 +1,6 @@
 <script>
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
+    import { Twemoji } from '@aurelle/svelte-twemoji';
 
 
     let emojis = $state(["😈", "😃", "🎩", "👽", "💩", "❤️", "💎", "👂", "👍", "🐋", "🐶", "🐸", "❄", "🎉", "💿",
@@ -9,8 +10,8 @@
     let password_index = 0;
 
 
-    const addEmoji = e => {
-        password[password_index] = e.target.textContent;
+    const addEmoji = emoji => {
+        password[password_index] = emoji;
         password_index += 1;
         if(password_index==5){
             submitInput();
@@ -71,13 +72,19 @@
         <div class="login-box bg-neutral-100 rounded-xl shadow-xl border-1 border-neutral-300 w-[70vw] max-w-[40rem] h-[95vh] flex flex-col justify-around items-center p-10">
             <div class="input-row rounded-xl w-full bg-[white] flex justify-between p-[0.5rem] mb-[2rem]">
                 {#each password as emoji}
-                    <span class="text-4xl"> {emoji === "" ? "🐵" : "🙈"} </span>
+                    <span class="text-4xl">
+	                    {#if emoji === ''}
+		                    <Twemoji emoji="🙊" size={48}/>
+	                    {:else}
+                            <Twemoji emoji="🙈" size={48}/>
+	                    {/if}
+                    </span>
                 {/each}
-                <button type = "button" class="text-4xl" onclick={backspace}>🔙</button>
+                <button type = "button" class="text-4xl" onclick={backspace}><Twemoji emoji="🔙" size={48}/></button>
             </div>
             <div class="emoji-keyboard w-fill flex flex-wrap justify-around">
                 {#each emojis as emoji}
-                    <button type="button" class="key w-[3rem] h-[3rem]  m-[0.9rem] rounded-lg bg-neutral-100 text-4xl" onclick={addEmoji}>{emoji}</button>
+                    <button type="button" class="key w-[3rem] h-[3rem]  m-[0.9rem] rounded-lg bg-neutral-100 text-5xl" onclick={() => addEmoji({emoji})}><Twemoji emoji={emoji} size={48}/></button>
                 {/each}
             </div>
         </div>
