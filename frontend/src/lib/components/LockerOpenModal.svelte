@@ -4,7 +4,6 @@
     let { lockerOpen = $bindable(), lockerNumber } = $props();
 function confirm(){
     lockerOpen = false;
-    goto('/user/dashboard',{invalidateAll: true});
 }
 </script>
 
