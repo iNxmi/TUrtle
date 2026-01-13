@@ -45,6 +45,7 @@
     --color-table-dark: #d1f3d1;
     --color-accent: #3dff4a;
     --color-csw: #FF6A00;
+    --color-muted: var(--color-gray-400);
 
 }
 
@@ -85,6 +86,7 @@
     --color-csw: #FF6A00;
 
     --color-text: var(--color-gray-200);
+    --color-muted: var(--color-gray-500);
 
 }
 
@@ -161,7 +163,7 @@
 }
 
 .dark .fc {
-    --fc-border-color: theme(--color-gray-800);
+    --fc-border-color: theme(--color-gray-700);
 }
 
 .dark .fc-timegrid-event-harness-inset .fc-timegrid-event, .fc-timegrid-event.fc-event-mirror, .fc-timegrid-more-link {
