@@ -9,6 +9,23 @@
     let password = $state(["", "", "", "", ""]);
     let password_index = 0;
 
+    
+    //teilt array in sechs reihen aus je sechs elementen für die emoji tastatur auf
+    const make_rows = arr => {
+        let rows = [[], [], [], [], [], []];
+        let row_number = 0;
+        let index = 0;
+        for(let i=0; i<arr.length; i++){
+            rows[row_number][index] = arr[i];
+            index++;
+            if(index == 6){
+                index = 0;
+                row_number++;
+            }
+        }
+        return rows;
+    }
+    let emoji_rows = $derived(make_rows(emojis));
 
     const addEmoji = emoji => {
         password[password_index] = emoji;
@@ -26,7 +43,7 @@
     }
     $inspect(password);
 
-    const backspace = () =>{
+    const backspace = () => {
         if(password_index >= 1){
             password_index -= 1;
         }
@@ -52,6 +69,7 @@
 
     shuffle();
     $inspect(emojis);
+    $inspect(emoji_rows);
 </script>
 
 <div class="flex">
@@ -74,7 +92,7 @@
                 {#each password as emoji}
                     <span class="text-4xl">
 	                    {#if emoji === ''}
-		                    <Twemoji emoji="🙊" size={48}/>
+		                    <Twemoji emoji="🐵" size={48}/>
 	                    {:else}
                             <Twemoji emoji="🙈" size={48}/>
 	                    {/if}
@@ -82,9 +100,13 @@
                 {/each}
                 <button type = "button" class="text-4xl" onclick={backspace}><Twemoji emoji="🔙" size={48}/></button>
             </div>
-            <div class="emoji-keyboard w-fill flex flex-wrap justify-around">
-                {#each emojis as emoji}
-                    <button type="button" class="key w-[3rem] h-[3rem]  m-[0.9rem] rounded-lg bg-neutral-100 text-5xl" onclick={() => addEmoji({emoji})}><Twemoji emoji={emoji} size={48}/></button>
+            <div class="emoji-keyboard w-full h-full flex flex-col justify-around">
+                {#each emoji_rows as row}
+                    <div class="emoji-row w-full flex justify-between p-[0.5rem]">
+                        {#each row as emoji}
+                            <button type="button" class="key w-[3rem] h-[3rem] rounded-lg bg-neutral-100 text-5xl" onclick={() => addEmoji({emoji})}><Twemoji emoji={emoji} size={48}/></button>
+                        {/each}
+                    </div>
                 {/each}
             </div>
         </div>
