@@ -12,7 +12,15 @@
     import { fetchDeviceBookings, convertEventToFrontend } from "$lib/utils";
     let { data } = $props();
     
-    let reservations = $derived(data.reservations);
+    let reservations = $derived.by(() => 
+    data.reservations.map((reservation) => (
+        {
+            deviceName: reservation.deviceName,
+            start: new Date(reservation.start),
+            end: new Date(reservation.end),
+            locker: reservation.locker
+        }
+    )));
     let deviceCategories = $derived(data.deviceCategories);
     let devices = $derived(data.devices);
     let calendar = $state();
@@ -204,15 +212,15 @@ let dt = $derived(Intl.DateTimeFormat(localeString, {dateStyle: "medium",timeSty
 </script>
 <Heading class="text-center mb-5" tag="h2">_Device Booking_</Heading>
 <div class="flex justify-end pb-5">
-    <Button onclick={openNewBookingModal}>_Create new Reservation_</Button>
+    <Button class="hover:cursor-pointer" onclick={openNewBookingModal}>_Create new Reservation_</Button>
 </div>
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-4 max-h-svh overflow-y-auto">
     {#each reservations as reservation, i}
          <div class=" h-20 bg-gray-50 dark:bg-gray-700 border rounded-lg border-gray-100 dark:border-gray-800 shadow grid grid-flow-row grid-rows-1 grid-cols-4">
-            <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{reservation.deviceName}</span></div>
-            <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{dt.format(reservation.start)}</span></div>
-            <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{dt.format(reservation.end)}</span></div>
-            <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{reservation.locker}</span></div> 
+            <div class="place-self-center"><div class="flex flex-col text-center"><span class="text-sm text-muted">_Device_</span><span class="font-bold text-lg dark:text-white">{reservation.deviceName}</span></div></div>
+            <div class="place-self-center"><div class="flex flex-col text-center"><span class="text-sm text-muted">_Start date_</span><span class="font-bold text-lg dark:text-white">{dt.format(reservation.start)}</span></div></div>
+            <div class="place-self-center"><div class="flex flex-col text-center"><span class="text-sm text-muted">_EndDate_</span><span class="font-bold text-lg dark:text-white">{dt.format(reservation.end)}</span></div></div>
+            <div class="place-self-center"><div class="flex flex-col text-center"><span class="text-sm text-muted">_Locker_</span><span class="font-bold text-lg dark:text-white">{reservation.locker}</span></div></div> 
         </div>
     {:else}
         <div class="h-100 flex justify-center items-center"><span class="text-center font-bold text-3xl text-muted">_No reservations made_</span></div>
@@ -257,10 +265,12 @@ let dt = $derived(Intl.DateTimeFormat(localeString, {dateStyle: "medium",timeSty
                                             _Start Time_
                                             <Timepicker bind:value={bookingStartTime} divClass="shadow-none!" disabled={instantBooking} />  
                                         </Label>
-                                        <Label class="text-gray-700">
-                                            _End Time_
-                                            <Timepicker bind:value={bookingEndTime} divClass="shadow-none!" disabled={instantBooking} />  
-                                        </Label>
+                                        <div>
+                                            <Label class="text-gray-700">
+                                                _End Time_
+                                                <Timepicker bind:value={bookingEndTime} divClass="shadow-none!" disabled={instantBooking} />  
+                                            </Label>
+                                        </div>
                                     </div>
                                 {/if}
                                 <Button class="mt-2" onclick={createNewBooking}>_Confirm Reservation_</Button>
