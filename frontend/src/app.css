@@ -45,7 +45,7 @@
     --color-table-dark: #d1f3d1;
     --color-accent: #3dff4a;
     --color-csw: #FF6A00;
-    --color-muted: var(--color-gray-400);
+    --color-muted: var(--color-gray-500);
 
 }
 
