@@ -2,7 +2,7 @@ import { json } from '@sveltejs/kit';
 
 export async function GET(){
     return json([
-        /* {
+        {
             deviceName: "Dell Laptop",
             start: "2026-01-05",
             end: "2026-01-07",
@@ -25,6 +25,6 @@ export async function GET(){
             start: "2026-01-03",
             end: "2026-01-05",
             locker: "7"
-        } */
+        }
     ]);
 }
