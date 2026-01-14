@@ -35,14 +35,14 @@
 			calendar.setOption('locale', localeString);
 		}
 	});
-	onMount(() => {
+
+    function initializeCalendar(){
 		let calendarEl = document.getElementById('calendar');
 		calendar = new Calendar(calendarEl, {
 			plugins: [timeGridPlugin, listPlugin],
 			locale: deLocale,
 			/* aspectRatio: 2.1, */
 			height: window.innerHeight - 80,
-			width: window.innerWidth,
 			events:async function(info, successCallback, failureCallback) {
 				const fetchedData = await fetchDeviceBookings(info);
 
@@ -84,7 +84,14 @@
 		} else {
 			calendar.setOption('locale', localeString);
 		}
-	});
+    }
+    
+    function openNewBookingModal(){
+        showCreateNewReservationModal = true;
+        
+        setTimeout(() => initializeCalendar());
+       /*  initializeCalendar(); */
+    }
 
     let selectedCategory = $state();
    /*  let selectedType = $state(false); */
@@ -92,20 +99,36 @@
     let bookingSuccess = $state();
     let lockerOpen = $state();
 
-    let bookingType = $state(true); //Instant Booking
+    let instantBooking = $state(true); //Instant Booking
     
+    let bookingStartTime = $state("");
+    let bookingEndTime = $state("");
     let bookingRange = $state({
-    from: undefined,
-    to: undefined
+        from: new Date(Date.now()),
+        to: new Date(Date.now())
   });
-
+    function resetForm(){
+        selectedDevice = "";
+        selectedCategory = "";
+        bookingSuccess = false;
+        instantBooking = true;
+    }
   /* let newBooking = $state(); */
 
   function createNewBooking(){
+    const actualSelectedDevice = filteredDevices.find((device) => device.id === selectedDevice);
     const newBooking = {
-        start: bookingRange.from,
-        end : bookingRange.to,
-    }
+            deviceName: actualSelectedDevice.name,
+            start: instantBooking ? new Date(Date.now()) : bookingRange.from,
+            end: bookingRange.to,
+            locker: actualSelectedDevice.locker
+        }
+        if(!instantBooking){
+            newBooking.start.setHours(parseInt(bookingStartTime.substring(0,2)));
+            newBooking.start.setMinutes(parseInt(bookingStartTime.substring(3)));
+        }
+        newBooking.end.setHours(parseInt(bookingEndTime.substring(0,2)));
+        newBooking.end.setMinutes(parseInt(bookingEndTime.substring(3)));
 
     /* calendar.addEvent(newBooking);
 
@@ -116,10 +139,16 @@
     });
  */
     bookingSuccess = true;  //Test only
-    if(response.ok){
+           /* if(response.ok){
         bookingSuccess = true;
+            } */
+           
+           if(!instantBooking){
+               showCreateNewReservationModal = false;
+               resetForm();
     }
 
+           reservations = [...reservations, newBooking];
   }
 
     function getDeviceType(){ 
@@ -146,33 +175,47 @@
 function openLocker(){
     showCreateNewReservationModal = false;
     showLockerOpenModal = true;
+               resetForm();
     //TODO 
 }
 
  $effect(() => {
+    if(calendar){
+        if (localeString === 'en') {
+            calendar.setOption('locale', 'en-us');
+        } else {
+            calendar.setOption('locale', localeString);
+        }
+    }
+});
+
+ $effect(() => {
+    if(calendar){
     if(selectedDevice){
         document.getElementById('calendar').hidden = false;
         calendar.render();
     } else {
          document.getElementById('calendar').hidden = true;
     }
-   
+    }
  });
 
+let dt = $derived(Intl.DateTimeFormat(localeString, {dateStyle: "medium",timeStyle: "medium"}));
 </script>
-{@debug showCreateNewReservationModal}
 <Heading class="text-center mb-5" tag="h2">_Device Booking_</Heading>
 <div class="flex justify-end pb-5">
-    <Button onclick={() => {showCreateNewReservationModal = true}}>_Create new Reservation_</Button>
+    <Button onclick={openNewBookingModal}>_Create new Reservation_</Button>
 </div>
 <div class="flex flex-col gap-4">
     {#each reservations as reservation, i}
          <div class=" h-20 bg-gray-50 dark:bg-gray-700 border rounded-lg border-gray-100 dark:border-gray-800 shadow grid grid-flow-row grid-rows-1 grid-cols-4">
             <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{reservation.deviceName}</span></div>
-            <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{reservation.start}</span></div>
-            <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{reservation.end}</span></div>
+            <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{dt.format(reservation.start)}</span></div>
+            <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{dt.format(reservation.end)}</span></div>
             <div class="place-self-center"><span class="font-bold text-lg dark:text-white">{reservation.locker}</span></div> 
         </div>
+    {:else}
+        <div class="h-100 flex justify-center items-center"><span class="text-center font-bold text-3xl text-muted">_No reservations made_</span></div>
     {/each}
             
     <Modal classes={{body:"mr-10"}} size="xl" bind:open={showCreateNewReservationModal}>
@@ -195,27 +238,28 @@ function openLocker(){
                         {#if selectedDevice && !bookingSuccess}
                             <Card class="m-4 p-4"> 
                                 <Heading tag="h4" class="text-center mb-2">_Book Device_</Heading>
-                                <Checkbox class="mb-2" bind:checked={bookingType}>_Instant Booking_</Checkbox>
-                                {#if bookingType}
+                                <Checkbox class="mb-2" bind:checked={instantBooking}>_Instant Booking_</Checkbox>
+                                {#if instantBooking}
+                                <Datepicker bind:value={bookingRange.to} />
                                 <div class="flex flex-row w-full">
                                     <Label>
                                         _End Time_
-                                        <Timepicker divClass="shadow-none!" />
+                                        <Timepicker bind:value={bookingEndTime} divClass="shadow-none!" />
                                     </Label>
                                 </div>
-                                {:else if !bookingType && ! bookingSuccess}
-                                    <Label class={bookingType ? "text-gray-300 mb-2": "text-gray-700 mb-2"}>
+                                {:else if !instantBooking && ! bookingSuccess}
+                                    <Label class= "text-gray-700 mb-2">
                                         _Selected Range_
-                                        <Datepicker disabled={bookingType} range bind:rangeFrom={bookingRange.from} bind:rangeTo={bookingRange.to} />  
+                                        <Datepicker disabled={instantBooking} range bind:rangeFrom={bookingRange.from} bind:rangeTo={bookingRange.to} />  
                                     </Label>
                                     <div class="flex flex-row">
-                                        <Label class={bookingType ? "text-gray-300": "text-gray-700"}>
+                                        <Label class="text-gray-700">
                                             _Start Time_
-                                            <Timepicker divClass="shadow-none!" disabled={bookingType} />  
+                                            <Timepicker bind:value={bookingStartTime} divClass="shadow-none!" disabled={instantBooking} />  
                                         </Label>
-                                        <Label class={bookingType ? "text-gray-300": "text-gray-700"}>
+                                        <Label class="text-gray-700">
                                             _End Time_
-                                            <Timepicker divClass="shadow-none!" disabled={bookingType} />  
+                                            <Timepicker bind:value={bookingEndTime} divClass="shadow-none!" disabled={instantBooking} />  
                                         </Label>
                                     </div>
                                 {/if}
