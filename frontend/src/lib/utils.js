@@ -54,7 +54,7 @@ export async function fetchRoomBookings(info) {
 }
 
 export async function fetchDeviceBookings(info){
-    const url = `/devices?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`;
+    const url = `/devicebookings?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`;
     const response = await request(url);
     if(!response.ok){
         return false;
