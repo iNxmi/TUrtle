@@ -77,3 +77,6 @@ export function checkAuthorization(response, redirectURL) {
 
     return error(response.status, response.statusText);
 }
+export function openLocker(locker){
+    //Todo
+}
