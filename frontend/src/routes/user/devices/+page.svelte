@@ -61,7 +61,6 @@
 				meridiem: 'short'
 			},
 			allDaySlot: false,
-			weekends: false,
 			initialView: 'timeGridWeek',
 			headerToolbar: {
 				left: 'prev,next today',
@@ -186,8 +185,8 @@ function openLocker(){
 </div>
    <DevicebookingTable {reservations} {devices} />
     <Modal classes={{body:"mr-10"}} size="xl" bind:open={showCreateNewReservationModal}>
-        <div class="flex flex-row gap-2 h-[calc(100svh-79px)]">
-            <div class="flex flex-col">
+        <div class="flex flex-row gap-4 h-[calc(100svh-79px)]">
+            <div class="flex flex-col grow-0">
                 <Card shadow={selectedCategory ? false : "md"} class="m-4 p-4"> 
                     <Heading tag="h4" class="text-center mb-2">_Choose the device category_</Heading>
                     <Select bind:value={selectedCategory} items={formattedDeviceCategories} onchange={() => selectedDevice= ""}></Select>
@@ -202,28 +201,31 @@ function openLocker(){
                                 <Heading tag="h4" class="text-center mb-2">_Book Device_</Heading>
                                 <Checkbox class="mb-2" bind:checked={instantBooking}>_Instant Booking_</Checkbox>
                                 {#if instantBooking}
-                                <Datepicker bind:value={bookingRange.to} />
-                                <div class="flex flex-row w-full">
-                                    <Label>
-                                        _End Time_
-                                        <Timepicker bind:value={bookingEndTime} divClass="shadow-none!" />
-                                    </Label>
-                                </div>
+                                    <div class="flex flex-col gap-2">
+                                        <Label class= "text-gray-700 mb-2"> _End Date_
+                                        <Datepicker bind:value={bookingRange.to} /></Label>
+                                        <div>
+                                            <Label>
+                                                _End Time_</Label>
+                                                <Timepicker bind:value={bookingEndTime} divClass="shadow-none!" />
+                                        </div>
+                                    </div>
                                 {:else if !instantBooking && ! bookingSuccess}
                                     <Label class= "text-gray-700 mb-2">
                                         _Selected Range_
                                         <Datepicker disabled={instantBooking} range bind:rangeFrom={bookingRange.from} bind:rangeTo={bookingRange.to} />  
                                     </Label>
-                                    <div class="flex flex-row">
-                                        <Label class="text-gray-700">
-                                            _Start Time_
-                                            <Timepicker bind:value={bookingStartTime} divClass="shadow-none!" disabled={instantBooking} />  
-                                        </Label>
+                                    <div class="flex flex-row gap-12">
                                         <div>
-                                            <Label class="text-gray-700">
-                                                _End Time_
-                                                <Timepicker bind:value={bookingEndTime} divClass="shadow-none!" disabled={instantBooking} />  
-                                            </Label>
+                                        <Label class="text-gray-700">
+                                            _Start Time_</Label>
+                                            <Timepicker bind:value={bookingStartTime} divClass="shadow-none!" disabled={instantBooking} />  
+                                        
+                                    </div>
+                                        <div >
+                                            <Label class="text-gray-700"> 
+                                                _End Time_</Label>
+                                                <Timepicker bind:value={bookingEndTime} divClass="shadow-none!" disabled={instantBooking} />
                                         </div>
                                     </div>
                                 {/if}
