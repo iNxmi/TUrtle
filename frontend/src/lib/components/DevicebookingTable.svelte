@@ -19,7 +19,7 @@
             status: reservation.status
         }
     }));
-    let dt = $derived(Intl.DateTimeFormat(getContext('locale'), {dateStyle: "medium",timeStyle: "medium"}));
+    let dt = $derived(Intl.DateTimeFormat(getContext('locale'), {dateStyle: "short",timeStyle: "short"}));
 
     function handleReservationInteraction(reservationIndex){
 
