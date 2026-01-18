@@ -43,3 +43,6 @@ export async function GET(){
 export async function PATCH(){
     return json(true, {status:200});
 }
+export async function POST(){
+    return json(true, {status:200, ok:true});
+}
