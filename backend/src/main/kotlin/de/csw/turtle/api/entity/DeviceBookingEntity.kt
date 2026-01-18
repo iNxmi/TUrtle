@@ -23,6 +23,20 @@ class DeviceBookingEntity(
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    var user: UserEntity
+    var user: UserEntity,
 
-) : CRUDEntity()
+    @Enumerated(EnumType.STRING)
+    var status: Status = Status.RESERVED
+
+) : CRUDEntity() {
+
+    enum class Status {
+        RESERVED,
+        COLLECTION_READY,
+        DEVICE_COLLECTED,
+        RESERVATION_ENDED,
+        DEVICE_RETURNED,
+        CANCELLED
+    }
+
+}
