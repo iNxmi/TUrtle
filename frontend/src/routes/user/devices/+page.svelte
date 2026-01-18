@@ -104,7 +104,7 @@
     }
   /* let newBooking = $state(); */
 
-  function createNewBooking(){
+  async function createNewBooking(){
     const actualSelectedDevice = filteredDevices.find((device) => device.id === selectedDevice);
     const newBooking = {
             deviceId: selectedDevice,
@@ -121,7 +121,7 @@
 
      calendar.addEvent(newBooking);
 
-    const response = request('/devicebookings', {
+    const response = await request('/devicebookings', {
         method: 'POST',
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify(newBooking)
@@ -129,7 +129,7 @@
 
     /* bookingSuccess = true; */ //Test only
          if(response.ok){
-        bookingSuccess = true;
+            bookingSuccess = true;
             } 
            
            if(!instantBooking){
@@ -236,11 +236,10 @@ function openLocker(){
                                 </Card>
                             </div>
                         {/if}
-                        <Button class="mt-2">Confirm Reservation</Button>
-                </Card>
+                       <!--  <Button class="mt-2">Confirm Reservation</Button> -->
                 {/if}
-            {/if}
        <!--  {/if} -->
     </div>
         <div class="grow" id="calendar" hidden={true}></div>
 </div>
+</Modal>
