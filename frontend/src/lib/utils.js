@@ -77,6 +77,10 @@ export function checkAuthorization(response, redirectURL) {
 
     return error(response.status, response.statusText);
 }
-export function openLocker(locker){
+export async function openLocker(locker, reservation){
     //Todo
+    if(reservation){
+        return reservation.status === "COLLECTION_READY" ? "DEVICE_COLLECTED" : "DEVICE_RETURNED";
+    }
+    return;
 }
