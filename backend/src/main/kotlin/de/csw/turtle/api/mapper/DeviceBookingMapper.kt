@@ -22,7 +22,8 @@ abstract class DeviceBookingMapper : CRUDMapper<DeviceBookingEntity, CreateDevic
         start = request.start,
         end = request.end,
         device = deviceService.get(request.deviceId),
-        user = userService.get(request.userId)
+        user = userService.get(request.userId),
+        status = request.status
     )
 
     override fun get(entity: DeviceBookingEntity) = GetDeviceBookingResponse(
