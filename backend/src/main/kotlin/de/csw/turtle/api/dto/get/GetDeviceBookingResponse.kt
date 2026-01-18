@@ -1,5 +1,6 @@
 package de.csw.turtle.api.dto.get
 
+import de.csw.turtle.api.entity.DeviceBookingEntity
 import java.time.Instant
 
 class GetDeviceBookingResponse(
@@ -8,5 +9,6 @@ class GetDeviceBookingResponse(
     val end: Instant,
     val deviceId: Long,
     val userId: Long,
+    val status : DeviceBookingEntity.Status,
     override val createdAt: Instant
 ) : GetResponse
