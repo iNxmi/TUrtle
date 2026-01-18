@@ -295,7 +295,7 @@
 
     <div class="min-h-svh justify-between flex flex-col w-full dark:bg-gray-900">
         <div class="m-10 mt-6">
-            <div class="flex justify-end items-center gap-2">
+            <div class="flex justify-end items-center gap-2 mb-5">
                 <button onclick={toggleDarkMode} class="cursor-pointer inline-flex items-center justify-center text-md dark:text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md px-3 h-8">
                     {#if darkmode}
                     <MoonOutline class="text-white mr-1" /> _Dunkel_
