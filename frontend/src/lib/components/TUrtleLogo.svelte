@@ -1,12 +1,16 @@
 <script>
     import {Heading, Span} from "flowbite-svelte";
+    import { page } from "$app/state";
+	import { goto } from "$app/navigation";
 
-    let canRotate = $state(true);
+    let canRotate = $derived(page.url.pathname === "/");
     function rotate(event) {
         event.preventDefault();
 
-        if (!canRotate)
+        if (!canRotate){
+            goto('/',{invalidateAll: true});
             return;
+        }  
 
         const animation = "animate-spin";
         const element = event.currentTarget;
