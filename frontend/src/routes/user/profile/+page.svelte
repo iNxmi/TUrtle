@@ -31,7 +31,7 @@
 
     let {data} = $props();
     // user is already in data prop because it is defined in +layout.js so no need to create a +page.js to load it again :)
-    const user = data.user;
+   let user = $derived(data.user);
 </script>
 
 <form class="flex flex-col gap-5">

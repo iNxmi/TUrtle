@@ -9,7 +9,7 @@ class SSHLockerControlService(
     private val properties: TUrtleProperties
 ) : LockerControlService {
 
-    override fun trigger(locker: LockerEntity): String {
+    override fun onTrigger(locker: LockerEntity): String {
         val input = "~/cabinet${locker.index}Open.sh"
 
         return SSHClient().use { client ->

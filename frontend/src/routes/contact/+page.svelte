@@ -6,7 +6,7 @@
     import Markdown from "$lib/components/Markdown.svelte";
 
     const {data} = $props();
-    const content = data.content;
+    let content = $derived(data.content);
 
     const urgencies = [
         {value: "LOW", name: m.contact__urgency_low()},

@@ -8,7 +8,7 @@ class SSHDoorControlService(
     private val properties: TUrtleProperties
 ) : DoorControlService {
 
-    override fun trigger(seconds: Int): String {
+    override fun onTrigger(seconds: Int): String {
         val input = "~/doorOpen.sh $seconds"
 
         return SSHClient().use { client ->

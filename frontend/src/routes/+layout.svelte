@@ -16,7 +16,13 @@
         SidebarDropdownItem,
         SidebarDropdownWrapper,
         Span,
-        Toggle
+        Toggle,
+        Dropdown,
+        DropdownItem,
+        DropdownDivider,
+        Avatar,
+        Radio,
+        RadioButton
     } from 'flowbite-svelte';
 
     import {m} from '$lib/paraglide/messages.js';
@@ -38,8 +44,14 @@
         UsersGroupSolid,
         UserSolid,
         LockSolid,
-        QuestionCircleSolid
+        QuestionCircleSolid,
+        SunOutline,
+        MoonOutline,
+        LanguageOutline,
+        CheckOutline
     } from 'flowbite-svelte-icons';
+	import request from '$lib/api/api';
+	import { goto } from '$app/navigation';
 
     const languages = [
         {value: 'en', name: 'English'},
@@ -56,6 +68,12 @@
 
     setContext('locale', () => language);
 
+    $effect(() => {
+        if(language){
+            setLocale(language);
+        }
+    })
+
     function updateLanguage(event) {
         event.preventDefault();
 
@@ -65,12 +83,25 @@
     let activeUrl = $derived(page.url.pathname);
 
     let darkmode = $state(localStorage.getItem('darkmode') || false);
+    /* onMount(() => {
+        if (localStorage.getItem('darkmode')) darkmode = true;
+    }); */
 
     function toggleDarkMode() {
+        darkmode = !darkmode;
         localStorage.setItem('darkmode', darkmode? "true": "");
         document.documentElement.classList.remove(darkmode ? 'light' : 'dark');
         document.documentElement.classList.add(darkmode ? 'dark' : 'light');
         
+        /* document.documentElement.data */
+    }
+
+   async function logOut(){
+        const response = await request('/auth/logout');
+        if(response.ok){
+            goto('/',{invalidateAll: true});
+        }
+
     }
 
     let innerWidth = $state();
@@ -102,12 +133,12 @@
         label: m.sidebar_user_dashboard(),
         href: '/user/dashboard',
         icon: NewspaperSolid
-    }, {
+    }, /* {
         permission: "FRONTEND__SIDEBAR_ITEM__PROFILE",
         label: m.sidebar_user_profile(),
         href: '/user/profile',
         icon: UserSolid
-    }, {
+    }, */ {
         permission: "FRONTEND__SIDEBAR_ITEM__BOOK_DEVICE",
         label: m.sidebar_user_reservations(),
         href: '/user/devices',
@@ -134,21 +165,21 @@
         label: m.sidebar_admin_manage_support_tickets(),
         href: '/admin/support',
         icon: UserHeadsetSolid
-    }, {
+    }, /* {
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_EXCEPTIONS",
         label: m.sidebar_admin_manage_exceptions(),
         href: '/admin/exceptions',
         icon: BugSolid
-    }, {
+    }, */ {
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_NEWS",
         label: m.sidebar_admin_manage_news(),
         href: '/admin/news',
         icon: NewspaperSolid
     }, {
-        permission: null,
-        label: m.sidebar_admin_settings(),
-        href: '/admin/settings',
-        icon: UserSettingsSolid
+        permission: "FRONTEND__SIDEBAR_ITEM__HARDWARE_OVERRIDE",
+        label: "_Hardware Override_",
+        href: '/admin/hardware',
+        icon: LockSolid
     }, {
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_AUDIT_LOGS",
         label: m.sidebar_admin_auditlogs(),
@@ -174,8 +205,8 @@
             {activeUrl}
             isOpen={isOpen}
             isSingle={false}
-            backdrop={false}
             alwaysOpen={innerWidth > 768}
+            backdrop={false}
             closeSidebar={() => isOpen = false}
             position="static"
             class="min-w-64 min-h-svh"
@@ -250,20 +281,70 @@
                 </SidebarDropdownWrapper>
             {/if}
 
-            <SidebarDropdownWrapper
+        <!--    <SidebarDropdownWrapper
                     class="list-none"
                     classes={{ span: 'font-bold', ul: 'py-0' }}
                     isOpen={true}
                     label={m.sidebar_category_settings()}
             >
                 <Select items={languages} bind:value={language} onchange={updateLanguage}/>
-                <Toggle bind:checked={darkmode} onchange={toggleDarkMode}>_toggle_darkmode</Toggle>
-            </SidebarDropdownWrapper>
+                 <Toggle bind:checked={darkmode} onchange={toggleDarkMode}>_toggle_darkmode</Toggle>
+            </SidebarDropdownWrapper> -->
         </div>
     </Sidebar>
 
     <div class="min-h-svh justify-between flex flex-col w-full dark:bg-gray-900">
-        <div class="m-10">
+        <div class="m-10 mt-6">
+            <div class="flex justify-end items-center gap-2 mb-5">
+                <button onclick={toggleDarkMode} class="cursor-pointer inline-flex items-center justify-center text-md dark:text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md px-3 h-8">
+                    {#if darkmode}
+                    <MoonOutline class="text-white mr-1" /> _Dunkel_
+                    {:else}
+                    <SunOutline class="mr-1"/> _Hell_
+                    {/if}
+                </button>
+                {#if permissions.includes('FRONTEND__SIDEBAR_ITEM__PROFILE')}
+                    <button size="xl" class="sizes cursor-pointer inline-flex items-center justify-center ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none border border-gray-300 border-input bg-transparent hover:bg-gray-50 px-3 relative h-10 w-10 rounded-full">
+                        <span class="relative flex shrink-0 overflow-hidden rounded-full h-9 w-9">
+                            <span class="flex h-full w-full items-center justify-center rounded-full bg-gray-100">
+                                JR
+                            </span>
+                        </span>
+                    </button>
+                    <Dropdown simple>
+                        <DropdownItem class="w-50" href='/user/profile'>_profile_</DropdownItem>
+                        <DropdownItem><div class="flex items-center gap-2"><LanguageOutline /> _Language_</div></DropdownItem>
+                        <Dropdown simple placement="right-start">
+                            <li>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="en">Englisch</RadioButton>
+                            </li>
+                            <li>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="de">Deutsch</RadioButton>
+                            </li>
+                            <li>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ja">日本語</RadioButton>
+                            </li>
+                            <li>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ar">'_arabic'</RadioButton>
+                            </li>
+                            <li>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ru">'_arabic'</RadioButton>
+                            </li>
+                            <li>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="vi">'_vietnamese'</RadioButton>
+                            </li>
+                            <li>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="hu">'_hungarian'</RadioButton>
+                            </li>
+                            <li>
+                                <RadioButton on class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ro">'_romanian'</RadioButton>
+                            </li>
+                        </Dropdown>
+                        <DropdownDivider />
+                        <DropdownItem class onclick={logOut}><span class="text-red-600">_Log out_</span></DropdownItem>
+                    </Dropdown>
+                {/if}
+            </div>
             {@render children?.()}
         </div>
         <Footer/>

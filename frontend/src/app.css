@@ -35,7 +35,7 @@
     --color-secondary-800: var(--color-csw);
     --color-secondary-900: var(--color-csw);
     --color-background-50: #F4FFF2; /*#eefff1;*/
-    --color-text: #091602;
+    --color-text: var(--color-black);
     --color-primary: #98dc9e;
     --color-secondary: #dcffdb;
     --color-secondary-dark: var(--color-green-700);
@@ -45,6 +45,7 @@
     --color-table-dark: #d1f3d1;
     --color-accent: #3dff4a;
     --color-csw: #FF6A00;
+    --color-muted: var(--color-gray-500);
 
 }
 
@@ -84,6 +85,9 @@
     --color-accent: #00c20d;
     --color-csw: #FF6A00;
 
+    --color-text: var(--color-gray-200);
+    --color-muted: var(--color-gray-500);
+
 }
 
 @font-face {
@@ -95,13 +99,53 @@
     font-display: swap;
 }
 
-.dark span {
-    color: #fff;
+.dark {
+    a{
+        color: var(--color-text);
+    }
+    dd {
+        color: var(--color-text);
+    }
+    h1 {
+        color: var(--color-text);
+    }
+    h2{
+        color: var(--color-text);
+    }
+    h3 {
+        color: var(--color-text);
+    } 
+    h4 {
+        color: var(--color-text);
+    }
+    h5 {
+        color: var(--color-text);
+    }
+    h6 {
+        color: var(--color-text);
+    }
+    li{
+        color: var(--color-text);
+    }
+    p {
+        color: var(--color-text);
+    }
+    td{
+        color: var(--color-text);
+    }
+    li::marker{
+        color: var(--color-text);
+    }
+    strong{
+        color: var(--color-text);
+    }
+    strong{
+        color: #fff;
+    }
 }
-
 .dark .fc {
     div {
-        color: #fff;
+        color: var(--color-text);
     }
 }
 
@@ -122,7 +166,7 @@
 }
 
 .dark .fc {
-    --fc-border-color: theme(--color-gray-800);
+    --fc-border-color: theme(--color-gray-700);
 }
 
 .dark .fc-timegrid-event-harness-inset .fc-timegrid-event, .fc-timegrid-event.fc-event-mirror, .fc-timegrid-more-link {

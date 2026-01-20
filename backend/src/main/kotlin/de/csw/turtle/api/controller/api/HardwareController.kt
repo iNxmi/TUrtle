@@ -33,7 +33,7 @@ class HardwareController(
 
         permissionService.check(BACKEND__API_HARDWARE__DOOR)
 
-        val response = doorControlService.trigger(seconds)
+        val response = doorControlService.trigger(seconds = seconds)
         return ResponseEntity.ok(response)
     }
 
@@ -45,7 +45,7 @@ class HardwareController(
         permissionService.check(BACKEND__API_HARDWARE__LOCKER)
 
         val locker = lockerService.get(id)
-        val response = lockerControlService.trigger(locker)
+        val response = lockerControlService.trigger(locker = locker, ignoreLocked = true)
         return ResponseEntity.ok(response)
     }
 

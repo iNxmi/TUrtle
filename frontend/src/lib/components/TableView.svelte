@@ -1,35 +1,37 @@
 <script>
     import TUrtleTable from '$lib/components/TUrtleTable.svelte';
-
-    const {
+    
+    import { page } from '$app/state';
+    import { goto, invalidateAll } from '$app/navigation';
+   let {
         endpoint,
         headers = [],
-        contentPage
+        contentPage,
+        showNewElementModal = $bindable(),
     } = $props();
 
-    const items = [];
-    for (const entity of contentPage.content) {
+    let items = $derived.by(() => {
 
-        const values = []
-        for (const header of headers)
-            values.push(entity[header.id])
+        let items = [];
+        for (const entity of contentPage.content) {
+    
+            const values = []
+            for (const header of headers)
+                values.push(entity[header.id])
+    
+            const item = {
+                onClick: () => goto(`${("/admin"+page.url.searchParams.get('endpoint')) || endpoint}/${entity.id}`),
+                values: values
+            };
+            items.push(item);     
+        }
+        return items;
+});
+    
 
-        const item = {
-            onClick: () => window.location.href = `${endpoint}/${entity.id}`,
-            values: values
-        };
-        items.push(item);
-    }
+   let pageInfo = $derived(contentPage.page);
 
-    const pageInfo = {
-        size: contentPage.page.size,
-        number: contentPage.page.number,
-        totalElements: contentPage.page.totalElements,
-        totalPages: contentPage.page.totalPages
-    }
-
-    import {page} from "$app/state";
-    const searchParams = page.url.searchParams
+    let searchParams = $derived(page.url.searchParams);
 </script>
 
 <!-- TODO improve redirect maybe with svelte or js props and js dynamis (this removes the feature to copy any url with search, pagination or sort queries) -->
@@ -37,29 +39,30 @@
     headers={headers}
     items={items}
     page={pageInfo}
+    bind:showNewElementModal={showNewElementModal}
 
     sortProperty={searchParams.get("sortProperty")}
     sortDirection={searchParams.get("sortDirection")}
 
     onFirstPage={() => {
         searchParams.set("pageNumber", 0)
-        window.location.href = `${endpoint}?${searchParams.toString()}`
+        goto(`?${searchParams.toString()}`, {invalidateAll: true});
     }}
     onPreviousPage={() => {
         searchParams.set("pageNumber", pageInfo.number - 1)
-        window.location.href = `${endpoint}?${searchParams.toString()}`
+        goto(`?${searchParams.toString()}`, {invalidateAll: true});
     }}
     onNextPage={() => {
         searchParams.set("pageNumber", pageInfo.number + 1)
-        window.location.href = `${endpoint}?${searchParams.toString()}`
+        goto(`?${searchParams.toString()}`, {invalidateAll: true});
     }}
     onLastPage={() => {
         searchParams.set("pageNumber", pageInfo.totalPages - 1)
-        window.location.href = `${endpoint}?${searchParams.toString()}`
+        goto(`?${searchParams.toString()}`, {invalidateAll: true});
     }}
     onSearch={(search) => {
         searchParams.set("search", search)
-        window.location.href = `${endpoint}?${searchParams.toString()}`
+        goto(`?${searchParams.toString()}`, {invalidateAll: true});
     }}
     onHeaderClicked={(header) => {
         searchParams.set("sortProperty", header)
@@ -70,7 +73,8 @@
             searchParams.set("sortDirection", "DESC")
         }
 
-        window.location.href = `${endpoint}?${searchParams.toString()}`
+        goto(`?${searchParams.toString()}`, {invalidateAll: true});
     }}
-    onReload={() => window.location.reload()}
+    onReload={() => invalidateAll()}
 />
+ 

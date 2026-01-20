@@ -1,9 +1,25 @@
-export const events = [
+const getEventTimes = (daysOffset, hour, duration = 1) => {
+	const start = new Date();
+
+	start.setDate(start.getDate() + daysOffset);
+	start.setHours(hour);
+
+	const end = new Date(start);
+	end.setHours(start.getHours() + duration);
+
+	return {
+		start: start.toISOString(),
+		end: end.toISOString()
+	}
+}
+export const seedEvents = (db) => {
+
+
+ const events = [
 	{
 		id: "0",
 		title: 'Team Daily Standup',
-		start: '2025-11-17T12:00:00',
-		end: '2025-11-17T13:00:00',
+		...getEventTimes(-7, 7, 2),
 		extendedProps: {
 			creator: '1',
 			description: 'Test Description',
@@ -14,8 +30,7 @@ export const events = [
 	{
 		id: "1",
 		title: 'Project Alpha Kickoff',
-		start: '2025-11-18T14:30:00',
-		end: '2025-11-18T16:30:00',
+		...getEventTimes(-6, 12, 1),
 		extendedProps: {
 			creator: '1',
 			description: 'Test Description',
@@ -26,8 +41,7 @@ export const events = [
 	{
 		id: "2",
 		title: 'Client Discovery Call',
-		start: '2025-11-19T09:00:00',
-		end: '2025-11-19T10:30:00',
+		...getEventTimes(-4, 17, 4),
 		extendedProps: {
 			creator: '1',
 			description: 'Test Description',
@@ -38,8 +52,7 @@ export const events = [
 	{
 		id: "3",
 		title: 'Code Review: Backend Service',
-		start: '2025-11-20T10:00:00',
-		end: '2025-11-20T11:00:00',
+		...getEventTimes(-3, 6, 2),
 		extendedProps: {
 			creator: '1',
 			description: 'Test Description',
@@ -50,8 +63,7 @@ export const events = [
 	{
 		id: "4",
 		title: 'UI/UX Feedback Meeting',
-		start: '2025-11-21T13:30:00',
-		end: '2025-11-21T15:30:00',
+		...getEventTimes(-3, 10, 1),
 		extendedProps: {
 			creator: '1',
 			description: 'Test Description',
@@ -62,8 +74,7 @@ export const events = [
 	{
 		id: "5",
 		title: 'Hiring Interview - Candidate 1',
-		start: '2025-11-22T08:00:00',
-		end: '2025-11-22T09:30:00',
+		...getEventTimes(-2, 13, 4),
 		extendedProps: {
 			creator: '1',
 			description: 'Test Description',
@@ -74,8 +85,7 @@ export const events = [
 	{
 		id: "6",
 		title: 'Q3 Budget Review',
-		start: '2025-11-23T16:00:00',
-		end: '2025-11-23T17:00:00',
+		...getEventTimes(-2, 18, 2),
 		extendedProps: {
 			creator: '1',
 			description: 'Test Description',
@@ -86,8 +96,7 @@ export const events = [
 	{
 		id: "7",
 		title: 'Infrastructure Check',
-		start: '2025-11-24T10:30:00',
-		end: '2025-11-24T12:30:00',
+		...getEventTimes(-1, 8, 3),
 		extendedProps: {
 			creator: '1',
 			description: 'Test Description',
@@ -98,8 +107,7 @@ export const events = [
 	{
 		id: "8",
 		title: 'Deep Work Slot (No Interruptions)',
-		start: '2025-11-24T14:00:00',
-		end: '2025-11-24T14:30:00',
+		...getEventTimes(-1, 14, 2),
 		extendedProps: {
 			creator: '1',
 			description: 'Test Description',
@@ -110,8 +118,7 @@ export const events = [
 	{
 		id: "9",
 		title: 'Sprint Planning Session',
-		start: '2025-11-25T15:30:00',
-		end: '2025-11-25T17:00:00',
+		...getEventTimes(0, 9, 2),
 		extendedProps: {
 			creator: '1',
 			description: 'Test Description',
@@ -122,8 +129,7 @@ export const events = [
 	{
 		id: "10",
 		title: '1:1 with Senior Lead',
-		start: '2025-11-26T11:00:00',
-		end: '2025-11-26T12:00:00',
+		...getEventTimes(0, 12, 1),
 		extendedProps: {
 			creator: '1',
 			description: 'Test Description',
@@ -134,8 +140,7 @@ export const events = [
 	{
 		id: "11",
 		title: 'Documentation Workshop',
-		start: '2025-11-27T14:30:00',
-		end: '2025-11-27T16:30:00',
+		...getEventTimes(1, 6, 4),
 		extendedProps: {
 			creator: '1',
 			description: 'Test Description',
@@ -146,8 +151,7 @@ export const events = [
 	{
 		id: "12",
 		title: 'Investor Update Prep',
-		start: '2025-11-28T09:30:00',
-		end: '2025-11-28T10:30:00',
+		...getEventTimes(2, 10, 3),
 		extendedProps: {
 			creator: "1",
 			description: 'Test Description',
@@ -158,8 +162,7 @@ export const events = [
 	{
 		id: "13",
 		title: 'Marketing Strategy Sync',
-		start: '2025-11-29T10:00:00',
-		end: '2025-11-29T10:30:00',
+		...getEventTimes(3, 11, 2),
 		extendedProps: {
 			creator: "1",
 			description: 'Test Description',
@@ -170,8 +173,7 @@ export const events = [
 	{
 		id: "14",
 		title: 'QA Testing Huddle',
-		start: '2025-11-30T16:30:00',
-		end: '2025-11-30T17:30:00',
+		...getEventTimes(4, 8, 1),
 		extendedProps: {
 			creator: "1",
 			description: 'Test Description',
@@ -180,3 +182,6 @@ export const events = [
 		}
 	}
 ];
+
+events.forEach( (event) => db.createEvent(event));
+}

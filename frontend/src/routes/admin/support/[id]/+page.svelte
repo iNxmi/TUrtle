@@ -3,7 +3,7 @@
     import {m} from '$lib/paraglide/messages.js';
 
     let {data} = $props();
-    const ticket = data.ticket
+    let ticket = $derived(data.ticket);
 </script>
 
 <form class="flex flex-col gap-5">

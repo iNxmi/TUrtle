@@ -4,7 +4,7 @@
     import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
 
     let {data} = $props();
-    const template = data.template;
+    let template = $derived(data.template);
 </script>
 
 <form class="flex flex-col gap-5">

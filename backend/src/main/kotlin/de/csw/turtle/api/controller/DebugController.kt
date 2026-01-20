@@ -4,6 +4,9 @@ import de.csw.turtle.api.Permission
 import de.csw.turtle.api.exception.exceptions.debug.DebugException
 import de.csw.turtle.api.service.EmailService
 import de.csw.turtle.api.service.PermissionService
+import de.csw.turtle.api.service.door.DoorControlService
+import de.csw.turtle.api.service.locker.LockerControlService
+import de.csw.turtle.api.service.locker.LockerService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,7 +19,10 @@ import java.net.URI
 @RequestMapping("/debug")
 class DebugController(
     private val emailService: EmailService,
-    private val permissionService: PermissionService
+    private val permissionService: PermissionService,
+    private val doorControlService: DoorControlService,
+    private val lockerService: LockerService,
+    private val lockerControlService: LockerControlService
 ) {
 
     @GetMapping("/info")
@@ -43,6 +49,21 @@ class DebugController(
         permissionService.check(Permission.BACKEND__DEBUG__EMAIL)
 
         emailService.sendSimpleEmail(to, subject, text)
+    }
+
+    @GetMapping("/door")
+    fun exception(@RequestParam seconds: Int): String {
+        permissionService.check(Permission.BACKEND__DEBUG__DOOR)
+
+        return doorControlService.trigger(seconds)
+    }
+
+    @GetMapping("/locker")
+    fun exception(@RequestParam id: Long, @RequestParam ignoreLocked: Boolean = false): String {
+        permissionService.check(Permission.BACKEND__DEBUG__LOCKER)
+
+        val locker = lockerService.get(id)
+        return lockerControlService.trigger(locker, ignoreLocked = ignoreLocked)
     }
 
 }
