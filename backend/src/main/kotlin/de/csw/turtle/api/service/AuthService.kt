@@ -4,7 +4,7 @@ import de.csw.turtle.api.dto.LoginUserRequest
 import de.csw.turtle.api.dto.RegisterUserRequest
 import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.BadCredentialsException
+import de.csw.turtle.api.exception.UnauthorizedException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.AuthenticationManager
@@ -51,7 +51,7 @@ class AuthService(
         val authentication = try {
             authenticationManager.authenticate(token)
         } catch (_: org.springframework.security.authentication.BadCredentialsException) {
-            throw BadCredentialsException("Bad credentials.")
+            throw UnauthorizedException("Invalid username or password.")
         }
         SecurityContextHolder.getContext().authentication = authentication
 
