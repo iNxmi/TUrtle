@@ -20,5 +20,5 @@
         {/each}
     </Accordion>
 
-    <A href="/support">{m.faq__problem_not_solved()}</A>
+    <A href="/contact">{m.faq__problem_not_solved()}</A>
 </div>
