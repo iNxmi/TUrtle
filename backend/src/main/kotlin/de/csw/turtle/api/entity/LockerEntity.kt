@@ -17,6 +17,8 @@ class LockerEntity(
 
     var isSoftwareUnlockable: Boolean,
 
+    var locked: Boolean,
+
     @OneToMany(mappedBy = "locker")
     val devices: MutableSet<DeviceEntity> = mutableSetOf()
 

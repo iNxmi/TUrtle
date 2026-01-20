@@ -8,6 +8,6 @@ export async function load({url}){
 
     if(response.ok){
         const lockerData = await response.json();
-        return {locker: lockerData}
+        return {lockers: lockerData}
     }
 }

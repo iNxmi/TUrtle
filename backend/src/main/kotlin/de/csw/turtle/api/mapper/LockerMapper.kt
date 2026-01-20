@@ -13,7 +13,8 @@ abstract class LockerMapper() :
     override fun create(request: CreateLockerRequest) = LockerEntity(
         index = request.index,
         name = request.name,
-        isSoftwareUnlockable = request.isSoftwareUnlockable
+        isSoftwareUnlockable = request.isSoftwareUnlockable,
+        locked = request.locked
     )
 
     override fun get(entity: LockerEntity) = GetLockerResponse(
@@ -21,7 +22,8 @@ abstract class LockerMapper() :
         name = entity.name,
         index = entity.index,
         isSoftwareUnlockable = entity.isSoftwareUnlockable,
-        createdAt = entity.createdAt
+        createdAt = entity.createdAt,
+        locked = entity.locked
     )
 
     override fun patch(
@@ -31,6 +33,7 @@ abstract class LockerMapper() :
         request.name?.let { entity.name = it }
         request.index?.let { entity.index = it }
         request.isSoftwareUnlockable?.let { entity.isSoftwareUnlockable = it }
+        request.locked?.let { entity.locked = it }
         return entity
     }
 

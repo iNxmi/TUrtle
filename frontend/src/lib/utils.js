@@ -20,29 +20,34 @@ export function convertEventToBackend(calendarEvent) {
 export function convertEventToFrontend(backendEvent, creator) {
     if (dev)
         return {
-    ...backendEvent,
-    isAuthor: true
-    };
+            ...backendEvent,
+            isAuthor: true
+        };
 
-    if(creator){
-    return {
-        ...backendEvent,
-        ...(backendEvent.accessibility === "WHITELIST" ? {enableWhitelist: true, openForEveryone: false} :
-            backendEvent.accessibility === "UNLOCKED" ? {openToEveryone: true, enableWhitelist: false} :
-                {enableWhitelist: false, openForEveryone: false}),
-        ...(creator.id === backendEvent.creator || creator.roles.includes(4) ? {editable: true, color: '#FF6A00', isAuthor: true} : {editable: false, color: '#89ABE4', isAuthor: false}),
-        accessibility: undefined
-    };
-} else {
-    return { 
-        ...backendEvent,
-        ...(backendEvent.accessibility === "WHITELIST" ? {enableWhitelist: true, openForEveryone: false} :
-            backendEvent.accessibility === "UNLOCKED" ? {openToEveryone: true, enableWhitelist: false} :
-                {enableWhitelist: false, openForEveryone: false}),
-        accessibility: undefined
-    };
+    if (creator) {
+        return {
+            ...backendEvent,
+            ...(backendEvent.accessibility === "WHITELIST" ? {enableWhitelist: true, openForEveryone: false} :
+                backendEvent.accessibility === "UNLOCKED" ? {openToEveryone: true, enableWhitelist: false} :
+                    {enableWhitelist: false, openForEveryone: false}),
+            ...(creator.id === backendEvent.creator || creator.roles.includes(4) ? {
+                editable: true,
+                color: '#FF6A00',
+                isAuthor: true
+            } : {editable: false, color: '#89ABE4', isAuthor: false}),
+            accessibility: undefined
+        };
+    } else {
+        return {
+            ...backendEvent,
+            ...(backendEvent.accessibility === "WHITELIST" ? {enableWhitelist: true, openForEveryone: false} :
+                backendEvent.accessibility === "UNLOCKED" ? {openToEveryone: true, enableWhitelist: false} :
+                    {enableWhitelist: false, openForEveryone: false}),
+            accessibility: undefined
+        };
+    }
 }
-}
+
 export async function fetchRoomBookings(info) {
     const url = `/roombookings?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`
     const response = await request(url);
@@ -53,10 +58,10 @@ export async function fetchRoomBookings(info) {
     return await response.json();
 }
 
-export async function fetchDeviceBookings(info){
+export async function fetchDeviceBookings(info) {
     const url = `/devicebookings?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`;
     const response = await request(url);
-    if(!response.ok){
+    if (!response.ok) {
         return false;
     }
     return await response.json();
@@ -77,10 +82,12 @@ export function checkAuthorization(response, redirectURL) {
 
     return error(response.status, response.statusText);
 }
-export async function openLocker(locker, reservation){
+
+export async function openLocker(locker, reservation) {
     //Todo
-    if(reservation){
+    if (reservation) {
         return reservation.status === "COLLECTION_READY" ? "DEVICE_COLLECTED" : "DEVICE_RETURNED";
     }
-    return;
+
+    return await fetch(`/api/hardware/locker?id=${locker}`);
 }

@@ -176,9 +176,9 @@
         href: '/admin/news',
         icon: NewspaperSolid
     }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_ROOM_BOOKINGS",
+        permission: "FRONTEND__SIDEBAR_ITEM__HARDWARE_OVERRIDE",
         label: "_Hardware Override_",
-        href: '/admin/locks',
+        href: '/admin/hardware',
         icon: LockSolid
     }, {
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_AUDIT_LOGS",
