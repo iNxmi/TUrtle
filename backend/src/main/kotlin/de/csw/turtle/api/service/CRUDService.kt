@@ -2,7 +2,7 @@ package de.csw.turtle.api.service
 
 import cz.jirutka.rsql.parser.RSQLParserException
 import de.csw.turtle.api.entity.CRUDEntity
-import de.csw.turtle.api.exception.exceptions.BadRequestException
+import de.csw.turtle.api.exception.BadRequestException
 import de.csw.turtle.api.exception.exceptions.crud.CRUDResourceNotFoundException
 import de.csw.turtle.api.mapper.CRUDMapper
 import de.csw.turtle.api.repository.CRUDRepository

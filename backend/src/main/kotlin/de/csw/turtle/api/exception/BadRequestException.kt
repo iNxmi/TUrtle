@@ -1,4 +1,4 @@
-package de.csw.turtle.api.exception.exceptions
+package de.csw.turtle.api.exception
 
 import org.springframework.http.HttpStatus
 

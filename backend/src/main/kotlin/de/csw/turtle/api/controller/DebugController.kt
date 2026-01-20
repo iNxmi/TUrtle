@@ -1,7 +1,7 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.exception.exceptions.debug.DebugException
+import de.csw.turtle.api.exception.DebugException
 import de.csw.turtle.api.service.EmailService
 import de.csw.turtle.api.service.PermissionService
 import de.csw.turtle.api.service.door.DoorControlService

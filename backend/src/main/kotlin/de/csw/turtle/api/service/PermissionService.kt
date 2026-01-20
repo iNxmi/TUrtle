@@ -2,8 +2,8 @@ package de.csw.turtle.api.service
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.exceptions.auth.InsufficientPermissionException
-import de.csw.turtle.api.exception.exceptions.auth.UnauthorizedException
+import de.csw.turtle.api.exception.ForbiddenException
+import de.csw.turtle.api.exception.UnauthorizedException
 import org.springframework.stereotype.Service
 
 @Service
@@ -25,7 +25,7 @@ class PermissionService(
         val permissions = getPermissions(user)
 
         if (!permissions.contains(permission))
-            throw InsufficientPermissionException(permission)
+            throw ForbiddenException(permission)
 
         return user
     }
