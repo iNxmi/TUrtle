@@ -11,26 +11,29 @@ data class ExceptionResponse(
 ) {
 
     constructor(url: String, exception: Exception, status: HttpStatus) : this(
-        url,
-        StatusDetails(status),
-        ExceptionDetails(exception)
+        url = url,
+        status = StatusDetails(status),
+        exception = ExceptionDetails(exception)
     )
 
     data class ExceptionDetails(
-        val type: String?,
+        val name: String?,
         val message: String?
     ) {
         constructor(exception: Exception) : this(
-            exception::class.simpleName,
-            exception.message
+            name = exception::class.simpleName,
+            message = exception.message
         )
     }
 
     data class StatusDetails(
-        val status: Int,
-        val type: String
+        val code: Int,
+        val name: String
     ) {
-        constructor(status: HttpStatus) : this(status.value(), status.name)
+        constructor(status: HttpStatus) : this(
+            code = status.value(),
+            name = status.name
+        )
     }
 
 }
