@@ -1,8 +1,10 @@
 package de.csw.turtle.api.exception
 
 import de.csw.turtle.api.dto.ExceptionResponse
+import de.csw.turtle.api.dto.create.CreateExceptionRequest
 import de.csw.turtle.api.entity.ExceptionEntity
 import de.csw.turtle.api.repository.ExceptionRepository
+import de.csw.turtle.api.service.ExceptionService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.mapping.PropertyReferenceException
 import org.springframework.http.HttpStatus
@@ -19,7 +21,7 @@ import java.io.StringWriter
 
 @RestControllerAdvice
 class GlobalControllerExceptionHandler(
-    private val exceptionRepository: ExceptionRepository,
+    private val exceptionService: ExceptionService,
 ) {
 
     @ExceptionHandler(TUrtleException::class)
@@ -56,18 +58,19 @@ class GlobalControllerExceptionHandler(
     fun generic(exception: Exception, request: HttpServletRequest): ResponseEntity<ExceptionResponse> {
         val url = request.requestURI
 
-        val exceptionEntity = ExceptionEntity(
+        val request = CreateExceptionRequest(
             endpoint = url,
-            exception = exception::class.simpleName,
+            exception = exception::class.simpleName!!,
             message = exception.message,
             stackTrace = getStackTraceAsString(exception)
         )
-        exceptionRepository.save(exceptionEntity)
+        val entity = exceptionService.create(request)
 
         if (exception !is DebugException)
             exception.printStackTrace()
 
-        return exception.responseEntity(request.requestURI, HttpStatus.INTERNAL_SERVER_ERROR)
+//        return exception.responseEntity(request.requestURI, HttpStatus.INTERNAL_SERVER_ERROR)
+        throw InternalServerErrorException("id=${entity.id}")
     }
 
     private fun getStackTraceAsString(exception: Throwable): String {
