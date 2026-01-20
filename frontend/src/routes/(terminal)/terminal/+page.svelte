@@ -1,7 +1,7 @@
 <script>
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
     //import { Twemoji } from '@aurelle/svelte-twemoji';
-    import { Button, Modal } from "flowbite-svelte";
+    //import { Button, Modal } from "flowbite-svelte";
 
     let emojis = $state(["😈", "😃", "🎩", "👽", "💩", "❤️", "💎", "👂", "👍", "🐋", "🐶", "🐸", "❄", "🎉", "💿",
                     "🍉", "☎", "🎥", "✂", "⚽", "🚀", "💄", "🌂", "🍄", "🍀", "🚗", "🍕", "🍔", "🍨", "💣","🐧", "💼", "🌍", "🐝", "🏠", "⏰"]);
@@ -84,10 +84,7 @@
                 <p>QR-Code (?)</p>
             </div>
             <div class="self-center w-full mt-3 mb-3">
-                <Button onclick={() => (defaultModal = true)} class="flex flex-col  bg-[#FF6A00] rounded-xl w-full h-[5rem] justify-center">Problem melden</Button>
-                <Modal form bind:open={defaultModal} size="xl"class="h-full bg-neutral-100"  >
-                     
-                </Modal>
+
             </div>
         </div>
     </div>
