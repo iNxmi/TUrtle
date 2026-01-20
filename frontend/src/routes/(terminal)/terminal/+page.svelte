@@ -1,7 +1,7 @@
 <script>
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
-    import { Twemoji } from '@aurelle/svelte-twemoji';
-
+    //import { Twemoji } from '@aurelle/svelte-twemoji';
+    import { Button, Modal } from "flowbite-svelte";
 
     let emojis = $state(["😈", "😃", "🎩", "👽", "💩", "❤️", "💎", "👂", "👍", "🐋", "🐶", "🐸", "❄", "🎉", "💿",
                     "🍉", "☎", "🎥", "✂", "⚽", "🚀", "💄", "🌂", "🍄", "🍀", "🚗", "🍕", "🍔", "🍨", "💣","🐧", "💼", "🌍", "🐝", "🏠", "⏰"]);
@@ -10,7 +10,7 @@
     let password_index = 0;
 
     
-    //teilt array in sechs reihen aus je sechs elementen für die emoji tastatur auf
+    //teilt array in sechs reihen aus je sechs elementen auf für die emoji tastatur
     const make_rows = arr => {
         let rows = [[], [], [], [], [], []];
         let row_number = 0;
@@ -67,6 +67,8 @@
         emojis = arr;
     }
 
+    let defaultModal = $state(false);
+
     shuffle();
     $inspect(emojis);
     $inspect(emoji_rows);
@@ -82,7 +84,10 @@
                 <p>QR-Code (?)</p>
             </div>
             <div class="self-center w-full mt-3 mb-3">
-                <button type="button" class="flex flex-col  bg-[#FF6A00] rounded-xl w-full h-[5rem] justify-center">Problem melden</button>
+                <Button onclick={() => (defaultModal = true)} class="flex flex-col  bg-[#FF6A00] rounded-xl w-full h-[5rem] justify-center">Problem melden</Button>
+                <Modal form bind:open={defaultModal} size="xl"class="h-full bg-neutral-100"  >
+                     
+                </Modal>
             </div>
         </div>
     </div>
@@ -92,19 +97,19 @@
                 {#each password as emoji}
                     <span class="text-4xl">
 	                    {#if emoji === ''}
-		                    <Twemoji emoji="🐵" size={48}/>
+		                    🐵
 	                    {:else}
-                            <Twemoji emoji="🙈" size={48}/>
+                            🙈
 	                    {/if}
                     </span>
                 {/each}
-                <button type = "button" class="text-4xl" onclick={backspace}><Twemoji emoji="🔙" size={48}/></button>
+                <button type = "button" class="text-4xl" onclick={backspace}>🔙</button>
             </div>
             <div class="emoji-keyboard w-full h-full flex flex-col justify-around">
                 {#each emoji_rows as row}
                     <div class="emoji-row w-full flex justify-between p-[0.5rem]">
                         {#each row as emoji}
-                            <button type="button" class="key w-[3rem] h-[3rem] rounded-lg bg-neutral-100 text-5xl" onclick={() => addEmoji({emoji})}><Twemoji emoji={emoji} size={48}/></button>
+                            <button type="button" class="key w-[3rem] h-[3rem] rounded-lg bg-neutral-100 text-5xl" onclick={() => addEmoji({emoji})}>{emoji}</button>
                         {/each}
                     </div>
                 {/each}
