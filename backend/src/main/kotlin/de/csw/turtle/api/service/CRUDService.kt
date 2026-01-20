@@ -3,7 +3,7 @@ package de.csw.turtle.api.service
 import cz.jirutka.rsql.parser.RSQLParserException
 import de.csw.turtle.api.entity.CRUDEntity
 import de.csw.turtle.api.exception.BadRequestException
-import de.csw.turtle.api.exception.exceptions.crud.CRUDResourceNotFoundException
+import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.CRUDMapper
 import de.csw.turtle.api.repository.CRUDRepository
 import io.github.perplexhub.rsql.ConversionException
@@ -31,7 +31,7 @@ abstract class CRUDService<
     }
 
     open fun getOrNull(id: Long): Entity? = repository.findById(id).getOrNull()
-    open fun get(id: Long): Entity = getOrNull(id) ?: throw CRUDResourceNotFoundException(name, id)
+    open fun get(id: Long): Entity = getOrNull(id) ?: throw NotFoundException("CRUD Resource '$name' with id '$id' not found.")
 
     open fun getAll(
         sort: Sort = Sort.unsorted(),

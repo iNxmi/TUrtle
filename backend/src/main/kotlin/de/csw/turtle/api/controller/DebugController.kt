@@ -38,7 +38,7 @@ class DebugController(
     }
 
     @GetMapping("/exception")
-    fun exception(@RequestParam message: String?): Nothing {
+    fun exception(@RequestParam message: String = ""): Nothing {
         permissionService.check(Permission.BACKEND__DEBUG__EXCEPTION)
 
         throw DebugException(message)

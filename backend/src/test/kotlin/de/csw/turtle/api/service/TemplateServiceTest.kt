@@ -3,7 +3,7 @@ package de.csw.turtle.api.service
 import de.csw.turtle.api.dto.create.CreateTemplateRequest
 import de.csw.turtle.api.dto.patch.PatchTemplateRequest
 import de.csw.turtle.api.entity.TemplateEntity
-import de.csw.turtle.api.exception.exceptions.crud.CRUDResourceNotFoundException
+import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.TemplateMapper
 import de.csw.turtle.api.repository.TemplateRepository
 import io.mockk.every
@@ -153,11 +153,11 @@ class TemplateServiceTest {
     }
 
     @Test
-    fun get_whenMissing_throwsCRUDResourceNotFoundException() {
+    fun get_whenMissing_throwsNotFoundException() {
         val id = 67L
         every { repository.findById(id) } returns Optional.empty()
 
-        assertThrows<CRUDResourceNotFoundException> { templateService.get(id) }
+        assertThrows<NotFoundException> { templateService.get(id) }
         verify(exactly = 1) { repository.findById(id) }
     }
 

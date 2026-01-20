@@ -51,7 +51,7 @@ class AuthService(
         val authentication = try {
             authenticationManager.authenticate(token)
         } catch (_: org.springframework.security.authentication.BadCredentialsException) {
-            throw BadCredentialsException()
+            throw BadCredentialsException("Bad credentials.")
         }
         SecurityContextHolder.getContext().authentication = authentication
 

@@ -5,8 +5,8 @@ import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchProfileRequest
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.exceptions.user.UserNotFoundException
-import de.csw.turtle.api.exception.exceptions.user.UsernameAlreadyExistsException
+import de.csw.turtle.api.exception.ConflictException
+import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -22,14 +22,14 @@ class UserService(
 
     override fun create(request: CreateUserRequest): UserEntity {
         if (getOrNull(request.username) != null)
-            throw UsernameAlreadyExistsException(request.username)
+            throw ConflictException(request.username)
 
         val hashed = request.copy(password = passwordEncoder.encode(request.password))
         return super.create(hashed)
     }
 
     fun getOrNull(username: String) = repository.findByUsername(username)
-    fun get(username: String) = getOrNull(username) ?: throw UserNotFoundException(username)
+    fun get(username: String) = getOrNull(username) ?: throw NotFoundException(username)
 
     @Transactional
     fun updateProfile(username: String, request: PatchProfileRequest): UserEntity {

@@ -3,7 +3,7 @@ package de.csw.turtle.api.service
 import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
 import de.csw.turtle.api.entity.SupportTicketEntity
-import de.csw.turtle.api.exception.exceptions.crud.CRUDResourceNotFoundException
+import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.SupportTicketMapper
 import de.csw.turtle.api.repository.SupportTicketRepository
 import io.mockk.every
@@ -196,11 +196,11 @@ class SupportTicketServiceTest {
     }
 
     @Test
-    fun get_whenMissing_throwsCRUDResourceNotFoundException() {
+    fun get_whenMissing_throwsNotFoundException() {
         val id = 67L
         every { repository.findById(id) } returns Optional.empty()
 
-        assertThrows<CRUDResourceNotFoundException> { supportTicketService.get(id) }
+        assertThrows<NotFoundException> { supportTicketService.get(id) }
         verify(exactly = 1) { repository.findById(id) }
     }
 

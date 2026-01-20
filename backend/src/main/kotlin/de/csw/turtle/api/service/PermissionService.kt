@@ -20,12 +20,12 @@ class PermissionService(
 
     fun check(permission: Permission): UserEntity {
         val user = authService.getAuthenticatedUser()
-            ?: throw UnauthorizedException()
+            ?: throw UnauthorizedException("You must be logged in to access this resource.")
 
         val permissions = getPermissions(user)
 
         if (!permissions.contains(permission))
-            throw ForbiddenException(permission)
+            throw ForbiddenException("You need '$permission' to access this resource.")
 
         return user
     }
