@@ -4,8 +4,8 @@ import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.patch.PatchProfileRequest
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.exceptions.user.UserNotFoundException
-import de.csw.turtle.api.exception.exceptions.user.UsernameAlreadyExistsException
+import de.csw.turtle.api.exception.ConflictException
+import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.TemplateMapper
 import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.repository.UserRepository
@@ -71,7 +71,7 @@ class UserServiceTest {
         every { repository.findByUsername(any()) } returns null
         every { repository.findByUsername("test") } returns entity
 
-        assertThrows<UserNotFoundException> { service.get("invalid username") }
+        assertThrows<NotFoundException> { service.get("invalid username") }
 
         val result = service.get("test")
 
@@ -91,7 +91,7 @@ class UserServiceTest {
         every {repository.findByUsername(any())} returns null
         every { repository.findByUsername(request.username) } returns entity
 
-        assertThrows<UsernameAlreadyExistsException> { service.create(invalidRequest) }
+        assertThrows<ConflictException> { service.create(invalidRequest) }
 
         every { encoder.encode(any()) } returns "password"
 

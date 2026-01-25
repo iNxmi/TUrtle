@@ -4,6 +4,7 @@ import de.csw.turtle.api.dto.create.CreateTemplateRequest
 import de.csw.turtle.api.dto.get.GetTemplateResponse
 import de.csw.turtle.api.dto.patch.PatchTemplateRequest
 import de.csw.turtle.api.entity.TemplateEntity
+import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.TemplateMapper
 import de.csw.turtle.api.repository.TemplateRepository
 import org.springframework.stereotype.Service
@@ -14,6 +15,6 @@ class TemplateService(
     override val mapper: TemplateMapper
 ) : CRUDService<TemplateEntity, CreateTemplateRequest, GetTemplateResponse, PatchTemplateRequest>("Template") {
 
-    fun getByName(name: String): TemplateEntity = repository.findByName(name) ?: TODO("implement exception")
+    fun getByName(name: String): TemplateEntity = repository.findByName(name) ?: throw NotFoundException(name)
 
 }

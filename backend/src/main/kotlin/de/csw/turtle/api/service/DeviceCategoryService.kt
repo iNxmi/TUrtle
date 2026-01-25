@@ -4,6 +4,7 @@ import de.csw.turtle.api.dto.create.CreateDeviceCategoryRequest
 import de.csw.turtle.api.dto.get.GetDeviceCategoryResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceCategoryRequest
 import de.csw.turtle.api.entity.DeviceCategoryEntity
+import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.DeviceCategoryMapper
 import de.csw.turtle.api.repository.DeviceCategoryRepository
 import org.springframework.stereotype.Service
@@ -16,6 +17,6 @@ class DeviceCategoryService(
     "DeviceCategory"
 ) {
 
-    fun getByName(name: String) = repository.findByName(name)
+    fun getByName(name: String) = repository.findByName(name) ?: throw NotFoundException(name)
 
 }

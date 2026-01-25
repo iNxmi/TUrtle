@@ -69,7 +69,7 @@ class AuthService(
 
     fun getAuthenticatedUser(): UserEntity? {
         val authentication = SecurityContextHolder.getContext().authentication
-            ?: throw IllegalStateException("Authentication not found.")
+            ?: throw UnauthorizedException("Authentication not found.")
 
         val userDetails = authentication.principal as? UserDetails
 

@@ -4,6 +4,7 @@ import de.csw.turtle.api.dto.create.CreateRoleRequest
 import de.csw.turtle.api.dto.get.GetRoleResponse
 import de.csw.turtle.api.dto.patch.PatchRoleRequest
 import de.csw.turtle.api.entity.RoleEntity
+import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.RoleMapper
 import de.csw.turtle.api.repository.RoleRepository
 import org.springframework.stereotype.Service
@@ -14,6 +15,6 @@ class RoleService(
     override val mapper: RoleMapper
 ) : CRUDService<RoleEntity, CreateRoleRequest, GetRoleResponse, PatchRoleRequest>("Role") {
 
-    fun getByName(name: String) = repository.findByName(name)
+    fun getByName(name: String) = repository.findByName(name) ?: throw NotFoundException(name)
 
 }
