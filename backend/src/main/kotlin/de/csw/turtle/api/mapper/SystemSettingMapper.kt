@@ -11,12 +11,14 @@ abstract class SystemSettingMapper : CRUDMapper<SystemSettingEntity, CreateSyste
 
     override fun create(request: CreateSystemSettingRequest) = SystemSettingEntity(
         key = request.key,
+        type = request.type,
         value = request.value
     )
 
     override fun get(entity: SystemSettingEntity) = GetSystemSettingResponse(
         id = entity.id,
         key = entity.key,
+        type = entity.type,
         value = entity.value,
         createdAt = entity.createdAt
     )
@@ -26,6 +28,7 @@ abstract class SystemSettingMapper : CRUDMapper<SystemSettingEntity, CreateSyste
         request: PatchSystemSettingRequest
     ): SystemSettingEntity {
         request.key?.let { entity.key = it }
+        request.type?.let { entity.type = it }
         request.value?.let { entity.value = it }
         return entity
     }
