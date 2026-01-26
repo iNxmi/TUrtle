@@ -48,7 +48,7 @@ turtle:
   security:
     max-sessions: 16
     session-secret: F~jU}3x]&Y@{LZgn:'!uWMmFhmZEySZZ{p9ve&Y]gDa,Pg[:^pv_T)s'=R+3{/d9
-  debug: false #TODO remove in prod
+  debug: true #TODO remove in prod
   ssh:
     door:
       host: 192.168.0.107

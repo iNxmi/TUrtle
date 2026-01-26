@@ -9,6 +9,7 @@ data class GetUserResponse(
     val firstName: String?,
     val lastName: String?,
     val email: String?,
+    val emojis: String,
     val roleIds: Set<Long>?,
 
     override val createdAt: Instant?

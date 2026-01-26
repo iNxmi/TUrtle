@@ -18,8 +18,8 @@ class UserEntity(
 
     var password: String,
 
-//    @Column(unique = true)
-//    var emojis: String = id.toString(),
+    @Column(unique = true)
+    var emojis: String,
 
     @ManyToMany
     @JoinTable(

@@ -15,20 +15,21 @@ class DefaultUsersConfiguration(
     private val roleService: RoleService,
 ) : CommandLineRunner {
 
-    //TODO implement proper null check and randomized password
+    //TODO implement randomized password and randomized emojis
 
     @Transactional
     override fun run(vararg args: String?) {
         if(userService.count() > 0)
             return
 
-        val adminRole = roleService.getByName("Administrator")!!
+        val adminRole = roleService.getByName("Administrator")
 
         userService.create(CreateUserRequest(
             username="admin",
             firstName="Admin",
             lastName="Admin",
             email = "admin@csw.tu-darmstadt.de",
+            emojis = "12345",
             password = "admin",
             roleIds = setOf(adminRole.id)
         ))

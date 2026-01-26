@@ -28,8 +28,11 @@ class UserService(
         return super.create(hashed)
     }
 
-    fun getOrNull(username: String) = repository.findByUsername(username)
-    fun get(username: String) = getOrNull(username) ?: throw NotFoundException(username)
+    fun getOrNull(username: String): UserEntity? = repository.findByUsername(username)
+    fun get(username: String): UserEntity = getOrNull(username) ?: throw NotFoundException(username)
+
+    fun getByEmojisOrNull(emojis: String): UserEntity? = repository.findByEmojis(emojis)
+    fun getByEmojis(emojis: String): UserEntity = getByEmojisOrNull(emojis) ?: throw NotFoundException(emojis)
 
     @Transactional
     fun updateProfile(username: String, request: PatchProfileRequest): UserEntity {
@@ -39,6 +42,7 @@ class UserService(
         request.firstName?.let { user.firstName = it }
         request.lastName?.let { user.lastName = it }
         request.email?.let { user.email = it }
+        request.emojis?.let { user.emojis = it }
         request.password?.let { user.password = passwordEncoder.encode(it) }
 
         return repository.save(user)

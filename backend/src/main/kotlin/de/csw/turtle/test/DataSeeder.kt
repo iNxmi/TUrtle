@@ -32,7 +32,6 @@ class DataSeeder(
     private val faker = Faker()
 
     @EventListener(ApplicationReadyEvent::class)
-    @Transactional
     @Order(1)
     fun seedUsers() {
         while (userService.count() < 512) {
@@ -50,7 +49,8 @@ class DataSeeder(
                 firstName = firstName,
                 lastName = lastName,
                 email = email,
-                password = "password",
+                emojis = System.currentTimeMillis().toString(),
+                password = username,
                 roleIds = setOf(role.id)
             )
             userService.create(request)
@@ -100,13 +100,15 @@ class DataSeeder(
             val subject = "This is a support ticket about Something"
             val description = "I am facing an issue with Something. Please help!"
 
-            supportTicketService.create(CreateSupportTicketRequest(
-                urgency = urgency,
-                category = category,
-                email = email,
-                subject = subject,
-                description = description
-            ))
+            supportTicketService.create(
+                CreateSupportTicketRequest(
+                    urgency = urgency,
+                    category = category,
+                    email = email,
+                    subject = subject,
+                    description = description
+                )
+            )
         }
     }
 
@@ -120,7 +122,7 @@ class DataSeeder(
         val xbox360 = CreateDeviceRequest(
             name = "Xbox 360",
             description = "The Xbox 360 (we love it)",
-            categoryId = deviceCategoryService.getByName("Gaming")!!.id,
+            categoryId = deviceCategoryService.getByName("Gaming").id,
             lockerId = lockerService.getByIndex(6)!!.id,
             acquiredAt = Instant.now()
         )
@@ -129,7 +131,7 @@ class DataSeeder(
         val ps4 = CreateDeviceRequest(
             name = "PlayStation 4",
             description = "The PS4 (we love it not as much as the 360)",
-            categoryId = deviceCategoryService.getByName("Gaming")!!.id,
+            categoryId = deviceCategoryService.getByName("Gaming").id,
             lockerId = lockerService.getByIndex(6)!!.id,
             acquiredAt = Instant.now()
         )
@@ -138,7 +140,7 @@ class DataSeeder(
         val laptop = CreateDeviceRequest(
             name = "Dell Laptop",
             description = "laptop from dell",
-            categoryId = deviceCategoryService.getByName("Laptop")!!.id,
+            categoryId = deviceCategoryService.getByName("Laptop").id,
             lockerId = lockerService.getByIndex(7)!!.id,
             acquiredAt = Instant.now()
         )

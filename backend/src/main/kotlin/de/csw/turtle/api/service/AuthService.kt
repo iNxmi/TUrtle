@@ -32,6 +32,7 @@ class AuthService(
             firstName =  registerUserRequest.firstName,
             lastName = registerUserRequest.lastName,
             email = registerUserRequest.email,
+            emojis = registerUserRequest.emojis,
             password = registerUserRequest.password,
         )
 

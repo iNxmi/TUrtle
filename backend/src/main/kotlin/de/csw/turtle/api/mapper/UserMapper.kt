@@ -20,6 +20,7 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
             firstName = request.firstName,
             lastName = request.lastName,
             email = request.email,
+            emojis = request.emojis,
             password = request.password
         )
 
@@ -35,6 +36,7 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
         firstName = entity.firstName,
         lastName = entity.lastName,
         email = entity.email,
+        emojis = entity.emojis,
         roleIds = entity.roles.map { it.id }.toSet(),
         createdAt = entity.createdAt
     )
@@ -48,6 +50,7 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
         request.lastName?.let { entity.lastName = it }
         request.lastName?.let { entity.lastName = it }
         request.email?.let { entity.email = it }
+        request.emojis?.let { entity.emojis = it }
         request.password?.let { entity.password = it }
 
         if (request.roleIds != null) {

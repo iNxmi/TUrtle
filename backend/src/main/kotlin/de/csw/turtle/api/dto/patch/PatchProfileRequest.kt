@@ -6,5 +6,6 @@ data class PatchProfileRequest(
     val lastName: String? = null,
     val email: String? = null,
     val studentId: Long? = null,
+    val emojis: String? = null,
     val password: String? = null
 ) : PatchRequest

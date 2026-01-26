@@ -65,6 +65,8 @@ class GlobalControllerExceptionHandler(
         )
         val entity = exceptionService.create(request)
 
+        exception.printStackTrace()
+
         throw InternalServerErrorException("id=${entity.id}")
     }
 

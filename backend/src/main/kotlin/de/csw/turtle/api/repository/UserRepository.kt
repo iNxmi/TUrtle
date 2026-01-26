@@ -6,5 +6,6 @@ interface UserRepository : CRUDRepository<UserEntity> {
 
     fun findByUsername(username: String): UserEntity?
     fun findByEmail(email: String): UserEntity?
+    fun findByEmojis(emojis: String): UserEntity?
 
 }
