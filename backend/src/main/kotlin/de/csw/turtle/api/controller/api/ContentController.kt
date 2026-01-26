@@ -1,7 +1,6 @@
 package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.service.SystemSettingService
-import de.csw.turtle.api.service.TemplateService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -10,31 +9,27 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/content")
 class ContentController(
-    val templateService: TemplateService,
-    val systemSettingService: SystemSettingService
+    private val systemSettingService: SystemSettingService
 ) {
 
-    //TODO implement proper null checks
-
     private fun getContent(key: String): String {
-        val id = systemSettingService.getByKeyOrNull(key)!!.value.toLong()
-        val template = templateService.get(id)
+        val template = systemSettingService.getTemplateEntity(key)
         return template.getCompiledContent()
     }
 
     @GetMapping("/imprint")
-    fun imprint() = ResponseEntity.ok(getContent("template.imprint"))
+    fun imprint(): ResponseEntity<String> = ResponseEntity.ok(getContent("template.imprint"))
 
     @GetMapping("/tos")
-    fun agb() = ResponseEntity.ok(getContent("template.tos"))
+    fun tos(): ResponseEntity<String> = ResponseEntity.ok(getContent("template.tos"))
 
     @GetMapping("/about")
-    fun about() = ResponseEntity.ok(getContent("template.about"))
+    fun about(): ResponseEntity<String> = ResponseEntity.ok(getContent("template.about"))
 
     @GetMapping("/gdpr")
-    fun dsgvo() = ResponseEntity.ok(getContent("template.gdpr"))
+    fun gdpr(): ResponseEntity<String> = ResponseEntity.ok(getContent("template.gdpr"))
 
     @GetMapping("/contact")
-    fun contact() = ResponseEntity.ok(getContent("template.contact"))
+    fun contact(): ResponseEntity<String> = ResponseEntity.ok(getContent("template.contact"))
 
 }

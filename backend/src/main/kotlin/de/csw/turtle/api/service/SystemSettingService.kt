@@ -5,7 +5,19 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import de.csw.turtle.api.dto.create.CreateSystemSettingRequest
 import de.csw.turtle.api.dto.get.GetSystemSettingResponse
 import de.csw.turtle.api.dto.patch.PatchSystemSettingRequest
+import de.csw.turtle.api.entity.AuditLogEntity
+import de.csw.turtle.api.entity.DeviceBookingEntity
+import de.csw.turtle.api.entity.DeviceCategoryEntity
+import de.csw.turtle.api.entity.DeviceEntity
+import de.csw.turtle.api.entity.ExceptionEntity
+import de.csw.turtle.api.entity.FAQEntity
+import de.csw.turtle.api.entity.LockerEntity
+import de.csw.turtle.api.entity.RoleEntity
+import de.csw.turtle.api.entity.RoomBookingEntity
+import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.entity.SystemSettingEntity
+import de.csw.turtle.api.entity.TemplateEntity
+import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.BadRequestException
 import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.SystemSettingMapper
@@ -70,6 +82,86 @@ class SystemSettingService(
     fun getStringList(key: String): List<String> {
         val entity = getByKey(key)
         return (parse(entity) as SystemSettingEntity.SettingValue.StringListValue).value
+    }
+
+    fun getDate(key: String): LocalDate {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.DateValue).value
+    }
+
+    fun getTime(key: String): LocalTime {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.TimeValue).value
+    }
+
+    fun getInstant(key: String): Instant {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.InstantValue).value
+    }
+
+    fun getAuditLogEntity(key: String): AuditLogEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.AuditLogEntityReferenceValue).value
+    }
+
+    fun getDeviceBookingEntity(key: String): DeviceBookingEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.DeviceBookingEntityReferenceValue).value
+    }
+
+    fun getDeviceCategoryEntity(key: String): DeviceCategoryEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.DeviceCategoryEntityReferenceValue).value
+    }
+
+    fun getDeviceEntity(key: String): DeviceEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.DeviceEntityReferenceValue).value
+    }
+
+    fun getExceptionEntity(key: String): ExceptionEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.ExceptionEntityReferenceValue).value
+    }
+
+    fun getFAQEntity(key: String): FAQEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.FAQEntityReferenceValue).value
+    }
+
+    fun getLockerEntity(key: String): LockerEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.LockerEntityReferenceValue).value
+    }
+
+    fun getRoleEntity(key: String): RoleEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.RoleEntityReferenceValue).value
+    }
+
+    fun getRoomBookingEntity(key: String): RoomBookingEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.RoomBookingEntityReferenceValue).value
+    }
+
+    fun getSupportTicketEntity(key: String): SupportTicketEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.SupportTicketEntityReferenceValue).value
+    }
+
+    fun getSystemSettingEntity(key: String): SystemSettingEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.SystemSettingEntityReferenceValue).value
+    }
+
+    fun getTemplateEntity(key: String): TemplateEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.TemplateEntityReferenceValue).value
+    }
+
+    fun getUserEntity(key: String): UserEntity {
+        val entity = getByKey(key)
+        return (parse(entity) as SystemSettingEntity.SettingValue.UserEntityReferenceValue).value
     }
 
     fun getByKeyOrNull(key: String): SystemSettingEntity? = repository.findByKey(key)
