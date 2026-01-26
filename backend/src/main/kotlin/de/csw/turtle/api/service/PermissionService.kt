@@ -15,7 +15,7 @@ class PermissionService(
     fun getPermissions(user: UserEntity?) = if (user != null) {
         user.roles.flatMap { it.permissions }
     } else {
-        roleService.getByName("Guest")!!.permissions
+        roleService.getByName("Guest").permissions
     }.toSet()
 
     fun check(permission: Permission): UserEntity {
