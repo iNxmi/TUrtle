@@ -21,17 +21,17 @@ class TemplateService(
 
     override fun create(request: CreateTemplateRequest): TemplateEntity {
         if(getByNameOrNull(request.name) != null)
-            throw ConflictException("Template with name: ${request.name} already exists")
+            throw ConflictException("Template with name '${request.name}' already exists.")
+
         return super.create(request)
     }
 
     override fun patch(id: Long, request: PatchTemplateRequest): TemplateEntity {
-        if(getOrNull(id) == null)
-            throw NotFoundException("Template with id: $id not found")
         if(request.name != null)
             if(getByNameOrNull(request.name) != null)
-                throw ConflictException("Template with name: ${request.name} already exists")
+                throw ConflictException("Template with name '${request.name}' already exists.")
 
         return super.patch(id, request)
     }
+
 }
