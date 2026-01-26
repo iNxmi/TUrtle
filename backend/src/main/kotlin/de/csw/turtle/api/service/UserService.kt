@@ -22,7 +22,7 @@ class UserService(
 
     override fun create(request: CreateUserRequest): UserEntity {
         if (getOrNull(request.username) != null)
-            throw ConflictException(request.username)
+            throw ConflictException("Username: ${request.username} already exists")
 
         val hashed = request.copy(password = passwordEncoder.encode(request.password))
         return super.create(hashed)

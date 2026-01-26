@@ -4,6 +4,7 @@ import de.csw.turtle.api.dto.create.CreateTemplateRequest
 import de.csw.turtle.api.dto.get.GetTemplateResponse
 import de.csw.turtle.api.dto.patch.PatchTemplateRequest
 import de.csw.turtle.api.entity.TemplateEntity
+import de.csw.turtle.api.exception.ConflictException
 import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.TemplateMapper
 import de.csw.turtle.api.repository.TemplateRepository
@@ -15,6 +16,22 @@ class TemplateService(
     override val mapper: TemplateMapper
 ) : CRUDService<TemplateEntity, CreateTemplateRequest, GetTemplateResponse, PatchTemplateRequest>("Template") {
 
+    fun getByNameOrNull(name: String): TemplateEntity? = repository.findByName(name)
     fun getByName(name: String): TemplateEntity = repository.findByName(name) ?: throw NotFoundException(name)
 
+    override fun create(request: CreateTemplateRequest): TemplateEntity {
+        if(getByNameOrNull(request.name) != null)
+            throw ConflictException("Template with name: ${request.name} already exists")
+        return super.create(request)
+    }
+
+    override fun patch(id: Long, request: PatchTemplateRequest): TemplateEntity {
+        if(getOrNull(id) == null)
+            throw NotFoundException("Template with id: $id not found")
+        if(request.name != null)
+            if(getByNameOrNull(request.name) != null)
+                throw ConflictException("Template with name: ${request.name} already exists")
+
+        return super.patch(id, request)
+    }
 }
