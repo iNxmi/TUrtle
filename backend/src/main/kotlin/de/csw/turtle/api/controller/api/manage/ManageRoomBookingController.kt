@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller.api.manage
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.controller.CreateController
@@ -12,19 +12,18 @@ import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.mapper.RoomBookingMapper
 import de.csw.turtle.api.service.PermissionService
 import de.csw.turtle.api.service.RoomBookingService
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/room-bookings")
-class RoomBookingController(
-    override val endpoint: String = "/api/room-bookings",
+@RequestMapping("/api/manage/room-bookings")
+class ManageRoomBookingController(
+    override val endpoint: String = "/api/manage/room-bookings",
 
-    override val permissionCreate: Permission? = null,
-    override val permissionGet: Permission? = null,
-    override val permissionPatch: Permission? = null,
-    override val permissionDelete: Permission? = null,
+    override val permissionCreate: Permission = Permission.BACKEND__API_ROOMBOOKINGS__CREATE,
+    override val permissionGet: Permission = Permission.BACKEND__API_ROOMBOOKINGS__GET,
+    override val permissionPatch: Permission = Permission.BACKEND__API_ROOMBOOKINGS__PATCH,
+    override val permissionDelete: Permission = Permission.BACKEND__API_ROOMBOOKINGS__DELETE,
 
     override val service: RoomBookingService,
     override val mapper: RoomBookingMapper,
@@ -32,9 +31,4 @@ class RoomBookingController(
 ) : CreateController<RoomBookingEntity, CreateRoomBookingRequest, GetRoomBookingResponse>,
     GetController<RoomBookingEntity, GetRoomBookingResponse>,
     PatchController<RoomBookingEntity, PatchRoomBookingRequest, GetRoomBookingResponse>,
-    DeleteController<RoomBookingEntity> {
-
-        @PreAuthorize("hasAuthority('manage')")
-    override fun get(id: Long) = super.get(id)
-
-}
+    DeleteController<RoomBookingEntity>
