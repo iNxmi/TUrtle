@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller.api.manage
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/support")
-class SupportTicketController(
-    override val endpoint: String = "/api/support",
+@RequestMapping("/api/manage/support-tickets")
+class ManageSupportTicketController(
+    override val endpoint: String = "/api/manage/support-tickets",
 
     override val permissionCreate: Permission? = null,
     override val permissionGet: Permission = BACKEND__API_SUPPORTTICKETS__GET,

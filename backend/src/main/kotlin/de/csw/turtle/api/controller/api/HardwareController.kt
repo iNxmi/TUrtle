@@ -1,9 +1,7 @@
 package de.csw.turtle.api.controller.api
 
-import de.csw.turtle.api.Permission.BACKEND__API_HARDWARE__DOOR
-import de.csw.turtle.api.Permission.BACKEND__API_HARDWARE__LOCKER
+import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.OpenDoorEmojisRequest
-import de.csw.turtle.api.exception.ForbiddenException
 import de.csw.turtle.api.exception.UnauthorizedException
 import de.csw.turtle.api.service.NetworkService
 import de.csw.turtle.api.service.PermissionService
@@ -57,7 +55,7 @@ class HardwareController(
 
     @GetMapping("/door/override")
     fun door(@RequestParam seconds: Int = 3): ResponseEntity<String> {
-        permissionService.check(BACKEND__API_HARDWARE__DOOR)
+        permissionService.check(Permission.BACKEND__API_HARDWARE__DOOR)
 
         val response = doorControlService.trigger(seconds = seconds)
         return ResponseEntity.ok(response)
@@ -77,7 +75,7 @@ class HardwareController(
 
     @GetMapping("/locker/override")
     fun locker(@RequestParam id: Long): ResponseEntity<String> {
-        permissionService.check(BACKEND__API_HARDWARE__LOCKER)
+        permissionService.check(Permission.BACKEND__API_HARDWARE__LOCKER)
 
         val locker = lockerService.get(id)
         val response = lockerControlService.trigger(locker = locker, ignoreLocked = true)

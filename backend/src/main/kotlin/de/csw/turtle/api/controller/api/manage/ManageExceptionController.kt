@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller.api.manage
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.BACKEND__API_EXCEPTIONS__DELETE
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/exceptions")
-class ExceptionController(
+@RequestMapping("/api/manage/exceptions")
+class ManageExceptionController(
     override val permissionGet: Permission = BACKEND__API_EXCEPTIONS__GET,
     override val permissionDelete: Permission = BACKEND__API_EXCEPTIONS__DELETE,
 

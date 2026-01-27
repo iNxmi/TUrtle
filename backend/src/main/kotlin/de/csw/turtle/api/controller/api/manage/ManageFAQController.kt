@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller.api.manage
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/faq")
-class FAQController(
-    override val endpoint: String = "/api/faq",
+@RequestMapping("/api/manage/faq")
+class ManageFAQController(
+    override val endpoint: String = "/api/manage/faq",
 
     override val permissionCreate: Permission = BACKEND__API_FAQ__CREATE,
     override val permissionGet: Permission? = null,

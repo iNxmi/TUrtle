@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller.api.manage
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.BACKEND__API_ROLES__GET
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-@RequestMapping("/api/systemsettings")
-class SystemSettingController(
+@RequestMapping("/api/manage/system-settings")
+class ManageSystemSettingController(
     override val permissionGet: Permission = BACKEND__API_ROLES__GET,
     override val permissionPatch: Permission = BACKEND__API_ROLES__PATCH,
 

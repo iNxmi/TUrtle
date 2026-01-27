@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller.api.manage
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/roles")
-class RoleController(
-    override val endpoint: String = "/api/roles",
+@RequestMapping("/api/manage/roles")
+class ManageRoleController(
+    override val endpoint: String = "/api/manage/roles",
 
     override val permissionCreate: Permission = BACKEND__API_ROLES__CREATE,
     override val permissionGet: Permission = BACKEND__API_ROLES__GET,

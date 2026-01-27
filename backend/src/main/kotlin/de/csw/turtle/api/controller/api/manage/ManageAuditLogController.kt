@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller.api.manage
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.BACKEND__API_AUDITLOGS__GET
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/auditlogs")
-class AuditLogController(
+@RequestMapping("/api/manage/audit-logs")
+class ManageAuditLogController(
     override val permissionGet: Permission = BACKEND__API_AUDITLOGS__GET,
 
     override val service: AuditLogService,

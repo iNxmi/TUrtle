@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller.api.manage
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/devicecategories")
-class DeviceCategoryController(
-    override val endpoint: String = "/api/devicecategories",
+@RequestMapping("/api/manage/device-categories")
+class ManageDeviceCategoryController(
+    override val endpoint: String = "/api/manage/device-categories",
 
     override val permissionCreate: Permission = BACKEND__API_DEVICECATEGORIES__CREATE,
     override val permissionGet: Permission = BACKEND__API_DEVICECATEGORIES__GET,

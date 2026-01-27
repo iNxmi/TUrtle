@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller.api.user
+package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.dto.get.GetUserResponse
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/user/profile")
-class UserProfileController(
+class ProfileController(
     private val userService: UserService,
     private val userMapper: UserMapper,
     private val permissionService: PermissionService

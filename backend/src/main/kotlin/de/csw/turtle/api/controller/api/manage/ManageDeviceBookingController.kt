@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller.api.manage
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Permission.*
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/devicebookings")
-class DeviceBookingController(
-    override val endpoint: String = "/api/devicebookings",
+@RequestMapping("/api/manage/device-bookings")
+class ManageDeviceBookingController(
+    override val endpoint: String = "/api/manage/device-bookings",
 
     override val permissionCreate: Permission = BACKEND__API_DEVICEBOOKINGS__CREATE,
     override val permissionGet: Permission = BACKEND__API_DEVICEBOOKINGS__GET,
