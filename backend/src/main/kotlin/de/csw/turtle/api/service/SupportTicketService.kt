@@ -15,9 +15,9 @@ class SupportTicketService(
     override val mapper: SupportTicketMapper
 ) : CRUDService<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse, PatchSupportTicketRequest>("SupportTicket") {
 
-    private val regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$".toRegex()
+    private val regex = ("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$").toRegex()
     private val maxSubjectLength = 64
-    private val maxDescriptionLength = 2000
+    private val maxDescriptionLength = 2028
 
     override fun create(request: CreateSupportTicketRequest): SupportTicketEntity {
         if(request.subject.isBlank() || request.subject.length > maxSubjectLength )
