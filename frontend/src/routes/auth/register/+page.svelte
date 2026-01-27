@@ -82,7 +82,7 @@
 
         <Button type="submit" class="w-full1">{m.register__button()}</Button>
 
-        <A href="/login"
+        <A href="/auth/login"
            class="text-sm text-blue-700 hover:underline dark:text-blue-500">{m.register__already_have_a_account()}</A>
     </form>
 
