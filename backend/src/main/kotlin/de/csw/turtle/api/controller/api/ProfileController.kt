@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/user/profile")
+@RequestMapping("/api/profile")
 class ProfileController(
     private val userService: UserService,
     private val userMapper: UserMapper,

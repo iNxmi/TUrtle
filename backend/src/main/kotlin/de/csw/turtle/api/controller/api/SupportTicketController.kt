@@ -1,7 +1,6 @@
-package de.csw.turtle.api.controller.api.manage
+package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -17,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/manage/support-tickets")
-class ManageSupportTicketController(
-    override val endpoint: String = "/api/manage/support-tickets",
+@RequestMapping("/api/support-tickets")
+class SupportTicketController(
+    override val endpoint: String = "/api/support-tickets",
 
     override val permissionCreate: Permission? = null,
-    override val permissionGet: Permission = BACKEND__API_SUPPORTTICKETS__GET,
-    override val permissionPatch: Permission = BACKEND__API_SUPPORTTICKETS__PATCH,
-    override val permissionDelete: Permission = BACKEND__API_SUPPORTTICKETS__DELETE,
+    override val permissionGet: Permission = Permission.BACKEND__API_SUPPORTTICKETS__GET,
+    override val permissionPatch: Permission = Permission.BACKEND__API_SUPPORTTICKETS__PATCH,
+    override val permissionDelete: Permission = Permission.BACKEND__API_SUPPORTTICKETS__DELETE,
 
     override val service: SupportTicketService,
     override val mapper: SupportTicketMapper,
