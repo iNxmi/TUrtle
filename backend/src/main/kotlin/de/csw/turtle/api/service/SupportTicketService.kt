@@ -12,4 +12,21 @@ import org.springframework.stereotype.Service
 class SupportTicketService(
     override val repository: SupportTicketRepository,
     override val mapper: SupportTicketMapper
-) : CRUDService<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse, PatchSupportTicketRequest>("SupportTicket")
+) : CRUDService<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse, PatchSupportTicketRequest>("SupportTicket") {
+
+    private val regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$".toRegex()
+
+    override fun create(request: CreateSupportTicketRequest): SupportTicketEntity {
+        if(!SupportTicketEntity.Urgency.entries.contains(request.urgency))
+            throw IllegalArgumentException("'${request.urgency}' is not a valid Urgency")
+        if(!SupportTicketEntity.Category.entries.contains(request.category))
+            throw IllegalArgumentException("'${request.category}' is not a valid Category")
+        if(!regex.matches(request.email))
+            throw IllegalArgumentException("'${request.email}' is not a valid Email")
+        return super.create(request)
+    }
+
+    override fun patch(id: Long, request: PatchSupportTicketRequest): SupportTicketEntity {
+        return super.patch(id, request)
+    }
+}
