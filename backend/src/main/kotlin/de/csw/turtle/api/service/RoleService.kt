@@ -16,5 +16,18 @@ class RoleService(
 ) : CRUDService<RoleEntity, CreateRoleRequest, GetRoleResponse, PatchRoleRequest>("Role") {
 
     fun getByName(name: String) = repository.findByName(name) ?: throw NotFoundException(name)
+    fun getByNameOrNull(name: String) = repository.findByName(name)
 
+    override fun create(request: CreateRoleRequest): RoleEntity {
+        if(getByNameOrNull(request.name) != null)
+            throw NotFoundException("Role with name '${request.name}' already exists.")
+        return super.create(request)
+    }
+
+    override fun patch(id: Long, request: PatchRoleRequest): RoleEntity {
+        if(request.name != null)
+            if(getByNameOrNull(request.name) != null)
+                throw NotFoundException("Role with name '${request.name}' already exists.")
+        return super.patch(id, request)
+    }
 }
