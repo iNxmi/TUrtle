@@ -17,9 +17,15 @@ class RoomBookingService(
     override val mapper: RoomBookingMapper
 ) : CRUDService<RoomBookingEntity, CreateRoomBookingRequest, GetRoomBookingResponse, PatchRoomBookingRequest>("RoomBooking") {
 
+    private val maxTitleLength = 64
+    private val maxDescriptionLength = 2048
+
     override fun create(request: CreateRoomBookingRequest): RoomBookingEntity {
-        if (request.title.isBlank())
-            throw BadRequestException("Title cannot be blank.")
+        if (request.title.isBlank() || request.title.length > maxTitleLength)
+            throw BadRequestException("Title cannot be blank or exceed $maxTitleLength characters.")
+
+        if(request.description.length > maxDescriptionLength)
+            throw BadRequestException("Description cannot exceed $maxDescriptionLength characters.")
 
         if (request.start == request.end)
             throw BadRequestException("Start '${request.start}' cannot be the same as end '${request.end}'.")
@@ -37,8 +43,11 @@ class RoomBookingService(
         val original = get(id)
 
         if (request.title != null)
-            if (request.title.isBlank())
-                throw BadRequestException("Title cannot be blank.")
+            if (request.title.isBlank() || request.title.length > maxTitleLength)
+                throw BadRequestException("Title cannot be blank or exceed $maxTitleLength characters.")
+
+        if(request.description != null && request.description.length > maxDescriptionLength)
+            throw BadRequestException("Description cannot exceed $maxDescriptionLength characters.")
 
         if (request.start != null && request.end != null) {
             if (request.start.isAfter(request.end)) {
