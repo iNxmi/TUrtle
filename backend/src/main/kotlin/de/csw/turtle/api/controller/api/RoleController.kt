@@ -10,6 +10,9 @@ import de.csw.turtle.api.dto.patch.PatchRoleRequest
 import de.csw.turtle.api.entity.RoleEntity
 import de.csw.turtle.api.mapper.RoleMapper
 import de.csw.turtle.api.service.RoleService
+import org.springframework.data.domain.Sort
+import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -22,4 +25,15 @@ class RoleController(
 ) : CreateController<RoleEntity, CreateRoleRequest, GetRoleResponse>,
     GetController<RoleEntity, GetRoleResponse>,
     PatchController<RoleEntity, PatchRoleRequest, GetRoleResponse>,
-    DeleteController<RoleEntity>
+    DeleteController<RoleEntity> {
+
+    @PreAuthorize("hasAuthority('MANAGE_ROLES')")
+    override fun create(request: CreateRoleRequest) = super.create(request)
+
+    @PreAuthorize("hasAuthority('MANAGE_ROLES')")
+    override fun patch(id: Long, request: PatchRoleRequest) = super.patch(id, request)
+
+    @PreAuthorize("hasAuthority('MANAGE_ROLES')")
+    override fun delete(id: Long) = super.delete(id)
+
+}

@@ -5,8 +5,10 @@ import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
 import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.create.CreateRoomBookingRequest
+import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.get.GetRoomBookingResponse
 import de.csw.turtle.api.dto.patch.PatchRoomBookingRequest
+import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
 import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.mapper.RoomBookingMapper
 import de.csw.turtle.api.service.RoomBookingService
