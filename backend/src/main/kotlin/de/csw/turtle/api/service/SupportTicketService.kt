@@ -21,18 +21,30 @@ class SupportTicketService(
 
     override fun create(request: CreateSupportTicketRequest): SupportTicketEntity {
         if(request.subject.isBlank() || request.subject.length > maxSubjectLength )
-            throw BadRequestException("Subject cannot be left blank and cannot be longer than $maxSubjectLength characters")
+            throw BadRequestException("Subject cannot be left blank and cannot be longer than $maxSubjectLength characters.")
 
         if(request.description.isBlank() || request.description.length > maxDescriptionLength)
-            throw BadRequestException("Description cannot be left blank and cannot be longer than $maxDescriptionLength characters")
+            throw BadRequestException("Description cannot be left blank and cannot be longer than $maxDescriptionLength characters.")
 
         if(!regex.matches(request.email))
-            throw BadRequestException("'${request.email}' is not a valid Email Address")
+            throw BadRequestException("'${request.email}' is not a valid Email Address.")
 
         return super.create(request)
     }
 
     override fun patch(id: Long, request: PatchSupportTicketRequest): SupportTicketEntity {
+        if(request.subject != null)
+            if(request.subject.isBlank() || request.subject.length > maxSubjectLength )
+                throw BadRequestException("Subject cannot be left blank and cannot be longer than $maxSubjectLength characters.")
+
+        if(request.description != null)
+            if(request.description.isBlank() || request.description.length > maxDescriptionLength)
+                throw BadRequestException("Description cannot be left blank and cannot be longer than $maxDescriptionLength characters.")
+
+        if(request.email != null)
+            if(!regex.matches(request.email))
+                throw BadRequestException("'${request.email}' is not a valid Email Address.")
+
         return super.patch(id, request)
     }
 }
