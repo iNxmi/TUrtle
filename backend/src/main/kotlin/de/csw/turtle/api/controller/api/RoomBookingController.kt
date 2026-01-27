@@ -1,6 +1,5 @@
 package de.csw.turtle.api.controller.api
 
-import de.csw.turtle.api.Permission
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -10,7 +9,6 @@ import de.csw.turtle.api.dto.get.GetRoomBookingResponse
 import de.csw.turtle.api.dto.patch.PatchRoomBookingRequest
 import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.mapper.RoomBookingMapper
-import de.csw.turtle.api.service.PermissionService
 import de.csw.turtle.api.service.RoomBookingService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,20 +19,14 @@ import org.springframework.web.bind.annotation.RestController
 class RoomBookingController(
     override val endpoint: String = "/api/room-bookings",
 
-    override val permissionCreate: Permission? = null,
-    override val permissionGet: Permission? = null,
-    override val permissionPatch: Permission? = null,
-    override val permissionDelete: Permission? = null,
-
     override val service: RoomBookingService,
-    override val mapper: RoomBookingMapper,
-    override val permissionService: PermissionService
+    override val mapper: RoomBookingMapper
 ) : CreateController<RoomBookingEntity, CreateRoomBookingRequest, GetRoomBookingResponse>,
     GetController<RoomBookingEntity, GetRoomBookingResponse>,
     PatchController<RoomBookingEntity, PatchRoomBookingRequest, GetRoomBookingResponse>,
     DeleteController<RoomBookingEntity> {
 
-        @PreAuthorize("hasAuthority('manage')")
+    @PreAuthorize("hasAuthority('manage')")
     override fun get(id: Long) = super.get(id)
 
 }

@@ -11,12 +11,7 @@ import de.csw.turtle.api.service.locker.LockerControlService
 import de.csw.turtle.api.service.locker.LockerService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/hardware")
@@ -35,10 +30,10 @@ class HardwareController(
 
     @PostMapping("/door/emojis")
     fun door(@RequestBody request: OpenDoorEmojisRequest, httpRequest: HttpServletRequest): ResponseEntity<String> {
-        if(!networkService.isLocalNetwork(httpRequest))
+        if (!networkService.isLocalNetwork(httpRequest))
             throw UnauthorizedException("External network.")
 
-        if(userService.getByEmojisOrNull(request.emojis) == null)
+        if (userService.getByEmojisOrNull(request.emojis) == null)
             throw UnauthorizedException("Incorrect emojis.")
 
         val response = doorControlService.trigger(seconds = doorSecondsPleaseMoveToSystemSettings)

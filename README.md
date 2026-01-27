@@ -10,6 +10,14 @@ All commands listed here are run in `/`
 ___
 
 # Backend (Spring Boot, Kotlin)
+
+todo
+* switch from session to jwt
+* use spring security instead of own permissoin stuff
+* sso
+* rewrite permissions (manage, normal etc...)
+* reimplement permissions with preauthorize
+
 This is the backend, based on Spring Boot in Kotlin  
 Name: **TUrtleAPI**  
 Port: 8080

@@ -9,11 +9,7 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.net.URI
 
 @RestController
@@ -36,11 +32,10 @@ class AuthController(
 
     @PostMapping("/login")
     fun login(
-        @RequestBody loginUserRequest: LoginUserRequest,
-        httpRequest: HttpServletRequest
-    ): ResponseEntity<GetUserResponse> {
-        val user = authService.login(loginUserRequest, httpRequest)
-        return ResponseEntity.ok(userMapper.get(user))
+        @RequestBody loginUserRequest: LoginUserRequest
+    ): ResponseEntity<Map<String, String>> {
+        val token = authService.login(loginUserRequest)
+        return ResponseEntity.ok(mapOf("token" to token))
     }
 
     @GetMapping("/logout")
