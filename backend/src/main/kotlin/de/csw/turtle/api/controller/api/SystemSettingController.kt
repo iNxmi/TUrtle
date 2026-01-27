@@ -16,4 +16,8 @@ class SystemSettingController(
     override val service: SystemSettingService,
     override val mapper: SystemSettingMapper
 ) : GetController<SystemSettingEntity, GetSystemSettingResponse>,
-    PatchController<SystemSettingEntity, PatchSystemSettingRequest, GetSystemSettingResponse>
+    PatchController<SystemSettingEntity, PatchSystemSettingRequest, GetSystemSettingResponse> {
+
+
+
+    }

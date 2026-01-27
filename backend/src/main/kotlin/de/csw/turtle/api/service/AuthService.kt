@@ -20,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class AuthService(
     private val userService: UserService,
-    private val authenticationManager: AuthenticationManager
+    private val authenticationManager: AuthenticationManager,
+    private val customUserDetailsService: CustomUserDetailsService,
+    private val jwtService: JWTService
 ) {
 
     @Transactional
@@ -29,7 +31,7 @@ class AuthService(
     ): UserEntity {
         val createUserRequest = CreateUserRequest(
             username = registerUserRequest.username,
-            firstName =  registerUserRequest.firstName,
+            firstName = registerUserRequest.firstName,
             lastName = registerUserRequest.lastName,
             email = registerUserRequest.email,
             emojis = registerUserRequest.emojis,
@@ -41,27 +43,21 @@ class AuthService(
 
     @Transactional
     fun login(
-        request: LoginUserRequest,
-        httpRequest: HttpServletRequest
-    ): UserEntity {
-        val token = UsernamePasswordAuthenticationToken.unauthenticated(
-            request.username,
-            request.password
-        )
+        request: LoginUserRequest
+    ): String {
+        try {
+            val credentials = UsernamePasswordAuthenticationToken.unauthenticated(
+                request.username,
+                request.password
+            )
 
-        val authentication = try {
-            authenticationManager.authenticate(token)
+            authenticationManager.authenticate(credentials)
         } catch (_: org.springframework.security.authentication.BadCredentialsException) {
             throw UnauthorizedException("Invalid username or password.")
         }
-        SecurityContextHolder.getContext().authentication = authentication
 
-        httpRequest.getSession(true).setAttribute(
-            HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-            SecurityContextHolder.getContext()
-        )
-
-        return userService.get(request.username)
+        val userDetails = customUserDetailsService.loadUserByUsername(request.username)
+        return jwtService.generate(userDetails)
     }
 
     @Transactional

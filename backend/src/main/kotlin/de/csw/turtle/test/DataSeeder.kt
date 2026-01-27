@@ -59,10 +59,9 @@ class DataSeeder(
 
     @Order(2)
     @EventListener(ApplicationReadyEvent::class)
-    @Transactional
     fun seedRoomBookings() {
         val service = roomBookingService
-        while (service.count() < 52) {
+        while (service.count() < 12) {
             // minutes * hours * days * weeks * months
             val offset = ((60 * 24 * 7 * 4 * 3) / 2 * Math.random()).toLong()
             val start = Instant.now().plus(offset, ChronoUnit.MINUTES)
@@ -70,19 +69,22 @@ class DataSeeder(
             val duration = Duration.ofMinutes((Math.random() * 150 + 30).toLong())
             val end = start.plus(duration.toMinutes(), ChronoUnit.MINUTES)
 
-            val createRequest = CreateRoomBookingRequest(
-                title = "${service.count()}: this is an event",
-                description = "this is the very long description",
-                start = start,
-                end = end,
-                creatorId = userService.get("admin").id
-            )
-            roomBookingService.create(createRequest)
+            try {
+                val createRequest = CreateRoomBookingRequest(
+                    title = "${service.count()}: this is an event",
+                    description = "this is the very long description",
+                    start = start,
+                    end = end,
+                    creatorId = userService.get("admin").id
+                )
+                roomBookingService.create(createRequest)
+            } catch (exception: Exception) {
+                println("warning, retry")
+            }
         }
     }
 
     @EventListener(ApplicationReadyEvent::class)
-    @Transactional
     fun seedSupportTickets() {
         while (supportTicketService.count() < 32) {
             val entriesUrgency = SupportTicketEntity.Urgency.entries
@@ -100,6 +102,7 @@ class DataSeeder(
             val subject = "This is a support ticket about Something"
             val description = "I am facing an issue with Something. Please help!"
 
+
             supportTicketService.create(
                 CreateSupportTicketRequest(
                     urgency = urgency,
@@ -109,12 +112,12 @@ class DataSeeder(
                     description = description
                 )
             )
+
         }
     }
 
     @Order(2)
     @EventListener(ApplicationReadyEvent::class)
-    @Transactional
     fun seedDevices() {
         if (deviceService.count() > 0)
             return

@@ -2,18 +2,19 @@ package de.csw.turtle.api.service
 
 import de.csw.turtle.api.SimpleUserDetails
 import de.csw.turtle.api.exception.NotFoundException
+import jakarta.transaction.Transactional
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 
 @Service
 class CustomUserDetailsService(
-    private val service: UserService
+    private val userService: UserService
 ) : UserDetailsService {
 
+    @Transactional
     override fun loadUserByUsername(username: String): UserDetails {
-        val user = service.getOrNull(username)
-            ?: throw NotFoundException(username)
+        val user = userService.getOrNull(username) ?: throw NotFoundException(username)
 
         return SimpleUserDetails(
             username = user.username,
