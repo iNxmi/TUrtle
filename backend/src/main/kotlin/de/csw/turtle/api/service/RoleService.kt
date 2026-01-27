@@ -15,7 +15,7 @@ class RoleService(
     override val mapper: RoleMapper
 ) : CRUDService<RoleEntity, CreateRoleRequest, GetRoleResponse, PatchRoleRequest>("Role") {
 
-    fun getByName(name: String) = repository.findByName(name) ?: throw NotFoundException(name)
+    fun getByName(name: String) = getByNameOrNull(name) ?: throw NotFoundException(name)
     fun getByNameOrNull(name: String) = repository.findByName(name)
 
     override fun create(request: CreateRoleRequest): RoleEntity {
