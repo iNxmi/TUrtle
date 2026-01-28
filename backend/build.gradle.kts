@@ -39,6 +39,8 @@ dependencies {
     implementation("io.github.serpro69:kotlin-faker:1.16.0")
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
 
+    implementation("com.bucket4j:bucket4j_jdk17-core:8.16.0")
+
     kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
 
     runtimeOnly("org.postgresql:postgresql")

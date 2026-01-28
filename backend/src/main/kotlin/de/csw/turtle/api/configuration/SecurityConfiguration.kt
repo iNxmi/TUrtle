@@ -1,9 +1,9 @@
 package de.csw.turtle.api.configuration
 
 import de.csw.turtle.api.filter.JWTAuthFilter
+import de.csw.turtle.api.filter.RateLimitFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -15,20 +15,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 class SecurityConfiguration(
-    private val jwtAuthFilter: JWTAuthFilter
+    private val jwtAuthFilter: JWTAuthFilter,
+    private val rateLimitFilter: RateLimitFilter
 ) {
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { it.disable() }
             .cors { it.disable() }
-            .authorizeHttpRequests {
-                it.anyRequest().permitAll()
-            }
-            .sessionManagement {
-                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            }
+            .authorizeHttpRequests { it.anyRequest().permitAll() }
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterAfter(rateLimitFilter, JWTAuthFilter::class.java)
 
         return http.build()
     }

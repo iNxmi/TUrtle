@@ -29,7 +29,7 @@ class CurrentUserArgumentResolver(
         val authentication = SecurityContextHolder.getContext().authentication
             ?: return null
 
-        val principal = authentication.principal as? de.csw.turtle.api.CustomUserDetails
+        val principal = authentication.principal as? CustomUserDetails
             ?: return null
 
         return userService.get(principal.userId)
