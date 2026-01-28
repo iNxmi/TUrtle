@@ -1,5 +1,6 @@
 package de.csw.turtle.api.controller.api
 
+import de.csw.turtle.api.SimpleUserDetails
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -18,34 +19,50 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/templates")
-class TemplateController(
-    override val endpoint: String = "/api/templates",
-    override val service: TemplateService,
-    override val mapper: TemplateMapper
-) : CreateController<TemplateEntity, CreateTemplateRequest, GetTemplateResponse>,
+class TemplateController :
+    CreateController<TemplateEntity, CreateTemplateRequest, GetTemplateResponse>,
     GetController<TemplateEntity, GetTemplateResponse>,
     PatchController<TemplateEntity, PatchTemplateRequest, GetTemplateResponse>,
     DeleteController<TemplateEntity> {
 
-    @PreAuthorize("hasAuthority('MANAGE_TEMPLATES')")
-    override fun create(request: CreateTemplateRequest) = super.create(request)
+    override fun create(
+        userDetails: SimpleUserDetails?,
+        request: CreateTemplateRequest
+    ): ResponseEntity<GetTemplateResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_TEMPLATES')")
-    override fun get(id: Long) = super.get(id)
+    override fun get(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<GetTemplateResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_TEMPLATES')")
     override fun getCollection(
+        userDetails: SimpleUserDetails?,
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
         sortDirection: Sort.Direction
-    ): ResponseEntity<Any> = super.getCollection(rsql, pageNumber, pageSize, sortProperty, sortDirection)
+    ): ResponseEntity<Any> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_TEMPLATES')")
-    override fun patch(id: Long, request: PatchTemplateRequest) = super.patch(id, request)
+    override fun patch(
+        userDetails: SimpleUserDetails?,
+        id: Long,
+        request: PatchTemplateRequest
+    ): ResponseEntity<GetTemplateResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_TEMPLATES')")
-    override fun delete(id: Long) = super.delete(id)
+    override fun delete(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<Void> {
+        TODO("Not yet implemented")
+    }
 
 }

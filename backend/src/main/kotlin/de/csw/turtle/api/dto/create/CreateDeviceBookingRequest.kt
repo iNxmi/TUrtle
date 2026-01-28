@@ -3,7 +3,7 @@ package de.csw.turtle.api.dto.create
 import de.csw.turtle.api.entity.DeviceBookingEntity
 import java.time.Instant
 
-class CreateDeviceBookingRequest(
+data class CreateDeviceBookingRequest(
     val start: Instant,
     val end: Instant,
     val deviceId: Long,

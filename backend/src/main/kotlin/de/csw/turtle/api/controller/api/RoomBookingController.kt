@@ -1,5 +1,6 @@
 package de.csw.turtle.api.controller.api
 
+import de.csw.turtle.api.SimpleUserDetails
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -20,34 +21,50 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/room-bookings")
-class RoomBookingController(
-    override val endpoint: String = "/api/room-bookings",
-    override val service: RoomBookingService,
-    override val mapper: RoomBookingMapper
-) : CreateController<RoomBookingEntity, CreateRoomBookingRequest, GetRoomBookingResponse>,
+class RoomBookingController :
+    CreateController<RoomBookingEntity, CreateRoomBookingRequest, GetRoomBookingResponse>,
     GetController<RoomBookingEntity, GetRoomBookingResponse>,
     PatchController<RoomBookingEntity, PatchRoomBookingRequest, GetRoomBookingResponse>,
     DeleteController<RoomBookingEntity> {
 
-    @PreAuthorize("hasAuthority('MANAGE_ROOM_BOOKINGS')")
-    override fun create(request: CreateRoomBookingRequest) = super.create(request)
+    override fun create(
+        userDetails: SimpleUserDetails?,
+        request: CreateRoomBookingRequest
+    ): ResponseEntity<GetRoomBookingResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_ROOM_BOOKINGS')")
-    override fun get(id: Long) = super.get(id)
+    override fun get(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<GetRoomBookingResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_ROOM_BOOKINGS')")
     override fun getCollection(
+        userDetails: SimpleUserDetails?,
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
         sortDirection: Sort.Direction
-    ): ResponseEntity<Any> = super.getCollection(rsql, pageNumber, pageSize, sortProperty, sortDirection)
+    ): ResponseEntity<Any> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_ROOM_BOOKINGS')")
-    override fun patch(id: Long, request: PatchRoomBookingRequest) = super.patch(id, request)
+    override fun patch(
+        userDetails: SimpleUserDetails?,
+        id: Long,
+        request: PatchRoomBookingRequest
+    ): ResponseEntity<GetRoomBookingResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_ROOM_BOOKINGS')")
-    override fun delete(id: Long) = super.delete(id)
+    override fun delete(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<Void> {
+        TODO("Not yet implemented")
+    }
 
 }

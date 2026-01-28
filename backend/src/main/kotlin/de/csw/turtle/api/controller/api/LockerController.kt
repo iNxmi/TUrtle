@@ -1,5 +1,6 @@
 package de.csw.turtle.api.controller.api
 
+import de.csw.turtle.api.SimpleUserDetails
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -18,22 +19,50 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/lockers")
-class LockerController(
-    override val endpoint: String = "/api/lockers",
-    override val service: LockerService,
-    override val mapper: LockerMapper
-) : CreateController<LockerEntity, CreateLockerRequest, GetLockerResponse>,
+class LockerController :
+    CreateController<LockerEntity, CreateLockerRequest, GetLockerResponse>,
     GetController<LockerEntity, GetLockerResponse>,
     PatchController<LockerEntity, PatchLockerRequest, GetLockerResponse>,
     DeleteController<LockerEntity> {
 
-    @PreAuthorize("hasAuthority('MANAGE_LOCKERS')")
-    override fun create(request: CreateLockerRequest) = super.create(request)
+    override fun create(
+        userDetails: SimpleUserDetails?,
+        request: CreateLockerRequest
+    ): ResponseEntity<GetLockerResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_LOCKERS')")
-    override fun patch(id: Long, request: PatchLockerRequest) = super.patch(id, request)
+    override fun get(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<GetLockerResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_LOCKERS')")
-    override fun delete(id: Long) = super.delete(id)
+    override fun getCollection(
+        userDetails: SimpleUserDetails?,
+        rsql: String?,
+        pageNumber: Int?,
+        pageSize: Int,
+        sortProperty: String?,
+        sortDirection: Sort.Direction
+    ): ResponseEntity<Any> {
+        TODO("Not yet implemented")
+    }
+
+    override fun patch(
+        userDetails: SimpleUserDetails?,
+        id: Long,
+        request: PatchLockerRequest
+    ): ResponseEntity<GetLockerResponse> {
+        TODO("Not yet implemented")
+    }
+
+    override fun delete(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<Void> {
+        TODO("Not yet implemented")
+    }
 
 }

@@ -1,5 +1,6 @@
 package de.csw.turtle.api.controller
 
+import de.csw.turtle.api.SimpleUserDetails
 import de.csw.turtle.api.dto.get.GetResponse
 import de.csw.turtle.api.entity.CRUDEntity
 import de.csw.turtle.api.mapper.CRUDMapper
@@ -8,23 +9,24 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.domain.Sort.Direction
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 
 interface GetController<Entity : CRUDEntity, Response : GetResponse> {
 
-    val service: CRUDService<Entity, *, Response, *>
-    val mapper: CRUDMapper<Entity, *, Response, *>
-
     @GetMapping("/{id}")
-    fun get(@PathVariable id: Long): ResponseEntity<Response> {
-        val entity = service.get(id)
-        return ResponseEntity.ok(mapper.get(entity))
-    }
+    fun get(
+        @AuthenticationPrincipal userDetails: SimpleUserDetails?,
+        @PathVariable id: Long
+    ): ResponseEntity<Response>
 
     @GetMapping
     fun getCollection(
+        @AuthenticationPrincipal userDetails: SimpleUserDetails?,
+
         @RequestParam rsql: String? = null,
 
         @RequestParam pageNumber: Int? = null,
@@ -32,21 +34,6 @@ interface GetController<Entity : CRUDEntity, Response : GetResponse> {
 
         @RequestParam sortProperty: String? = null,
         @RequestParam sortDirection: Direction = Direction.DESC
-    ): ResponseEntity<Any> {
-        val sort = sortProperty?.let {
-            Sort.by(sortDirection, sortProperty)
-        } ?: Sort.unsorted()
-
-        if (pageNumber != null) {
-            val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = service.getPage(rsql = rsql, pageable = pageable)
-            val result = page.map { mapper.get(it) }
-            return ResponseEntity.ok(result)
-        }
-
-        val entities = service.getAll(rsql = rsql, sort = sort)
-        val result = entities.map { mapper.get(it) }
-        return ResponseEntity.ok(result)
-    }
+    ): ResponseEntity<Any>
 
 }

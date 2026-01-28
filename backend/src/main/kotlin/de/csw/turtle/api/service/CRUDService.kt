@@ -2,6 +2,7 @@ package de.csw.turtle.api.service
 
 import cz.jirutka.rsql.parser.RSQLParserException
 import de.csw.turtle.api.entity.CRUDEntity
+import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.BadRequestException
 import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.CRUDMapper
@@ -9,8 +10,10 @@ import de.csw.turtle.api.repository.CRUDRepository
 import io.github.perplexhub.rsql.ConversionException
 import io.github.perplexhub.rsql.RSQLJPASupport
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.data.domain.Sort.Direction
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 
@@ -30,9 +33,14 @@ abstract class CRUDService<
         return repository.save(entity)
     }
 
+    @Transactional
     open fun getOrNull(id: Long): Entity? = repository.findById(id).getOrNull()
-    open fun get(id: Long): Entity = getOrNull(id) ?: throw NotFoundException("CRUD Resource '$name' with id '$id' not found.")
 
+    @Transactional
+    open fun get(id: Long): Entity =
+        getOrNull(id) ?: throw NotFoundException("$name with id '$id' not found.")
+
+    @Transactional
     open fun getAll(
         sort: Sort = Sort.unsorted(),
         rsql: String? = null
@@ -45,6 +53,7 @@ abstract class CRUDService<
         throw BadRequestException(exception.message!!)
     }
 
+    @Transactional
     open fun getPage(
         pageable: Pageable,
         rsql: String? = null
@@ -67,6 +76,7 @@ abstract class CRUDService<
     @Transactional
     open fun delete(id: Long) = repository.delete(get(id))
 
+    @Transactional
     open fun count() = repository.count()
 
 }

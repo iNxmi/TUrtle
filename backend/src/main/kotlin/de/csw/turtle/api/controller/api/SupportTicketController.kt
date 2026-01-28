@@ -1,5 +1,6 @@
 package de.csw.turtle.api.controller.api
 
+import de.csw.turtle.api.SimpleUserDetails
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -18,31 +19,50 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/support-tickets")
-class SupportTicketController(
-    override val endpoint: String = "/api/support-tickets",
-    override val service: SupportTicketService,
-    override val mapper: SupportTicketMapper
-) : CreateController<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse>,
+class SupportTicketController
+    : CreateController<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse>,
     GetController<SupportTicketEntity, GetSupportTicketResponse>,
     PatchController<SupportTicketEntity, PatchSupportTicketRequest, GetSupportTicketResponse>,
     DeleteController<SupportTicketEntity> {
 
-    @PreAuthorize("hasAuthority('MANAGE_SUPPORT_TICKETS')")
-    override fun get(id: Long) = super.get(id)
+    override fun create(
+        userDetails: SimpleUserDetails?,
+        request: CreateSupportTicketRequest
+    ): ResponseEntity<GetSupportTicketResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_SUPPORT_TICKETS')")
+    override fun get(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<GetSupportTicketResponse> {
+        TODO("Not yet implemented")
+    }
+
     override fun getCollection(
+        userDetails: SimpleUserDetails?,
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
         sortDirection: Sort.Direction
-    ): ResponseEntity<Any> = super.getCollection(rsql, pageNumber, pageSize, sortProperty, sortDirection)
+    ): ResponseEntity<Any> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_SUPPORT_TICKETS')")
-    override fun patch(id: Long, request: PatchSupportTicketRequest) = super.patch(id, request)
+    override fun patch(
+        userDetails: SimpleUserDetails?,
+        id: Long,
+        request: PatchSupportTicketRequest
+    ): ResponseEntity<GetSupportTicketResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_SUPPORT_TICKETS')")
-    override fun delete(id: Long) = super.delete(id)
+    override fun delete(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<Void> {
+        TODO("Not yet implemented")
+    }
 
 }

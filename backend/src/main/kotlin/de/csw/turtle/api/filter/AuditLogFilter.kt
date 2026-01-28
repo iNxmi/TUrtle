@@ -33,7 +33,7 @@ class AuditLogFilter(
         if (!success)
             return
 
-        val user = userService.get(principal.username)
+        val user = userService.getByUsername(principal.username)
 
         val createAuditLogRequest = CreateAuditLogRequest(
             userId = user.id,

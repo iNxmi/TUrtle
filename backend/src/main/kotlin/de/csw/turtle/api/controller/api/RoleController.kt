@@ -1,5 +1,6 @@
 package de.csw.turtle.api.controller.api
 
+import de.csw.turtle.api.SimpleUserDetails
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -18,22 +19,50 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/roles")
-class RoleController(
-    override val endpoint: String = "/api/roles",
-    override val service: RoleService,
-    override val mapper: RoleMapper
-) : CreateController<RoleEntity, CreateRoleRequest, GetRoleResponse>,
+class RoleController :
+    CreateController<RoleEntity, CreateRoleRequest, GetRoleResponse>,
     GetController<RoleEntity, GetRoleResponse>,
     PatchController<RoleEntity, PatchRoleRequest, GetRoleResponse>,
     DeleteController<RoleEntity> {
 
-    @PreAuthorize("hasAuthority('MANAGE_ROLES')")
-    override fun create(request: CreateRoleRequest) = super.create(request)
+    override fun create(
+        userDetails: SimpleUserDetails?,
+        request: CreateRoleRequest
+    ): ResponseEntity<GetRoleResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_ROLES')")
-    override fun patch(id: Long, request: PatchRoleRequest) = super.patch(id, request)
+    override fun get(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<GetRoleResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_ROLES')")
-    override fun delete(id: Long) = super.delete(id)
+    override fun getCollection(
+        userDetails: SimpleUserDetails?,
+        rsql: String?,
+        pageNumber: Int?,
+        pageSize: Int,
+        sortProperty: String?,
+        sortDirection: Sort.Direction
+    ): ResponseEntity<Any> {
+        TODO("Not yet implemented")
+    }
+
+    override fun patch(
+        userDetails: SimpleUserDetails?,
+        id: Long,
+        request: PatchRoleRequest
+    ): ResponseEntity<GetRoleResponse> {
+        TODO("Not yet implemented")
+    }
+
+    override fun delete(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<Void> {
+        TODO("Not yet implemented")
+    }
 
 }

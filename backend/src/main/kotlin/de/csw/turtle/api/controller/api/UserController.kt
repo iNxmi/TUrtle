@@ -1,5 +1,6 @@
 package de.csw.turtle.api.controller.api
 
+import de.csw.turtle.api.SimpleUserDetails
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -18,34 +19,50 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/users")
-class UserController(
-    override val endpoint: String = "/api/users",
-    override val service: UserService,
-    override val mapper: UserMapper
-) : CreateController<UserEntity, CreateUserRequest, GetUserResponse>,
+class UserController :
+    CreateController<UserEntity, CreateUserRequest, GetUserResponse>,
     GetController<UserEntity, GetUserResponse>,
     PatchController<UserEntity, PatchUserRequest, GetUserResponse>,
     DeleteController<UserEntity> {
 
-    @PreAuthorize("hasAuthority('MANAGE_USERS')")
-    override fun create(request: CreateUserRequest) = super.create(request)
+    override fun create(
+        userDetails: SimpleUserDetails?,
+        request: CreateUserRequest
+    ): ResponseEntity<GetUserResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_USERS')")
-    override fun get(id: Long) = super.get(id)
+    override fun get(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<GetUserResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_USERS')")
     override fun getCollection(
+        userDetails: SimpleUserDetails?,
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
         sortDirection: Sort.Direction
-    ): ResponseEntity<Any> = super.getCollection(rsql, pageNumber, pageSize, sortProperty, sortDirection)
+    ): ResponseEntity<Any> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_USERS')")
-    override fun patch(id: Long, request: PatchUserRequest) = super.patch(id, request)
+    override fun patch(
+        userDetails: SimpleUserDetails?,
+        id: Long,
+        request: PatchUserRequest
+    ): ResponseEntity<GetUserResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_USERS')")
-    override fun delete(id: Long) = super.delete(id)
+    override fun delete(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<Void> {
+        TODO("Not yet implemented")
+    }
 
 }

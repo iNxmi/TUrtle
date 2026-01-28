@@ -9,8 +9,6 @@ import de.csw.turtle.api.exception.ConflictException
 import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.repository.UserRepository
-import org.springframework.context.annotation.Bean
-import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -23,22 +21,22 @@ class UserService(
 ) : CRUDService<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest>("User") {
 
     override fun create(request: CreateUserRequest): UserEntity {
-        if (getOrNull(request.username) != null)
+        if (getByUsernameOrNull(request.username) != null)
             throw ConflictException("Username: ${request.username} already exists")
 
         val hashed = request.copy(password = passwordEncoder.encode(request.password))
         return super.create(hashed)
     }
 
-    fun getOrNull(username: String): UserEntity? = repository.findByUsername(username)
-    fun get(username: String): UserEntity = getOrNull(username) ?: throw NotFoundException(username)
+    fun getByUsernameOrNull(username: String): UserEntity? = repository.findByUsername(username)
+    fun getByUsername(username: String): UserEntity = getByUsernameOrNull(username) ?: throw NotFoundException(username)
 
     fun getByEmojisOrNull(emojis: String): UserEntity? = repository.findByEmojis(emojis)
     fun getByEmojis(emojis: String): UserEntity = getByEmojisOrNull(emojis) ?: throw NotFoundException(emojis)
 
     @Transactional
     fun updateProfile(username: String, request: PatchProfileRequest): UserEntity {
-        val user = get(username)
+        val user = getByUsername(username)
 
         request.username?.let { user.username = it }
         request.firstName?.let { user.firstName = it }

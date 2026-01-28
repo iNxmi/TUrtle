@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -71,7 +70,7 @@ class AuthService(
         val userDetails = authentication.principal as? UserDetails
 
         val user = if (userDetails != null) {
-            userService.get(userDetails.username)
+            userService.getByUsername(userDetails.username)
         } else null
 
         return user

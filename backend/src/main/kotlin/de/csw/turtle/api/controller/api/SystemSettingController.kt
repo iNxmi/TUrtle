@@ -1,5 +1,6 @@
 package de.csw.turtle.api.controller.api
 
+import de.csw.turtle.api.SimpleUserDetails
 import de.csw.turtle.api.controller.GetController
 import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.get.GetSystemSettingResponse
@@ -15,25 +16,34 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/system-settings")
-class SystemSettingController(
-    override val service: SystemSettingService,
-    override val mapper: SystemSettingMapper
-) : GetController<SystemSettingEntity, GetSystemSettingResponse>,
+class SystemSettingController
+    : GetController<SystemSettingEntity, GetSystemSettingResponse>,
     PatchController<SystemSettingEntity, PatchSystemSettingRequest, GetSystemSettingResponse> {
 
-    @PreAuthorize("hasAuthority('MANAGE_SYSTEM_SETTINGS')")
-    override fun get(id: Long) = super.get(id)
+    override fun get(
+        userDetails: SimpleUserDetails?,
+        id: Long
+    ): ResponseEntity<GetSystemSettingResponse> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_SYSTEM_SETTINGS')")
     override fun getCollection(
+        userDetails: SimpleUserDetails?,
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
         sortDirection: Sort.Direction
-    ): ResponseEntity<Any> = super.getCollection(rsql, pageNumber, pageSize, sortProperty, sortDirection)
+    ): ResponseEntity<Any> {
+        TODO("Not yet implemented")
+    }
 
-    @PreAuthorize("hasAuthority('MANAGE_SYSTEM_SETTINGS')")
-    override fun patch(id: Long, request: PatchSystemSettingRequest) = super.patch(id, request)
+    override fun patch(
+        userDetails: SimpleUserDetails?,
+        id: Long,
+        request: PatchSystemSettingRequest
+    ): ResponseEntity<GetSystemSettingResponse> {
+        TODO("Not yet implemented")
+    }
 
 }

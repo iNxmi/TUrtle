@@ -14,7 +14,7 @@ class CustomUserDetailsService(
 
     @Transactional
     override fun loadUserByUsername(username: String): UserDetails {
-        val user = userService.getOrNull(username) ?: throw NotFoundException(username)
+        val user = userService.getByUsernameOrNull(username) ?: throw NotFoundException(username)
 
         return SimpleUserDetails(
             username = user.username,

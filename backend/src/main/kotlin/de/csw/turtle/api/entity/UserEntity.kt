@@ -1,5 +1,6 @@
 package de.csw.turtle.api.entity
 
+import de.csw.turtle.api.Permission
 import jakarta.persistence.*
 
 @Entity

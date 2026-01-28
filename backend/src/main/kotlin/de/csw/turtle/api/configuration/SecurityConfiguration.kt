@@ -22,19 +22,8 @@ class SecurityConfiguration(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { it.disable() }
             .cors { it.disable() }
-
             .authorizeHttpRequests {
-                it.requestMatchers(HttpMethod.GET, "/api/faq").permitAll()
-                it.requestMatchers(HttpMethod.POST, "/api/support-tickets").permitAll()
-                it.requestMatchers(HttpMethod.POST, "/api/hardware/door/emojis").permitAll()
-                it.requestMatchers(HttpMethod.GET, "/api/devices").permitAll()
-                it.requestMatchers(HttpMethod.GET, "/api/device-categories").permitAll()
-                it.requestMatchers(HttpMethod.GET, "/api/content/**").permitAll()
-                it.requestMatchers("/api/auth/**").permitAll()
-                it.requestMatchers(HttpMethod.GET, "/docs/**").permitAll()
-                it.requestMatchers(HttpMethod.GET, "/openapi/**").permitAll()
-                it.requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
-                it.anyRequest().authenticated()
+                it.anyRequest().permitAll()
             }
             .sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
