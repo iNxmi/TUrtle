@@ -25,7 +25,7 @@ abstract class AuditLogMapper :
     override fun get(entity: AuditLogEntity) = GetAuditLogResponse(
         id = entity.id,
         ipAddress = entity.ipAddress,
-        username = entity.user.username,
+        userId = entity.user.id,
         endpoint = entity.endpoint,
         httpMethod = entity.httpMethod,
         createdAt = entity.createdAt

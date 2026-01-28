@@ -50,9 +50,6 @@ class AuditLogController(
         if (user == null)
             throw UnauthorizedException()
 
-        if (!user.hasPermission(Permission.MANAGE_AUDIT_LOGS))
-            throw ForbiddenException()
-
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
         } ?: Sort.unsorted()
