@@ -25,7 +25,6 @@ class SystemSettingController(
 ) : GetController<SystemSettingEntity, GetSystemSettingResponse>,
     PatchController<SystemSettingEntity, PatchSystemSettingRequest, GetSystemSettingResponse> {
 
-
     override fun get(
         user: UserEntity?,
         id: Long
