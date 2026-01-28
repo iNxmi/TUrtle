@@ -1,6 +1,6 @@
 package de.csw.turtle.api.controller.api
 
-import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.Permission
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -9,14 +9,24 @@ import de.csw.turtle.api.dto.create.CreateDeviceCategoryRequest
 import de.csw.turtle.api.dto.get.GetDeviceCategoryResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceCategoryRequest
 import de.csw.turtle.api.entity.DeviceCategoryEntity
+import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.exception.ForbiddenException
+import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.mapper.DeviceCategoryMapper
+import de.csw.turtle.api.service.DeviceCategoryService
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.net.URI
 
 @RestController
 @RequestMapping("/api/device-categories")
-class DeviceCategoryController :
+class DeviceCategoryController(
+    private val deviceCategoryService: DeviceCategoryService,
+    private val deviceCategoryMapper: DeviceCategoryMapper
+) :
     CreateController<DeviceCategoryEntity, CreateDeviceCategoryRequest, GetDeviceCategoryResponse>,
     GetController<DeviceCategoryEntity, GetDeviceCategoryResponse>,
     PatchController<DeviceCategoryEntity, PatchDeviceCategoryRequest, GetDeviceCategoryResponse>,
@@ -26,14 +36,25 @@ class DeviceCategoryController :
         user: UserEntity?,
         request: CreateDeviceCategoryRequest
     ): ResponseEntity<GetDeviceCategoryResponse> {
-        TODO("Not yet implemented")
+        if (user == null)
+            throw UnauthorizedException()
+
+        if (!user.hasPermission(Permission.MANAGE_DEVICE_CATEGORIES))
+            throw ForbiddenException()
+
+        val entity = deviceCategoryService.create(request)
+        val location = URI.create("/api/device-categories/${entity.id}")
+        val dto = deviceCategoryMapper.get(entity)
+        return ResponseEntity.created(location).body(dto)
     }
 
     override fun get(
         user: UserEntity?,
         id: Long
     ): ResponseEntity<GetDeviceCategoryResponse> {
-        TODO("Not yet implemented")
+        val entity = deviceCategoryService.get(id)
+        val dto = deviceCategoryMapper.get(entity)
+        return ResponseEntity.ok(dto)
     }
 
     override fun getCollection(
@@ -44,7 +65,20 @@ class DeviceCategoryController :
         sortProperty: String?,
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
-        TODO("Not yet implemented")
+        val sort = sortProperty?.let {
+            Sort.by(sortDirection, sortProperty)
+        } ?: Sort.unsorted()
+
+        if (pageNumber != null) {
+            val pageable = PageRequest.of(pageNumber, pageSize, sort)
+            val page = deviceCategoryService.getPage(rsql = rsql, pageable = pageable)
+            val dto = page.map { deviceCategoryMapper.get(it) }
+            return ResponseEntity.ok(dto)
+        }
+
+        val collection = deviceCategoryService.getAll(rsql = rsql, sort = sort).toMutableSet()
+        val dto = collection.map { deviceCategoryMapper.get(it) }
+        return ResponseEntity.ok(dto)
     }
 
     override fun patch(
@@ -52,14 +86,29 @@ class DeviceCategoryController :
         id: Long,
         request: PatchDeviceCategoryRequest
     ): ResponseEntity<GetDeviceCategoryResponse> {
-        TODO("Not yet implemented")
+        if (user == null)
+            throw UnauthorizedException()
+
+        if (!user.hasPermission(Permission.MANAGE_DEVICE_CATEGORIES))
+            throw ForbiddenException()
+
+        val entity = deviceCategoryService.patch(id, request)
+        val dto = deviceCategoryMapper.get(entity)
+        return ResponseEntity.ok(dto)
     }
 
     override fun delete(
         user: UserEntity?,
         id: Long
     ): ResponseEntity<Void> {
-        TODO("Not yet implemented")
+        if (user == null)
+            throw UnauthorizedException()
+
+        if (!user.hasPermission(Permission.MANAGE_DEVICE_CATEGORIES))
+            throw ForbiddenException()
+
+        deviceCategoryService.delete(id)
+        return ResponseEntity.noContent().build()
     }
 
 }

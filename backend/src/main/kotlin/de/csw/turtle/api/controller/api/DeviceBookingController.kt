@@ -14,7 +14,6 @@ import de.csw.turtle.api.exception.ForbiddenException
 import de.csw.turtle.api.exception.UnauthorizedException
 import de.csw.turtle.api.mapper.DeviceBookingMapper
 import de.csw.turtle.api.service.DeviceBookingService
-import de.csw.turtle.api.service.UserService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
@@ -48,8 +47,8 @@ class DeviceBookingController(
 
         val entity = deviceBookingService.create(sanitized)
         val location = URI.create("/api/device-bookings/${entity.id}")
-        val response = deviceBookingMapper.get(entity)
-        return ResponseEntity.created(location).body(response)
+        val dto = deviceBookingMapper.get(entity)
+        return ResponseEntity.created(location).body(dto)
     }
 
     override fun get(
@@ -65,7 +64,8 @@ class DeviceBookingController(
             if (entity.user != user)
                 throw ForbiddenException()
 
-        return ResponseEntity.ok(deviceBookingMapper.get(entity))
+        val dto = deviceBookingMapper.get(entity)
+        return ResponseEntity.ok(dto)
     }
 
     override fun getCollection(
@@ -90,8 +90,8 @@ class DeviceBookingController(
             if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS))
                 page.removeAll { it.user != user }
 
-            val result = page.map { deviceBookingMapper.get(it) }
-            return ResponseEntity.ok(result)
+            val dto = page.map { deviceBookingMapper.get(it) }
+            return ResponseEntity.ok(dto)
         }
 
         val collection = deviceBookingService.getAll(rsql = rsql, sort = sort).toMutableSet()
@@ -99,8 +99,8 @@ class DeviceBookingController(
         if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS))
             collection.removeAll { it.user != user }
 
-        val result = collection.map { deviceBookingMapper.get(it) }
-        return ResponseEntity.ok(result)
+        val dto = collection.map { deviceBookingMapper.get(it) }
+        return ResponseEntity.ok(dto)
     }
 
     override fun patch(
@@ -121,7 +121,8 @@ class DeviceBookingController(
         } else request
 
         val updated = deviceBookingService.patch(id, sanitized)
-        return ResponseEntity.ok(deviceBookingMapper.get(updated))
+        val dto = deviceBookingMapper.get(updated)
+        return ResponseEntity.ok(dto)
     }
 
     override fun delete(
