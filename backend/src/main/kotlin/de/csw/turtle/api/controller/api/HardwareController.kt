@@ -2,21 +2,22 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.OpenDoorEmojisRequest
+import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.exception.ForbiddenException
 import de.csw.turtle.api.exception.UnauthorizedException
 import de.csw.turtle.api.service.NetworkService
-import de.csw.turtle.api.service.PermissionService
 import de.csw.turtle.api.service.UserService
 import de.csw.turtle.api.service.door.DoorControlService
 import de.csw.turtle.api.service.locker.LockerControlService
 import de.csw.turtle.api.service.locker.LockerService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/hardware")
 class HardwareController(
-    private val permissionService: PermissionService,
     private val doorControlService: DoorControlService,
     private val lockerService: LockerService,
     private val lockerControlService: LockerControlService,
@@ -29,7 +30,10 @@ class HardwareController(
     val doorSecondsPleaseMoveToSystemSettings = 3
 
     @PostMapping("/door/emojis")
-    fun door(@RequestBody request: OpenDoorEmojisRequest, httpRequest: HttpServletRequest): ResponseEntity<String> {
+    fun door(
+        @RequestBody request: OpenDoorEmojisRequest,
+        httpRequest: HttpServletRequest
+    ): ResponseEntity<String> {
         if (!networkService.isLocalNetwork(httpRequest))
             throw UnauthorizedException("External network.")
 
@@ -40,37 +44,31 @@ class HardwareController(
         return ResponseEntity.ok(response)
     }
 
-//    @GetMapping("/door/override")
-//    fun door(@RequestParam seconds: Int = 3): ResponseEntity<String> {
-//        permissionService.check(BACKEND__API_HARDWARE__DOOR)
-//
-//        val response = doorControlService.trigger(seconds = seconds)
-//        return ResponseEntity.ok(response)
-//    }
-
     @GetMapping("/door/override")
-    fun door(@RequestParam seconds: Int = 3): ResponseEntity<String> {
-        permissionService.check(Permission.BACKEND__API_HARDWARE__DOOR)
+    fun door(
+        @AuthenticationPrincipal user: UserEntity?,
+        @RequestParam seconds: Int = 3
+    ): ResponseEntity<String> {
+        if (user == null)
+            throw UnauthorizedException()
+
+        if (!user.hasPermission(Permission.MANAGE_DOOR))
+            throw ForbiddenException()
 
         val response = doorControlService.trigger(seconds = seconds)
         return ResponseEntity.ok(response)
     }
 
-//    @GetMapping("/locker")
-//    fun locker(@RequestParam id: Long, request: HttpServletRequest): ResponseEntity<String> {
-//        if (!networkService.isLocalNetwork(request))
-//            TODO("implement proper exception")
-//
-//        permissionService.check(BACKEND__API_HARDWARE__LOCKER)
-//
-//        val locker = lockerService.get(id)
-//        val response = lockerControlService.trigger(locker = locker, ignoreLocked = true)
-//        return ResponseEntity.ok(response)
-//    }
-
     @GetMapping("/locker/override")
-    fun locker(@RequestParam id: Long): ResponseEntity<String> {
-        permissionService.check(Permission.BACKEND__API_HARDWARE__LOCKER)
+    fun locker(
+        @AuthenticationPrincipal user: UserEntity?,
+        @RequestParam id: Long
+    ): ResponseEntity<String> {
+        if (user == null)
+            throw UnauthorizedException()
+
+        if (!user.hasPermission(Permission.MANAGE_LOCKERS))
+            throw ForbiddenException()
 
         val locker = lockerService.get(id)
         val response = lockerControlService.trigger(locker = locker, ignoreLocked = true)

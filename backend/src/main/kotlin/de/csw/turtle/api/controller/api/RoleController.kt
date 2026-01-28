@@ -105,7 +105,7 @@ class RoleController(
         if (user == null)
             throw UnauthorizedException()
 
-        if (!user.hasPermission(Permission.MANAGE_DEVICES))
+        if (!user.hasPermission(Permission.MANAGE_ROLES))
             throw ForbiddenException()
 
         val entity = roleService.patch(id, request)
@@ -120,7 +120,7 @@ class RoleController(
         if (user == null)
             throw UnauthorizedException()
 
-        if (!user.hasPermission(Permission.MANAGE_DEVICES))
+        if (!user.hasPermission(Permission.MANAGE_ROLES))
             throw ForbiddenException()
 
         roleService.delete(id)

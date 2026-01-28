@@ -70,15 +70,14 @@ class DataSeeder(
 
             try {
                 val createRequest = CreateRoomBookingRequest(
+                    userId = userService.getByUsername("admin").id,
                     title = "${service.count()}: this is an event",
                     description = "this is the very long description",
                     start = start,
-                    end = end,
-                    creatorId = userService.getByUsername("admin").id
+                    end = end
                 )
                 roomBookingService.create(createRequest)
-            } catch (exception: Exception) {
-                println("warning, retry")
+            } catch (_: Exception) {
             }
         }
     }
@@ -101,16 +100,19 @@ class DataSeeder(
             val subject = "This is a support ticket about Something"
             val description = "I am facing an issue with Something. Please help!"
 
-
-            supportTicketService.create(
-                CreateSupportTicketRequest(
-                    urgency = urgency,
-                    category = category,
-                    email = email,
-                    subject = subject,
-                    description = description
+            try {
+                supportTicketService.create(
+                    CreateSupportTicketRequest(
+                        urgency = urgency,
+                        category = category,
+                        email = email,
+                        subject = subject,
+                        description = description
+                    )
                 )
-            )
+            } catch (_: Exception) {
+
+            }
 
         }
     }
