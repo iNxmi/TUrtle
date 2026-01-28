@@ -15,16 +15,6 @@ class DefaultRolesConfiguration(
     private val service: RoleService
 ) : CommandLineRunner {
 
-    private val guest = setOf(
-        FRONTEND__SIDEBAR_CATEGORY__PUBLIC,
-        FRONTEND__SIDEBAR_ITEM__HOME,
-        FRONTEND__SIDEBAR_ITEM__LOGIN,
-        FRONTEND__SIDEBAR_ITEM__REGISTER,
-        FRONTEND__SIDEBAR_ITEM__SUPPORT,
-        FRONTEND__SIDEBAR_ITEM__FAQ,
-        FRONTEND__SIDEBAR_ITEM__ABOUT
-    )
-
     private val student = setOf(
         BACKEND__API_USER_PROFILE__GET,
         BACKEND__API_USER_PROFILE__PATCH,
@@ -67,7 +57,6 @@ class DefaultRolesConfiguration(
         if (service.count() > 0)
             return
 
-        service.create(CreateRoleRequest(name = "Guest", permissions = guest))
         service.create(CreateRoleRequest(name = "Student", permissions = student))
         service.create(CreateRoleRequest(name = "Professor", permissions = professor))
         service.create(CreateRoleRequest(name = "Administrator", permissions = administrator))

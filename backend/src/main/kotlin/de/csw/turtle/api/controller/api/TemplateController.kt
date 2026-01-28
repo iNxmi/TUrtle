@@ -45,7 +45,7 @@ class TemplateController(
             throw ForbiddenException()
 
         val entity = templateService.create(request)
-        val location = URI.create("/api/device-categories/${entity.id}")
+        val location = URI.create("/api/templates/${entity.id}")
         val dto = templateMapper.get(entity)
         return ResponseEntity.created(location).body(dto)
     }
