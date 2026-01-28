@@ -41,9 +41,7 @@ class UserEntity(
 
 ) : CRUDEntity() {
 
-    fun hasPermission(permission: Permission): Boolean {
-        val permissions = roles.flatMap { it.permissions }
-        return permissions.contains(permission)
-    }
+    fun getAllPermissions(): Set<Permission> = roles.flatMap { it.permissions }.toSet()
+    fun hasPermission(permission: Permission): Boolean = getAllPermissions().contains(permission)
 
 }
