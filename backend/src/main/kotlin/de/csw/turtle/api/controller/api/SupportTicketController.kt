@@ -1,6 +1,6 @@
 package de.csw.turtle.api.controller.api
 
-import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.Permission
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -9,15 +9,24 @@ import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.get.GetSupportTicketResponse
 import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
 import de.csw.turtle.api.entity.SupportTicketEntity
+import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.exception.ForbiddenException
+import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.mapper.SupportTicketMapper
+import de.csw.turtle.api.service.SupportTicketService
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.net.URI
 
 @RestController
 @RequestMapping("/api/support-tickets")
-class SupportTicketController
-    : CreateController<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse>,
+class SupportTicketController(
+    private val supportTicketService: SupportTicketService,
+    private val supportTicketMapper: SupportTicketMapper,
+) : CreateController<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse>,
     GetController<SupportTicketEntity, GetSupportTicketResponse>,
     PatchController<SupportTicketEntity, PatchSupportTicketRequest, GetSupportTicketResponse>,
     DeleteController<SupportTicketEntity> {
@@ -26,14 +35,27 @@ class SupportTicketController
         user: UserEntity?,
         request: CreateSupportTicketRequest
     ): ResponseEntity<GetSupportTicketResponse> {
-        TODO("Not yet implemented")
+        val entity = supportTicketService.create(request)
+        val location = URI.create("/api/support-tickets/${entity.id}")
+        val dto = supportTicketMapper.get(entity)
+        return ResponseEntity.created(location).body(dto)
     }
 
     override fun get(
         user: UserEntity?,
         id: Long
     ): ResponseEntity<GetSupportTicketResponse> {
-        TODO("Not yet implemented")
+        if (user == null)
+            throw UnauthorizedException()
+
+        val entity = supportTicketService.get(id)
+
+        if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
+            if (entity.email != user.email)
+                throw ForbiddenException()
+
+        val dto = supportTicketMapper.get(entity)
+        return ResponseEntity.ok(dto)
     }
 
     override fun getCollection(
@@ -44,7 +66,31 @@ class SupportTicketController
         sortProperty: String?,
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
-        TODO("Not yet implemented")
+        if (user == null)
+            throw UnauthorizedException()
+
+        val sort = sortProperty?.let {
+            Sort.by(sortDirection, sortProperty)
+        } ?: Sort.unsorted()
+
+        if (pageNumber != null) {
+            val pageable = PageRequest.of(pageNumber, pageSize, sort)
+            val page = supportTicketService.getPage(rsql = rsql, pageable = pageable)
+
+            if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
+                page.removeAll { it.email != user.email }
+
+            val dto = page.map { supportTicketMapper.get(it) }
+            return ResponseEntity.ok(dto)
+        }
+
+        val collection = supportTicketService.getAll(rsql = rsql, sort = sort).toMutableSet()
+
+        if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
+            collection.removeAll { it.email != user.email }
+
+        val dto = collection.map { supportTicketMapper.get(it) }
+        return ResponseEntity.ok(dto)
     }
 
     override fun patch(
@@ -52,14 +98,29 @@ class SupportTicketController
         id: Long,
         request: PatchSupportTicketRequest
     ): ResponseEntity<GetSupportTicketResponse> {
-        TODO("Not yet implemented")
+        if (user == null)
+            throw UnauthorizedException()
+
+        if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
+            throw ForbiddenException()
+
+        val updated = supportTicketService.patch(id, request)
+        val dto = supportTicketMapper.get(updated)
+        return ResponseEntity.ok(dto)
     }
 
     override fun delete(
         user: UserEntity?,
         id: Long
     ): ResponseEntity<Void> {
-        TODO("Not yet implemented")
+        if (user == null)
+            throw UnauthorizedException()
+
+        if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
+            throw ForbiddenException()
+
+        supportTicketService.delete(id)
+        return ResponseEntity.noContent().build()
     }
 
 }
