@@ -45,7 +45,7 @@ class LockerController(
             throw ForbiddenException()
 
         val entity = lockerService.create(request)
-        val location = URI.create("/api/device-categories/${entity.id}")
+        val location = URI.create("/api/lockers/${entity.id}")
         val dto = lockerMapper.get(entity)
         return ResponseEntity.created(location).body(dto)
     }

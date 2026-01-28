@@ -45,7 +45,7 @@ class FAQController(
             throw ForbiddenException()
 
         val entity = faqService.create(request)
-        val location = URI.create("/api/device-categories/${entity.id}")
+        val location = URI.create("/api/faq/${entity.id}")
         val dto = faqMapper.get(entity)
         return ResponseEntity.created(location).body(dto)
     }
