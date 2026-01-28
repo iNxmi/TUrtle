@@ -1,6 +1,6 @@
 package de.csw.turtle.api.configuration
 
-import de.csw.turtle.api.CurrentUserArgumentResolver
+import de.csw.turtle.api.components.CurrentUserArgumentResolver
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer

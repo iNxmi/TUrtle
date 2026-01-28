@@ -1,5 +1,6 @@
-package de.csw.turtle.api
+package de.csw.turtle.api.components
 
+import de.csw.turtle.api.CustomUserDetails
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.service.UserService
 import org.springframework.core.MethodParameter
