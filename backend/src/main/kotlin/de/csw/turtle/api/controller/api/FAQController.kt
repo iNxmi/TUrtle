@@ -1,23 +1,35 @@
 package de.csw.turtle.api.controller.api
 
-import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.Permission
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
 import de.csw.turtle.api.controller.PatchController
+import de.csw.turtle.api.dto.create.CreateDeviceCategoryRequest
 import de.csw.turtle.api.dto.create.CreateFAQRequest
+import de.csw.turtle.api.dto.get.GetDeviceCategoryResponse
 import de.csw.turtle.api.dto.get.GetFAQResponse
+import de.csw.turtle.api.dto.patch.PatchDeviceCategoryRequest
 import de.csw.turtle.api.dto.patch.PatchFAQRequest
 import de.csw.turtle.api.entity.FAQEntity
+import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.exception.ForbiddenException
+import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.mapper.FAQMapper
+import de.csw.turtle.api.service.FAQService
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.net.URI
 
 @RestController
 @RequestMapping("/api/faq")
-class FAQController :
-    CreateController<FAQEntity, CreateFAQRequest, GetFAQResponse>,
+class FAQController(
+    private val faqService: FAQService,
+    private val faqMapper: FAQMapper
+) : CreateController<FAQEntity, CreateFAQRequest, GetFAQResponse>,
     GetController<FAQEntity, GetFAQResponse>,
     PatchController<FAQEntity, PatchFAQRequest, GetFAQResponse>,
     DeleteController<FAQEntity> {
@@ -26,14 +38,25 @@ class FAQController :
         user: UserEntity?,
         request: CreateFAQRequest
     ): ResponseEntity<GetFAQResponse> {
-        TODO("Not yet implemented")
+        if (user == null)
+            throw UnauthorizedException()
+
+        if (!user.hasPermission(Permission.MANAGE_FAQ))
+            throw ForbiddenException()
+
+        val entity = faqService.create(request)
+        val location = URI.create("/api/device-categories/${entity.id}")
+        val dto = faqMapper.get(entity)
+        return ResponseEntity.created(location).body(dto)
     }
 
     override fun get(
         user: UserEntity?,
         id: Long
     ): ResponseEntity<GetFAQResponse> {
-        TODO("Not yet implemented")
+        val entity = faqService.get(id)
+        val dto = faqMapper.get(entity)
+        return ResponseEntity.ok(dto)
     }
 
     override fun getCollection(
@@ -44,7 +67,20 @@ class FAQController :
         sortProperty: String?,
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
-        TODO("Not yet implemented")
+        val sort = sortProperty?.let {
+            Sort.by(sortDirection, sortProperty)
+        } ?: Sort.unsorted()
+
+        if (pageNumber != null) {
+            val pageable = PageRequest.of(pageNumber, pageSize, sort)
+            val page = faqService.getPage(rsql = rsql, pageable = pageable)
+            val dto = page.map { faqMapper.get(it) }
+            return ResponseEntity.ok(dto)
+        }
+
+        val collection = faqService.getAll(rsql = rsql, sort = sort).toMutableSet()
+        val dto = collection.map { faqMapper.get(it) }
+        return ResponseEntity.ok(dto)
     }
 
     override fun patch(
@@ -52,14 +88,29 @@ class FAQController :
         id: Long,
         request: PatchFAQRequest
     ): ResponseEntity<GetFAQResponse> {
-        TODO("Not yet implemented")
+        if (user == null)
+            throw UnauthorizedException()
+
+        if (!user.hasPermission(Permission.MANAGE_FAQ))
+            throw ForbiddenException()
+
+        val entity = faqService.patch(id, request)
+        val dto = faqMapper.get(entity)
+        return ResponseEntity.ok(dto)
     }
 
     override fun delete(
         user: UserEntity?,
         id: Long
     ): ResponseEntity<Void> {
-        TODO("Not yet implemented")
+        if (user == null)
+            throw UnauthorizedException()
+
+        if (!user.hasPermission(Permission.MANAGE_FAQ))
+            throw ForbiddenException()
+
+        faqService.delete(id)
+        return ResponseEntity.noContent().build()
     }
 
 }
