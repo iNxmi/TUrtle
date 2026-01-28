@@ -1,6 +1,6 @@
 package de.csw.turtle.api.controller.api
 
-import de.csw.turtle.api.SimpleUserDetails
+import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -23,21 +23,21 @@ class FAQController :
     DeleteController<FAQEntity> {
 
     override fun create(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         request: CreateFAQRequest
     ): ResponseEntity<GetFAQResponse> {
         TODO("Not yet implemented")
     }
 
     override fun get(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         id: Long
     ): ResponseEntity<GetFAQResponse> {
         TODO("Not yet implemented")
     }
 
     override fun getCollection(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
@@ -48,7 +48,7 @@ class FAQController :
     }
 
     override fun patch(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         id: Long,
         request: PatchFAQRequest
     ): ResponseEntity<GetFAQResponse> {
@@ -56,7 +56,7 @@ class FAQController :
     }
 
     override fun delete(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         id: Long
     ): ResponseEntity<Void> {
         TODO("Not yet implemented")

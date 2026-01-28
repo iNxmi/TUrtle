@@ -1,21 +1,16 @@
 package de.csw.turtle.api.controller.api
 
-import de.csw.turtle.api.SimpleUserDetails
+import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
 import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.create.CreateRoomBookingRequest
-import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.get.GetRoomBookingResponse
 import de.csw.turtle.api.dto.patch.PatchRoomBookingRequest
-import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
 import de.csw.turtle.api.entity.RoomBookingEntity
-import de.csw.turtle.api.mapper.RoomBookingMapper
-import de.csw.turtle.api.service.RoomBookingService
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -28,21 +23,21 @@ class RoomBookingController :
     DeleteController<RoomBookingEntity> {
 
     override fun create(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         request: CreateRoomBookingRequest
     ): ResponseEntity<GetRoomBookingResponse> {
         TODO("Not yet implemented")
     }
 
     override fun get(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         id: Long
     ): ResponseEntity<GetRoomBookingResponse> {
         TODO("Not yet implemented")
     }
 
     override fun getCollection(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
@@ -53,7 +48,7 @@ class RoomBookingController :
     }
 
     override fun patch(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         id: Long,
         request: PatchRoomBookingRequest
     ): ResponseEntity<GetRoomBookingResponse> {
@@ -61,7 +56,7 @@ class RoomBookingController :
     }
 
     override fun delete(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         id: Long
     ): ResponseEntity<Void> {
         TODO("Not yet implemented")

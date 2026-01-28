@@ -1,7 +1,6 @@
 package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.SimpleUserDetails
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -10,6 +9,7 @@ import de.csw.turtle.api.dto.create.CreateDeviceBookingRequest
 import de.csw.turtle.api.dto.get.GetDeviceBookingResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceBookingRequest
 import de.csw.turtle.api.entity.DeviceBookingEntity
+import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.ForbiddenException
 import de.csw.turtle.api.exception.UnauthorizedException
 import de.csw.turtle.api.mapper.DeviceBookingMapper
@@ -26,22 +26,20 @@ import java.net.URI
 @RequestMapping("/api/device-bookings")
 class DeviceBookingController(
     private val deviceBookingService: DeviceBookingService,
-    private val deviceBookingMapper: DeviceBookingMapper,
-    private val userService: UserService
+    private val deviceBookingMapper: DeviceBookingMapper
 ) : CreateController<DeviceBookingEntity, CreateDeviceBookingRequest, GetDeviceBookingResponse>,
     GetController<DeviceBookingEntity, GetDeviceBookingResponse>,
     PatchController<DeviceBookingEntity, PatchDeviceBookingRequest, GetDeviceBookingResponse>,
     DeleteController<DeviceBookingEntity> {
 
     override fun create(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         request: CreateDeviceBookingRequest
     ): ResponseEntity<GetDeviceBookingResponse> {
-        if (userDetails == null)
+        if (user == null)
             throw UnauthorizedException()
 
-        val sanitized = if (!userDetails.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
-            val user = userDetails.getUser(userService)
+        val sanitized = if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
             request.copy(
                 userId = user.id,
                 status = DeviceBookingEntity.Status.RESERVED
@@ -55,32 +53,30 @@ class DeviceBookingController(
     }
 
     override fun get(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         id: Long
     ): ResponseEntity<GetDeviceBookingResponse> {
-        if (userDetails == null)
+        if (user == null)
             throw UnauthorizedException()
 
         val entity = deviceBookingService.get(id)
 
-        if (!userDetails.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
-            val user = userDetails.getUser(userService)
+        if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS))
             if (entity.user != user)
                 throw ForbiddenException()
-        }
 
         return ResponseEntity.ok(deviceBookingMapper.get(entity))
     }
 
     override fun getCollection(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
-        if (userDetails == null)
+        if (user == null)
             throw UnauthorizedException()
 
         val sort = sortProperty?.let {
@@ -91,10 +87,8 @@ class DeviceBookingController(
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
             val page = deviceBookingService.getPage(rsql = rsql, pageable = pageable)
 
-            if (!userDetails.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
-                val user = userDetails.getUser(userService)
+            if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS))
                 page.removeAll { it.user != user }
-            }
 
             val result = page.map { deviceBookingMapper.get(it) }
             return ResponseEntity.ok(result)
@@ -102,27 +96,24 @@ class DeviceBookingController(
 
         val collection = deviceBookingService.getAll(rsql = rsql, sort = sort).toMutableSet()
 
-        if (!userDetails.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
-            val user = userDetails.getUser(userService)
+        if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS))
             collection.removeAll { it.user != user }
-        }
 
         val result = collection.map { deviceBookingMapper.get(it) }
         return ResponseEntity.ok(result)
     }
 
     override fun patch(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         id: Long,
         request: PatchDeviceBookingRequest
     ): ResponseEntity<GetDeviceBookingResponse> {
-        if (userDetails == null)
+        if (user == null)
             throw UnauthorizedException()
 
         val entity = deviceBookingService.get(id)
 
-        val sanitized = if (!userDetails.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
-            val user = userDetails.getUser(userService)
+        val sanitized = if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
             if (entity.user != user)
                 throw ForbiddenException()
 
@@ -134,19 +125,17 @@ class DeviceBookingController(
     }
 
     override fun delete(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         id: Long
     ): ResponseEntity<Void> {
-        if (userDetails == null)
+        if (user == null)
             throw UnauthorizedException()
 
         val entity = deviceBookingService.get(id)
 
-        if (!userDetails.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
-            val user = userDetails.getUser(userService)
+        if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS))
             if (entity.user != user)
                 throw ForbiddenException()
-        }
 
         deviceBookingService.delete(id)
         return ResponseEntity.noContent().build()

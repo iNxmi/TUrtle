@@ -1,6 +1,6 @@
 package de.csw.turtle.api.controller.api
 
-import de.csw.turtle.api.SimpleUserDetails
+import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -23,21 +23,21 @@ class DeviceCategoryController :
     DeleteController<DeviceCategoryEntity> {
 
     override fun create(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         request: CreateDeviceCategoryRequest
     ): ResponseEntity<GetDeviceCategoryResponse> {
         TODO("Not yet implemented")
     }
 
     override fun get(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         id: Long
     ): ResponseEntity<GetDeviceCategoryResponse> {
         TODO("Not yet implemented")
     }
 
     override fun getCollection(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
@@ -48,7 +48,7 @@ class DeviceCategoryController :
     }
 
     override fun patch(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         id: Long,
         request: PatchDeviceCategoryRequest
     ): ResponseEntity<GetDeviceCategoryResponse> {
@@ -56,7 +56,7 @@ class DeviceCategoryController :
     }
 
     override fun delete(
-        userDetails: SimpleUserDetails?,
+        user: UserEntity?,
         id: Long
     ): ResponseEntity<Void> {
         TODO("Not yet implemented")

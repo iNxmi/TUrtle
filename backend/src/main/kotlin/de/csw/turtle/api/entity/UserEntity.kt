@@ -39,4 +39,11 @@ class UserEntity(
     @OneToMany(mappedBy = "user")
     val deviceBookings: MutableSet<DeviceBookingEntity> = mutableSetOf()
 
-) : CRUDEntity()
+) : CRUDEntity() {
+
+    fun hasPermission(permission: Permission): Boolean {
+        val permissions = roles.flatMap { it.permissions }
+        return permissions.contains(permission)
+    }
+
+}
