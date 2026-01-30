@@ -9,26 +9,9 @@ All commands listed here are run in `/`
 
 ___
 
-# Backend (Spring Boot, Kotlin)
-
-todo
-* switch from session to jwt
-* use spring security instead of own permissoin stuff
-* sso
-* rewrite permissions (manage, normal etc...)
-* reimplement permissions with preauthorize
-
-This is the backend, based on Spring Boot in Kotlin  
-Name: **TUrtleAPI**  
+# Backend (Spring Boot, Kotlin, REST)
+This is the backend, based on Spring Boot in Kotlin. 
 Port: 8080
-
-## application.yml
-```properties
-turtle.api.max_sessions=16
-# 30 * 24 * 60 * 60 = 2_592_000 -> 30 days in seconds
-turtle.api.session_duration_seconds=2_592_000
-turtle.api.session_key={some_super_secret_key}
-```
 
 ## Docker Environment
 ```
@@ -38,22 +21,29 @@ DATASOURCE_USERNAME: {username}
 DATASOURCE_PASSWORD: {password}
 ```
 
-Based on REST:
-
 ## Structure
 ```
 TUrtle/backend/src/
     main/
         kotlin/de/csw/turtle/
-            config/                 |   configs, security, other things
-            controller/             |   endpoint declarations
-            entity/                 |   database tables in JPA format
-            exception/              |
-            repository/             |   CRUD operations for Entities
-            service/                |   services, for example a JWTService for auth persistance
-            Application.kt          |   main entry point
+            api/
+                components/             |   general uncategorized components
+                configuration/          |   configs, security, other things
+                controller/             |   endpoint declarations
+                dto/                    |   data transfer objects (exposed to the internet)
+                entity/                 |   database tables in JPA format
+                exception/              |   custom exceptions and global exception handler
+                filter/                 |   filters for e.g. auth and rate limiting
+                mapper/                 |   mapping to/from dto and database entities
+                repository/             |   CRUD operations for Entities
+                service/                |   services, for example a JWTService for auth
+            Application.kt              |   main entry point
         resources/
-            application.yml         |   Spring Boot main configuration, keep it secret
+            application.yml             |   Spring Boot main configuration, keep it secret
+    test/kotlin/de/csw/turtle/
+        api/
+            service/
+            controller/
 ```
 
 ## Swagger UI / OpenAPI
@@ -62,14 +52,20 @@ When the TUrtleAPI is running, API endpoint documentation can be accessed and te
 ___
 
 # Frontend (Svelte, JavaScript)
-Name: **TUrtleView**  
 Port: 3000
 
 ## Structure
 ```
 TUrtle/frontend/
-    routes/     |   the different pages
-    lib/        |   reusable components
+    messages/               |   I18n translations
+    src/        
+        routes/             |   the different pages
+        paraglide/          |   autogenerate translation files absed on /messages/
+        lib/                |   reusable components
+        app.css             |   root css document
+        app.html            |   root html document
+    static/                 |   public exposed files (used for fonts, images and other visible stuff)
+    tests/                  |   various tests
 ```
 
 ## Development
