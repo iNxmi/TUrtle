@@ -35,16 +35,17 @@
     --color-secondary-800: var(--color-csw);
     --color-secondary-900: var(--color-csw);
     --color-background-50: #F4FFF2; /*#eefff1;*/
-    --color-text: var(--color-black);
     --color-primary: #98dc9e;
     --color-secondary: #dcffdb;
     --color-secondary-dark: var(--color-green-700);
     --color-accent-dark: var(--color-green-800);
     --base-font-color: #121212;
-
+    
     --color-table-dark: #d1f3d1;
     --color-accent: #3dff4a;
+    
     --color-csw: #FF6A00;
+    --color-text: var(--color-gray-800);
     --color-muted: var(--color-gray-500);
 
 }
@@ -75,7 +76,6 @@
     --color-secondary-900: var(--color-csw);
 
     --color-background-50: #242627; /*#eefff1;*/
-    --color-text: #ebfce9;
     --color-primary: #236729;
     --color-secondary: #012400;
     --color-secondary-dark: var(--color-green-700);
@@ -99,7 +99,7 @@
     font-display: swap;
 }
 
-.dark {
+.prose .dark {
     a{
         color: var(--color-text);
     }
@@ -213,5 +213,9 @@
     /* disable chrome cancel button */
     input[type="search"]::-webkit-search-cancel-button {
         display: none;
+    }
+
+    html{
+        @apply text-text;
     }
 }
