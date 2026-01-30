@@ -20,9 +20,10 @@
 
 	let creator = $derived(data.user);
 	let users = $derived(data.users);
-	const dropdownUsers = $derived(users.map(user =>  ({
+	let dropdownUsers = $derived(users.map((user) =>  ({
 		firstName: user.firstName,
 		lastName: user.lastName,
+		selected: selectedEvent.extendedProps.whitelist.includes(user.id),
 		value: user.id
 	})));
 
@@ -244,6 +245,24 @@
 
 		setTimeout(() => successRequest = undefined, 1500);
 	};
+
+	function sortFunction(x,y, selectUsers) {
+        if(selectUsers.includes(x) && !selectUsers.includes(y)) return -1;
+        if(selectUsers.includes(y) && !selectUsers.includes(x)) return 1;
+
+        if(x.lastName && y.lastName){
+            if(x.lastName > y.lastName) return 1;
+            if(x.lastName < y.lastName) return -1;
+        }
+    }
+	function displayFunction(user){
+		return user.firstName+", "+user.lastName;
+	}
+	function filterFunction(user, searchTerm){
+		return !searchTerm || 
+		user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+		user.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+	}
 	/* $effect(() => {
 		if(selectedEvent && calendar) console.log("Test "+ "EventDate: "+JSON.stringify($state.snapshot(eventDate)));
 		
@@ -285,7 +304,7 @@
 				<Toggle size="small" bind:checked={whitelistDisableOverride} onchange={setOpenToEveryone}>_Open to everyone_</Toggle>
 				<Toggle disabled={whitelistDisableOverride} size="small" bind:checked={useWhitelist}>_Use whitelist_</Toggle>
 				{#if useWhitelist}
-				<WhitelistDropdown users={dropdownUsers} bind:value={eventWhitelist} />
+				<WhitelistDropdown users={dropdownUsers} bind:value={eventWhitelist} {sortFunction} {displayFunction} {filterFunction}/>
 			
 				{/if}
 				<Button onclick={saveEvent}>{m.save()}</Button>
