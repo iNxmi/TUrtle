@@ -13,26 +13,25 @@ class ContentController(
     private val systemSettingService: SystemSettingService
 ) {
 
-    private fun getContent(key: String): String {
+    private fun getResponse(key: String): ResponseEntity<String> {
         val template = systemSettingService.getTyped<TemplateEntity>(key)
-        return template.getCompiledContent()
+        val content = template.getCompiledContent()
+        return ResponseEntity.ok(content)
     }
 
-    private fun getResponse(key: String) = ResponseEntity.ok(getContent(key))
-
     @GetMapping("/imprint")
-    fun imprint(): ResponseEntity<String> = getResponse("template.imprint")
+    fun imprint(): ResponseEntity<String> = getResponse("content.template.imprint")
 
     @GetMapping("/tos")
-    fun tos(): ResponseEntity<String> = getResponse("template.tos")
+    fun tos(): ResponseEntity<String> = getResponse("content.template.tos")
 
     @GetMapping("/about")
-    fun about(): ResponseEntity<String> = getResponse("template.about")
+    fun about(): ResponseEntity<String> = getResponse("content.template.about")
 
     @GetMapping("/gdpr")
-    fun gdpr(): ResponseEntity<String> = getResponse("template.gdpr")
+    fun gdpr(): ResponseEntity<String> = getResponse("content.template.gdpr")
 
     @GetMapping("/contact")
-    fun contact(): ResponseEntity<String> = getResponse("template.contact")
+    fun contact(): ResponseEntity<String> = getResponse("content.template.contact")
 
 }
