@@ -5,6 +5,7 @@ import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchProfileRequest
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.exception.BadRequestException
 import de.csw.turtle.api.exception.ConflictException
 import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.UserMapper
@@ -23,6 +24,9 @@ class UserService(
     override fun create(request: CreateUserRequest): UserEntity {
         if (getOrNull(request.username) != null)
             throw ConflictException("Username: ${request.username} already exists")
+        else if(request.username.isBlank())
+            throw BadRequestException("Username cannot be blank.")
+
 
         val hashed = request.copy(password = passwordEncoder.encode(request.password))
         return super.create(hashed)

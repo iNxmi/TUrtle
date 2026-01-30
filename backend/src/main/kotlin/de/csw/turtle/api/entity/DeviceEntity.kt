@@ -7,6 +7,7 @@ import java.time.Instant
 @Table(name = "devices")
 class DeviceEntity(
 
+    @Column(unique = true)
     var name: String,
 
     @Column(columnDefinition = "TEXT")

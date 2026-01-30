@@ -4,6 +4,7 @@ import de.csw.turtle.api.dto.create.CreateTemplateRequest
 import de.csw.turtle.api.dto.get.GetTemplateResponse
 import de.csw.turtle.api.dto.patch.PatchTemplateRequest
 import de.csw.turtle.api.entity.TemplateEntity
+import de.csw.turtle.api.exception.BadRequestException
 import de.csw.turtle.api.exception.ConflictException
 import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.TemplateMapper
@@ -22,6 +23,8 @@ class TemplateService(
     override fun create(request: CreateTemplateRequest): TemplateEntity {
         if(getByNameOrNull(request.name) != null)
             throw ConflictException("Template with name '${request.name}' already exists.")
+        else if(request.name.isBlank())
+            throw BadRequestException("Name cannot be blank.")
 
         return super.create(request)
     }
@@ -30,6 +33,8 @@ class TemplateService(
         if(request.name != null)
             if(getByNameOrNull(request.name) != null)
                 throw ConflictException("Template with name '${request.name}' already exists.")
+            else if(request.name.isBlank())
+                throw BadRequestException("Name cannot be blank.")
 
         return super.patch(id, request)
     }
