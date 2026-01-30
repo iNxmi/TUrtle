@@ -7,8 +7,12 @@ import de.csw.turtle.api.entity.ExceptionEntity
 import org.mapstruct.Mapper
 
 @Mapper(componentModel = "spring")
-abstract class ExceptionMapper() :
-    CRUDMapper<ExceptionEntity, CreateExceptionRequest, GetExceptionResponse, PatchExceptionRequest> {
+abstract class ExceptionMapper : CRUDMapper<
+        ExceptionEntity,
+        CreateExceptionRequest,
+        GetExceptionResponse,
+        PatchExceptionRequest
+        > {
 
     override fun create(request: CreateExceptionRequest) = ExceptionEntity(
         endpoint = request.endpoint,

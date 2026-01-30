@@ -8,7 +8,6 @@ import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.get.GetSupportTicketResponse
 import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
-import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.ForbiddenException

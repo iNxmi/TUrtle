@@ -18,8 +18,10 @@ class RateLimitBucketStore {
         .maximumSize(200_000)
         .build<RateLimitKey, Bucket>()
 
-    fun getUserBucket(userId: Long, supplier: () -> Bucket) = cache.get(RateLimitKey.User(userId)) { supplier() }
+    fun getUserBucket(userId: Long, supplier: () -> Bucket): Bucket =
+        cache.get(RateLimitKey.User(userId)) { supplier() }
 
-    fun getIpBucket(ip: String, supplier: () -> Bucket) = cache.get(RateLimitKey.Ip(ip)) { supplier() }
+    fun getIpBucket(ip: String, supplier: () -> Bucket): Bucket =
+        cache.get(RateLimitKey.Ip(ip)) { supplier() }
 
 }

@@ -3,6 +3,7 @@ package de.csw.turtle.api.entity
 import jakarta.persistence.*
 import java.time.Instant
 
+@Suppress("unused")
 @Entity
 @Table(name = "device_bookings")
 class DeviceBookingEntity(

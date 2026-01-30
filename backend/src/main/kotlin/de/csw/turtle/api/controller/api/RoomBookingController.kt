@@ -8,7 +8,6 @@ import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.create.CreateRoomBookingRequest
 import de.csw.turtle.api.dto.get.GetRoomBookingResponse
 import de.csw.turtle.api.dto.patch.PatchRoomBookingRequest
-import de.csw.turtle.api.entity.DeviceBookingEntity
 import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.ForbiddenException

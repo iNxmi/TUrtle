@@ -5,11 +5,8 @@ import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
 import de.csw.turtle.api.controller.PatchController
-import de.csw.turtle.api.dto.create.CreateFAQRequest
 import de.csw.turtle.api.dto.create.CreateLockerRequest
-import de.csw.turtle.api.dto.get.GetFAQResponse
 import de.csw.turtle.api.dto.get.GetLockerResponse
-import de.csw.turtle.api.dto.patch.PatchFAQRequest
 import de.csw.turtle.api.dto.patch.PatchLockerRequest
 import de.csw.turtle.api.entity.LockerEntity
 import de.csw.turtle.api.entity.UserEntity

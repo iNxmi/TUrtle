@@ -5,14 +5,8 @@ import de.csw.turtle.api.dto.RegisterUserRequest
 import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.UnauthorizedException
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -57,23 +51,6 @@ class AuthService(
 
         val userDetails = customUserDetailsService.loadUserByUsername(request.username)
         return jwtService.generate(userDetails)
-    }
-
-    @Transactional
-    fun logout(httpRequest: HttpServletRequest, httpResponse: HttpServletResponse, authentication: Authentication) =
-        SecurityContextLogoutHandler().logout(httpRequest, httpResponse, authentication)
-
-    fun getAuthenticatedUser(): UserEntity? {
-        val authentication = SecurityContextHolder.getContext().authentication
-            ?: throw UnauthorizedException("Authentication not found.")
-
-        val userDetails = authentication.principal as? UserDetails
-
-        val user = if (userDetails != null) {
-            userService.getByUsername(userDetails.username)
-        } else null
-
-        return user
     }
 
 }

@@ -11,13 +11,13 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
+private const val PREFIX = "Bearer "
+
 @Component
 class JWTAuthFilter(
     private val jwtService: JWTService,
     private val userDetailsService: CustomUserDetailsService
 ) : OncePerRequestFilter() {
-
-    private val PREFIX = "Bearer "
 
     override fun doFilterInternal(
         request: HttpServletRequest,
