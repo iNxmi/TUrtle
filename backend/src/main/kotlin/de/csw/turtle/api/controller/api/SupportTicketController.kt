@@ -8,6 +8,7 @@ import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.get.GetSupportTicketResponse
 import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
+import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.ForbiddenException
@@ -16,6 +17,7 @@ import de.csw.turtle.api.mapper.SupportTicketMapper
 import de.csw.turtle.api.service.SupportTicketService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -73,22 +75,22 @@ class SupportTicketController(
             Sort.by(sortDirection, sortProperty)
         } ?: Sort.unsorted()
 
+        val specification: Specification<SupportTicketEntity> =
+            if (user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS)) {
+                Specification.unrestricted()
+            } else Specification { root, _, builder ->
+                builder.equal(root.get<String>("email"), user.email)
+            }
+
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = supportTicketService.getPage(rsql = rsql, pageable = pageable)
-
-            if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
-                page.removeAll { it.email != user.email }
-
+            val page = supportTicketService.getPage(rsql = rsql, pageable = pageable, specification = specification)
             val dto = page.map { supportTicketMapper.get(it) }
             return ResponseEntity.ok(dto)
         }
 
-        val collection = supportTicketService.getAll(rsql = rsql, sort = sort).toMutableSet()
-
-        if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
-            collection.removeAll { it.email != user.email }
-
+        val collection =
+            supportTicketService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
         val dto = collection.map { supportTicketMapper.get(it) }
         return ResponseEntity.ok(dto)
     }

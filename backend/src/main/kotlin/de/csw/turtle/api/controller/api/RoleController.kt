@@ -16,6 +16,7 @@ import de.csw.turtle.api.mapper.RoleMapper
 import de.csw.turtle.api.service.RoleService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -77,22 +78,20 @@ class RoleController(
             Sort.by(sortDirection, sortProperty)
         } ?: Sort.unsorted()
 
+        val specification: Specification<RoleEntity> = if (user.hasPermission(Permission.MANAGE_ROLES)) {
+            Specification.unrestricted()
+        } else Specification { root, _, builder ->
+            builder.isMember(user, root.get<Set<UserEntity>>("users"))
+        }
+
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = roleService.getPage(rsql = rsql, pageable = pageable)
-
-            if(!user.hasPermission(Permission.MANAGE_ROLES))
-                page.removeAll { !user.roles.contains(it) }
-
+            val page = roleService.getPage(rsql = rsql, pageable = pageable, specification = specification)
             val dto = page.map { roleMapper.get(it) }
             return ResponseEntity.ok(dto)
         }
 
-        val collection = roleService.getAll(rsql = rsql, sort = sort).toMutableSet()
-
-        if(!user.hasPermission(Permission.MANAGE_ROLES))
-            collection.removeAll { !user.roles.contains(it) }
-
+        val collection = roleService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
         val dto = collection.map { roleMapper.get(it) }
         return ResponseEntity.ok(dto)
     }

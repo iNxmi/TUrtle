@@ -17,6 +17,7 @@ import de.csw.turtle.api.mapper.RoomBookingMapper
 import de.csw.turtle.api.service.RoomBookingService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -73,14 +74,21 @@ class RoomBookingController(
             Sort.by(sortDirection, sortProperty)
         } ?: Sort.unsorted()
 
+        val specification: Specification<RoomBookingEntity> =
+            if (user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
+                Specification.unrestricted()
+            } else Specification { root, _, builder ->
+                builder.equal(root.get<UserEntity>("user"), user)
+            }
+
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = roomBookingService.getPage(rsql = rsql, pageable = pageable)
+            val page = roomBookingService.getPage(rsql = rsql, pageable = pageable, specification = specification)
             val dto = page.map { roomBookingMapper.get(it) }
             return ResponseEntity.ok(dto)
         }
 
-        val collection = roomBookingService.getAll(rsql = rsql, sort = sort).toMutableSet()
+        val collection = roomBookingService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
         val dto = collection.map { roomBookingMapper.get(it) }
         return ResponseEntity.ok(dto)
     }

@@ -16,6 +16,7 @@ import de.csw.turtle.api.mapper.DeviceBookingMapper
 import de.csw.turtle.api.service.DeviceBookingService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -83,22 +84,22 @@ class DeviceBookingController(
             Sort.by(sortDirection, sortProperty)
         } ?: Sort.unsorted()
 
+        val specification: Specification<DeviceBookingEntity> =
+            if (user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
+                Specification.unrestricted()
+            } else Specification { root, _, builder ->
+                builder.equal(root.get<UserEntity>("user"), user)
+            }
+
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = deviceBookingService.getPage(rsql = rsql, pageable = pageable)
-
-            if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS))
-                page.removeAll { it.user != user }
-
+            val page = deviceBookingService.getPage(rsql = rsql, pageable = pageable, specification = specification)
             val dto = page.map { deviceBookingMapper.get(it) }
             return ResponseEntity.ok(dto)
         }
 
-        val collection = deviceBookingService.getAll(rsql = rsql, sort = sort).toMutableSet()
-
-        if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS))
-            collection.removeAll { it.user != user }
-
+        val collection =
+            deviceBookingService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
         val dto = collection.map { deviceBookingMapper.get(it) }
         return ResponseEntity.ok(dto)
     }

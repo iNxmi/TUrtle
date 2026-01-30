@@ -2,7 +2,6 @@ package de.csw.turtle.api.service
 
 import cz.jirutka.rsql.parser.RSQLParserException
 import de.csw.turtle.api.entity.CRUDEntity
-import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.BadRequestException
 import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.CRUDMapper
@@ -10,10 +9,9 @@ import de.csw.turtle.api.repository.CRUDRepository
 import io.github.perplexhub.rsql.ConversionException
 import io.github.perplexhub.rsql.RSQLJPASupport
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import org.springframework.data.domain.Sort.Direction
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 
@@ -43,10 +41,15 @@ abstract class CRUDService<
     @Transactional
     open fun getAll(
         sort: Sort = Sort.unsorted(),
-        rsql: String? = null
+        rsql: String? = null,
+        specification: Specification<Entity> = Specification.unrestricted()
     ): Collection<Entity> = try {
-        val specification = rsql?.let { RSQLJPASupport.toSpecification<Entity>(it) }
-        repository.findAll(specification, sort)
+        val rsqlSpecification = if (rsql != null) {
+            RSQLJPASupport.toSpecification<Entity>(rsql)
+        } else Specification.unrestricted()
+
+        val finalSpecification = rsqlSpecification.and(specification)
+        repository.findAll(finalSpecification, sort)
     } catch (exception: RSQLParserException) {
         throw BadRequestException(exception.message!!)
     } catch (exception: ConversionException) {
@@ -56,10 +59,15 @@ abstract class CRUDService<
     @Transactional
     open fun getPage(
         pageable: Pageable,
-        rsql: String? = null
+        rsql: String? = null,
+        specification: Specification<Entity> = Specification.unrestricted()
     ): Page<Entity> = try {
-        val specification = rsql?.let { RSQLJPASupport.toSpecification<Entity>(it) }
-        repository.findAll(specification, pageable)
+        val rsqlSpecification = if (rsql != null) {
+            RSQLJPASupport.toSpecification<Entity>(rsql)
+        } else Specification.unrestricted()
+
+        val finalSpecification = rsqlSpecification.and(specification)
+        repository.findAll(finalSpecification, pageable)
     } catch (exception: RSQLParserException) {
         throw BadRequestException(exception.message!!)
     } catch (exception: ConversionException) {
