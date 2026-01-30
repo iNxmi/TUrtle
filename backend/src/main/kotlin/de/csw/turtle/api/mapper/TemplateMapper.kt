@@ -20,6 +20,7 @@ abstract class TemplateMapper : CRUDMapper<TemplateEntity, CreateTemplateRequest
         name = entity.name,
         description = entity.description,
         content = entity.content,
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 

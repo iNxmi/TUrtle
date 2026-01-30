@@ -33,6 +33,7 @@ abstract class DeviceMapper : CRUDMapper<DeviceEntity, CreateDeviceRequest, GetD
         category = entity.category.id,
         locker = entity.locker.id,
         acquiredAt = entity.acquiredAt,
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 

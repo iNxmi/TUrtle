@@ -4,5 +4,6 @@ import java.time.Instant
 
 interface GetResponse {
     val id: Long?
+    val updatedAt: Instant?
     val createdAt: Instant?
 }

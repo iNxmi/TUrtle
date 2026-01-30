@@ -18,6 +18,7 @@ abstract class RoleMapper : CRUDMapper<RoleEntity, CreateRoleRequest, GetRoleRes
         id = entity.id,
         name = entity.name,
         permissions = entity.permissions,
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 

@@ -17,6 +17,7 @@ abstract class DeviceCategoryMapper() :
     override fun get(entity: DeviceCategoryEntity) = GetDeviceCategoryResponse(
         id = entity.id,
         name = entity.name,
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 

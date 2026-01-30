@@ -11,5 +11,6 @@ data class GetDeviceResponse(
     val locker: Long?,
     val acquiredAt: Instant?,
 
+    override val updatedAt: Instant?,
     override val createdAt: Instant?
 ) : GetResponse

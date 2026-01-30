@@ -7,6 +7,7 @@ import de.csw.turtle.api.entity.AuditLogEntity
 import de.csw.turtle.api.service.UserService
 import org.mapstruct.Mapper
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.Instant
 
 @Mapper(componentModel = "spring")
 abstract class AuditLogMapper :
@@ -28,6 +29,7 @@ abstract class AuditLogMapper :
         userId = entity.user.id,
         endpoint = entity.endpoint,
         httpMethod = entity.httpMethod,
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 

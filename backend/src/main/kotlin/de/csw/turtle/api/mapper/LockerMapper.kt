@@ -22,8 +22,9 @@ abstract class LockerMapper() :
         name = entity.name,
         index = entity.index,
         isSoftwareUnlockable = entity.isSoftwareUnlockable,
-        createdAt = entity.createdAt,
-        locked = entity.locked
+        locked = entity.locked,
+        updatedAt = entity.updatedAt,
+        createdAt = entity.createdAt
     )
 
     override fun patch(

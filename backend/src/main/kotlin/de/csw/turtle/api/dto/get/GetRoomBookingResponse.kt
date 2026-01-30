@@ -14,5 +14,6 @@ data class GetRoomBookingResponse(
     val accessibility: RoomBookingEntity.Accessibility?,
     val whitelist: Set<Long>?,
 
-    override val createdAt: Instant
+    override val updatedAt: Instant?,
+    override val createdAt: Instant?
 ) : GetResponse

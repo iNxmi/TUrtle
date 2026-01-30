@@ -23,6 +23,7 @@ abstract class ExceptionMapper() :
         exception = entity.exception,
         message = entity.message,
         stackTrace = entity.stackTrace,
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 

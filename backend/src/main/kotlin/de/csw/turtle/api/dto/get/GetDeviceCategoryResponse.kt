@@ -7,5 +7,6 @@ data class GetDeviceCategoryResponse(
 
     val name: String?,
 
+    override val updatedAt: Instant?,
     override val createdAt: Instant?
 ) : GetResponse

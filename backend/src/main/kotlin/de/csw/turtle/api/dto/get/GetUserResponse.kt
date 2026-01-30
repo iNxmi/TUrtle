@@ -12,5 +12,6 @@ data class GetUserResponse(
     val emojis: String,
     val roleIds: Set<Long>?,
 
+    override val updatedAt: Instant?,
     override val createdAt: Instant?
 ) : GetResponse

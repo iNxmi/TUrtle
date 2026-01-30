@@ -9,5 +9,6 @@ data class GetTemplateResponse(
     val description: String?,
     val content: String?,
 
+    override val updatedAt: Instant?,
     override val createdAt: Instant?
 ) : GetResponse

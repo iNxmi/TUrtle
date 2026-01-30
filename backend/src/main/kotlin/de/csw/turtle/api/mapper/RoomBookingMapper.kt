@@ -42,6 +42,7 @@ abstract class RoomBookingMapper :
         description = entity.description,
         accessibility = entity.accessibility,
         whitelist = entity.whitelist.map { it.id }.toSet(),
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 
