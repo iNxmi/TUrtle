@@ -9,8 +9,7 @@ import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.service.RoleService
 import de.csw.turtle.api.service.UserService
@@ -40,7 +39,7 @@ class UserController(
             request.copy(roleIds = setOf(roleService.getByName("Student").id))
         } else if (user.hasPermission(Permission.MANAGE_USERS)) {
             request
-        } else throw ForbiddenException()
+        } else throw HttpException.Forbidden()
 
         val entity = userService.create(sanitized)
         val location = URI.create("/api/users/${entity.id}")
@@ -53,12 +52,12 @@ class UserController(
         id: Long
     ): ResponseEntity<GetUserResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val entity = userService.get(id)
         if (!user.hasPermission(Permission.MANAGE_USERS))
             if (entity.id != user.id)
-                throw ForbiddenException()
+                throw HttpException.Forbidden()
 
         val dto = userMapper.get(entity)
         return ResponseEntity.ok(dto)
@@ -73,10 +72,10 @@ class UserController(
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_USERS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -100,13 +99,13 @@ class UserController(
         request: PatchUserRequest
     ): ResponseEntity<GetUserResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val sanitized = if (id == user.id) {
             request.copy(roleIds = null)
         } else if (user.hasPermission(Permission.MANAGE_USERS)) {
             request
-        } else throw ForbiddenException()
+        } else throw HttpException.Forbidden()
 
         val entity = userService.patch(id, sanitized)
         val dto = userMapper.get(entity)
@@ -118,11 +117,11 @@ class UserController(
         id: Long
     ): ResponseEntity<Void> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_USERS))
             if (id != user.id)
-                throw ForbiddenException()
+                throw HttpException.Forbidden()
 
         userService.delete(id)
         return ResponseEntity.noContent().build()

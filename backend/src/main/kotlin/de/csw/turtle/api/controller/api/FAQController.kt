@@ -10,8 +10,7 @@ import de.csw.turtle.api.dto.get.GetFAQResponse
 import de.csw.turtle.api.dto.patch.PatchFAQRequest
 import de.csw.turtle.api.entity.FAQEntity
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.FAQMapper
 import de.csw.turtle.api.service.FAQService
 import org.springframework.data.domain.PageRequest
@@ -36,10 +35,10 @@ class FAQController(
         request: CreateFAQRequest
     ): ResponseEntity<GetFAQResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_FAQ))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = faqService.create(request)
         val location = URI.create("/api/faq/${entity.id}")
@@ -86,10 +85,10 @@ class FAQController(
         request: PatchFAQRequest
     ): ResponseEntity<GetFAQResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_FAQ))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = faqService.patch(id, request)
         val dto = faqMapper.get(entity)
@@ -101,10 +100,10 @@ class FAQController(
         id: Long
     ): ResponseEntity<Void> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_FAQ))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         faqService.delete(id)
         return ResponseEntity.noContent().build()

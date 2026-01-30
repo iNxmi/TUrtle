@@ -10,8 +10,7 @@ import de.csw.turtle.api.dto.get.GetDeviceCategoryResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceCategoryRequest
 import de.csw.turtle.api.entity.DeviceCategoryEntity
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.DeviceCategoryMapper
 import de.csw.turtle.api.service.DeviceCategoryService
 import org.springframework.data.domain.PageRequest
@@ -37,10 +36,10 @@ class DeviceCategoryController(
         request: CreateDeviceCategoryRequest
     ): ResponseEntity<GetDeviceCategoryResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_DEVICE_CATEGORIES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = deviceCategoryService.create(request)
         val location = URI.create("/api/device-categories/${entity.id}")
@@ -87,10 +86,10 @@ class DeviceCategoryController(
         request: PatchDeviceCategoryRequest
     ): ResponseEntity<GetDeviceCategoryResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_DEVICE_CATEGORIES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = deviceCategoryService.patch(id, request)
         val dto = deviceCategoryMapper.get(entity)
@@ -102,10 +101,10 @@ class DeviceCategoryController(
         id: Long
     ): ResponseEntity<Void> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_DEVICE_CATEGORIES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         deviceCategoryService.delete(id)
         return ResponseEntity.noContent().build()

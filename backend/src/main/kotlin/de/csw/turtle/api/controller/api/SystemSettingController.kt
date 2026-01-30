@@ -7,8 +7,7 @@ import de.csw.turtle.api.dto.get.GetSystemSettingResponse
 import de.csw.turtle.api.dto.patch.PatchSystemSettingRequest
 import de.csw.turtle.api.entity.SystemSettingEntity
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.SystemSettingMapper
 import de.csw.turtle.api.service.SystemSettingService
 import org.springframework.data.domain.PageRequest
@@ -30,10 +29,10 @@ class SystemSettingController(
         id: Long
     ): ResponseEntity<GetSystemSettingResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = systemSettingService.get(id)
         val dto = systemSettingMapper.get(entity)
@@ -49,10 +48,10 @@ class SystemSettingController(
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -76,10 +75,10 @@ class SystemSettingController(
         request: PatchSystemSettingRequest
     ): ResponseEntity<GetSystemSettingResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val updated = systemSettingService.patch(id, request)
         val dto = systemSettingMapper.get(updated)

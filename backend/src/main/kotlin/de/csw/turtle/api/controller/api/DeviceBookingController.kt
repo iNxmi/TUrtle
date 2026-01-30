@@ -10,8 +10,7 @@ import de.csw.turtle.api.dto.get.GetDeviceBookingResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceBookingRequest
 import de.csw.turtle.api.entity.DeviceBookingEntity
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.DeviceBookingMapper
 import de.csw.turtle.api.service.DeviceBookingService
 import org.springframework.data.domain.PageRequest
@@ -37,7 +36,7 @@ class DeviceBookingController(
         request: CreateDeviceBookingRequest
     ): ResponseEntity<GetDeviceBookingResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val sanitized = if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
             request.copy(
@@ -57,13 +56,13 @@ class DeviceBookingController(
         id: Long
     ): ResponseEntity<GetDeviceBookingResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val entity = deviceBookingService.get(id)
 
         if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS))
             if (entity.user != user)
-                throw ForbiddenException()
+                throw  HttpException.Forbidden()
 
         val dto = deviceBookingMapper.get(entity)
         return ResponseEntity.ok(dto)
@@ -78,7 +77,7 @@ class DeviceBookingController(
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
         if (user == null)
-            throw UnauthorizedException()
+            throw  HttpException.Unauthorized()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -110,13 +109,13 @@ class DeviceBookingController(
         request: PatchDeviceBookingRequest
     ): ResponseEntity<GetDeviceBookingResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw  HttpException.Unauthorized()
 
         val entity = deviceBookingService.get(id)
 
         val sanitized = if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
             if (entity.user != user)
-                throw ForbiddenException()
+                throw  HttpException.Forbidden()
 
             request.copy(userId = null, status = null)
         } else request
@@ -131,13 +130,13 @@ class DeviceBookingController(
         id: Long
     ): ResponseEntity<Void> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val entity = deviceBookingService.get(id)
 
         if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS))
             if (entity.user != user)
-                throw ForbiddenException()
+                throw HttpException.Forbidden()
 
         deviceBookingService.delete(id)
         return ResponseEntity.noContent().build()

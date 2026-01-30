@@ -6,8 +6,7 @@ import de.csw.turtle.api.dto.create.CreateSystemSettingRequest
 import de.csw.turtle.api.dto.get.GetSystemSettingResponse
 import de.csw.turtle.api.dto.patch.PatchSystemSettingRequest
 import de.csw.turtle.api.entity.*
-import de.csw.turtle.api.exception.BadRequestException
-import de.csw.turtle.api.exception.NotFoundException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.SystemSettingMapper
 import de.csw.turtle.api.repository.SystemSettingRepository
 import de.csw.turtle.api.service.locker.LockerService
@@ -154,7 +153,7 @@ class SystemSettingService(
 
     fun getByKeyOrNull(key: String): SystemSettingEntity? = repository.findByKey(key)
     fun getByKey(key: String): SystemSettingEntity = repository.findByKey(key)
-        ?: throw NotFoundException("System setting with key '$key' not found.")
+        ?: throw HttpException.NotFound("System setting with key '$key' not found.")
 
     fun parse(entity: SystemSettingEntity) = parse(entity.key, entity.type, entity.value)
     fun parse(key: String, type: SystemSettingEntity.Type, value: String): SystemSettingEntity.SettingValue = try {
@@ -195,7 +194,7 @@ class SystemSettingService(
             SystemSettingEntity.Type.USER_ENTITY_REFERENCE -> SystemSettingEntity.SettingValue.UserEntityReferenceValue(userService.get(value.toLong()))
         }
     } catch (exception: Exception) {
-        throw BadRequestException("Error parsing system setting with key '$key' -> ${exception.message}")
+        throw HttpException.BadRequest("Error parsing system setting with key '$key' -> ${exception.message}")
     }
 
     override fun create(request: CreateSystemSettingRequest): SystemSettingEntity {

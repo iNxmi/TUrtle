@@ -1,7 +1,7 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.CustomUserDetails
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import jakarta.transaction.Transactional
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -14,7 +14,7 @@ class CustomUserDetailsService(
 
     @Transactional
     override fun loadUserByUsername(username: String): UserDetails {
-        val user = userService.getByUsernameOrNull(username) ?: throw UnauthorizedException()
+        val user = userService.getByUsernameOrNull(username) ?: throw HttpException.Unauthorized()
 
         return CustomUserDetails(
             userId = user.id,

@@ -10,8 +10,7 @@ import de.csw.turtle.api.dto.get.GetTemplateResponse
 import de.csw.turtle.api.dto.patch.PatchTemplateRequest
 import de.csw.turtle.api.entity.TemplateEntity
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.TemplateMapper
 import de.csw.turtle.api.service.TemplateService
 import org.springframework.data.domain.PageRequest
@@ -36,10 +35,10 @@ class TemplateController(
         request: CreateTemplateRequest
     ): ResponseEntity<GetTemplateResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_TEMPLATES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = templateService.create(request)
         val location = URI.create("/api/templates/${entity.id}")
@@ -52,10 +51,10 @@ class TemplateController(
         id: Long
     ): ResponseEntity<GetTemplateResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_TEMPLATES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = templateService.get(id)
         val dto = templateMapper.get(entity)
@@ -71,10 +70,10 @@ class TemplateController(
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_TEMPLATES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -98,10 +97,10 @@ class TemplateController(
         request: PatchTemplateRequest
     ): ResponseEntity<GetTemplateResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_TEMPLATES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = templateService.patch(id, request)
         val dto = templateMapper.get(entity)
@@ -113,10 +112,10 @@ class TemplateController(
         id: Long
     ): ResponseEntity<Void> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_TEMPLATES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         templateService.delete(id)
         return ResponseEntity.noContent().build()

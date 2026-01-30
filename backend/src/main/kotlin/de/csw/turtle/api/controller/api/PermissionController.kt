@@ -2,7 +2,7 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,7 +19,7 @@ class PermissionController {
         @AuthenticationPrincipal user: UserEntity?,
     ): ResponseEntity<SortedSet<Permission>> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val permissions = user.getAllPermissions()
         return ResponseEntity.ok(permissions.toSortedSet())

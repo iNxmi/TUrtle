@@ -4,8 +4,7 @@ import de.csw.turtle.api.dto.create.CreateDeviceCategoryRequest
 import de.csw.turtle.api.dto.get.GetDeviceCategoryResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceCategoryRequest
 import de.csw.turtle.api.entity.DeviceCategoryEntity
-import de.csw.turtle.api.exception.ConflictException
-import de.csw.turtle.api.exception.NotFoundException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.DeviceCategoryMapper
 import de.csw.turtle.api.repository.DeviceCategoryRepository
 import org.springframework.stereotype.Service
@@ -18,11 +17,11 @@ class DeviceCategoryService(
     "DeviceCategory"
 ) {
     fun getByNameOrNull(name: String): DeviceCategoryEntity? = repository.findByName(name)
-    fun getByName(name: String) = repository.findByName(name) ?: throw NotFoundException(name)
+    fun getByName(name: String) = repository.findByName(name) ?: throw HttpException.NotFound(name)
 
     override fun create(request: CreateDeviceCategoryRequest): DeviceCategoryEntity {
         if(getByNameOrNull(request.name) != null)
-            throw ConflictException("DeviceCategory with name '${request.name}' already exists.")
+            throw HttpException.Conflict("DeviceCategory with name '${request.name}' already exists.")
 
         return super.create(request)
     }
@@ -30,7 +29,7 @@ class DeviceCategoryService(
     override fun patch(id: Long, request: PatchDeviceCategoryRequest): DeviceCategoryEntity {
         if(request.name != null)
             if(getByNameOrNull(request.name) != null)
-                throw ConflictException("DeviceCategory with name '${request.name}' already exists.")
+                throw HttpException.Conflict("DeviceCategory with name '${request.name}' already exists.")
 
         return super.patch(id, request)
     }

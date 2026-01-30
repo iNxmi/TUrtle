@@ -6,8 +6,7 @@ import de.csw.turtle.api.controller.GetController
 import de.csw.turtle.api.dto.get.GetExceptionResponse
 import de.csw.turtle.api.entity.ExceptionEntity
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.ExceptionMapper
 import de.csw.turtle.api.service.ExceptionService
 import org.springframework.data.domain.PageRequest
@@ -30,10 +29,10 @@ class ExceptionController(
         id: Long
     ): ResponseEntity<GetExceptionResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_EXCEPTIONS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = exceptionService.get(id)
         val dto = exceptionMapper.get(entity)
@@ -49,10 +48,10 @@ class ExceptionController(
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_EXCEPTIONS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -75,10 +74,10 @@ class ExceptionController(
         id: Long
     ): ResponseEntity<Void> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_EXCEPTIONS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
         
         exceptionService.delete(id)
         return ResponseEntity.noContent().build()

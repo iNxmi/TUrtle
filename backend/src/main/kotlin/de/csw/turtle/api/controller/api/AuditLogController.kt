@@ -5,8 +5,7 @@ import de.csw.turtle.api.controller.GetController
 import de.csw.turtle.api.dto.get.GetAuditLogResponse
 import de.csw.turtle.api.entity.AuditLogEntity
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.AuditLogMapper
 import de.csw.turtle.api.service.AuditLogService
 import org.springframework.data.domain.PageRequest
@@ -29,12 +28,12 @@ class AuditLogController(
         id: Long
     ): ResponseEntity<GetAuditLogResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val entity = auditLogService.get(id)
         if (!user.hasPermission(Permission.MANAGE_AUDIT_LOGS))
             if (entity.user != user)
-                throw ForbiddenException()
+                throw HttpException.Forbidden()
 
         val dto = auditLogMapper.get(entity)
         return ResponseEntity.ok(dto)
@@ -49,7 +48,7 @@ class AuditLogController(
         sortDirection: Direction
     ): ResponseEntity<Any> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)

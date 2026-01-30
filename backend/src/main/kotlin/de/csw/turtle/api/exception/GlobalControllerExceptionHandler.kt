@@ -4,7 +4,6 @@ import de.csw.turtle.api.dto.ExceptionResponse
 import de.csw.turtle.api.dto.create.CreateExceptionRequest
 import de.csw.turtle.api.service.ExceptionService
 import jakarta.servlet.http.HttpServletRequest
-import org.apache.coyote.BadRequestException
 import org.springframework.data.mapping.PropertyReferenceException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.HttpRequestMethodNotSupportedException
@@ -22,51 +21,54 @@ class GlobalControllerExceptionHandler(
     private val exceptionService: ExceptionService,
 ) {
 
-    @ExceptionHandler(TUrtleException::class)
-    fun turtle(exception: TUrtleException, request: HttpServletRequest): ResponseEntity<ExceptionResponse> {
-        val response = ExceptionResponse(request.requestURI, exception, exception.status)
-        return ResponseEntity.status(exception.status).body(response)
-    }
+    @ExceptionHandler(HttpException::class)
+    fun http(exception: HttpException, request: HttpServletRequest) = getResponse(exception, request)
 
     @ExceptionHandler(NoResourceFoundException::class)
-    fun noResourceFound(exception: NoResourceFoundException): Nothing =
-        throw NotFoundException(exception.resourcePath)
+    fun notFound(
+        exception: NoResourceFoundException,
+        request: HttpServletRequest
+    ): ResponseEntity<ExceptionResponse> {
+        val httpException = HttpException.NotFound(exception.message)
+        return getResponse(httpException, request)
+    }
 
-    @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun validation(exception: MethodArgumentNotValidException): Nothing =
-        throw BadRequestException(exception.message)
-
-    @ExceptionHandler(PropertyReferenceException::class)
-    fun propertyReference(exception: PropertyReferenceException): Nothing =
-        throw BadRequestException(exception.message)
-
-    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
-    fun httpRequestMethodNotSupported(exception: HttpRequestMethodNotSupportedException): Nothing =
-        throw BadRequestException(exception.message)
-
-    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
-    fun methodArgumentTypeMismatch(exception: MethodArgumentTypeMismatchException): Nothing =
-        throw BadRequestException(exception.message)
-
-    @ExceptionHandler(MissingServletRequestParameterException::class)
-    fun missingServletRequestParameter(exception: MissingServletRequestParameterException): Nothing =
-        throw BadRequestException(exception.message)
+    @ExceptionHandler(
+        MissingServletRequestParameterException::class,
+        MethodArgumentTypeMismatchException::class,
+        HttpRequestMethodNotSupportedException::class,
+        PropertyReferenceException::class,
+        MethodArgumentNotValidException::class
+    )
+    fun badRequest(
+        exception: MissingServletRequestParameterException,
+        request: HttpServletRequest
+    ): ResponseEntity<ExceptionResponse> {
+        val httpException = HttpException.BadRequest(exception.message)
+        return getResponse(httpException, request)
+    }
 
     @ExceptionHandler(Exception::class)
-    fun exception(exception: Exception, request: HttpServletRequest): ResponseEntity<ExceptionResponse> {
+    fun exception(
+        exception: Exception,
+        request: HttpServletRequest
+    ): ResponseEntity<ExceptionResponse> {
         val url = request.requestURI
 
-        val request = CreateExceptionRequest(
+        val createExceptionRequest = CreateExceptionRequest(
             endpoint = url,
             exception = exception::class.simpleName!!,
             message = exception.message,
             stackTrace = getStackTraceAsString(exception)
         )
-        val entity = exceptionService.create(request)
+        val entity = exceptionService.create(createExceptionRequest)
 
         exception.printStackTrace()
 
-        throw InternalServerErrorException("id=${entity.id}")
+        val message =
+            "If you are not a system administrator please report this. This exception has been logged with id '${entity.id}'."
+        val httpException = HttpException.InternalServerError(message)
+        return getResponse(httpException, request)
     }
 
     private fun getStackTraceAsString(exception: Throwable): String {
@@ -74,6 +76,14 @@ class GlobalControllerExceptionHandler(
         val printWriter = PrintWriter(stringWriter)
         exception.printStackTrace(printWriter)
         return stringWriter.toString()
+    }
+
+    private fun getResponse(
+        exception: HttpException,
+        request: HttpServletRequest
+    ): ResponseEntity<ExceptionResponse> {
+        val response = ExceptionResponse(request.requestURI, exception.message!!, exception.status)
+        return ResponseEntity.status(exception.status).body(response)
     }
 
 }

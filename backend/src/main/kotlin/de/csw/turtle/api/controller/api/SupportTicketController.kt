@@ -10,8 +10,7 @@ import de.csw.turtle.api.dto.get.GetSupportTicketResponse
 import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
 import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.SupportTicketMapper
 import de.csw.turtle.api.service.SupportTicketService
 import org.springframework.data.domain.PageRequest
@@ -47,13 +46,13 @@ class SupportTicketController(
         id: Long
     ): ResponseEntity<GetSupportTicketResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val entity = supportTicketService.get(id)
 
         if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
             if (entity.email != user.email)
-                throw ForbiddenException()
+                throw HttpException.Forbidden()
 
         val dto = supportTicketMapper.get(entity)
         return ResponseEntity.ok(dto)
@@ -68,7 +67,7 @@ class SupportTicketController(
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -100,10 +99,10 @@ class SupportTicketController(
         request: PatchSupportTicketRequest
     ): ResponseEntity<GetSupportTicketResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val updated = supportTicketService.patch(id, request)
         val dto = supportTicketMapper.get(updated)
@@ -115,10 +114,10 @@ class SupportTicketController(
         id: Long
     ): ResponseEntity<Void> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         supportTicketService.delete(id)
         return ResponseEntity.noContent().build()

@@ -10,8 +10,7 @@ import de.csw.turtle.api.dto.get.GetRoleResponse
 import de.csw.turtle.api.dto.patch.PatchRoleRequest
 import de.csw.turtle.api.entity.RoleEntity
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.RoleMapper
 import de.csw.turtle.api.service.RoleService
 import org.springframework.data.domain.PageRequest
@@ -37,10 +36,10 @@ class RoleController(
         request: CreateRoleRequest
     ): ResponseEntity<GetRoleResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_ROLES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = roleService.create(request)
         val location = URI.create("/api/roles/${entity.id}")
@@ -53,11 +52,11 @@ class RoleController(
         id: Long
     ): ResponseEntity<GetRoleResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val entity = roleService.get(id)
         if (!user.roles.contains(entity))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val dto = roleMapper.get(entity)
         return ResponseEntity.ok(dto)
@@ -72,7 +71,7 @@ class RoleController(
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -102,10 +101,10 @@ class RoleController(
         request: PatchRoleRequest
     ): ResponseEntity<GetRoleResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_ROLES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = roleService.patch(id, request)
         val dto = roleMapper.get(entity)
@@ -117,10 +116,10 @@ class RoleController(
         id: Long
     ): ResponseEntity<Void> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_ROLES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         roleService.delete(id)
         return ResponseEntity.noContent().build()

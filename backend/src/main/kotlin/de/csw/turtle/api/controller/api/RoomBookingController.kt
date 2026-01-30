@@ -10,8 +10,7 @@ import de.csw.turtle.api.dto.get.GetRoomBookingResponse
 import de.csw.turtle.api.dto.patch.PatchRoomBookingRequest
 import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.RoomBookingMapper
 import de.csw.turtle.api.service.RoomBookingService
 import org.springframework.data.domain.PageRequest
@@ -37,7 +36,7 @@ class RoomBookingController(
         request: CreateRoomBookingRequest
     ): ResponseEntity<GetRoomBookingResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val sanitized = if (!user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
             request.copy(userId = user.id)
@@ -67,7 +66,7 @@ class RoomBookingController(
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -98,13 +97,13 @@ class RoomBookingController(
         request: PatchRoomBookingRequest
     ): ResponseEntity<GetRoomBookingResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val entity = roomBookingService.get(id)
 
         val sanitized = if (!user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
             if (entity.user != user)
-                throw ForbiddenException()
+                throw HttpException.Forbidden()
 
             request.copy(userId = null)
         } else request
@@ -119,13 +118,13 @@ class RoomBookingController(
         id: Long
     ): ResponseEntity<Void> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         val entity = roomBookingService.get(id)
 
         if (!user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS))
             if (entity.user != user)
-                throw ForbiddenException()
+                throw HttpException.Forbidden()
 
         roomBookingService.delete(id)
         return ResponseEntity.noContent().build()

@@ -10,8 +10,7 @@ import de.csw.turtle.api.dto.get.GetDeviceResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceRequest
 import de.csw.turtle.api.entity.DeviceEntity
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.DeviceMapper
 import de.csw.turtle.api.service.DeviceService
 import org.springframework.data.domain.PageRequest
@@ -36,10 +35,10 @@ class DeviceController(
         request: CreateDeviceRequest
     ): ResponseEntity<GetDeviceResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_DEVICES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = deviceService.create(request)
         val location = URI.create("/api/devices/${entity.id}")
@@ -86,10 +85,10 @@ class DeviceController(
         request: PatchDeviceRequest
     ): ResponseEntity<GetDeviceResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_DEVICES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = deviceService.patch(id, request)
         val dto = deviceMapper.get(entity)
@@ -101,10 +100,10 @@ class DeviceController(
         id: Long
     ): ResponseEntity<Void> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_DEVICES))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         deviceService.delete(id)
         return ResponseEntity.noContent().build()

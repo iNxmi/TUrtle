@@ -2,8 +2,7 @@ package de.csw.turtle.api.service
 
 import cz.jirutka.rsql.parser.RSQLParserException
 import de.csw.turtle.api.entity.CRUDEntity
-import de.csw.turtle.api.exception.BadRequestException
-import de.csw.turtle.api.exception.NotFoundException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.CRUDMapper
 import de.csw.turtle.api.repository.CRUDRepository
 import io.github.perplexhub.rsql.ConversionException
@@ -36,7 +35,7 @@ abstract class CRUDService<
 
     @Transactional
     open fun get(id: Long): Entity =
-        getOrNull(id) ?: throw NotFoundException("$name with id '$id' not found.")
+        getOrNull(id) ?: throw HttpException.NotFound("$name with id '$id' not found.")
 
     @Transactional
     open fun getAll(
@@ -51,9 +50,9 @@ abstract class CRUDService<
         val finalSpecification = rsqlSpecification.and(specification)
         repository.findAll(finalSpecification, sort)
     } catch (exception: RSQLParserException) {
-        throw BadRequestException(exception.message!!)
+        throw HttpException.BadRequest(exception.message!!)
     } catch (exception: ConversionException) {
-        throw BadRequestException(exception.message!!)
+        throw HttpException.BadRequest(exception.message!!)
     }
 
     @Transactional
@@ -69,9 +68,9 @@ abstract class CRUDService<
         val finalSpecification = rsqlSpecification.and(specification)
         repository.findAll(finalSpecification, pageable)
     } catch (exception: RSQLParserException) {
-        throw BadRequestException(exception.message!!)
+        throw HttpException.BadRequest(exception.message!!)
     } catch (exception: ConversionException) {
-        throw BadRequestException(exception.message!!)
+        throw HttpException.BadRequest(exception.message!!)
     }
 
     @Transactional

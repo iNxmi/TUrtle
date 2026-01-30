@@ -10,8 +10,7 @@ import de.csw.turtle.api.dto.get.GetLockerResponse
 import de.csw.turtle.api.dto.patch.PatchLockerRequest
 import de.csw.turtle.api.entity.LockerEntity
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.LockerMapper
 import de.csw.turtle.api.service.locker.LockerService
 import org.springframework.data.domain.PageRequest
@@ -36,10 +35,10 @@ class LockerController(
         request: CreateLockerRequest
     ): ResponseEntity<GetLockerResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_LOCKERS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = lockerService.create(request)
         val location = URI.create("/api/lockers/${entity.id}")
@@ -86,10 +85,10 @@ class LockerController(
         request: PatchLockerRequest
     ): ResponseEntity<GetLockerResponse> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_LOCKERS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val entity = lockerService.patch(id, request)
         val dto = lockerMapper.get(entity)
@@ -101,10 +100,10 @@ class LockerController(
         id: Long
     ): ResponseEntity<Void> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_LOCKERS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         lockerService.delete(id)
         return ResponseEntity.noContent().build()

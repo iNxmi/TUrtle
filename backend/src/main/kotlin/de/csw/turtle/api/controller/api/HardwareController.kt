@@ -3,8 +3,7 @@ package de.csw.turtle.api.controller.api
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.OpenDoorEmojisRequest
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.ForbiddenException
-import de.csw.turtle.api.exception.UnauthorizedException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.NetworkService
 import de.csw.turtle.api.service.UserService
 import de.csw.turtle.api.service.door.DoorControlService
@@ -35,10 +34,10 @@ class HardwareController(
         httpRequest: HttpServletRequest
     ): ResponseEntity<String> {
         if (!networkService.isLocalNetwork(httpRequest))
-            throw UnauthorizedException("External network.")
+            throw HttpException.Unauthorized("External network.")
 
         if (userService.getByEmojisOrNull(request.emojis) == null)
-            throw UnauthorizedException("Incorrect emojis.")
+            throw HttpException.Unauthorized("Incorrect emojis.")
 
         val response = doorControlService.trigger(seconds = doorSecondsPleaseMoveToSystemSettings)
         return ResponseEntity.ok(response)
@@ -50,10 +49,10 @@ class HardwareController(
         @RequestParam seconds: Int = 3
     ): ResponseEntity<String> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_DOOR))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val response = doorControlService.trigger(seconds = seconds)
         return ResponseEntity.ok(response)
@@ -65,10 +64,10 @@ class HardwareController(
         @RequestParam id: Long
     ): ResponseEntity<String> {
         if (user == null)
-            throw UnauthorizedException()
+            throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_LOCKERS))
-            throw ForbiddenException()
+            throw HttpException.Forbidden()
 
         val locker = lockerService.get(id)
         val response = lockerControlService.trigger(locker = locker, ignoreLocked = true)

@@ -5,26 +5,16 @@ import java.time.Instant
 
 data class ExceptionResponse(
     val url: String,
+    val message: String,
     val status: StatusDetails,
-    val exception: ExceptionDetails,
     val timestamp: String = Instant.now().toString()
 ) {
 
-    constructor(url: String, exception: Exception, status: HttpStatus) : this(
+    constructor(url: String, message: String, status: HttpStatus) : this(
         url = url,
-        status = StatusDetails(status),
-        exception = ExceptionDetails(exception)
+        message = message,
+        status = StatusDetails(status)
     )
-
-    data class ExceptionDetails(
-        val name: String?,
-        val message: String?
-    ) {
-        constructor(exception: Exception) : this(
-            name = exception::class.simpleName,
-            message = exception.message
-        )
-    }
 
     data class StatusDetails(
         val code: Int,

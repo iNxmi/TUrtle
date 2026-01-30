@@ -4,8 +4,7 @@ import de.csw.turtle.api.dto.create.CreateTemplateRequest
 import de.csw.turtle.api.dto.get.GetTemplateResponse
 import de.csw.turtle.api.dto.patch.PatchTemplateRequest
 import de.csw.turtle.api.entity.TemplateEntity
-import de.csw.turtle.api.exception.ConflictException
-import de.csw.turtle.api.exception.NotFoundException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.TemplateMapper
 import de.csw.turtle.api.repository.TemplateRepository
 import org.springframework.stereotype.Service
@@ -17,11 +16,11 @@ class TemplateService(
 ) : CRUDService<TemplateEntity, CreateTemplateRequest, GetTemplateResponse, PatchTemplateRequest>("Template") {
 
     fun getByNameOrNull(name: String): TemplateEntity? = repository.findByName(name)
-    fun getByName(name: String): TemplateEntity = repository.findByName(name) ?: throw NotFoundException(name)
+    fun getByName(name: String): TemplateEntity = repository.findByName(name) ?: throw HttpException.NotFound(name)
 
     override fun create(request: CreateTemplateRequest): TemplateEntity {
         if(getByNameOrNull(request.name) != null)
-            throw ConflictException("Template with name '${request.name}' already exists.")
+            throw HttpException.Conflict("Template with name '${request.name}' already exists.")
 
         return super.create(request)
     }
@@ -29,7 +28,7 @@ class TemplateService(
     override fun patch(id: Long, request: PatchTemplateRequest): TemplateEntity {
         if(request.name != null)
             if(getByNameOrNull(request.name) != null)
-                throw ConflictException("Template with name '${request.name}' already exists.")
+                throw HttpException.Conflict("Template with name '${request.name}' already exists.")
 
         return super.patch(id, request)
     }
