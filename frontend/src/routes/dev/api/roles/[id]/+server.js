@@ -1,7 +1,8 @@
-import { json } from '@sveltejs/kit';
+import { json } from "@sveltejs/kit";
 
-export async function GET(){
-    const itemsPublic = [
+export async function GET({params}){
+
+    const permissions = [
         "FRONTEND__SIDEBAR_CATEGORY__PUBLIC",
         
         "FRONTEND__SIDEBAR_CATEGORY__USER",
@@ -49,5 +50,5 @@ export async function GET(){
         "FRONTEND__SIDEBAR_ITEM__MANAGE_SETTINGS"
     ];
 
-    return json(itemsPublic)
+    return json({name: `Test role ${params.id}`, permissions: permissions.slice(0, params.id * 2 + 1)});
 }
