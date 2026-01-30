@@ -91,3 +91,10 @@ export async function openLocker(locker, reservation) {
 
     return await fetch(`/api/hardware/locker?id=${locker}`);
 }
+
+export async function openDoor() {
+        const response = await request(`/hardware/door?seconds=3`);
+        if (response.ok) {
+            return true;
+        }
+    }
