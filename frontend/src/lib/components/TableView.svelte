@@ -20,7 +20,7 @@
                 values.push(entity[header.id])
     
             const item = {
-                onClick: () => goto(`${("/admin"+page.url.searchParams.get('endpoint')) || endpoint}/${entity.id}`),
+                onClick: () => goto(`${endpoint}/${entity.id}`),
                 values: values
             };
             items.push(item);     
