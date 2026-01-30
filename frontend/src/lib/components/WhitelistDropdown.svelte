@@ -3,19 +3,14 @@
     import equal from 'fast-deep-equal';
     import { Badge, CloseButton, Checkbox, Input } from 'flowbite-svelte';
 
-    let { users, onchange = false, value = $bindable() } = $props();
+
+    let { users, onchange = false, value = $bindable(), sortFunction, displayFunction, filterFunction } = $props();
     let searchTerm = $state("");
+    let clickProtected = $state(false);
     
-    let filteredUsers = $derived(users.filter((user) => !searchTerm || user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    user.lastName.toLowerCase().includes(searchTerm.toLowerCase())));
+    let filteredUsers = $derived(users.filter((user) => filterFunction(user, searchTerm)));
 
-    let sortedUsers = $derived(filteredUsers.sort((x,y) => {
-        if(selectUsers.includes(x) && !selectUsers.includes(y)) return -1;
-        if(selectUsers.includes(y) && !selectUsers.includes(x)) return 1;
-
-        if(x.lastName > y.lastName) return 1;
-        if(x.lastName < y.lastName) return -1;
-    }));
+    let sortedUsers = $derived(filteredUsers.sort((x,y) => sortFunction(x,y, selectUsers)));
 
     let selectUsers = $derived(users.filter((user) => value.includes(user.value)));
     let show = $state(false);
@@ -89,6 +84,8 @@
     function closeDropdown(){show = false};
 
     function toggleDropdown(e){
+        e.stopPropagation();
+        clickProtected = true;
         if(multiSelectContainer && multiSelectContainer.contains(e.target)){
             show = !show;
         } else {
@@ -151,17 +148,18 @@
   };
 
    function handleClickOutside(event) {
-      if (multiSelectContainer && !multiSelectContainer.contains(event.target)) {
+      if (!clickProtected  && multiSelectContainer && !multiSelectContainer.contains(event.target)) {
         closeDropdown();
+      } else {
+        clickProtected = false;
       }
     };
   
 </script>
 
-
 <select name="whitelistMembers" {value} hidden multiple {onchange}>
     {#each users as user (user.value)}
-        <option value={user.value}>{user.firstNnme+", "+user.lastName}</option>
+        <option value={user.value}>{displayFunction(user)}</option>
     {/each}
 </select>
 
@@ -175,7 +173,7 @@ class="relative border border-gray-300 w-full flex items-center gap-2 dark:borde
         {#if selectUsers.length}
             {#each selectUsers as user (user.value)}
                 <Badge color="gray" large={false}  params={{duration: 100}} onclose={() => clearOption(user)} class={["mx-0.5 px-2 py-0"]}>
-                    {user.firstName+", "+user.lastName}
+                    {displayFunction(user)}
                 </Badge>
             {/each}
         {/if}
@@ -191,19 +189,19 @@ class="relative border border-gray-300 w-full flex items-center gap-2 dark:borde
 
     {#if show}
         
-        <div role="presentation" class={`absolute z-50 p-3 flex flex-col gap-1 max-h-64 bg-white border border-gray-300 dark:bg-gray-700 dark:border-gray-600 start-0 top-8 cursor-pointer overflow-y-scroll w-full`}>
+        <div onclick={(e) => {clickProtected = true; e.stopPropagation()}} role="presentation" class={`absolute z-1000 p-3 flex flex-col gap-1 max-h-64 bg-white border border-gray-300 dark:bg-gray-700 dark:border-gray-600 start-0 top-8 cursor-pointer overflow-y-scroll w-full`}>
             <Input onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()} size="md" placeholder="_Search User_" type="text" bind:value={searchTerm}/>
             {#each sortedUsers as user (user.value)}
                 {@const isSelected = selectUsers.includes(user)}
                 {@const isActive = activeItem === user}
                
-                <button onclick={(e) => selectUser(user, e)}
+                <button onclick={(e) =>{ selectUser(user, e); e.stopPropagation()}}
                     class={"text-left font-bold py-2 px-3"+ (isActive ? "bg-primary-100 text-primary-500 dark:bg-primary-500 dark:text-primary-100 hover:bg-primary-100 dark:hover:bg-primary-500 hover:text-primary-600 dark:hover:text-primary-100" : 
                 "text-gray-600 hover:text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-gray-600")}
                 data-selected={isSelected ? "true" : undefined}
                 data-active={isActive ? "true" : undefined}>
                     <Checkbox checked={isSelected}></Checkbox>
-                    {user.firstName+", "+user.lastName}
+                    {displayFunction(user)}
                 </button>
             {/each}
         </div>
