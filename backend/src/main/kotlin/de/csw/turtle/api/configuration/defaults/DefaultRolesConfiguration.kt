@@ -15,40 +15,9 @@ class DefaultRolesConfiguration(
     private val service: RoleService
 ) : CommandLineRunner {
 
-    private val student = setOf(
-        BACKEND__API_USER_PROFILE__GET,
-        BACKEND__API_USER_PROFILE__PATCH,
-        BACKEND__API_USER_PROFILE__DELETE,
+    private val student = setOf<Permission>()
 
-        FRONTEND__SIDEBAR_CATEGORY__PUBLIC,
-        FRONTEND__SIDEBAR_ITEM__HOME,
-        FRONTEND__SIDEBAR_ITEM__SUPPORT,
-        FRONTEND__SIDEBAR_ITEM__FAQ,
-        FRONTEND__SIDEBAR_ITEM__ABOUT,
-
-        FRONTEND__SIDEBAR_CATEGORY__USER,
-        FRONTEND__SIDEBAR_ITEM__DASHBOARD,
-        FRONTEND__SIDEBAR_ITEM__PROFILE,
-        FRONTEND__SIDEBAR_ITEM__BOOK_DEVICE
-    )
-
-    private val professor = setOf(
-        BACKEND__API_USER_PROFILE__GET,
-        BACKEND__API_USER_PROFILE__PATCH,
-        BACKEND__API_USER_PROFILE__DELETE,
-
-        FRONTEND__SIDEBAR_CATEGORY__PUBLIC,
-        FRONTEND__SIDEBAR_ITEM__HOME,
-        FRONTEND__SIDEBAR_ITEM__SUPPORT,
-        FRONTEND__SIDEBAR_ITEM__FAQ,
-        FRONTEND__SIDEBAR_ITEM__ABOUT,
-
-        FRONTEND__SIDEBAR_CATEGORY__USER,
-        FRONTEND__SIDEBAR_ITEM__DASHBOARD,
-        FRONTEND__SIDEBAR_ITEM__PROFILE,
-        FRONTEND__SIDEBAR_ITEM__BOOK_DEVICE,
-        FRONTEND__SIDEBAR_ITEM__BOOK_ROOM,
-    )
+    private val professor = setOf<Permission>()
 
     private val administrator = Permission.entries.toSet()
 

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
-@RequestMapping("/debug")
+@RequestMapping("/api/debug")
 class DebugController(
     private val emailService: EmailService,
     private val doorControlService: DoorControlService,
@@ -35,11 +35,12 @@ class DebugController(
 
     @GetMapping("/info")
     fun debug(
-        httpRequest: HttpServletRequest
-    ): ResponseEntity<Map<String, String>> {
-        val origin = URI.create(httpRequest.requestURL.toString()).host
-
-        val map = mapOf("origin" to origin)
+        request: HttpServletRequest
+    ): ResponseEntity<Map<String, Any?>> {
+        val map = mutableMapOf<String, Any?>()
+        map["origin"] = URI.create(request.requestURL.toString()).host
+        map["X-Forwarded-For"] = request.getHeader("X-Forwarded-For")
+        map["request.remoteAddr"] = request.remoteAddr
         return ResponseEntity.ok(map)
     }
 

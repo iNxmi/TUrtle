@@ -43,16 +43,19 @@ class DataSeeder(
             val index = floor(Math.random() * (roles.size - 1)).toInt() + 1
             val role = roles[index]
 
-            val request = CreateUserRequest(
-                username = username,
-                firstName = firstName,
-                lastName = lastName,
-                email = email,
-                emojis = System.currentTimeMillis().toString(),
-                password = username,
-                roleIds = setOf(role.id)
-            )
-            userService.create(request)
+            try {
+                val request = CreateUserRequest(
+                    username = username,
+                    firstName = firstName,
+                    lastName = lastName,
+                    email = email,
+                    emojis = System.currentTimeMillis().toString(),
+                    password = username,
+                    roleIds = setOf(role.id)
+                )
+                userService.create(request)
+            } catch (_: Exception) {
+            }
         }
     }
 

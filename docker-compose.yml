@@ -16,9 +16,9 @@ services:
     networks:
       - network
     environment:
-      POSTGRES_DB: ${DATABASE_NAME}
-      POSTGRES_USER: ${DATABASE_USERNAME}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
 
   mailhog:
     image: mailhog/mailhog
@@ -39,9 +39,9 @@ services:
       - network
     environment:
       DATASOURCE_SERVER: postgres:5432
-      DATASOURCE_DATABASE: ${DATABASE_NAME}
-      DATASOURCE_USERNAME: ${DATABASE_USERNAME}
-      DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
+      DATASOURCE_DATABASE: db
+      DATASOURCE_USERNAME: admin
+      DATASOURCE_PASSWORD: admin
       SMTP_HOST: ${SMTP_HOST}
       SMTP_PORT: ${SMTP_PORT}
       SMTP_USERNAME: ${SMTP_USERNAME}
@@ -87,19 +87,19 @@ services:
   #      - certbot_etc:/var/lib/letsencrypt
   #    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $!; done;'"
 
-  adminer:
-    image: adminer:latest
-    container_name: adminer
-    ports:
-      - "8000:8080"
-    depends_on:
-      - postgres
-    networks:
-      - network
-    environment:
-      ADMINER_DEFAULT_DB_DRIVER: pgsql
-      ADMINER_DEFAULT_SERVER: postgres:5432
-      ADMINER_DEFAULT_DATABASE: ${DATABASE_NAME}
-      ADMINER_DEFAULT_USERNAME: ${DATABASE_USERNAME}
-      ADMINER_DEFAULT_PASSWORD: ${DATABASE_PASSWORD}
-      ADMINER_PLUGINS: "tables-filter tinymce dark-switcher"
+#  adminer:
+#    image: adminer:latest
+#    container_name: adminer
+#    ports:
+#      - "8000:8080"
+#    depends_on:
+#      - postgres
+#    networks:
+#      - network
+#    environment:
+#      ADMINER_DEFAULT_DB_DRIVER: pgsql
+#      ADMINER_DEFAULT_SERVER: postgres:5432
+#      ADMINER_DEFAULT_DATABASE: ${DATABASE_NAME}
+#      ADMINER_DEFAULT_USERNAME: ${DATABASE_USERNAME}
+#      ADMINER_DEFAULT_PASSWORD: ${DATABASE_PASSWORD}
+#      ADMINER_PLUGINS: "tables-filter tinymce dark-switcher"

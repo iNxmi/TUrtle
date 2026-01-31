@@ -26,19 +26,15 @@ class AuditLogFilter(
         filterChain.doFilter(request, response)
 
         val principal = SecurityContextHolder.getContext().authentication?.principal
-        if (principal !is CustomUserDetails)
-            return
-
-        val success = response.status in 200..<300
-        if (!success)
-            return
-
-        val user = userService.getByUsername(principal.username)
+        val userId = if (principal is CustomUserDetails) {
+            userService.getByUsername(principal.username).id
+        } else null
 
         val createAuditLogRequest = CreateAuditLogRequest(
-            userId = user.id,
+            userId = userId,
             ipAddress = request.remoteAddr,
             endpoint = request.requestURI,
+            status = response.status,
             httpMethod = AuditLogEntity.HttpMethod.valueOf(request.method.uppercase())
         )
         auditLogService.create(createAuditLogRequest)

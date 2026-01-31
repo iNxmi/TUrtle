@@ -9,9 +9,7 @@ class NetworkService {
 
     //TODO needs testing to see if it really blocks external calls
     fun isLocalNetwork(request: HttpServletRequest): Boolean {
-        val remoteAddr = request.remoteAddr ?: return false
-        val address = InetAddress.getByName(remoteAddr)
-
+        val address = InetAddress.getByName(request.remoteAddr)
         return address.isLoopbackAddress || address.isSiteLocalAddress
     }
 

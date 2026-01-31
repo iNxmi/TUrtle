@@ -35,31 +35,12 @@ spring:
   mustache:
     check-template-location: false
 
+server:
+  forward-headers-strategy: framework
+
 springdoc:
   api-docs:
     path: /openapi/api-docs
   swagger-ui:
     url: /openapi/api-docs
     path: /docs
-
-server:
-  servlet:
-    session:
-      timeout: 30m
-
-turtle:
-  security:
-    max-sessions: 16
-    session-secret: F~jU}3x]&Y@{LZgn:'!uWMmFhmZEySZZ{p9ve&Y]gDa,Pg[:^pv_T)s'=R+3{/d9
-  debug: true #TODO remove in prod
-  ssh:
-    door:
-      host: 192.168.0.107
-      port: 22
-      username: pi
-      password: Start123
-    locker:
-      host: 192.168.0.107
-      port: 22
-      username: pi
-      password: Start123

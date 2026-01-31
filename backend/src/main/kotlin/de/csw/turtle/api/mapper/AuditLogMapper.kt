@@ -16,17 +16,19 @@ abstract class AuditLogMapper :
     protected lateinit var userService: UserService
 
     override fun create(request: CreateAuditLogRequest) = AuditLogEntity(
-        user = userService.get(request.userId),
+        user = request.userId?.let { userService.get(it) },
         ipAddress = request.ipAddress,
         endpoint = request.endpoint,
+        status = request.status,
         httpMethod = request.httpMethod
     )
 
     override fun get(entity: AuditLogEntity) = GetAuditLogResponse(
         id = entity.id,
         ipAddress = entity.ipAddress,
-        userId = entity.user.id,
+        userId = entity.user?.id,
         endpoint = entity.endpoint,
+        status = entity.status,
         httpMethod = entity.httpMethod,
         updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
@@ -39,6 +41,7 @@ abstract class AuditLogMapper :
         request.userId?.let { entity.user = userService.get(it) }
         request.ipAddress?.let { entity.ipAddress = it }
         request.endpoint?.let { entity.endpoint = it }
+        request.status?.let { entity.status = it }
         request.httpMethod?.let { entity.httpMethod = it }
         return entity
     }

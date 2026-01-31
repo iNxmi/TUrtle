@@ -9,6 +9,7 @@ data class GetAuditLogResponse(
     val ipAddress: String?,
     val userId: Long?,
     val endpoint: String?,
+    val status: Int?,
     val httpMethod: AuditLogEntity.HttpMethod?,
 
     override val updatedAt: Instant?,
