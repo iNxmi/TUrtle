@@ -153,7 +153,7 @@
     const itemsAdmin = [{
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_USERS",
         label: m.sidebar_admin_manage_user_entities(),
-        href: '/admin/users',
+        href: '/admin/userdata',
         icon: UsersGroupSolid
     }, {
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_ROOM_BOOKINGS",
