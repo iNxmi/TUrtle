@@ -15,6 +15,7 @@
 	import timeGridPlugin from '@fullcalendar/timegrid';
 	import listPlugin from '@fullcalendar/list';
 	import interactionPlugin from '@fullcalendar/interaction';
+	import {roomBookingsPath} from '$lib/backend';
 
 	let { data } = $props();
 
@@ -113,7 +114,7 @@
 			},
 			eventDrop: function (eventDropInfo) {
 				eventDropInfo.jsEvent.preventDefault();
-				request(`/roombookings/${eventDropInfo.event.id}`, {
+				request(roomBookingsPath+`/${eventDropInfo.event.id}`, {
 					method: "PATCH",
 					body: JSON.stringify(convertEventToBackend(eventDropInfo.event)),
 					headers: {'Content-Type': 'application/json'}
@@ -121,7 +122,7 @@
 			},
 			eventResize: function (eventResizeInfo){
 				eventResizeInfo.jsEvent.preventDefault();
-				request(`/roombookings/${eventResizeInfo.event.id}`, {
+				request(roomBookingsPath+`/${eventResizeInfo.event.id}`, {
 					method: "PATCH",
 					body: JSON.stringify(convertEventToBackend(eventResizeInfo.event)),
 					headers: {'Content-Type': 'application/json'}
@@ -177,7 +178,7 @@
 
 	}
 	function removeEvent() {
-		const response = request(`/roombookings/${selectedEvent.id}`, {
+		const response = request(roomBookingsPath+`/${selectedEvent.id}`, {
 			method: 'DELETE'
 		});
 		selectedEvent.remove();
@@ -233,7 +234,7 @@
 			calendar.getEventById(selectedEvent.id).setExtendedProp('whitelist', eventWhitelist);
 			calendar.getEventById(selectedEvent.id).setExtendedProp('openToEveryone', whitelistDisableOverride);
 			}
-		const response = await request( selectedEvent.new ? '/roombookings' : `/roombookings/${selectedEvent.id}`, {
+		const response = await request( selectedEvent.new ? roomBookingsPath : roomBookingsPath+`/${selectedEvent.id}`, {
 			method: selectedEvent.new ? 'POST': 'PATCH',
 			body : JSON.stringify( selectedEvent.new ? createNewBackendEvent() : convertEventToBackend(calendar.getEventById(selectedEvent.id))),
 			headers: {'Content-Type': 'application/json'}

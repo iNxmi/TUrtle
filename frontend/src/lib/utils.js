@@ -1,6 +1,7 @@
 import request from './api/api';
 import {dev} from '$app/environment';
 import {error, redirect} from '@sveltejs/kit';
+import { hardwarePath, deviceBookingsPath, roomBookingsPath } from '$lib/backend';
 
 export function convertEventToBackend(calendarEvent) {
     if (dev) {
@@ -49,7 +50,7 @@ export function convertEventToFrontend(backendEvent, creator) {
 }
 
 export async function fetchRoomBookings(info) {
-    const url = `/roombookings?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`
+    const url = roomBookingsPath+`?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`
     const response = await request(url);
 
     if (!response.ok)
@@ -59,7 +60,7 @@ export async function fetchRoomBookings(info) {
 }
 
 export async function fetchDeviceBookings(info) {
-    const url = `/devicebookings?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`;
+    const url = deviceBookingsPath+`?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`;
     const response = await request(url);
     if (!response.ok) {
         return false;
@@ -89,11 +90,11 @@ export async function openLocker(locker, reservation) {
         return reservation.status === "COLLECTION_READY" ? "DEVICE_COLLECTED" : "DEVICE_RETURNED";
     }
 
-    return await fetch(`/api/hardware/locker?id=${locker}`);
+    return await fetch(`/api${hardwarePath}/locker?id=${locker}`);
 }
 
 export async function openDoor() {
-        const response = await request(`/hardware/door?seconds=3`);
+        const response = await request(hardwarePath+`/door?seconds=3`);
         if (response.ok) {
             return true;
         }

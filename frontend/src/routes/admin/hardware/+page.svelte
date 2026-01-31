@@ -3,6 +3,7 @@
     import request from '$lib/api/api';
     import {openLocker, openDoor} from '$lib/utils';
 	import { invalidateAll } from '$app/navigation';
+    import { lockersPath } from '$lib/backend';
 
     let {data} = $props();
 
@@ -11,7 +12,7 @@
             locked: locker.locked !== true
         }
 
-        await request(`/lockers/${locker.id}`, {
+        await request(lockersPath+`/${locker.id}`, {
             method: "PATCH",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)
