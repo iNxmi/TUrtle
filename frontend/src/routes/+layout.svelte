@@ -152,8 +152,8 @@
 
     const itemsAdmin = [{
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_USERS",
-        label: m.sidebar_admin_manage_users(),
-        href: '/admin/users',
+        label: m.sidebar_admin_manage_user_entities(),
+        href: '/admin/userdata',
         icon: UsersGroupSolid
     }, {
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_ROOM_BOOKINGS",
@@ -165,30 +165,25 @@
         label: m.sidebar_admin_manage_support_tickets(),
         href: '/admin/support',
         icon: UserHeadsetSolid
-    }, /* {
-        permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_EXCEPTIONS",
-        label: m.sidebar_admin_manage_exceptions(),
-        href: '/admin/exceptions',
-        icon: BugSolid
-    }, */ {
+    }, {
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_NEWS",
         label: m.sidebar_admin_manage_news(),
         href: '/admin/news',
         icon: NewspaperSolid
-    }, {
+    }, /* {
         permission: "FRONTEND__SIDEBAR_ITEM__HARDWARE_OVERRIDE",
         label: "_Hardware Override_",
         href: '/admin/hardware',
         icon: LockSolid
-    }, {
+    }, */ {
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_AUDIT_LOGS",
         label: m.sidebar_admin_auditlogs(),
         href: '/admin/auditlogs',
         icon: BookOpenSolid
     }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_ROLES",
-        label: m.sidebar_admin_roles(),
-        href: '/admin/roles',
+        permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_SETTINGS",
+        label: m.sidebar_admin_settings(),
+        href: '/admin/settings',
         icon: LockSolid
     }, {
         permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_TEMPLATES",
@@ -231,13 +226,13 @@
             {#if permissions.includes("FRONTEND__SIDEBAR_CATEGORY__PUBLIC")}
                 <SidebarDropdownWrapper
                         class="list-none"
-                        classes={{ span: 'font-bold', ul: 'py-0' }}
+                        classes={{ span: 'font-bold text-text', ul: 'py-0' }}
                         isOpen={true}
                         label={m.sidebar_category_public()}
                 >
                     {#each itemsPublic as item}
                         {#if permissions.includes(item.permission)}
-                            <SidebarDropdownItem label={item.label} href={item.href}>
+                            <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
                                 {#snippet icon()}
                                     <item.icon class="text-csw h-5 w-5"/>
                                 {/snippet}
@@ -250,13 +245,13 @@
             {#if permissions.includes("FRONTEND__SIDEBAR_CATEGORY__USER")}
                 <SidebarDropdownWrapper
                         class="list-none"
-                        classes={{ span: 'font-bold', ul: 'py-0' }}
+                        classes={{ span: 'font-bold text-text', ul: 'py-0' }}
                         isOpen={true}
                         label={m.sidebar_category_user()}
                 >
                     {#each itemsUser as item}
                         {#if permissions.includes(item.permission)}
-                            <SidebarDropdownItem label={item.label} href={item.href}>
+                            <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
                                 {#snippet icon()}
                                     <item.icon class="text-csw h-5 w-5"/>
                                 {/snippet}
@@ -267,11 +262,11 @@
             {/if}
 
             {#if permissions.includes("FRONTEND__SIDEBAR_CATEGORY__ADMINISTRATOR")}
-                <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold", ul: 'py-0' }} isOpen={true}
+                <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold text-text", ul: 'py-0' }} isOpen={true}
                                         label={m.sidebar_category_admin()}>
                     {#each itemsAdmin as item}
                         {#if permissions.includes(item.permission)}
-                            <SidebarDropdownItem label={item.label} href={item.href}>
+                            <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
                                 {#snippet icon()}
                                     <item.icon class="text-csw h-5 w-5"/>
                                 {/snippet}
@@ -280,16 +275,6 @@
                     {/each}
                 </SidebarDropdownWrapper>
             {/if}
-
-        <!--    <SidebarDropdownWrapper
-                    class="list-none"
-                    classes={{ span: 'font-bold', ul: 'py-0' }}
-                    isOpen={true}
-                    label={m.sidebar_category_settings()}
-            >
-                <Select items={languages} bind:value={language} onchange={updateLanguage}/>
-                 <Toggle bind:checked={darkmode} onchange={toggleDarkMode}>_toggle_darkmode</Toggle>
-            </SidebarDropdownWrapper> -->
         </div>
     </Sidebar>
 

@@ -3,6 +3,7 @@
     import {m} from '$lib/paraglide/messages.js';
     import ReCAPTCHA from '$lib/components/ReCAPTCHA.svelte';
     import request from "$lib/api/api.js";
+    import { authPath} from '$lib/backend'
 
     let apiResponse = $state(null);
     let modal = $state(false);
@@ -21,7 +22,7 @@
 
         alert(JSON.stringify(payload, null, 2));
 
-        const response = await request('/auth/register', {
+        const response = await request(authPath+'/register', {
             method: 'POST',
             body: JSON.stringify(payload),
             headers: {'Content-Type': 'application/json'}
@@ -32,7 +33,7 @@
     }
 </script>
 
-<div class="flex justify-center w-[45rem] h-[50rem] border-1 border-neutral-300 dark:border-gray-700 bg-neutral-100 dark:bg-[#1E2939] rounded-xl p-20 pt-20 mx-auto max-w-full shadow-xl">
+<div class="flex justify-center w-180 h-200 border border-neutral-300 dark:border-gray-700 bg-neutral-100 dark:bg-[#1E2939] rounded-xl p-20 pt-20 mx-auto max-w-full shadow-xl">
     <form class="flex flex-col gap-5" onsubmit={register}>
         <Heading tag="h3" class="text-center">
             {m.register__title()}

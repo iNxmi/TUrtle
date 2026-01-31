@@ -1,0 +1,54 @@
+import { json } from "@sveltejs/kit";
+
+export async function GET({params}){
+
+    const permissions = [
+        "FRONTEND__SIDEBAR_CATEGORY__PUBLIC",
+        
+        "FRONTEND__SIDEBAR_CATEGORY__USER",
+
+        "FRONTEND__SIDEBAR_CATEGORY__ADMINISTRATOR",
+
+        "FRONTEND__SIDEBAR_ITEM__HOME",
+    
+        "FRONTEND__SIDEBAR_ITEM__LOGIN",
+    
+        "FRONTEND__SIDEBAR_ITEM__REGISTER",
+
+        "FRONTEND__SIDEBAR_ITEM__SUPPORT",
+
+        "FRONTEND__SIDEBAR_ITEM__FAQ",
+
+        "FRONTEND__SIDEBAR_ITEM__ABOUT",
+
+        "FRONTEND__SIDEBAR_ITEM__DASHBOARD",
+
+        "FRONTEND__SIDEBAR_ITEM__PROFILE",
+
+        "FRONTEND__SIDEBAR_ITEM__BOOK_DEVICE",
+
+        "FRONTEND__SIDEBAR_ITEM__BOOK_ROOM",
+    
+        "FRONTEND__SIDEBAR_ITEM__MANAGE_USERS",
+
+        "FRONTEND__SIDEBAR_ITEM__MANAGE_ROOM_BOOKINGS",
+
+        "FRONTEND__SIDEBAR_ITEM__MANAGE_SUPPORT_TICKETS",
+
+        "FRONTEND__SIDEBAR_ITEM__MANAGE_EXCEPTIONS",
+
+        "FRONTEND__SIDEBAR_ITEM__MANAGE_NEWS",
+    
+        "FRONTEND__SIDEBAR_ITEM__MANAGE_AUDIT_LOGS",
+    
+        "FRONTEND__SIDEBAR_ITEM__MANAGE_ROLES",
+        
+        "FRONTEND__SIDEBAR_ITEM__MANAGE_TEMPLATES",
+
+        "FRONTEND__SIDEBAR_ITEM__HARDWARE_OVERRIDE",
+
+        "FRONTEND__SIDEBAR_ITEM__MANAGE_SETTINGS"
+    ];
+
+    return json({name: `Test role ${params.id}`, permissions: permissions.slice(0, params.id * 2 + 1)});
+}

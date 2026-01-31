@@ -42,7 +42,11 @@ export async function GET(){
     
         "FRONTEND__SIDEBAR_ITEM__MANAGE_ROLES",
         
-        "FRONTEND__SIDEBAR_ITEM__MANAGE_TEMPLATES"
+        "FRONTEND__SIDEBAR_ITEM__MANAGE_TEMPLATES",
+
+        "FRONTEND__SIDEBAR_ITEM__HARDWARE_OVERRIDE",
+
+        "FRONTEND__SIDEBAR_ITEM__MANAGE_SETTINGS"
     ];
 
     return json(itemsPublic)

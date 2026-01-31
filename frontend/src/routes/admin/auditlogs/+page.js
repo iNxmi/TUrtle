@@ -1,7 +1,8 @@
 import {create} from "$lib/page.js"
+import { auditLogsPath } from '$lib/backend'
 
 export const load = create(
-    "/auditlogs",
+    auditLogsPath,
     [
         "id",
         "ipAddress",

@@ -78,5 +78,13 @@ export const users = [
 		email: 'ethan.a@example.edu',
 		studentId: 'S001010',
 		username: 'ethan.a'
+	},
+	{
+		id: "129",
+		firstName: "Admin",
+		lastName: "Admin",
+		email: 'admin@admin.com',
+		studentId: "0",
+		username: "Admin"
 	}
 ];

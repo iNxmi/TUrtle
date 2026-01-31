@@ -4,6 +4,7 @@
 	import request from '$lib/api/api.js';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import { authPath} from '$lib/backend'
 
 	let apiResponse = $state(null);
 	let modal = $state(false);
@@ -20,7 +21,7 @@
 			rememberMe: $state.snapshot(rememberMe)
 		};
 
-		const response = await request('/auth/login', {
+		const response = await request(authPath+'/login', {
 			method: 'POST',
 			body: JSON.stringify(payload),
 			headers: { 'Content-Type': 'application/json' }
@@ -33,7 +34,7 @@
 	}
 </script>
 
-<div class="flex justify-center w-[30rem] h-[40rem] bg-neutral-100 dark:bg-[#1E2939] rounded-lg p-0 pt-20 mx-auto max-w-full shadow-xl border-1 border-neutral-300 dark:border-gray-700">
+<div class="flex justify-center w-120 h-160 bg-neutral-100 dark:bg-[#1E2939] rounded-lg p-0 pt-20 mx-auto max-w-full shadow-xl border border-neutral-300 dark:border-gray-700">
 	<form class="flex flex-col gap-5" onsubmit={login}>
 		<Heading tag="h3" class="text-center">
 			{m.login__title()}

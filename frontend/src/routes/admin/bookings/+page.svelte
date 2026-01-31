@@ -15,14 +15,16 @@
 	import timeGridPlugin from '@fullcalendar/timegrid';
 	import listPlugin from '@fullcalendar/list';
 	import interactionPlugin from '@fullcalendar/interaction';
+	import {roomBookingsPath} from '$lib/backend';
 
 	let { data } = $props();
 
 	let creator = $derived(data.user);
 	let users = $derived(data.users);
-	const dropdownUsers = $derived(users.map(user =>  ({
+	let dropdownUsers = $derived(users.map((user) =>  ({
 		firstName: user.firstName,
 		lastName: user.lastName,
+		selected: selectedEvent.extendedProps.whitelist.includes(user.id),
 		value: user.id
 	})));
 
@@ -112,7 +114,7 @@
 			},
 			eventDrop: function (eventDropInfo) {
 				eventDropInfo.jsEvent.preventDefault();
-				request(`/roombookings/${eventDropInfo.event.id}`, {
+				request(roomBookingsPath+`/${eventDropInfo.event.id}`, {
 					method: "PATCH",
 					body: JSON.stringify(convertEventToBackend(eventDropInfo.event)),
 					headers: {'Content-Type': 'application/json'}
@@ -120,7 +122,7 @@
 			},
 			eventResize: function (eventResizeInfo){
 				eventResizeInfo.jsEvent.preventDefault();
-				request(`/roombookings/${eventResizeInfo.event.id}`, {
+				request(roomBookingsPath+`/${eventResizeInfo.event.id}`, {
 					method: "PATCH",
 					body: JSON.stringify(convertEventToBackend(eventResizeInfo.event)),
 					headers: {'Content-Type': 'application/json'}
@@ -176,7 +178,7 @@
 
 	}
 	function removeEvent() {
-		const response = request(`/roombookings/${selectedEvent.id}`, {
+		const response = request(roomBookingsPath+`/${selectedEvent.id}`, {
 			method: 'DELETE'
 		});
 		selectedEvent.remove();
@@ -232,7 +234,7 @@
 			calendar.getEventById(selectedEvent.id).setExtendedProp('whitelist', eventWhitelist);
 			calendar.getEventById(selectedEvent.id).setExtendedProp('openToEveryone', whitelistDisableOverride);
 			}
-		const response = await request( selectedEvent.new ? '/roombookings' : `/roombookings/${selectedEvent.id}`, {
+		const response = await request( selectedEvent.new ? roomBookingsPath : roomBookingsPath+`/${selectedEvent.id}`, {
 			method: selectedEvent.new ? 'POST': 'PATCH',
 			body : JSON.stringify( selectedEvent.new ? createNewBackendEvent() : convertEventToBackend(calendar.getEventById(selectedEvent.id))),
 			headers: {'Content-Type': 'application/json'}
@@ -244,6 +246,24 @@
 
 		setTimeout(() => successRequest = undefined, 1500);
 	};
+
+	function sortFunction(x,y, selectUsers) {
+        if(selectUsers.includes(x) && !selectUsers.includes(y)) return -1;
+        if(selectUsers.includes(y) && !selectUsers.includes(x)) return 1;
+
+        if(x.lastName && y.lastName){
+            if(x.lastName > y.lastName) return 1;
+            if(x.lastName < y.lastName) return -1;
+        }
+    }
+	function displayFunction(user){
+		return user.firstName+", "+user.lastName;
+	}
+	function filterFunction(user, searchTerm){
+		return !searchTerm || 
+		user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+		user.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+	}
 	/* $effect(() => {
 		if(selectedEvent && calendar) console.log("Test "+ "EventDate: "+JSON.stringify($state.snapshot(eventDate)));
 		
@@ -285,7 +305,7 @@
 				<Toggle size="small" bind:checked={whitelistDisableOverride} onchange={setOpenToEveryone}>_Open to everyone_</Toggle>
 				<Toggle disabled={whitelistDisableOverride} size="small" bind:checked={useWhitelist}>_Use whitelist_</Toggle>
 				{#if useWhitelist}
-				<WhitelistDropdown users={dropdownUsers} bind:value={eventWhitelist} />
+				<WhitelistDropdown users={dropdownUsers} bind:value={eventWhitelist} {sortFunction} {displayFunction} {filterFunction}/>
 			
 				{/if}
 				<Button onclick={saveEvent}>{m.save()}</Button>

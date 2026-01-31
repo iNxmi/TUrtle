@@ -1,7 +1,9 @@
 import {create} from "$lib/page.js"
+import { templatesPath} from '$lib/backend';
+
 
 export const load = create(
-    "/templates",
+    templatesPath,
     [
         "id",
         "name",
