@@ -41,6 +41,7 @@ class DebugController(
         map["origin"] = URI.create(request.requestURL.toString()).host
         map["X-Forwarded-For"] = request.getHeader("X-Forwarded-For")
         map["request.remoteAddr"] = request.remoteAddr
+        map["raw_headers"] = request.headerNames.asSequence().associateWith { request.getHeaders(it).asSequence().toList() }
         return ResponseEntity.ok(map)
     }
 

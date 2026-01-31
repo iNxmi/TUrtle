@@ -18,12 +18,4 @@ class WebConfiguration(
         resolvers.add(currentUserArgumentResolver)
     }
 
-    @Bean
-    fun forwardedHeaderFilter(): FilterRegistrationBean<ForwardedHeaderFilter?> {
-        val filterRegBean = FilterRegistrationBean<ForwardedHeaderFilter?>()
-        filterRegBean.setFilter(ForwardedHeaderFilter())
-        filterRegBean.setOrder(0)
-        return filterRegBean
-    }
-
 }

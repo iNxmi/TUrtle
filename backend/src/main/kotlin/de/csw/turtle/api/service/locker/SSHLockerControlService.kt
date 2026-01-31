@@ -1,35 +1,29 @@
 package de.csw.turtle.api.service.locker
 
 import de.csw.turtle.api.entity.LockerEntity
+import de.csw.turtle.api.service.MustacheService
+import de.csw.turtle.api.service.SSHService
 import de.csw.turtle.api.service.SystemSettingService
-import net.schmizz.sshj.SSHClient
-import net.schmizz.sshj.transport.verification.PromiscuousVerifier
+import org.springframework.stereotype.Service
 
+@Service
 class SSHLockerControlService(
-    private val systemSettingsService: SystemSettingService
-) : LockerControlService {
+    private val systemSettingService: SystemSettingService,
+    private val sshService: SSHService,
+    private val mustacheService: MustacheService
+) : LockerControlService(systemSettingService) {
 
     override fun onTrigger(locker: LockerEntity): String {
-        val input = "~/cabinet${locker.index}Open.sh"
+        val variables: Map<String, Any?> = mapOf("index" to locker.index)
+        val template = systemSettingService.getTyped<String>("locker.ssh.command")
+        val command = mustacheService.getInserted(template, variables)
 
-        val host = systemSettingsService.getTyped<String>("locker.ssh.host")
-        val port = systemSettingsService.getTyped<Int>("locker.ssh.port")
-        val username = systemSettingsService.getTyped<String>("locker.ssh.username")
-        val password = systemSettingsService.getTyped<String>("locker.ssh.password")
+        val hostname = systemSettingService.getTyped<String>("locker.ssh.hostname")
+        val port = systemSettingService.getTyped<Int>("locker.ssh.port")
+        val username = systemSettingService.getTyped<String>("locker.ssh.username")
+        val password = systemSettingService.getTyped<String>("locker.ssh.password")
 
-        return SSHClient().use { client ->
-            client.addHostKeyVerifier(PromiscuousVerifier())
-            client.connect(host, port)
-            client.authPassword(username, password)
-
-            client.startSession().use { session ->
-                session.exec(input).use { command ->
-                    command.join()
-                    val bytes = command.inputStream.readAllBytes()
-                    String(bytes)
-                }
-            }
-        }
+        return sshService.execute(hostname, port, username, password, command)
     }
 
 }

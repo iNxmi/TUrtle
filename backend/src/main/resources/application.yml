@@ -1,6 +1,6 @@
 spring:
-  profiles:
-    active: dev
+#  profiles:
+#    active: dev
 
   application:
     name: TUrtleAPI
@@ -36,7 +36,7 @@ spring:
     check-template-location: false
 
 server:
-  forward-headers-strategy: framework
+  forward-headers-strategy: none
 
 springdoc:
   api-docs:

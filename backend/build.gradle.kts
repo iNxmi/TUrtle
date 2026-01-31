@@ -41,6 +41,7 @@ dependencies {
 
     implementation("com.bucket4j:bucket4j_jdk17-core:8.16.0")
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
+    implementation("org.yaml:snakeyaml:2.5")
 
     kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
 

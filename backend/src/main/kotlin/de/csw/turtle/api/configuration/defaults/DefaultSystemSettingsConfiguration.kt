@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.transaction.annotation.Transactional
 import java.security.SecureRandom
+import java.time.LocalTime
 import java.util.*
 
 @Order(2)
@@ -45,14 +46,22 @@ class DefaultSystemSettingsConfiguration(
 
     @Transactional
     override fun run(vararg args: String) {
-        setDefault("calendar.time.start", SystemSettingEntity.Type.TIME, "06:00:00")
-        setDefault("calendar.time.end", SystemSettingEntity.Type.TIME, "22:00:00")
+        setDefault("general.fqdn", SystemSettingEntity.Type.STRING, "csw.tu-darmstadt.de")
 
+        setDefault("calendar.time.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0).toString())
+        setDefault("calendar.time.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0).toString())
+
+        setDefault("door.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0).toString())
+        setDefault("door.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0).toString())
+        setDefault("door.ssh.command", SystemSettingEntity.Type.STRING, "~/doorOpen.sh {{seconds}}")
         setDefault("door.ssh.hostname", SystemSettingEntity.Type.STRING, "192.168.0.107")
         setDefault("door.ssh.port", SystemSettingEntity.Type.INT, "22")
         setDefault("door.ssh.username", SystemSettingEntity.Type.STRING, "")
         setDefault("door.ssh.password", SystemSettingEntity.Type.STRING, "")
 
+        setDefault("locker.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0).toString())
+        setDefault("locker.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0).toString())
+        setDefault("locker.ssh.command", SystemSettingEntity.Type.STRING, "~/cabinet{{index}}Open.sh")
         setDefault("locker.ssh.hostname", SystemSettingEntity.Type.STRING, "192.168.0.107")
         setDefault("locker.ssh.port", SystemSettingEntity.Type.INT, "22")
         setDefault("locker.ssh.username", SystemSettingEntity.Type.STRING, "")

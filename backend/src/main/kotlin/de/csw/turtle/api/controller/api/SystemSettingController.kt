@@ -13,8 +13,11 @@ import de.csw.turtle.api.service.SystemSettingService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 @RequestMapping("/api/system-settings")
@@ -23,6 +26,41 @@ class SystemSettingController(
     private val systemSettingMapper: SystemSettingMapper
 ) : GetController<SystemSettingEntity, GetSystemSettingResponse>,
     PatchController<SystemSettingEntity, PatchSystemSettingRequest, GetSystemSettingResponse> {
+
+    @GetMapping("/export")
+    fun export(
+        @AuthenticationPrincipal user: UserEntity?
+    ): ResponseEntity<String> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (!user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS))
+            throw HttpException.Forbidden()
+
+        val collection = systemSettingService.getAll()
+        val map = TreeMap<String, String>()
+        for (entity in collection)
+            map[entity.key] = entity.value
+
+        val builder = StringBuilder()
+        for ((key, value) in map)
+            builder.append("$key=$value\n")
+
+        return ResponseEntity.ok(builder.toString())
+    }
+
+    @GetMapping("/import")
+    fun import(
+        @AuthenticationPrincipal user: UserEntity?
+    ): ResponseEntity<String> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (!user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS))
+            throw HttpException.Forbidden()
+
+        TODO("implement import function")
+    }
 
     override fun get(
         user: UserEntity?,
