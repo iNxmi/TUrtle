@@ -1,33 +1,46 @@
 package de.csw.turtle.api.service
 
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.io.Decoders
+import io.jsonwebtoken.security.Keys
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
+import java.time.Duration
 import java.util.*
+import javax.crypto.SecretKey
 
 @Service
-class JWTService {
+class JWTService(
+    private val systemSettingService: SystemSettingService
+) {
 
-    //TODO change into config or system settings
-    private val SECRET_KEY =
-        "Zbd7rLTbLcEyhygmMCfvgqLAYggKgFyxKKMC54oVbbMiMgh+49ZW2TP3YswvegWsnQoVN4kznt94CMNVogPbbhH42EDFsrDdYz3"
-    private val DURATION_MS: Long = 30L * 24L * 60L * 60L * 1000L // 30 Days
+    private fun getKey(): SecretKey {
+        val secret = systemSettingService.getTyped<String>("auth.jwt.secret")
+        val bytes = Decoders.BASE64.decode(secret)
+        return Keys.hmacShaKeyFor(bytes)
+    }
 
-    fun generate(userDetails: UserDetails): String = Jwts.builder()
-        .setSubject(userDetails.username)
-        .setIssuedAt(Date(System.currentTimeMillis()))
-        .setExpiration(Date(System.currentTimeMillis() + DURATION_MS))
-        .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-        .compact()
+    private fun getDurationLong() = systemSettingService.getTyped<Duration>("auth.jwt.duration.long")
+    private fun getDurationShort() = systemSettingService.getTyped<Duration>("auth.jwt.duration.short")
+
+    fun generate(userDetails: UserDetails, long: Boolean): String {
+        val duration = if (long) getDurationLong() else getDurationShort()
+
+        return Jwts.builder()
+            .setSubject(userDetails.username)
+            .setIssuedAt(Date(System.currentTimeMillis()))
+            .setExpiration(Date(System.currentTimeMillis() + duration.toMillis()))
+            .signWith(getKey())
+            .compact()
+    }
 
     fun extract(token: String): String =
-        Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).body.subject
+        Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token).body.subject
 
     fun isValid(token: String, userDetails: UserDetails): Boolean =
         extract(token) == userDetails.username && !isExpired(token)
 
     fun isExpired(token: String): Boolean =
-        Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).body.expiration.before(Date())
+        Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token).body.expiration.before(Date())
 
 }

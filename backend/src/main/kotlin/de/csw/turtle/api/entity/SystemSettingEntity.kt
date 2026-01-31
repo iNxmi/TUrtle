@@ -27,7 +27,8 @@ class SystemSettingEntity(
 
         STRING, STRING_LIST,
 
-        DATE, TIME, INSTANT,
+        //ISO-8601
+        DATE, TIME, INSTANT, DURATION,
 
         AUDIT_LOG_ENTITY_REFERENCE,
         DEVICE_BOOKING_ENTITY_REFERENCE,

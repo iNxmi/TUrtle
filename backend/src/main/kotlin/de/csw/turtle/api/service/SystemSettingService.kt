@@ -11,6 +11,7 @@ import de.csw.turtle.api.mapper.SystemSettingMapper
 import de.csw.turtle.api.repository.SystemSettingRepository
 import de.csw.turtle.api.service.locker.LockerService
 import org.springframework.stereotype.Service
+import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
@@ -41,7 +42,7 @@ class SystemSettingService(
         val result = parse(entity.key, entity.type, entity.value)
 
         if (result !is T)
-            TODO("implement exception")
+            throw IllegalStateException("System setting with key '$key' expected type '${T::class.simpleName}', but was type ${result::class.simpleName}'")
 
         return result
     }
@@ -53,19 +54,27 @@ class SystemSettingService(
     fun parse(key: String, type: SystemSettingEntity.Type, value: String): Any = try {
         when (type) {
             SystemSettingEntity.Type.BOOLEAN -> value.toBooleanStrict()
+
             SystemSettingEntity.Type.INT -> value.toInt()
             SystemSettingEntity.Type.INT_LIST -> objectMapper.readValue(value)
+
             SystemSettingEntity.Type.LONG -> value.toLong()
             SystemSettingEntity.Type.LONG_LIST -> objectMapper.readValue(value)
+
             SystemSettingEntity.Type.FLOAT -> value.toFloat()
             SystemSettingEntity.Type.FLOAT_LIST -> objectMapper.readValue(value)
+
             SystemSettingEntity.Type.DOUBLE -> value.toDouble()
             SystemSettingEntity.Type.DOUBLE_LIST -> objectMapper.readValue(value)
+
             SystemSettingEntity.Type.STRING -> value
             SystemSettingEntity.Type.STRING_LIST -> objectMapper.readValue(value)
+
             SystemSettingEntity.Type.DATE -> LocalDate.parse(value)
             SystemSettingEntity.Type.TIME -> LocalTime.parse(value)
             SystemSettingEntity.Type.INSTANT -> Instant.parse(value)
+            SystemSettingEntity.Type.DURATION -> Duration.parse(value)
+
             SystemSettingEntity.Type.AUDIT_LOG_ENTITY_REFERENCE -> auditLogService.get(value.toLong())
             SystemSettingEntity.Type.DEVICE_BOOKING_ENTITY_REFERENCE -> deviceBookingService.get(value.toLong())
             SystemSettingEntity.Type.DEVICE_CATEGORY_ENTITY_REFERENCE -> deviceCategoryService.get(value.toLong())

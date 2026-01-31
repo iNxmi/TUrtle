@@ -13,7 +13,6 @@ class RateLimiterService(
     private val bucketStore: RateLimitBucketStore
 ) {
 
-
     private fun bucket(max: Long, refillRatePerMinute: Long): Bucket {
         val refill = Refill.greedy(refillRatePerMinute, Duration.ofMinutes(1))
         val limit = Bandwidth.classic(max, refill)

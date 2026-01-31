@@ -50,7 +50,7 @@ class AuthService(
         }
 
         val userDetails = customUserDetailsService.loadUserByUsername(request.username)
-        return jwtService.generate(userDetails)
+        return jwtService.generate(userDetails, request.rememberMe)
     }
 
 }
