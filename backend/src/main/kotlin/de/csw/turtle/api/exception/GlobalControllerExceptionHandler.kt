@@ -26,7 +26,7 @@ class GlobalControllerExceptionHandler(
 
     @ExceptionHandler(NoResourceFoundException::class)
     fun notFound(
-        exception: NoResourceFoundException,
+        exception: Exception,
         request: HttpServletRequest
     ): ResponseEntity<ExceptionResponse> {
         val httpException = HttpException.NotFound(exception.message)
@@ -41,7 +41,7 @@ class GlobalControllerExceptionHandler(
         MethodArgumentNotValidException::class
     )
     fun badRequest(
-        exception: MissingServletRequestParameterException,
+        exception: Exception,
         request: HttpServletRequest
     ): ResponseEntity<ExceptionResponse> {
         val httpException = HttpException.BadRequest(exception.message)
