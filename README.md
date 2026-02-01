@@ -19,7 +19,6 @@ Port: 8080
 * statistics
 * distinguish prof/student role
 * emoji code checks (no duplicates, no 5 identical emojis)
-* login access/refresh token cookies
 * make admins always open door (during all times)
 * document this: rsql, system settings, templates with mustache
 
