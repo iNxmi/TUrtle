@@ -108,85 +108,85 @@
     let isOpen = $derived(!innerWidth || innerWidth >= 768);
 
     const itemsPublic = [{
-        permission: "FRONTEND__SIDEBAR_ITEM__HOME",
+        permission: "VIEW__SIDEBAR_ITEM__HOME",
         label: m.sidebar_public_home(),
         href: '/',
         icon: HomeSolid
     }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__LOGIN",
+        permission: "VIEW__SIDEBAR_ITEM__LOGIN",
         label: m.sidebar_public_login(),
         href: '/auth/login',
         icon: UserSolid
     }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__REGISTER",
+        permission: "VIEW__SIDEBAR_ITEM__REGISTER",
         label: m.sidebar_public_register(),
         href: '/auth/register',
         icon: UserSolid
     }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__FAQ",
+        permission: "VIEW__SIDEBAR_ITEM__FAQ",
         label: m.sidebar_public_faq(),
         href: '/faq',
         icon: QuestionCircleSolid
     }];
     const itemsUser = [{
-        permission: "FRONTEND__SIDEBAR_ITEM__DASHBOARD",
+        permission: "VIEW__SIDEBAR_ITEM__DASHBOARD",
         label: m.sidebar_user_dashboard(),
         href: '/user/dashboard',
         icon: NewspaperSolid
     }, /* {
-        permission: "FRONTEND__SIDEBAR_ITEM__PROFILE",
+        permission: "VIEW__SIDEBAR_ITEM__PROFILE",
         label: m.sidebar_user_profile(),
         href: '/user/profile',
         icon: UserSolid
     }, */ {
-        permission: "FRONTEND__SIDEBAR_ITEM__BOOK_DEVICE",
+        permission: "VIEW__SIDEBAR_ITEM__BOOK_DEVICE",
         label: m.sidebar_user_reservations(),
         href: '/user/devices',
         icon: DesktopPcSolid
     }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__BOOK_ROOM",
+        permission: "VIEW__SIDEBAR_ITEM__BOOK_ROOM",
         label: m.sidebar_user_bookings(),
         href: '/user/room',
         icon: CalendarMonthSolid
     }];
 
     const itemsAdmin = [{
-        permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_USERS",
+        permission: "VIEW__SIDEBAR_ITEM__MANAGE_USERS",
         label: m.sidebar_admin_manage_user_entities(),
         href: '/admin/userdata',
         icon: UsersGroupSolid
     }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_ROOM_BOOKINGS",
+        permission: "VIEW__SIDEBAR_ITEM__MANAGE_ROOM_BOOKINGS",
         label: m.sidebar_admin_manage_bookings(),
         href: '/admin/bookings',
         icon: CalendarEditSolid
     }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_SUPPORT_TICKETS",
+        permission: "VIEW__SIDEBAR_ITEM__MANAGE_SUPPORT_TICKETS",
         label: m.sidebar_admin_manage_support_tickets(),
         href: '/admin/support',
         icon: UserHeadsetSolid
     }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_NEWS",
+        permission: "VIEW__SIDEBAR_ITEM__MANAGE_NEWS",
         label: m.sidebar_admin_manage_news(),
         href: '/admin/news',
         icon: NewspaperSolid
     }, /* {
-        permission: "FRONTEND__SIDEBAR_ITEM__HARDWARE_OVERRIDE",
+        permission: "VIEW__SIDEBAR_ITEM__HARDWARE_OVERRIDE",
         label: "_Hardware Override_",
         href: '/admin/hardware',
         icon: LockSolid
     }, */ {
-        permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_AUDIT_LOGS",
+        permission: "VIEW__SIDEBAR_ITEM__MANAGE_AUDIT_LOGS",
         label: m.sidebar_admin_auditlogs(),
         href: '/admin/auditlogs',
         icon: BookOpenSolid
     }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_SETTINGS",
+        permission: "VIEW__SIDEBAR_ITEM__MANAGE_SETTINGS",
         label: m.sidebar_admin_settings(),
         href: '/admin/settings',
         icon: LockSolid
     }, {
-        permission: "FRONTEND__SIDEBAR_ITEM__MANAGE_TEMPLATES",
+        permission: "VIEW__SIDEBAR_ITEM__MANAGE_TEMPLATES",
         label: "_manage_templates_",
         href: '/admin/templates',
         icon: PaperClipOutline
@@ -223,7 +223,7 @@
                 <Hr class="m-0 p-0"/>
             {/if}
 
-            {#if permissions.includes("FRONTEND__SIDEBAR_CATEGORY__PUBLIC")}
+            {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__PUBLIC")}
                 <SidebarDropdownWrapper
                         class="list-none"
                         classes={{ span: 'font-bold text-text', ul: 'py-0' }}
@@ -242,7 +242,7 @@
                 </SidebarDropdownWrapper>
             {/if}
 
-            {#if permissions.includes("FRONTEND__SIDEBAR_CATEGORY__USER")}
+            {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__USER")}
                 <SidebarDropdownWrapper
                         class="list-none"
                         classes={{ span: 'font-bold text-text', ul: 'py-0' }}
@@ -261,7 +261,7 @@
                 </SidebarDropdownWrapper>
             {/if}
 
-            {#if permissions.includes("FRONTEND__SIDEBAR_CATEGORY__ADMINISTRATOR")}
+            {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__ADMINISTRATOR")}
                 <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold text-text", ul: 'py-0' }} isOpen={true}
                                         label={m.sidebar_category_admin()}>
                     {#each itemsAdmin as item}
@@ -288,7 +288,7 @@
                     <SunOutline class="mr-1"/> _Hell_
                     {/if}
                 </button>
-                {#if permissions.includes('FRONTEND__SIDEBAR_ITEM__PROFILE')}
+                {#if permissions.includes('VIEW__SIDEBAR_ITEM__PROFILE')}
                     <button size="xl" class="sizes cursor-pointer inline-flex items-center justify-center ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none border border-gray-300 border-input bg-transparent hover:bg-gray-50 px-3 relative h-10 w-10 rounded-full">
                         <span class="relative flex shrink-0 overflow-hidden rounded-full h-9 w-9">
                             <span class="flex h-full w-full items-center justify-center rounded-full bg-gray-100">
