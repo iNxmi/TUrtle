@@ -1,7 +1,8 @@
 package de.csw.turtle.api.dto.patch
 
-class PatchTemplateRequest(
+class PatchEmailTemplateRequest(
     val name: String? = null,
     val description: String? = null,
+    val subject: String? = null,
     val content: String? = null
 ) : PatchRequest

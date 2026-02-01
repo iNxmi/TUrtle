@@ -11,7 +11,6 @@ import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.UserMapper
-import de.csw.turtle.api.service.RoleService
 import de.csw.turtle.api.service.UserService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -24,8 +23,7 @@ import java.net.URI
 @RequestMapping("/api/users")
 class UserController(
     private val userService: UserService,
-    private val userMapper: UserMapper,
-    private val roleService: RoleService,
+    private val userMapper: UserMapper
 ) : CreateController<UserEntity, CreateUserRequest, GetUserResponse>,
     GetController<UserEntity, GetUserResponse>,
     PatchController<UserEntity, PatchUserRequest, GetUserResponse>,
@@ -35,13 +33,13 @@ class UserController(
         user: UserEntity?,
         request: CreateUserRequest
     ): ResponseEntity<GetUserResponse> {
-        val sanitized = if (user == null) {
-            request.copy(roleIds = setOf(roleService.getByName("Student").id))
-        } else if (user.hasPermission(Permission.MANAGE_USERS)) {
-            request
-        } else throw HttpException.Forbidden()
+        if (user == null)
+            throw HttpException.Unauthorized()
 
-        val entity = userService.create(sanitized)
+        if (!user.hasPermission(Permission.MANAGE_USERS))
+            throw HttpException.Forbidden()
+
+        val entity = userService.create(request)
         val location = URI.create("/api/users/${entity.id}")
         val dto = userMapper.get(entity)
         return ResponseEntity.created(location).body(dto)
@@ -101,10 +99,15 @@ class UserController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val sanitized = if (id == user.id) {
-            request.copy(roleIds = null)
-        } else if (user.hasPermission(Permission.MANAGE_USERS)) {
+        val sanitized = if (user.hasPermission(Permission.MANAGE_USERS)) {
             request
+        } else if (id == user.id) {
+            PatchUserRequest(
+                firstName = request.firstName,
+                lastName = request.lastName,
+                email = request.email,
+                password = request.password
+            )
         } else throw HttpException.Forbidden()
 
         val entity = userService.patch(id, sanitized)

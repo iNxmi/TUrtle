@@ -7,5 +7,6 @@ data class PatchUserRequest(
     val email: String? = null,
     val emojis: String? = null,
     val roleIds: Set<Long>? = null,
-    val password: String? = null
+    val password: String? = null,
+    val verified: Boolean? = null
 ) : PatchRequest

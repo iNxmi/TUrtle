@@ -38,12 +38,17 @@ class DeviceBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val sanitized = if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
-            request.copy(
+        val sanitized = if (user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
+            request
+        } else {
+            CreateDeviceBookingRequest(
+                start = request.start,
+                end = request.end,
+                deviceId = request.deviceId,
                 userId = user.id,
                 status = DeviceBookingEntity.Status.RESERVED
             )
-        } else request
+        }
 
         val entity = deviceBookingService.create(sanitized)
         val location = URI.create("/api/device-bookings/${entity.id}")
@@ -62,7 +67,7 @@ class DeviceBookingController(
 
         if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS))
             if (entity.user != user)
-                throw  HttpException.Forbidden()
+                throw HttpException.Forbidden()
 
         val dto = deviceBookingMapper.get(entity)
         return ResponseEntity.ok(dto)
@@ -77,7 +82,7 @@ class DeviceBookingController(
         sortDirection: Sort.Direction
     ): ResponseEntity<Any> {
         if (user == null)
-            throw  HttpException.Unauthorized()
+            throw HttpException.Unauthorized()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -109,13 +114,13 @@ class DeviceBookingController(
         request: PatchDeviceBookingRequest
     ): ResponseEntity<GetDeviceBookingResponse> {
         if (user == null)
-            throw  HttpException.Unauthorized()
+            throw HttpException.Unauthorized()
 
         val entity = deviceBookingService.get(id)
 
         val sanitized = if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS)) {
             if (entity.user != user)
-                throw  HttpException.Forbidden()
+                throw HttpException.Forbidden()
 
             request.copy(userId = null, status = null)
         } else request

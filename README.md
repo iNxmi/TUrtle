@@ -21,6 +21,7 @@ Port: 8080
 * emoji code checks (no duplicates, no 5 identical emojis)
 * make admins always open door (during all times)
 * document this: rsql, system settings, templates with mustache
+* implement email templates (cannot use normal templates since they dont have a subject/title as needed in emails)
 
 ## Docker Environment
 ```

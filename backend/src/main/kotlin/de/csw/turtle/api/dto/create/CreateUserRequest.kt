@@ -7,5 +7,6 @@ data class CreateUserRequest(
     val email: String,
     val emojis: String,
     val password: String,
-    val roleIds: Set<Long> = setOf()
+    val roleIds: Set<Long> = setOf(),
+    val verified: Boolean = false
 ) : CreateRequest

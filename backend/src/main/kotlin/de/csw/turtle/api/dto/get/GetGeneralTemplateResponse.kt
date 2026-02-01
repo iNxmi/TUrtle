@@ -2,7 +2,7 @@ package de.csw.turtle.api.dto.get
 
 import java.time.Instant
 
-data class GetTemplateResponse(
+data class GetGeneralTemplateResponse(
     override val id: Long?,
 
     val name: String?,

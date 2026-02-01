@@ -1,6 +1,6 @@
 package de.csw.turtle.api.controller.api
 
-import de.csw.turtle.api.entity.TemplateEntity
+import de.csw.turtle.api.entity.GeneralTemplateEntity
 import de.csw.turtle.api.service.SystemSettingService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,7 +14,7 @@ class ContentController(
 ) {
 
     private fun getResponse(key: String): ResponseEntity<String> {
-        val template = systemSettingService.getTyped<TemplateEntity>(key)
+        val template = systemSettingService.getTyped<GeneralTemplateEntity>(key)
         val content = template.getCompiledContent()
         return ResponseEntity.ok(content)
     }

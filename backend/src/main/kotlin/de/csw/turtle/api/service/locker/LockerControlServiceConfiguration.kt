@@ -18,7 +18,7 @@ class LockerControlServiceConfiguration(
     @Bean
     fun lockerControlService(): LockerControlService {
         if (environmentService.isDev())
-            return DebugLockerControlService(systemSettingService)
+            return DebugLockerControlService()
 
         return SSHLockerControlService(systemSettingService, sshService, mustacheService)
     }

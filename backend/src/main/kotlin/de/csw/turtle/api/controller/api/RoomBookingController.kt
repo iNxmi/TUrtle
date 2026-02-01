@@ -38,9 +38,19 @@ class RoomBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val sanitized = if (!user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
-            request.copy(userId = user.id)
-        } else request
+        val sanitized = if (user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
+            request
+        } else {
+            CreateRoomBookingRequest(
+                userId = user.id,
+                title = request.title,
+                description = request.description,
+                start = request.start,
+                end = request.end,
+                accessibility = request.accessibility,
+                whitelist = request.whitelist
+            )
+        }
 
         val entity = roomBookingService.create(sanitized)
         val location = URI.create("/api/room-bookings/${entity.id}")
@@ -86,7 +96,8 @@ class RoomBookingController(
             return ResponseEntity.ok(dto)
         }
 
-        val collection = roomBookingService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
+        val collection =
+            roomBookingService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
         val dto = collection.map { roomBookingMapper.get(it) }
         return ResponseEntity.ok(dto)
     }
@@ -101,12 +112,18 @@ class RoomBookingController(
 
         val entity = roomBookingService.get(id)
 
-        val sanitized = if (!user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
-            if (entity.user != user)
-                throw HttpException.Forbidden()
-
-            request.copy(userId = null)
-        } else request
+        val sanitized = if (user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
+            request
+        } else if (entity.user == user) {
+            PatchRoomBookingRequest(
+                title = request.title,
+                description = request.description,
+                start = request.start,
+                end = request.end,
+                accessibility = request.accessibility,
+                whitelist = request.whitelist
+            )
+        } else throw HttpException.Forbidden()
 
         val updated = roomBookingService.patch(id, sanitized)
         val dto = roomBookingMapper.get(updated)

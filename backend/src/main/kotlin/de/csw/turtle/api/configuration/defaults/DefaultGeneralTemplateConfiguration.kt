@@ -1,7 +1,7 @@
 package de.csw.turtle.api.configuration.defaults
 
-import de.csw.turtle.api.dto.create.CreateTemplateRequest
-import de.csw.turtle.api.service.TemplateService
+import de.csw.turtle.api.dto.create.CreateGeneralTemplateRequest
+import de.csw.turtle.api.service.GeneralTemplateService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Order(1)
 @Configuration
-class DefaultTemplateConfiguration(
-    private val service: TemplateService
+class DefaultGeneralTemplateConfiguration(
+    private val service: GeneralTemplateService
 ) : CommandLineRunner {
 
     private val imprint = """
@@ -116,11 +116,11 @@ class DefaultTemplateConfiguration(
         if (service.count() > 0)
             return
 
-        service.create(CreateTemplateRequest("imprint", "default value by ag", imprint))
-        service.create(CreateTemplateRequest("contact", "default value by ag", contact))
-        service.create(CreateTemplateRequest("tos", "default value by ag", tos))
-        service.create(CreateTemplateRequest("about", "default value by ag", about))
-        service.create(CreateTemplateRequest("gdpr", "default value by ag", gdpr))
+        service.create(CreateGeneralTemplateRequest("imprint", "default value by ag", imprint))
+        service.create(CreateGeneralTemplateRequest("contact", "default value by ag", contact))
+        service.create(CreateGeneralTemplateRequest("tos", "default value by ag", tos))
+        service.create(CreateGeneralTemplateRequest("about", "default value by ag", about))
+        service.create(CreateGeneralTemplateRequest("gdpr", "default value by ag", gdpr))
     }
 
 }

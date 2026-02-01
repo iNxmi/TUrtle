@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
+import java.time.Duration
 
 @RestController
 @RequestMapping("/api/debug")
@@ -55,28 +56,27 @@ class DebugController(
     }
 
     @GetMapping("/email")
-    fun exception(
+    fun email(
         @RequestParam to: String,
         @RequestParam subject: String,
         @RequestParam text: String
-    ) {
+    ): ResponseEntity<Void> {
         emailService.sendSimpleEmail(to, subject, text)
+
+        return ResponseEntity.noContent().build()
     }
 
     @GetMapping("/door")
-    fun exception(
-        @RequestParam seconds: Int
-    ): String {
-        return doorControlService.trigger(seconds)
-    }
+    fun door(
+        @RequestParam duration: Duration
+    ): String = doorControlService.trigger(duration)
 
     @GetMapping("/locker")
-    fun exception(
-        @RequestParam id: Long,
-        @RequestParam ignoreLocked: Boolean = false
+    fun locker(
+        @RequestParam id: Long
     ): String {
         val locker = lockerService.get(id)
-        return lockerControlService.trigger(locker, ignoreLocked = ignoreLocked)
+        return lockerControlService.trigger(locker)
     }
 
 }

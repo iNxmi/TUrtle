@@ -25,6 +25,9 @@ class UserService(
         return super.create(hashed)
     }
 
+    fun getByVerificationTokenOrNull(token: String): UserEntity? = repository.findByVerificationToken(token)
+    fun getByVerificationToken(token: String): UserEntity = getByVerificationTokenOrNull(token) ?: throw HttpException.NotFound(token)
+
     fun getByUsernameOrNull(username: String): UserEntity? = repository.findByUsername(username)
     fun getByUsername(username: String): UserEntity = getByUsernameOrNull(username) ?: throw HttpException.NotFound(username)
 

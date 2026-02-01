@@ -16,5 +16,6 @@ sealed class HttpException(
     class BadRequest(message: String? = null) : HttpException(HttpStatus.BAD_REQUEST, message)
     class BadGateway(message: String? = null) : HttpException(HttpStatus.BAD_GATEWAY, message)
     class GatewayTimeout(message: String? = null) : HttpException(HttpStatus.GATEWAY_TIMEOUT, message)
+    class Gone(message: String? = null) : HttpException(HttpStatus.GONE, message)
 
 }

@@ -5,14 +5,14 @@ import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
 import de.csw.turtle.api.controller.PatchController
-import de.csw.turtle.api.dto.create.CreateTemplateRequest
-import de.csw.turtle.api.dto.get.GetTemplateResponse
-import de.csw.turtle.api.dto.patch.PatchTemplateRequest
-import de.csw.turtle.api.entity.TemplateEntity
+import de.csw.turtle.api.dto.create.CreateGeneralTemplateRequest
+import de.csw.turtle.api.dto.get.GetGeneralTemplateResponse
+import de.csw.turtle.api.dto.patch.PatchGeneralTemplateRequest
+import de.csw.turtle.api.entity.GeneralTemplateEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.TemplateMapper
-import de.csw.turtle.api.service.TemplateService
+import de.csw.turtle.api.mapper.GeneralTemplateMapper
+import de.csw.turtle.api.service.GeneralTemplateService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
@@ -21,43 +21,43 @@ import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
-@RequestMapping("/api/templates")
-class TemplateController(
-    private val templateService: TemplateService,
-    private val templateMapper: TemplateMapper
-) : CreateController<TemplateEntity, CreateTemplateRequest, GetTemplateResponse>,
-    GetController<TemplateEntity, GetTemplateResponse>,
-    PatchController<TemplateEntity, PatchTemplateRequest, GetTemplateResponse>,
-    DeleteController<TemplateEntity> {
+@RequestMapping("/api/general-templates")
+class GeneralTemplateController(
+    private val generalTemplateService: GeneralTemplateService,
+    private val generalTemplateMapper: GeneralTemplateMapper
+) : CreateController<GeneralTemplateEntity, CreateGeneralTemplateRequest, GetGeneralTemplateResponse>,
+    GetController<GeneralTemplateEntity, GetGeneralTemplateResponse>,
+    PatchController<GeneralTemplateEntity, PatchGeneralTemplateRequest, GetGeneralTemplateResponse>,
+    DeleteController<GeneralTemplateEntity> {
 
     override fun create(
         user: UserEntity?,
-        request: CreateTemplateRequest
-    ): ResponseEntity<GetTemplateResponse> {
+        request: CreateGeneralTemplateRequest
+    ): ResponseEntity<GetGeneralTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_TEMPLATES))
+        if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = templateService.create(request)
-        val location = URI.create("/api/templates/${entity.id}")
-        val dto = templateMapper.get(entity)
+        val entity = generalTemplateService.create(request)
+        val location = URI.create("/api/general-templates/${entity.id}")
+        val dto = generalTemplateMapper.get(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
     override fun get(
         user: UserEntity?,
         id: Long
-    ): ResponseEntity<GetTemplateResponse> {
+    ): ResponseEntity<GetGeneralTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_TEMPLATES))
+        if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = templateService.get(id)
-        val dto = templateMapper.get(entity)
+        val entity = generalTemplateService.get(id)
+        val dto = generalTemplateMapper.get(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -72,7 +72,7 @@ class TemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_TEMPLATES))
+        if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
@@ -81,29 +81,29 @@ class TemplateController(
 
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = templateService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { templateMapper.get(it) }
+            val page = generalTemplateService.getPage(rsql = rsql, pageable = pageable)
+            val dto = page.map { generalTemplateMapper.get(it) }
             return ResponseEntity.ok(dto)
         }
 
-        val collection = templateService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { templateMapper.get(it) }
+        val collection = generalTemplateService.getAll(rsql = rsql, sort = sort).toMutableSet()
+        val dto = collection.map { generalTemplateMapper.get(it) }
         return ResponseEntity.ok(dto)
     }
 
     override fun patch(
         user: UserEntity?,
         id: Long,
-        request: PatchTemplateRequest
-    ): ResponseEntity<GetTemplateResponse> {
+        request: PatchGeneralTemplateRequest
+    ): ResponseEntity<GetGeneralTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_TEMPLATES))
+        if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = templateService.patch(id, request)
-        val dto = templateMapper.get(entity)
+        val entity = generalTemplateService.patch(id, request)
+        val dto = generalTemplateMapper.get(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -114,10 +114,10 @@ class TemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_TEMPLATES))
+        if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        templateService.delete(id)
+        generalTemplateService.delete(id)
         return ResponseEntity.noContent().build()
     }
 

@@ -33,7 +33,8 @@ class SystemSettingService(
     val roleService: RoleService,
     val roomBookingService: RoomBookingService,
     val supportTicketService: SupportTicketService,
-    val templateService: TemplateService,
+    val generalTemplateService: GeneralTemplateService,
+    val emailTemplateService: EmailTemplateService,
     val userService: UserService
 ) : CRUDService<SystemSettingEntity, CreateSystemSettingRequest, GetSystemSettingResponse, PatchSystemSettingRequest>("SystemSetting") {
 
@@ -86,7 +87,8 @@ class SystemSettingService(
             SystemSettingEntity.Type.ROOM_BOOKING_ENTITY_REFERENCE -> roomBookingService.get(value.toLong())
             SystemSettingEntity.Type.SUPPORT_TICKET_ENTITY_REFERENCE -> supportTicketService.get(value.toLong())
             SystemSettingEntity.Type.SYSTEM_SETTING_ENTITY_REFERENCE -> get(value.toLong())
-            SystemSettingEntity.Type.TEMPLATE_ENTITY_REFERENCE -> templateService.get(value.toLong())
+            SystemSettingEntity.Type.GENERAL_TEMPLATE_ENTITY_REFERENCE -> generalTemplateService.get(value.toLong())
+            SystemSettingEntity.Type.EMAIL_TEMPLATE_ENTITY_REFERENCE -> emailTemplateService.get(value.toLong())
             SystemSettingEntity.Type.USER_ENTITY_REFERENCE -> userService.get(value.toLong())
         }
     } catch (exception: Exception) {

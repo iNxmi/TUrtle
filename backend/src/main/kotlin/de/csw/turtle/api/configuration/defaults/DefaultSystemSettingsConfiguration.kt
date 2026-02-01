@@ -2,8 +2,9 @@ package de.csw.turtle.api.configuration.defaults
 
 import de.csw.turtle.api.dto.create.CreateSystemSettingRequest
 import de.csw.turtle.api.entity.SystemSettingEntity
+import de.csw.turtle.api.service.EmailTemplateService
+import de.csw.turtle.api.service.GeneralTemplateService
 import de.csw.turtle.api.service.SystemSettingService
-import de.csw.turtle.api.service.TemplateService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
@@ -17,7 +18,8 @@ import java.util.*
 @Configuration
 class DefaultSystemSettingsConfiguration(
     private val service: SystemSettingService,
-    private val templateService: TemplateService
+    private val generalTemplateService: GeneralTemplateService,
+    private val emailTemplateService: EmailTemplateService,
 ) : CommandLineRunner {
 
     private fun setDefault(key: String, type: SystemSettingEntity.Type, value: Any) {
@@ -27,9 +29,14 @@ class DefaultSystemSettingsConfiguration(
         service.create(CreateSystemSettingRequest(key, type, value.toString()))
     }
 
-    private fun setDefaultTemplate(key: String, name: String) {
-        val template = templateService.getByNameOrNull(name) ?: return
-        setDefault(key, SystemSettingEntity.Type.TEMPLATE_ENTITY_REFERENCE, template.id.toString())
+    private fun setDefaultGeneralTemplate(key: String, name: String) {
+        val generalTemplate = generalTemplateService.getByNameOrNull(name) ?: return
+        setDefault(key, SystemSettingEntity.Type.GENERAL_TEMPLATE_ENTITY_REFERENCE, generalTemplate.id.toString())
+    }
+
+    private fun setDefaultEmailTemplate(key: String, name: String) {
+        val emailTemplate = emailTemplateService.getByNameOrNull(name) ?: return
+        setDefault(key, SystemSettingEntity.Type.EMAIL_TEMPLATE_ENTITY_REFERENCE, emailTemplate.id.toString())
     }
 
     private fun randomBase64(size: Int = 64): String {
@@ -52,12 +59,14 @@ class DefaultSystemSettingsConfiguration(
         setDefault("calendar.time.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0))
         setDefault("calendar.time.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0))
 
+        setDefault("user.verification.duration", SystemSettingEntity.Type.DURATION, Duration.ofDays(2))
+
         setDefault("door.open.duration", SystemSettingEntity.Type.DURATION, Duration.ofSeconds(5))
         setDefault("door.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0))
         setDefault("door.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0))
         setDefault("door.ssh.command", SystemSettingEntity.Type.STRING, "~/doorOpen.sh {{seconds}}")
         setDefault("door.ssh.hostname", SystemSettingEntity.Type.STRING, "192.168.0.107")
-        setDefault("door.ssh.port", SystemSettingEntity.Type.INT, "22")
+        setDefault("door.ssh.port", SystemSettingEntity.Type.INT, 22)
         setDefault("door.ssh.username", SystemSettingEntity.Type.STRING, "")
         setDefault("door.ssh.password", SystemSettingEntity.Type.STRING, "")
 
@@ -65,7 +74,7 @@ class DefaultSystemSettingsConfiguration(
         setDefault("locker.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0))
         setDefault("locker.ssh.command", SystemSettingEntity.Type.STRING, "~/cabinet{{index}}Open.sh")
         setDefault("locker.ssh.hostname", SystemSettingEntity.Type.STRING, "192.168.0.107")
-        setDefault("locker.ssh.port", SystemSettingEntity.Type.INT, "22")
+        setDefault("locker.ssh.port", SystemSettingEntity.Type.INT, 22)
         setDefault("locker.ssh.username", SystemSettingEntity.Type.STRING, "")
         setDefault("locker.ssh.password", SystemSettingEntity.Type.STRING, "")
 
@@ -73,11 +82,13 @@ class DefaultSystemSettingsConfiguration(
         setDefault("auth.jwt.duration.access", SystemSettingEntity.Type.DURATION, Duration.ofMinutes(15))
         setDefault("auth.jwt.duration.refresh", SystemSettingEntity.Type.DURATION, Duration.ofDays(30))
 
-        setDefaultTemplate("content.template.imprint", "imprint")
-        setDefaultTemplate("content.template.gdpr", "gdpr")
-        setDefaultTemplate("content.template.tos", "tos")
-        setDefaultTemplate("content.template.contact", "contact")
-        setDefaultTemplate("content.template.about", "about")
+        setDefaultGeneralTemplate("content.template.imprint", "imprint")
+        setDefaultGeneralTemplate("content.template.gdpr", "gdpr")
+        setDefaultGeneralTemplate("content.template.tos", "tos")
+        setDefaultGeneralTemplate("content.template.contact", "contact")
+        setDefaultGeneralTemplate("content.template.about", "about")
+
+        setDefaultEmailTemplate("email.template.verify", "verify")
     }
 
 }

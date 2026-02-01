@@ -3,6 +3,7 @@ package de.csw.turtle.api.service
 import de.csw.turtle.api.dto.LoginUserRequest
 import de.csw.turtle.api.dto.RegisterUserRequest
 import de.csw.turtle.api.dto.create.CreateUserRequest
+import de.csw.turtle.api.entity.EmailTemplateEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import org.springframework.security.authentication.AuthenticationManager
@@ -15,7 +16,10 @@ class AuthService(
     private val userService: UserService,
     private val authenticationManager: AuthenticationManager,
     private val customUserDetailsService: CustomUserDetailsService,
-    private val jwtService: JWTService
+    private val jwtService: JWTService,
+    private val emailService: EmailService,
+    private val systemSettingService: SystemSettingService,
+    private val mustacheService: MustacheService
 ) {
 
     data class TokenPair(
@@ -25,18 +29,33 @@ class AuthService(
 
     @Transactional
     fun register(
-        registerUserRequest: RegisterUserRequest
+        request: RegisterUserRequest
     ): UserEntity {
+
+        //TODO implement random emojis
+
         val createUserRequest = CreateUserRequest(
-            username = registerUserRequest.username,
-            firstName = registerUserRequest.firstName,
-            lastName = registerUserRequest.lastName,
-            email = registerUserRequest.email,
-            emojis = registerUserRequest.emojis,
-            password = registerUserRequest.password,
+            username = request.username,
+            firstName = request.firstName,
+            lastName = request.lastName,
+            email = request.email,
+            emojis = "TODO IMPLEMENT RANDOM EMOJI SOMEHOW",
+            password = request.password,
         )
 
-        return userService.create(createUserRequest)
+        val entity = userService.create(createUserRequest)
+
+        //TODO replace by email template
+        val fqdn = systemSettingService.getTyped<String>("general.fqdn")
+        val url = "https://$fqdn/api/auth/verify?token=${entity.verificationToken}"
+        val variables = mapOf("url" to url)
+
+        val template = systemSettingService.getTyped<EmailTemplateEntity>("email.template.verify")
+        val subject = mustacheService.getInserted(template.subject, variables)
+        val content = mustacheService.getInserted(template.content, variables)
+        emailService.sendSimpleEmail(entity.email, subject, content)
+
+        return entity
     }
 
     @Transactional

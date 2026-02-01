@@ -5,6 +5,7 @@ import de.csw.turtle.api.entity.UserEntity
 interface UserRepository : CRUDRepository<UserEntity> {
 
     fun findByUsername(username: String): UserEntity?
+    fun findByVerificationToken(token: String): UserEntity?
     fun findByEmojis(emojis: String): UserEntity?
 
 }

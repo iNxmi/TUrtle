@@ -6,8 +6,8 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "templates")
-class TemplateEntity(
+@Table(name = "general_templates")
+class GeneralTemplateEntity(
 
     @Column(unique = true)
     var name: String,

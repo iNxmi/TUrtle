@@ -25,6 +25,8 @@ services:
     container_name: mailhog
     networks:
       - network
+    ports:
+      - "8025:8025"
 
   backend:
     build: backend
@@ -42,10 +44,10 @@ services:
       DATASOURCE_DATABASE: db
       DATASOURCE_USERNAME: admin
       DATASOURCE_PASSWORD: admin
-      SMTP_HOST: ${SMTP_HOST}
-      SMTP_PORT: ${SMTP_PORT}
-      SMTP_USERNAME: ${SMTP_USERNAME}
-      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      SMTP_USERNAME:
+      SMTP_PASSWORD:
 
   frontend:
     build: frontend
