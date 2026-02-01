@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 
 @Service
 class AuthService(
@@ -47,13 +48,21 @@ class AuthService(
 
         //TODO replace by email template
         val fqdn = systemSettingService.getTyped<String>("general.fqdn")
+        val duration = systemSettingService.getTyped<Duration>("user.verification.duration")
         val url = "https://$fqdn/api/auth/verify?token=${entity.verificationToken}"
-        val variables = mapOf("url" to url)
+        val variables = mapOf(
+            "url" to url,
+            "user" to entity,
+            "duration" to duration,
+            "expiration" to entity.createdAt.plusMillis(duration.toMillis())
+        )
+
+        duration.toDays()
 
         val template = systemSettingService.getTyped<EmailTemplateEntity>("email.template.verify")
         val subject = mustacheService.getInserted(template.subject, variables)
         val content = mustacheService.getInserted(template.content, variables)
-        emailService.sendSimpleEmail(entity.email, subject, content)
+        emailService.sendHtmlEmail(entity.email, subject, content)
 
         return entity
     }
