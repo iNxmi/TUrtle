@@ -33,16 +33,20 @@ class DebugController(
         return ResponseEntity.ok(mapOf("authentication" to if (user != null) userMapper.get(user) else null))
     }
 
-    @GetMapping("/info")
-    fun debug(
+    @GetMapping("/headers")
+    fun headers(
         request: HttpServletRequest
-    ): ResponseEntity<Map<String, Any?>> {
-        val map = mutableMapOf<String, Any?>()
-        map["origin"] = URI.create(request.requestURL.toString()).host
-        map["X-Forwarded-For"] = request.getHeader("X-Forwarded-For")
-        map["request.remoteAddr"] = request.remoteAddr
-        map["raw_headers"] = request.headerNames.asSequence().associateWith { request.getHeaders(it).asSequence().toList() }
-        return ResponseEntity.ok(map)
+    ): ResponseEntity<Any?> {
+        val headers = request.headerNames.asSequence().associateWith { request.getHeaders(it).asSequence().toList() }
+        return ResponseEntity.ok(headers)
+    }
+
+    @GetMapping("/cookies")
+    fun cookies(
+        request: HttpServletRequest
+    ): ResponseEntity<Any?> {
+        val cookies = request.cookies
+        return ResponseEntity.ok(cookies)
     }
 
     @GetMapping("/exception")

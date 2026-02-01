@@ -68,7 +68,7 @@ class DefaultSystemSettingsConfiguration(
         setDefault("locker.ssh.password", SystemSettingEntity.Type.STRING, "")
 
         setDefault("auth.jwt.secret", SystemSettingEntity.Type.STRING, randomBase64())
-        setDefault("auth.jwt.duration.short", SystemSettingEntity.Type.DURATION, "PT30M")
+        setDefault("auth.jwt.duration.short", SystemSettingEntity.Type.DURATION, "PT15M")
         setDefault("auth.jwt.duration.long", SystemSettingEntity.Type.DURATION, "P30D")
 
         setDefaultTemplate("content.template.imprint", "imprint")

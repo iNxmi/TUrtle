@@ -18,6 +18,11 @@ class AuthService(
     private val jwtService: JWTService
 ) {
 
+    data class TokenPair(
+        val accessToken: String,
+        val refreshToken: String
+    )
+
     @Transactional
     fun register(
         registerUserRequest: RegisterUserRequest
@@ -37,7 +42,7 @@ class AuthService(
     @Transactional
     fun login(
         request: LoginUserRequest
-    ): String {
+    ): TokenPair {
         try {
             val credentials = UsernamePasswordAuthenticationToken.unauthenticated(
                 request.username,
@@ -50,7 +55,28 @@ class AuthService(
         }
 
         val userDetails = customUserDetailsService.loadUserByUsername(request.username)
-        return jwtService.generate(userDetails, request.rememberMe)
+
+        val accessToken = jwtService.generate(userDetails, false)
+        val refreshToken = jwtService.generate(userDetails, true)
+
+        return TokenPair(accessToken, refreshToken)
+    }
+
+    @Transactional
+    fun refresh(
+        refreshToken: String
+    ): TokenPair {
+        val username = jwtService.extract(refreshToken)
+        val userDetails = customUserDetailsService.loadUserByUsername(username)
+
+        if (!jwtService.isValid(refreshToken, userDetails))
+            throw RuntimeException("Invalid refresh token.")
+
+        // ROTATE: issue new refresh token and access token
+        val newAccessToken = jwtService.generate(userDetails, false)
+        val newRefreshToken = jwtService.generate(userDetails, true)
+
+        return TokenPair(newAccessToken, newRefreshToken)
     }
 
 }

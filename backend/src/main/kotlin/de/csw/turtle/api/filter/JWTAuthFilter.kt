@@ -24,21 +24,22 @@ class JWTAuthFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val authHeader = request.getHeader("Authorization")
-        var username: String? = null
-        var token: String? = null
+        val token = request.cookies?.find { it.name == "access_token" }?.value
+            ?: request.getHeader("Authorization")?.takeIf { it.startsWith(PREFIX) }?.substringAfter(PREFIX)
 
-        if (authHeader != null && authHeader.startsWith(PREFIX)) {
-            token = authHeader.substring(PREFIX.length)
-            username = jwtService.extract(token)
-        }
-
-        if (username != null && SecurityContextHolder.getContext().authentication == null) {
-            val userDetails = userDetailsService.loadUserByUsername(username)
-            if (jwtService.isValid(token!!, userDetails)) {
-                val authToken = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
-                authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
-                SecurityContextHolder.getContext().authentication = authToken
+        if(token != null) {
+            try {
+                val username = jwtService.extract(token)
+                if (SecurityContextHolder.getContext().authentication == null) {
+                    val userDetails = userDetailsService.loadUserByUsername(username)
+                    if (jwtService.isValid(token!!, userDetails)) {
+                        val authToken = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
+                        authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
+                        SecurityContextHolder.getContext().authentication = authToken
+                    }
+                }
+            } catch(_:Exception){
+                // invalid token -> ignore, request remains unauthenticated
             }
         }
 
