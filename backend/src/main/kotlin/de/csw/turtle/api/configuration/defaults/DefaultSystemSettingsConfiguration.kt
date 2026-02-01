@@ -64,7 +64,7 @@ class DefaultSystemSettingsConfiguration(
         setDefault("door.open.duration", SystemSettingEntity.Type.DURATION, Duration.ofSeconds(5))
         setDefault("door.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0))
         setDefault("door.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0))
-        setDefault("door.ssh.command", SystemSettingEntity.Type.STRING, "~/doorOpen.sh {{seconds}}")
+        setDefault("door.ssh.command", SystemSettingEntity.Type.STRING, "~/doorOpen.sh [[\${duration.toSeconds()}]]")
         setDefault("door.ssh.hostname", SystemSettingEntity.Type.STRING, "192.168.0.107")
         setDefault("door.ssh.port", SystemSettingEntity.Type.INT, 22)
         setDefault("door.ssh.username", SystemSettingEntity.Type.STRING, "")
@@ -72,7 +72,7 @@ class DefaultSystemSettingsConfiguration(
 
         setDefault("locker.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0))
         setDefault("locker.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0))
-        setDefault("locker.ssh.command", SystemSettingEntity.Type.STRING, "~/cabinet{{index}}Open.sh")
+        setDefault("locker.ssh.command", SystemSettingEntity.Type.STRING, "~/cabinet[[\${index}]]Open.sh")
         setDefault("locker.ssh.hostname", SystemSettingEntity.Type.STRING, "192.168.0.107")
         setDefault("locker.ssh.port", SystemSettingEntity.Type.INT, 22)
         setDefault("locker.ssh.username", SystemSettingEntity.Type.STRING, "")

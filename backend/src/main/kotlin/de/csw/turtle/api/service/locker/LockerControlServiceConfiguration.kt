@@ -1,7 +1,7 @@
 package de.csw.turtle.api.service.locker
 
 import de.csw.turtle.api.service.EnvironmentService
-import de.csw.turtle.api.service.MustacheService
+import de.csw.turtle.api.service.ThymeleafService
 import de.csw.turtle.api.service.SSHService
 import de.csw.turtle.api.service.SystemSettingService
 import org.springframework.context.annotation.Bean
@@ -12,7 +12,7 @@ class LockerControlServiceConfiguration(
     private val environmentService: EnvironmentService,
     private val systemSettingService: SystemSettingService,
     private val sshService: SSHService,
-    private val mustacheService: MustacheService
+    private val thymeleafService: ThymeleafService
 ) {
 
     @Bean
@@ -20,7 +20,7 @@ class LockerControlServiceConfiguration(
         if (environmentService.isDev())
             return DebugLockerControlService()
 
-        return SSHLockerControlService(systemSettingService, sshService, mustacheService)
+        return SSHLockerControlService(systemSettingService, sshService, thymeleafService)
     }
 
 }

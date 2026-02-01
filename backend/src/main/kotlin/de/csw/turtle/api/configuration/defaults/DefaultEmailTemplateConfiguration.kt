@@ -14,10 +14,13 @@ class DefaultEmailTemplateConfiguration(
 ) : CommandLineRunner {
 
     val verify = """
-        Welcome {{user.firstName}},
+        Welcome <span th:text="${'$'}{user.firstName}">user.firstName</span>,
+        <br>
         You have successfully created your CSW account.
-        To verify your account please click <a href=\"{{url}}\">here</a>.
-        If you don't verify in {{duration.toDays()}} Days ({{expiration}}), your account will be deleted.
+        <br>
+        To verify your account please click <a th:href="${'$'}{url}">here</a>.
+        <br>
+        If you don't verify in <span th:text="${'$'}{duration.toDays()}">duration.toDays()</span> Days (<span th:text="${'$'}{user.createdAt.plusMillis(duration.toMillis())}">user.createdAt.plusMillis(duration.toMillis())</span>), your account will be deleted.
     """.trimIndent()
 
     @Transactional

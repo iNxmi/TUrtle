@@ -1,9 +1,12 @@
 package de.csw.turtle.api.entity
 
-import com.samskivert.mustache.Mustache
+import de.csw.turtle.api.service.ThymeleafService
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
+import org.thymeleaf.context.Context
+import java.time.LocalDate
+import java.time.LocalTime
 
 @Entity
 @Table(name = "general_templates")
@@ -20,12 +23,14 @@ class GeneralTemplateEntity(
 
 ) : CRUDEntity() {
 
-    fun getCompiledContent(): String {
+    fun getCompiledContent(thymeleafService: ThymeleafService): String {
         //TODO add variables to insert into template
-        val variables: Map<String, Any?> = mapOf()
+        val context = Context().apply {
+            setVariable("time", LocalTime.now())
+            setVariable("date", LocalDate.now())
+        }
 
-        val template = Mustache.compiler().compile(content)
-        return template.execute(variables)
+        return thymeleafService.getRendered(content, context)
     }
 
 }

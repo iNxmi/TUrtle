@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.thymeleaf.context.Context
 import java.time.Duration
 
 @Service
@@ -20,7 +21,7 @@ class AuthService(
     private val jwtService: JWTService,
     private val emailService: EmailService,
     private val systemSettingService: SystemSettingService,
-    private val mustacheService: MustacheService
+    private val thymeleafService: ThymeleafService
 ) {
 
     data class TokenPair(
@@ -46,22 +47,19 @@ class AuthService(
 
         val entity = userService.create(createUserRequest)
 
-        //TODO replace by email template
-        val fqdn = systemSettingService.getTyped<String>("general.fqdn")
-        val duration = systemSettingService.getTyped<Duration>("user.verification.duration")
-        val url = "https://$fqdn/api/auth/verify?token=${entity.verificationToken}"
-        val variables = mapOf(
-            "url" to url,
-            "user" to entity,
-            "duration" to duration,
-            "expiration" to entity.createdAt.plusMillis(duration.toMillis())
-        )
+        val context = Context().apply {
+            val fqdn = systemSettingService.getTyped<String>("general.fqdn")
+            val duration = systemSettingService.getTyped<Duration>("user.verification.duration")
 
-        duration.toDays()
+            setVariable("url", "https://$fqdn/api/auth/verify?token=${entity.verificationToken}")
+            setVariable("user", entity)
+            setVariable("duration", duration)
+            setVariable("expiration", entity.createdAt.plusMillis(duration.toMillis()))
+        }
 
         val template = systemSettingService.getTyped<EmailTemplateEntity>("email.template.verify")
-        val subject = mustacheService.getInserted(template.subject, variables)
-        val content = mustacheService.getInserted(template.content, variables)
+        val subject = thymeleafService.getRendered(template.subject, context)
+        val content = thymeleafService.getRendered(template.content, context)
         emailService.sendHtmlEmail(entity.email, subject, content)
 
         return entity

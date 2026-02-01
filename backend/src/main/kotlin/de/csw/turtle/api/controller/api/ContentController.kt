@@ -2,6 +2,7 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.entity.GeneralTemplateEntity
 import de.csw.turtle.api.service.SystemSettingService
+import de.csw.turtle.api.service.ThymeleafService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -10,12 +11,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/content")
 class ContentController(
-    private val systemSettingService: SystemSettingService
+    private val systemSettingService: SystemSettingService,
+    private val thymeleafService: ThymeleafService
 ) {
 
     private fun getResponse(key: String): ResponseEntity<String> {
         val template = systemSettingService.getTyped<GeneralTemplateEntity>(key)
-        val content = template.getCompiledContent()
+        val content = template.getCompiledContent(thymeleafService)
         return ResponseEntity.ok(content)
     }
 
