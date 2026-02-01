@@ -18,7 +18,7 @@ class DoorControlServiceConfiguration(
     @Bean
     fun doorControlService(): DoorControlService {
         if (environmentService.isDev())
-            return DebugDoorControlService(systemSettingService)
+            return DebugDoorControlService()
 
         return SSHDoorControlService(systemSettingService, sshService, mustacheService)
     }

@@ -52,6 +52,7 @@ class DefaultSystemSettingsConfiguration(
         setDefault("calendar.time.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0))
         setDefault("calendar.time.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0))
 
+        setDefault("door.open.duration", SystemSettingEntity.Type.DURATION, Duration.ofSeconds(5))
         setDefault("door.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0))
         setDefault("door.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0))
         setDefault("door.ssh.command", SystemSettingEntity.Type.STRING, "~/doorOpen.sh {{seconds}}")
@@ -69,8 +70,8 @@ class DefaultSystemSettingsConfiguration(
         setDefault("locker.ssh.password", SystemSettingEntity.Type.STRING, "")
 
         setDefault("auth.jwt.secret", SystemSettingEntity.Type.STRING, randomBase64())
-        setDefault("auth.jwt.duration.short", SystemSettingEntity.Type.DURATION, Duration.ofMinutes(15))
-        setDefault("auth.jwt.duration.long", SystemSettingEntity.Type.DURATION, Duration.ofDays(30))
+        setDefault("auth.jwt.duration.access", SystemSettingEntity.Type.DURATION, Duration.ofMinutes(15))
+        setDefault("auth.jwt.duration.refresh", SystemSettingEntity.Type.DURATION, Duration.ofDays(30))
 
         setDefaultTemplate("content.template.imprint", "imprint")
         setDefaultTemplate("content.template.gdpr", "gdpr")

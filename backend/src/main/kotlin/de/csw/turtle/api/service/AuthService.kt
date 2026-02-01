@@ -56,8 +56,8 @@ class AuthService(
 
         val userDetails = customUserDetailsService.loadUserByUsername(request.username)
 
-        val accessToken = jwtService.generate(userDetails, false)
-        val refreshToken = jwtService.generate(userDetails, true)
+        val accessToken = jwtService.generateAccessToken(userDetails)
+        val refreshToken = jwtService.generateRefreshToken(userDetails)
 
         return TokenPair(accessToken, refreshToken)
     }
@@ -73,8 +73,8 @@ class AuthService(
             throw RuntimeException("Invalid refresh token.")
 
         // ROTATE: issue new refresh token and access token
-        val newAccessToken = jwtService.generate(userDetails, false)
-        val newRefreshToken = jwtService.generate(userDetails, true)
+        val newAccessToken = jwtService.generateAccessToken(userDetails)
+        val newRefreshToken = jwtService.generateRefreshToken(userDetails)
 
         return TokenPair(newAccessToken, newRefreshToken)
     }

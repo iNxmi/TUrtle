@@ -11,9 +11,9 @@ class SSHLockerControlService(
     private val systemSettingService: SystemSettingService,
     private val sshService: SSHService,
     private val mustacheService: MustacheService
-) : LockerControlService(systemSettingService) {
+) : LockerControlService {
 
-    override fun onTrigger(locker: LockerEntity): String {
+    override fun trigger(locker: LockerEntity): String {
         val variables: Map<String, Any?> = mapOf("index" to locker.index)
         val template = systemSettingService.getTyped<String>("locker.ssh.command")
         val command = mustacheService.getInserted(template, variables)

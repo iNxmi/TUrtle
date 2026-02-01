@@ -4,16 +4,17 @@ import de.csw.turtle.api.service.MustacheService
 import de.csw.turtle.api.service.SSHService
 import de.csw.turtle.api.service.SystemSettingService
 import org.springframework.stereotype.Service
+import java.time.Duration
 
 @Service
 class SSHDoorControlService(
     private val systemSettingService: SystemSettingService,
     private val sshService: SSHService,
     private val mustacheService: MustacheService
-) : DoorControlService(systemSettingService) {
+) : DoorControlService {
 
-    override fun onTrigger(seconds: Int): String {
-        val variables: Map<String, Any?> = mapOf("seconds" to seconds)
+    override fun trigger(duration: Duration): String {
+        val variables: Map<String, Any?> = mapOf("seconds" to duration.toSeconds())
         val template = systemSettingService.getTyped<String>("door.ssh.command")
         val command = mustacheService.getInserted(template, variables)
 

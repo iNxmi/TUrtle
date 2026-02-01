@@ -5,10 +5,6 @@ import de.csw.turtle.api.service.SystemSettingService
 import org.springframework.stereotype.Service
 
 @Service
-class DebugLockerControlService(
-    systemSettingService: SystemSettingService
-) : LockerControlService(systemSettingService) {
-
-    override fun onTrigger(locker: LockerEntity) = "DEBUG: DebugLockerControlService.trigger(${locker.index})"
-
+class DebugLockerControlService : LockerControlService {
+    override fun trigger(locker: LockerEntity) = "DEBUG: DebugLockerControlService.trigger(${locker.index})"
 }

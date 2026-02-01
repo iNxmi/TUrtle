@@ -1,11 +1,7 @@
 package de.csw.turtle.api.service.door
 
-import de.csw.turtle.api.service.SystemSettingService
+import java.time.Duration
 
-class DebugDoorControlService(
-    systemSettingService: SystemSettingService
-) : DoorControlService(systemSettingService) {
-
-    override fun onTrigger(seconds: Int) = "DEBUG: DebugDoorControlService.trigger($seconds)"
-
+class DebugDoorControlService : DoorControlService {
+    override fun trigger(duration: Duration) = "DEBUG: DebugDoorControlService.trigger($duration)"
 }

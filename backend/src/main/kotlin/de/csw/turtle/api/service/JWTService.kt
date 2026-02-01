@@ -20,19 +20,18 @@ class JWTService(
         return Keys.hmacShaKeyFor(bytes)
     }
 
-    private fun getDurationLong() = systemSettingService.getTyped<Duration>("auth.jwt.duration.long")
-    private fun getDurationShort() = systemSettingService.getTyped<Duration>("auth.jwt.duration.short")
+    private fun getDurationRefresh() = systemSettingService.getTyped<Duration>("auth.jwt.duration.refresh")
+    fun generateRefreshToken(userDetails: UserDetails) = generate(userDetails, getDurationRefresh())
 
-    fun generate(userDetails: UserDetails, long: Boolean): String {
-        val duration = if (long) getDurationLong() else getDurationShort()
+    private fun getDurationAccess() = systemSettingService.getTyped<Duration>("auth.jwt.duration.access")
+    fun generateAccessToken(userDetails: UserDetails) = generate(userDetails, getDurationAccess())
 
-        return Jwts.builder()
-            .setSubject(userDetails.username)
-            .setIssuedAt(Date(System.currentTimeMillis()))
-            .setExpiration(Date(System.currentTimeMillis() + duration.toMillis()))
-            .signWith(getKey())
-            .compact()
-    }
+    private fun generate(userDetails: UserDetails, duration: Duration): String = Jwts.builder()
+        .setSubject(userDetails.username)
+        .setIssuedAt(Date(System.currentTimeMillis()))
+        .setExpiration(Date(System.currentTimeMillis() + duration.toMillis()))
+        .signWith(getKey())
+        .compact()
 
     fun extract(token: String): String =
         Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token).body.subject

@@ -6,6 +6,7 @@ import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.service.AuthService
+import de.csw.turtle.api.service.SystemSettingService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
@@ -20,6 +21,7 @@ import java.time.Duration
 @RequestMapping("/api/auth")
 class AuthController(
     private val authService: AuthService,
+    private val systemSettingService: SystemSettingService,
     private val userMapper: UserMapper
 ) {
 
@@ -51,6 +53,9 @@ class AuthController(
         response.addHeader("Set-Cookie", header)
     }
 
+    private fun getDurationRefresh() = systemSettingService.getTyped<Duration>("auth.jwt.duration.refresh")
+    private fun getDurationAccess() = systemSettingService.getTyped<Duration>("auth.jwt.duration.access")
+
     @PostMapping("/register")
     fun register(
         @RequestBody request: RegisterUserRequest
@@ -68,8 +73,10 @@ class AuthController(
     ): ResponseEntity<Void> {
         val tokens = authService.login(request)
 
-        setCookie("access_token", tokens.accessToken, Duration.ofMinutes(15), response)
-        setCookie("refresh_token", tokens.refreshToken, Duration.ofDays(30), response)
+        setCookie("access_token", tokens.accessToken, getDurationAccess(), response)
+
+        if (request.rememberMe)
+            setCookie("refresh_token", tokens.refreshToken, getDurationRefresh(), response)
 
         return ResponseEntity.noContent().build()
     }
@@ -84,8 +91,8 @@ class AuthController(
 
         val tokens = authService.refresh(token)
 
-        setCookie("access_token", tokens.accessToken, Duration.ofMinutes(15), response)
-        setCookie("refresh_token", tokens.refreshToken, Duration.ofDays(30), response)
+        setCookie("access_token", tokens.accessToken, getDurationAccess(), response)
+        setCookie("refresh_token", tokens.refreshToken, getDurationRefresh(), response)
 
         return ResponseEntity.noContent().build()
     }
