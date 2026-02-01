@@ -6,7 +6,6 @@ import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.service.AuthService
-import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
@@ -28,15 +27,27 @@ class AuthController(
         //Enable HTTPS only
         //cookie.secure = true
 
-        val attributes = setOf(
-            "$name=$value",
-            "Max-Age=${duration.toSeconds()}",
-            "Path=/",
-            "HttpOnly",
-            "SameSite=Strict"
-        )
+        val header = buildString {
+            append("$name=$value")
+            append("; Max-Age=${duration.toSeconds()}")
+            append("; Path=/")
+            append("; HttpOnly")
+            append("; SameSite=Strict")
+        }
 
-        val header = attributes.joinToString(separator = ";") { it }
+        response.addHeader("Set-Cookie", header)
+    }
+
+    private fun deleteCookie(name: String, response: HttpServletResponse) {
+        val header = buildString {
+            append("$name=")
+            append("; Max-Age=0")
+            append("; Expires=Thu, 01 Jan 1970 00:00:00 GMT")
+            append("; Path=/")
+            append("; HttpOnly")
+            append("; SameSite=Strict")
+        }
+
         response.addHeader("Set-Cookie", header)
     }
 
@@ -83,8 +94,8 @@ class AuthController(
     fun logout(
         response: HttpServletResponse
     ): ResponseEntity<Void> {
-        setCookie("access_token", "", Duration.ZERO, response)
-        setCookie("refresh_token", "", Duration.ZERO, response)
+        deleteCookie("access_token", response)
+        deleteCookie("refresh_token", response)
 
         return ResponseEntity.noContent().build()
     }

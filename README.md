@@ -13,6 +13,16 @@ ___
 This is the backend, based on Spring Boot in Kotlin. 
 Port: 8080
 
+**TODO:**
+* make ip not spoofable
+* email sending; noreply@mail.de (verification email, confirmation email(booking, returning, deadline reminder), support confirmation email, password/pin reset email)
+* statistics
+* distinguish prof/student role
+* emoji code checks (no duplicates, no 5 identical emojis)
+* login access/refresh token cookies
+* make admins always open door (during all times)
+* document this: rsql, system settings, templates with mustache
+
 ## Docker Environment
 ```
 FQDN: ${FQDN}
