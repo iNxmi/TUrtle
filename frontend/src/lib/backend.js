@@ -15,4 +15,5 @@ export const permissionsPath= '/permissions';
 export const exceptionsPath= '/exceptions';
 export const debugPath= '/debug';
 export const contentPath= '/content';
-export const auditLogsPath= '/audit-logs'
+export const auditLogsPath= '/audit-logs';
+export const jwtRefreshPath = authPath+'/refresh';
