@@ -110,7 +110,8 @@
             deviceId: selectedDevice,
             start: instantBooking ? new Date(Date.now()) : bookingRange.from,
             end: bookingRange.to,
-            userId: data.user.id
+            userId: data.user.id,
+            status: instantBooking ? 'COLLECTION_READY' : 'RESERVED'
         }
         if(!instantBooking){
             newBooking.start.setHours(parseInt(bookingStartTime.substring(0,2)));
