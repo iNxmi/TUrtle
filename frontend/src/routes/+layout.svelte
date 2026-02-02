@@ -4,7 +4,7 @@
     import {setContext} from 'svelte';
 
     let {data, children} = $props();  
-    let permissions = $derived(data.permissions);
+    let permissions = $derived(data.userPermissions);
     let user = $derived(data.user);
 
     import {
@@ -151,17 +151,23 @@
     }];
 
     const itemsAdmin = [{
-        permission: "VIEW__SIDEBAR_ITEM__MANAGE_USERS",
+        permission: ["MANAGE_USERS", "MANAGE_DEVICE_BOOKINGS"],
         label: m.sidebar_admin_manage_user_entities(),
         href: '/admin/userdata',
         icon: UsersGroupSolid
     }, {
-        permission: "VIEW__SIDEBAR_ITEM__MANAGE_ROOM_BOOKINGS",
+        permission: "MANAGE_ROOM_BOOKINGS",
         label: m.sidebar_admin_manage_bookings(),
         href: '/admin/bookings',
         icon: CalendarEditSolid
     }, {
-        permission: "VIEW__SIDEBAR_ITEM__MANAGE_SUPPORT_TICKETS",
+        permission: ['MANAGE_DEVICES', 'MANAGE_DEVICE_CATEGORIES'],
+        label: '_Manage Devices',
+        href: '/admin/devices',
+        icon: DesktopPcSolid
+
+    }, {
+        permission: "MANAGE_SUPPORT_TICKETS",
         label: m.sidebar_admin_manage_support_tickets(),
         href: '/admin/support',
         icon: UserHeadsetSolid
@@ -176,17 +182,17 @@
         href: '/admin/hardware',
         icon: LockSolid
     }, */ {
-        permission: "VIEW__SIDEBAR_ITEM__MANAGE_AUDIT_LOGS",
+        permission: "MANAGE_AUDIT_LOGS",
         label: m.sidebar_admin_auditlogs(),
         href: '/admin/auditlogs',
         icon: BookOpenSolid
     }, {
-        permission: "VIEW__SIDEBAR_ITEM__MANAGE_ADMIN_SETTINGS",
+        permission: "MANAGE_SYSTEM_SETTINGS",
         label: m.sidebar_admin_settings(),
         href: '/admin/settings',
         icon: LockSolid
     }, {
-        permission: "VIEW__SIDEBAR_ITEM__MANAGE_TEMPLATES",
+        permission: "MANAGE_GENERAL_TEMPLATES",
         label: "_manage_templates_",
         href: '/admin/templates',
         icon: PaperClipOutline
@@ -223,7 +229,7 @@
                 <Hr class="m-0 p-0"/>
             {/if}
 
-            {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__PUBLIC")}
+           <!--  {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__PUBLIC")} -->
                 <SidebarDropdownWrapper
                         class="list-none"
                         classes={{ span: 'font-bold text-text', ul: 'py-0' }}
@@ -231,18 +237,18 @@
                         label={m.sidebar_category_public()}
                 >
                     {#each itemsPublic as item}
-                        {#if permissions.includes(item.permission)}
+                        <!-- {#if permissions.includes(item.permission)} -->
                             <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
                                 {#snippet icon()}
                                     <item.icon class="text-csw h-5 w-5"/>
                                 {/snippet}
                             </SidebarDropdownItem>
-                        {/if}
+                       <!--  {/if} -->
                     {/each}
                 </SidebarDropdownWrapper>
-            {/if}
+           <!--  {/if} -->
 
-            {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__USER")}
+            <!-- {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__USER")} -->
                 <SidebarDropdownWrapper
                         class="list-none"
                         classes={{ span: 'font-bold text-text', ul: 'py-0' }}
@@ -250,22 +256,28 @@
                         label={m.sidebar_category_user()}
                 >
                     {#each itemsUser as item}
-                        {#if permissions.includes(item.permission)}
+                        <!-- {#if permissions.includes(item.permission)} -->
                             <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
                                 {#snippet icon()}
                                     <item.icon class="text-csw h-5 w-5"/>
                                 {/snippet}
                             </SidebarDropdownItem>
-                        {/if}
+                       <!--  {/if} -->
                     {/each}
                 </SidebarDropdownWrapper>
-            {/if}
+           <!--  {/if} -->
 
-            {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__ADMINISTRATOR")}
+            {#if permissions}
                 <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold text-text", ul: 'py-0' }} isOpen={true}
                                         label={m.sidebar_category_admin()}>
                     {#each itemsAdmin as item}
-                        {#if permissions.includes(item.permission)}
+                        {#if Array.isArray(item.permission) && item.permission.every((permission) => permissions.includes(permission))}
+                            <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
+                                {#snippet icon()}
+                                    <item.icon class="text-csw h-5 w-5"/>
+                                {/snippet}
+                            </SidebarDropdownItem>
+                        {:else if permissions.includes(item.permission)}
                             <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
                                 {#snippet icon()}
                                     <item.icon class="text-csw h-5 w-5"/>
@@ -279,8 +291,8 @@
     </Sidebar>
 
     <div class="min-h-svh justify-between flex flex-col w-full dark:bg-gray-900">
-        <div class="m-10 mt-6">
-            <div class="flex justify-end items-center gap-2 mb-5">
+        <div class="mx-10 my-3 mb-2">
+            <div class="flex justify-end items-center gap-2 mb-1">
                 <button onclick={toggleDarkMode} class="cursor-pointer inline-flex items-center justify-center text-md dark:text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md px-3 h-8">
                     {#if darkmode}
                     <MoonOutline class="text-white mr-1" /> _Dunkel_
