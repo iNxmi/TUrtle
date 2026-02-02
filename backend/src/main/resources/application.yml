@@ -11,6 +11,14 @@ spring:
     username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
 
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+    properties:
+      org.quartz.scheduler.instanceName: TUrtleScheduler
+      org.quartz.jobStore.isClustered: true
+
   session:
     store-type: jdbc
     jdbc:

@@ -9,6 +9,8 @@ import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.time.Duration
+import java.time.Instant
 
 @Service
 class UserService(
@@ -24,6 +26,8 @@ class UserService(
         val hashed = request.copy(password = passwordEncoder.encode(request.password))
         return super.create(hashed)
     }
+
+    fun getUnverifiedUsers(cutoff: Instant): Set<UserEntity> = repository.findByVerifiedFalseAndCreatedAtBefore(cutoff)
 
     fun getByVerificationTokenOrNull(token: String): UserEntity? = repository.findByVerificationToken(token)
     fun getByVerificationToken(token: String): UserEntity = getByVerificationTokenOrNull(token) ?: throw HttpException.NotFound(token)
