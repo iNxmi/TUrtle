@@ -21,10 +21,12 @@ export async function load({url}){
         devices = deviceData;
     }
 
-    const reservationResponse = await request(deviceBookingsPath+'?rsql='); //TODO
+    const now = new Date(Date.now());
+    now.setDate(now.getDate() + 14);
+    const reservationResponse = await request(deviceBookingsPath+`?rsql=end<${now.toISOString()},status!='DEVICE_RETURNED'`); //TODO
     if(reservationResponse.ok){
         const reservationData = await reservationResponse.json();
-        return {deviceCategories, devices, reservations: reservationData.content};
+        return {deviceCategories, devices, reservations: reservationData};
     }
    
 }
