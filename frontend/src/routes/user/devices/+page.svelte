@@ -137,7 +137,8 @@
                resetForm();
     }
 
-           reservations = reservations? [...reservations, newBooking] : [newBooking];
+           reservations = [...(reservations ?? []), newBooking];
+           
   }
 
     function getDeviceType(){ 
