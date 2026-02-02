@@ -32,7 +32,7 @@
 			plugins: [timeGridPlugin, listPlugin],
 			locale: deLocale,
 			/* aspectRatio: 2.1, */
-			height: window.innerHeight - 80,
+			height: window.innerHeight - 135,
 			events:async function(info, successCallback, failureCallback) {
 				const fetchedData = await fetchRoomBookings(info);
 
