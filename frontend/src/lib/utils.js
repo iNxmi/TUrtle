@@ -1,7 +1,7 @@
 import request from './api/api';
 import {dev} from '$app/environment';
 import {error, redirect} from '@sveltejs/kit';
-import { hardwarePath, deviceBookingsPath, roomBookingsPath } from '$lib/backend';
+import { hardwarePath, deviceBookingsPath, roomBookingsPath, jwtRefreshPath } from '$lib/backend';
 
 export function convertEventToBackend(calendarEvent) {
     if (dev) {
@@ -74,12 +74,23 @@ export async function fetchDeviceBookings(info) {
  * @param {string} redirectURL - the pathname of this page e.g. url.pathname
  * @returns
  */
-export function checkAuthorization(response, redirectURL) {
+export async function checkAuthorization(response, redirectURL) {
     if (response.ok)
         return;
 
-    if (response.status === 401)
-        return redirect(307, redirectURL ? `/auth/login?redirectTo=${redirectURL}` : '/user/dashboard');
+    if (response.status === 401){
+
+
+        const jwtResponse = await request(jwtRefreshPath, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if(jwtResponse.ok) return redirect(307, redirectURL? redirectURL : '/user/dashboard')
+        return redirect(307, redirectURL ? `/auth/login?redirectTo=${redirectURL}` : '/auth/login?redirectTo=/user/dashboard');
+    }
 
     return error(response.status, response.statusText);
 }

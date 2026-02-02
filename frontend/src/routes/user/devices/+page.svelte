@@ -11,6 +11,7 @@
     import LockerOpenModal from "$lib/components/LockerOpenModal.svelte";
     import DevicebookingTable from "$lib/components/DevicebookingTable.svelte";
     import { fetchDeviceBookings, convertEventToFrontend } from "$lib/utils";
+    import { deviceBookingsPath } from "$lib/backend";
     let { data } = $props();
     
     let reservations = $derived(data.reservations);
@@ -120,7 +121,7 @@
 
      calendar.addEvent(newBooking);
 
-    const response = await request('/devicebookings', {
+    const response = await request(deviceBookingsPath, {
         method: 'POST',
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify(newBooking)
@@ -136,7 +137,7 @@
                resetForm();
     }
 
-           reservations = [...reservations, newBooking];
+           reservations = reservations? [...reservations, newBooking] : [newBooking];
   }
 
     function getDeviceType(){ 

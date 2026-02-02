@@ -27,9 +27,12 @@
 			headers: { 'Content-Type': 'application/json' }
 		});
 
-		apiResponse = await response.json();
+		/* apiResponse = await response.json(); */
 
-		goto(page.url.searchParams.get('redirectTo') || '/user/dashboard',{invalidateAll: true,});
+		if(response.ok){
+			goto(page.url.searchParams.get('redirectTo') || '/user/dashboard',{invalidateAll: true,});
+		}
+		
 		// window.location.reload()
 	}
 </script>
