@@ -1,15 +1,12 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.DebugException
-import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.service.EmailService
 import de.csw.turtle.api.service.door.DoorControlService
 import de.csw.turtle.api.service.locker.LockerControlService
 import de.csw.turtle.api.service.locker.LockerService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -22,16 +19,8 @@ class DebugController(
     private val emailService: EmailService,
     private val doorControlService: DoorControlService,
     private val lockerService: LockerService,
-    private val lockerControlService: LockerControlService,
-    private val userMapper: UserMapper,
+    private val lockerControlService: LockerControlService
 ) {
-
-    @GetMapping("/me")
-    fun me(
-        @AuthenticationPrincipal user: UserEntity?
-    ): ResponseEntity<Map<String, Any?>> {
-        return ResponseEntity.ok(mapOf("authentication" to if (user != null) userMapper.get(user) else null))
-    }
 
     @GetMapping("/headers")
     fun headers(

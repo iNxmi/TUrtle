@@ -4,6 +4,7 @@ import de.csw.turtle.api.dto.LoginUserRequest
 import de.csw.turtle.api.dto.RegisterUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
+import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.service.AuthService
@@ -12,6 +13,7 @@ import de.csw.turtle.api.service.UserService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 import java.time.Duration
@@ -56,6 +58,17 @@ class AuthController(
 
     private fun getDurationRefresh() = systemSettingService.getTyped<Duration>("auth.jwt.duration.refresh")
     private fun getDurationAccess() = systemSettingService.getTyped<Duration>("auth.jwt.duration.access")
+
+    @GetMapping("/me")
+    fun verify(
+        @AuthenticationPrincipal user: UserEntity?
+    ): ResponseEntity<GetUserResponse> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        val dto = userMapper.get(user)
+        return ResponseEntity.ok(dto)
+    }
 
     @GetMapping("/verify")
     fun verify(
