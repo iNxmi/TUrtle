@@ -181,7 +181,7 @@
         href: '/admin/auditlogs',
         icon: BookOpenSolid
     }, {
-        permission: "VIEW__SIDEBAR_ITEM__MANAGE_SETTINGS",
+        permission: "VIEW__SIDEBAR_ITEM__MANAGE_ADMIN_SETTINGS",
         label: m.sidebar_admin_settings(),
         href: '/admin/settings',
         icon: LockSolid
