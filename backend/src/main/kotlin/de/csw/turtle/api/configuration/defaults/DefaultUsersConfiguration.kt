@@ -31,7 +31,8 @@ class DefaultUsersConfiguration(
             email = "admin@csw.tu-darmstadt.de",
             emojis = "12345",
             password = "admin",
-            roleIds = setOf(adminRole.id)
+            roleIds = setOf(adminRole.id),
+            verified = true
         ))
     }
 

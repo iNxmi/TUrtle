@@ -51,7 +51,8 @@ class DataSeeder(
                     email = email,
                     emojis = System.currentTimeMillis().toString(),
                     password = username,
-                    roleIds = setOf(role.id)
+                    roleIds = setOf(role.id),
+                    verified = true
                 )
                 userService.create(request)
             } catch (_: Exception) {
