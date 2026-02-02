@@ -1,7 +1,6 @@
 import request from "$lib/api/api.js";
 /* import { checkAuthorization } from "$lib/utils"; */
-import { permissionsPath, usersPath} from '$lib/backend'
-/* import { jwt } from './state.svelte' */
+import { permissionsPath, authPath} from '$lib/backend'
 
 export const prerender = false;
 export const ssr = false;
@@ -34,11 +33,10 @@ export async function load() {
     }
         
 
-    const profileResponse = await request("/user/profile");
+    const profileResponse = await request(authPath+'/me');
     let user = {}
     if (profileResponse.status === 200)
         user = await profileResponse.json();
 
-    console.log(JSON.stringify(permissions));
     return {permissions, user};
 }
