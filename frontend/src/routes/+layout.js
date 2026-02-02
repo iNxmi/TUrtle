@@ -9,27 +9,10 @@ export async function load() {
 
     const permissionsResponse = await request(permissionsPath);
 
-     const itemsPublic = [
-        "VIEW__SIDEBAR_CATEGORY__PUBLIC",
-
-        "VIEW__SIDEBAR_ITEM__HOME",
-    
-        "VIEW__SIDEBAR_ITEM__LOGIN",
-    
-        "VIEW__SIDEBAR_ITEM__REGISTER",
-
-        "VIEW__SIDEBAR_ITEM__SUPPORT",
-
-        "VIEW__SIDEBAR_ITEM__FAQ",
-
-        "VIEW__SIDEBAR_ITEM__ABOUT"
-     ];
   /*  await checkAuthorization(permissionsResponse); */
-    let permissions = {}
+    let userPermissions = []
     if (permissionsResponse.status === 200){
-        permissions = await permissionsResponse.json();
-    } else {
-        permissions = itemsPublic;
+        userPermissions = await permissionsResponse.json();
     }
         
 
@@ -38,5 +21,5 @@ export async function load() {
     if (profileResponse.status === 200)
         user = await profileResponse.json();
 
-    return {permissions, user};
+    return {userPermissions, user};
 }
