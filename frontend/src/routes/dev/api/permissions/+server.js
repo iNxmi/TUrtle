@@ -2,51 +2,21 @@ import { json } from '@sveltejs/kit';
 
 export async function GET(){
     const itemsPublic = [
-        "VIEW__SIDEBAR_CATEGORY__PUBLIC",
-        
-        "VIEW__SIDEBAR_CATEGORY__USER",
-
-        "VIEW__SIDEBAR_CATEGORY__ADMINISTRATOR",
-
-        "VIEW__SIDEBAR_ITEM__HOME",
-    
-        "VIEW__SIDEBAR_ITEM__LOGIN",
-    
-        "VIEW__SIDEBAR_ITEM__REGISTER",
-
-        "VIEW__SIDEBAR_ITEM__SUPPORT",
-
-        "VIEW__SIDEBAR_ITEM__FAQ",
-
-        "VIEW__SIDEBAR_ITEM__ABOUT",
-
-        "VIEW__SIDEBAR_ITEM__DASHBOARD",
-
-        "VIEW__SIDEBAR_ITEM__PROFILE",
-
-        "VIEW__SIDEBAR_ITEM__BOOK_DEVICE",
-
-        "VIEW__SIDEBAR_ITEM__BOOK_ROOM",
-    
-        "VIEW__SIDEBAR_ITEM__MANAGE_USERS",
-
-        "VIEW__SIDEBAR_ITEM__MANAGE_ROOM_BOOKINGS",
-
-        "VIEW__SIDEBAR_ITEM__MANAGE_SUPPORT_TICKETS",
-
-        "VIEW__SIDEBAR_ITEM__MANAGE_EXCEPTIONS",
-
-        "VIEW__SIDEBAR_ITEM__MANAGE_NEWS",
-    
-        "VIEW__SIDEBAR_ITEM__MANAGE_AUDIT_LOGS",
-    
-        "VIEW__SIDEBAR_ITEM__MANAGE_ROLES",
-        
-        "VIEW__SIDEBAR_ITEM__MANAGE_TEMPLATES",
-
-        "VIEW__SIDEBAR_ITEM__HARDWARE_OVERRIDE",
-
-        "VIEW__SIDEBAR_ITEM__MANAGE_ADMIN_SETTINGS"
+        "MANAGE_AUDIT_LOGS",
+        "MANAGE_DOOR",
+        "MANAGE_DEVICE_CATEGORIES",
+        "MANAGE_DEVICES",
+        "MANAGE_EXCEPTIONS",
+        "MANAGE_LOCKERS",
+        "MANAGE_SUPPORT_TICKETS",
+        "MANAGE_ROLES",
+        "MANAGE_USERS",
+        "MANAGE_EMAIL_TEMPLATES",
+        "MANAGE_GENERAL_TEMPLATES",
+        "MANAGE_FAQ",
+        "MANAGE_ROOM_BOOKINGS",
+        "MANAGE_DEVICE_BOOKINGS",
+        "MANAGE_SYSTEM_SETTINGS"
     ];
 
     return json(itemsPublic)
