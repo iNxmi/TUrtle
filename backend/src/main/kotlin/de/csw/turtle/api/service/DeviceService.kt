@@ -4,8 +4,7 @@ import de.csw.turtle.api.dto.create.CreateDeviceRequest
 import de.csw.turtle.api.dto.get.GetDeviceResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceRequest
 import de.csw.turtle.api.entity.DeviceEntity
-import de.csw.turtle.api.exception.BadRequestException
-import de.csw.turtle.api.exception.ConflictException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.DeviceMapper
 import de.csw.turtle.api.repository.DeviceRepository
 import org.springframework.stereotype.Service
@@ -23,12 +22,12 @@ class DeviceService(
 
     override fun create(request: CreateDeviceRequest): DeviceEntity {
         if(request.name.isBlank() || request.name.length > maxNameLength)
-            throw BadRequestException("Name cannot be blank and cannot exceed $maxNameLength characters.")
+            throw HttpException.BadRequest("Name cannot be blank and cannot exceed $maxNameLength characters.")
         else if(getByNameOrNull(request.name) != null)
-            throw ConflictException("Name '${request.name}' already exists.")
+            throw HttpException.Conflict("Name '${request.name}' already exists.")
 
         if(request.description.length > maxDescriptionLength)
-            throw BadRequestException("Description cannot exceed $maxDescriptionLength characters.")
+            throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
 
         return super.create(request)
     }
@@ -36,13 +35,13 @@ class DeviceService(
     override fun patch(id: Long, request: PatchDeviceRequest): DeviceEntity {
         if(request.name != null)
             if(request.name.isBlank() || request.name.length > maxNameLength)
-                throw BadRequestException("Name cannot be blank and cannot exceed $maxNameLength characters.")
+                throw HttpException.BadRequest("Name cannot be blank and cannot exceed $maxNameLength characters.")
             else if(getByNameOrNull(request.name) != null)
-                throw ConflictException("Name '${request.name}' already exists.")
+                throw HttpException.Conflict("Name '${request.name}' already exists.")
 
         if(request.description != null)
             if(request.description.length > maxDescriptionLength)
-                throw BadRequestException("Description cannot exceed $maxDescriptionLength characters.")
+                throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
 
         return super.patch(id, request)
     }

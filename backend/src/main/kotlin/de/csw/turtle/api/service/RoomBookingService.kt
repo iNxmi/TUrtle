@@ -4,8 +4,7 @@ import de.csw.turtle.api.dto.create.CreateRoomBookingRequest
 import de.csw.turtle.api.dto.get.GetRoomBookingResponse
 import de.csw.turtle.api.dto.patch.PatchRoomBookingRequest
 import de.csw.turtle.api.entity.RoomBookingEntity
-import de.csw.turtle.api.exception.BadRequestException
-import de.csw.turtle.api.exception.ConflictException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.RoomBookingMapper
 import de.csw.turtle.api.repository.RoomBookingRepository
 import org.springframework.stereotype.Service
