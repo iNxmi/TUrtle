@@ -7,8 +7,12 @@ import de.csw.turtle.api.entity.LockerEntity
 import org.mapstruct.Mapper
 
 @Mapper(componentModel = "spring")
-abstract class LockerMapper() :
-    CRUDMapper<LockerEntity, CreateLockerRequest, GetLockerResponse, PatchLockerRequest> {
+abstract class LockerMapper : CRUDMapper<
+        LockerEntity,
+        CreateLockerRequest,
+        GetLockerResponse,
+        PatchLockerRequest
+        > {
 
     override fun create(request: CreateLockerRequest) = LockerEntity(
         index = request.index,
@@ -22,8 +26,9 @@ abstract class LockerMapper() :
         name = entity.name,
         index = entity.index,
         isSoftwareUnlockable = entity.isSoftwareUnlockable,
-        createdAt = entity.createdAt,
-        locked = entity.locked
+        locked = entity.locked,
+        updatedAt = entity.updatedAt,
+        createdAt = entity.createdAt
     )
 
     override fun patch(

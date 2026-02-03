@@ -1,6 +1,8 @@
 package de.csw.turtle.api.controller.api
 
+import de.csw.turtle.api.service.GeneralTemplateService
 import de.csw.turtle.api.service.SystemSettingService
+import de.csw.turtle.api.service.ThymeleafService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -9,27 +11,31 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/content")
 class ContentController(
-    private val systemSettingService: SystemSettingService
+    private val systemSettingService: SystemSettingService,
+    private val generalTemplateService: GeneralTemplateService,
+    private val thymeleafService: ThymeleafService
 ) {
 
-    private fun getContent(key: String): String {
-        val template = systemSettingService.getTemplateEntity(key)
-        return template.getCompiledContent()
+    private fun getResponse(key: String): ResponseEntity<String> {
+        val templateId = systemSettingService.getTyped<Long>(key)
+        val template = generalTemplateService.get(templateId)
+        val content = template.getCompiledContent(thymeleafService)
+        return ResponseEntity.ok(content)
     }
 
     @GetMapping("/imprint")
-    fun imprint(): ResponseEntity<String> = ResponseEntity.ok(getContent("template.imprint"))
+    fun imprint(): ResponseEntity<String> = getResponse("content.template.imprint")
 
     @GetMapping("/tos")
-    fun tos(): ResponseEntity<String> = ResponseEntity.ok(getContent("template.tos"))
+    fun tos(): ResponseEntity<String> = getResponse("content.template.tos")
 
     @GetMapping("/about")
-    fun about(): ResponseEntity<String> = ResponseEntity.ok(getContent("template.about"))
+    fun about(): ResponseEntity<String> = getResponse("content.template.about")
 
     @GetMapping("/gdpr")
-    fun gdpr(): ResponseEntity<String> = ResponseEntity.ok(getContent("template.gdpr"))
+    fun gdpr(): ResponseEntity<String> = getResponse("content.template.gdpr")
 
     @GetMapping("/contact")
-    fun contact(): ResponseEntity<String> = ResponseEntity.ok(getContent("template.contact"))
+    fun contact(): ResponseEntity<String> = getResponse("content.template.contact")
 
 }

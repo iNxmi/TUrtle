@@ -1,84 +1,67 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.dto.LoginUserRequest
-import de.csw.turtle.api.dto.RegisterUserRequest
-import de.csw.turtle.api.dto.create.CreateUserRequest
-import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.UnauthorizedException
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
+import de.csw.turtle.api.exception.HttpException
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AuthService(
     private val userService: UserService,
-    private val authenticationManager: AuthenticationManager
+    private val authenticationManager: AuthenticationManager,
+    private val customUserDetailsService: CustomUserDetailsService,
+    private val jwtService: JWTService
 ) {
 
-    @Transactional
-    fun register(
-        registerUserRequest: RegisterUserRequest
-    ): UserEntity {
-        val createUserRequest = CreateUserRequest(
-            username = registerUserRequest.username,
-            firstName =  registerUserRequest.firstName,
-            lastName = registerUserRequest.lastName,
-            email = registerUserRequest.email,
-            emojis = registerUserRequest.emojis,
-            password = registerUserRequest.password,
-        )
-
-        return userService.create(createUserRequest)
-    }
+    data class TokenPair(
+        val accessToken: String,
+        val refreshToken: String
+    )
 
     @Transactional
     fun login(
-        request: LoginUserRequest,
-        httpRequest: HttpServletRequest
-    ): UserEntity {
-        val token = UsernamePasswordAuthenticationToken.unauthenticated(
-            request.username,
-            request.password
-        )
+        request: LoginUserRequest
+    ): TokenPair {
+        try {
+            val credentials = UsernamePasswordAuthenticationToken.unauthenticated(
+                request.username,
+                request.password
+            )
 
-        val authentication = try {
-            authenticationManager.authenticate(token)
+            authenticationManager.authenticate(credentials)
         } catch (_: org.springframework.security.authentication.BadCredentialsException) {
-            throw UnauthorizedException("Invalid username or password.")
+            throw HttpException.Unauthorized("Invalid username or password.")
         }
-        SecurityContextHolder.getContext().authentication = authentication
 
-        httpRequest.getSession(true).setAttribute(
-            HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-            SecurityContextHolder.getContext()
-        )
+        val userDetails = customUserDetailsService.loadUserByUsername(request.username)
+        val user = userService.getByUsername(userDetails.username)
 
-        return userService.get(request.username)
+        if (!user.verified)
+            throw HttpException.Forbidden("Please verify your account.")
+
+        val accessToken = jwtService.generateAccessToken(userDetails)
+        val refreshToken = jwtService.generateRefreshToken(userDetails)
+
+        return TokenPair(accessToken, refreshToken)
     }
 
     @Transactional
-    fun logout(httpRequest: HttpServletRequest, httpResponse: HttpServletResponse, authentication: Authentication) =
-        SecurityContextLogoutHandler().logout(httpRequest, httpResponse, authentication)
+    fun refresh(
+        refreshToken: String
+    ): TokenPair {
+        val username = jwtService.extract(refreshToken)
+        val userDetails = customUserDetailsService.loadUserByUsername(username)
 
-    fun getAuthenticatedUser(): UserEntity? {
-        val authentication = SecurityContextHolder.getContext().authentication
-            ?: throw UnauthorizedException("Authentication not found.")
+        if (!jwtService.isValid(refreshToken, userDetails))
+            throw RuntimeException("Invalid refresh token.")
 
-        val userDetails = authentication.principal as? UserDetails
+        // ROTATE: issue new refresh token and access token
+        val newAccessToken = jwtService.generateAccessToken(userDetails)
+        val newRefreshToken = jwtService.generateRefreshToken(userDetails)
 
-        val user = if (userDetails != null) {
-            userService.get(userDetails.username)
-        } else null
-
-        return user
+        return TokenPair(newAccessToken, newRefreshToken)
     }
 
 }

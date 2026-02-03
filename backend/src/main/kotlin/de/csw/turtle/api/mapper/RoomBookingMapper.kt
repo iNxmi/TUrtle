@@ -17,11 +17,11 @@ abstract class RoomBookingMapper :
 
     override fun create(request: CreateRoomBookingRequest): RoomBookingEntity {
         val entity = RoomBookingEntity(
+            user = userService.get(request.userId),
             title = request.title,
             start = request.start,
             end = request.end,
-            description = request.description,
-            creator = userService.get(request.creatorId)
+            description = request.description
         )
 
         request.accessibility?.let { entity.accessibility = it }
@@ -34,24 +34,25 @@ abstract class RoomBookingMapper :
     }
 
     override fun get(entity: RoomBookingEntity) = GetRoomBookingResponse(
+        userId = entity.user.id,
         id = entity.id,
         title = entity.title,
         start = entity.start,
         end = entity.end,
         description = entity.description,
-        creatorId = entity.creator.id,
         accessibility = entity.accessibility,
         whitelist = entity.whitelist.map { it.id }.toSet(),
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 
     override fun patch(entity: RoomBookingEntity, request: PatchRoomBookingRequest): RoomBookingEntity {
 
+        request.userId?.let { entity.user = userService.get(it) }
         request.title?.let { entity.title = it }
         request.start?.let { entity.start = it }
         request.end?.let { entity.end = it }
         request.description?.let { entity.description = it }
-        request.creatorId?.let { entity.creator = userService.get(it) }
         request.accessibility?.let { entity.accessibility = it }
 
         request.whitelist?.let { whitelist ->

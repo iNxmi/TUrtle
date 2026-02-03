@@ -7,6 +7,10 @@ import java.time.Instant
 @Table(name = "room_bookings")
 class RoomBookingEntity(
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    var user: UserEntity,
+
     var title: String,
 
     @Column(name = "start_time")
@@ -17,10 +21,6 @@ class RoomBookingEntity(
 
     @Column(columnDefinition = "TEXT")
     var description: String,
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    var creator: UserEntity,
 
     @Enumerated(EnumType.STRING)
     var accessibility: Accessibility = Accessibility.LOCKED,

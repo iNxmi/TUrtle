@@ -7,7 +7,7 @@ import de.csw.turtle.api.entity.DeviceCategoryEntity
 import org.mapstruct.Mapper
 
 @Mapper(componentModel = "spring")
-abstract class DeviceCategoryMapper() :
+abstract class DeviceCategoryMapper :
     CRUDMapper<DeviceCategoryEntity, CreateDeviceCategoryRequest, GetDeviceCategoryResponse, PatchDeviceCategoryRequest> {
 
     override fun create(request: CreateDeviceCategoryRequest) = DeviceCategoryEntity(
@@ -17,6 +17,7 @@ abstract class DeviceCategoryMapper() :
     override fun get(entity: DeviceCategoryEntity) = GetDeviceCategoryResponse(
         id = entity.id,
         name = entity.name,
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 

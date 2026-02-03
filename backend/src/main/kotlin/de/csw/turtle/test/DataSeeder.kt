@@ -12,7 +12,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -44,25 +43,28 @@ class DataSeeder(
             val index = floor(Math.random() * (roles.size - 1)).toInt() + 1
             val role = roles[index]
 
-            val request = CreateUserRequest(
-                username = username,
-                firstName = firstName,
-                lastName = lastName,
-                email = email,
-                emojis = System.currentTimeMillis().toString(),
-                password = username,
-                roleIds = setOf(role.id)
-            )
-            userService.create(request)
+            try {
+                val request = CreateUserRequest(
+                    username = username,
+                    firstName = firstName,
+                    lastName = lastName,
+                    email = email,
+                    emojis = System.currentTimeMillis().toString(),
+                    password = username,
+                    roleIds = setOf(role.id),
+                    verified = true
+                )
+                userService.create(request)
+            } catch (_: Exception) {
+            }
         }
     }
 
     @Order(2)
     @EventListener(ApplicationReadyEvent::class)
-    @Transactional
     fun seedRoomBookings() {
         val service = roomBookingService
-        while (service.count() < 52) {
+        while (service.count() < 12) {
             // minutes * hours * days * weeks * months
             val offset = ((60 * 24 * 7 * 4 * 3) / 2 * Math.random()).toLong()
             val start = Instant.now().plus(offset, ChronoUnit.MINUTES)
@@ -70,19 +72,21 @@ class DataSeeder(
             val duration = Duration.ofMinutes((Math.random() * 150 + 30).toLong())
             val end = start.plus(duration.toMinutes(), ChronoUnit.MINUTES)
 
-            val createRequest = CreateRoomBookingRequest(
-                title = "${service.count()}: this is an event",
-                description = "this is the very long description",
-                start = start,
-                end = end,
-                creatorId = userService.get("admin").id
-            )
-            roomBookingService.create(createRequest)
+            try {
+                val createRequest = CreateRoomBookingRequest(
+                    userId = userService.getByUsername("admin").id,
+                    title = "${service.count()}: this is an event",
+                    description = "this is the very long description",
+                    start = start,
+                    end = end
+                )
+                roomBookingService.create(createRequest)
+            } catch (_: Exception) {
+            }
         }
     }
 
     @EventListener(ApplicationReadyEvent::class)
-    @Transactional
     fun seedSupportTickets() {
         while (supportTicketService.count() < 32) {
             val entriesUrgency = SupportTicketEntity.Urgency.entries
@@ -100,21 +104,25 @@ class DataSeeder(
             val subject = "This is a support ticket about Something"
             val description = "I am facing an issue with Something. Please help!"
 
-            supportTicketService.create(
-                CreateSupportTicketRequest(
-                    urgency = urgency,
-                    category = category,
-                    email = email,
-                    subject = subject,
-                    description = description
+            try {
+                supportTicketService.create(
+                    CreateSupportTicketRequest(
+                        urgency = urgency,
+                        category = category,
+                        email = email,
+                        subject = subject,
+                        description = description
+                    )
                 )
-            )
+            } catch (_: Exception) {
+
+            }
+
         }
     }
 
     @Order(2)
     @EventListener(ApplicationReadyEvent::class)
-    @Transactional
     fun seedDevices() {
         if (deviceService.count() > 0)
             return

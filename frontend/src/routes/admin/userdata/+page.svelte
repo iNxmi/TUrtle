@@ -5,6 +5,7 @@
     import { Tabs, TabItem} from 'flowbite-svelte';
     import {goto} from "$app/navigation";
     import { page } from '$app/state';
+    import { usersPath, deviceBookingsPath } from '$lib/backend.js';
 
     import {Heading} from "flowbite-svelte";
 
@@ -34,7 +35,8 @@
 </script>
 <!-- <div class="flex flex-col gap-10"> -->
     <Tabs>
-        <TabItem onclick={() => goto('?endpoint=/users', {invalidateAll: true})} classes={{button:"cursor-pointer"}} open={currentTab === "/users"} title="_Users_">
+        {#if data.userPermissions.includes('MANAGE_USERS')}
+        <TabItem onclick={() => goto(`?endpoint=${usersPath}`, {invalidateAll: true})} classes={{button:"cursor-pointer"}} open={currentTab === usersPath} title="_Users_">
             <Heading tag="h2" class="text-center mb-4">{m.admin_users__title()}</Heading>
             <TableView
                     endpoint="/admin/users"
@@ -43,13 +45,17 @@
                     bind:showNewElementModal={showNewElementModal}
             />
         </TabItem>
-        <TabItem onclick={() => goto('?endpoint=/devicebookings', {invalidateAll: true})} classes={{button:"cursor-pointer"}} title="devicebookings" open={currentTab === "/devicebookings"}>
+        {/if}
+        {#if data.userPermissions.includes('MANAGE_DEVICE_BOOKINGS')}
+        <TabItem onclick={() => goto(`?endpoint=${deviceBookingsPath}`, {invalidateAll: true})} classes={{button:"cursor-pointer"}} title="devicebookings" open={currentTab === deviceBookingsPath}>
             <Heading tag="h2" class="text-center mb-4">_Device Booking Management_</Heading>
             <TableView 
-            endpoint="/admin/users"
+            endpoint="/admin/devicebookings"
             headers={devicebookingsHeaders}
-            contentPage={data.page}/>
+            contentPage={data.page}
+            hideAdd={true}/>
         </TabItem>
+        {/if}
     </Tabs>
 <!-- </div> -->
 <NewUserModal bind:showModal={showNewElementModal} />

@@ -26,6 +26,7 @@ abstract class SupportTicketMapper :
         subject = entity.subject,
         description = entity.description,
         status = entity.status,
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 

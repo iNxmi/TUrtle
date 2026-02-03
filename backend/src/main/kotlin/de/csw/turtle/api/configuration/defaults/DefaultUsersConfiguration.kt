@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.transaction.annotation.Transactional
 
-@Order(2)
+@Order(3)
 @Configuration
 class DefaultUsersConfiguration(
     private val userService: UserService,
@@ -31,7 +31,8 @@ class DefaultUsersConfiguration(
             email = "admin@csw.tu-darmstadt.de",
             emojis = "12345",
             password = "admin",
-            roleIds = setOf(adminRole.id)
+            roleIds = setOf(adminRole.id),
+            verified = true
         ))
     }
 

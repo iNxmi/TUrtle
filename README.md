@@ -9,43 +9,61 @@ All commands listed here are run in `/`
 
 ___
 
-# Backend (Spring Boot, Kotlin)
-This is the backend, based on Spring Boot in Kotlin  
-Name: **TUrtleAPI**  
+# Backend (Spring Boot, Kotlin, REST)
+This is the backend, based on Spring Boot in Kotlin. 
 Port: 8080
 
-## application.yml
-```properties
-turtle.api.max_sessions=16
-# 30 * 24 * 60 * 60 = 2_592_000 -> 30 days in seconds
-turtle.api.session_duration_seconds=2_592_000
-turtle.api.session_key={some_super_secret_key}
-```
+**TODO:**
+* make ip not spoofable
+* email sending; noreply@mail.de (verification email, confirmation email(booking, returning, deadline reminder), support confirmation email, password/pin reset email)
+* statistics
+* distinguish prof/student role
+* emoji code checks (no duplicates, no 5 identical emojis)
+* make admins always open door (during all times)
+* document this: rsql, system settings, templates with thymeleaf
+
+`*@stud.tu-darmstadt.de` -> ok
+`*@tu-darmstadt.de` -> ok
+`*@andere.email` -> request
 
 ## Docker Environment
 ```
-DATASOURCE_SERVER: {ip:port}
-DATASOURCE_DATABASE: {database}
-DATASOURCE_USERNAME: {username}
-DATASOURCE_PASSWORD: {password}
-```
+FQDN: ${FQDN}
 
-Based on REST:
+DATASOURCE_SERVER: ${IP:PORT}
+DATASOURCE_DATABASE: ${DATABASE}
+DATASOURCE_USERNAME: ${USERNAME}
+DATASOURCE_PASSWORD: ${PASSWORD}
+
+SMTP_HOST: ${SMTP_HOST}
+SMTP_PORT: ${SMTP_PORT}
+SMTP_USERNAME: ${SMTP_USERNAME}
+SMTP_PASSWORD: ${SMTP_PASSWORD}
+```
 
 ## Structure
 ```
 TUrtle/backend/src/
     main/
         kotlin/de/csw/turtle/
-            config/                 |   configs, security, other things
-            controller/             |   endpoint declarations
-            entity/                 |   database tables in JPA format
-            exception/              |
-            repository/             |   CRUD operations for Entities
-            service/                |   services, for example a JWTService for auth persistance
-            Application.kt          |   main entry point
+            api/
+                components/             |   general uncategorized components
+                configuration/          |   configs, security, other things
+                controller/             |   endpoint declarations
+                dto/                    |   data transfer objects (exposed to the internet)
+                entity/                 |   database tables in JPA format
+                exception/              |   custom exceptions and global exception handler
+                filter/                 |   filters for e.g. auth and rate limiting
+                mapper/                 |   mapping to/from dto and database entities
+                repository/             |   CRUD operations for Entities
+                service/                |   services, for example a JWTService for auth
+            Application.kt              |   main entry point
         resources/
-            application.yml         |   Spring Boot main configuration, keep it secret
+            application.yml             |   Spring Boot main configuration
+    test/kotlin/de/csw/turtle/
+        api/
+            service/
+            controller/
 ```
 
 ## Swagger UI / OpenAPI
@@ -54,14 +72,20 @@ When the TUrtleAPI is running, API endpoint documentation can be accessed and te
 ___
 
 # Frontend (Svelte, JavaScript)
-Name: **TUrtleView**  
 Port: 3000
 
 ## Structure
 ```
 TUrtle/frontend/
-    routes/     |   the different pages
-    lib/        |   reusable components
+    messages/               |   I18n translations
+    src/        
+        routes/             |   the different pages
+        paraglide/          |   autogenerate translation files absed on /messages/
+        lib/                |   reusable components
+        app.css             |   root css document
+        app.html            |   root html document
+    static/                 |   public exposed files (used for fonts, images and other visible stuff)
+    tests/                  |   various tests
 ```
 
 ## Development

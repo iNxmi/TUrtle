@@ -20,6 +20,7 @@ abstract class SystemSettingMapper : CRUDMapper<SystemSettingEntity, CreateSyste
         key = entity.key,
         type = entity.type,
         value = entity.value,
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 

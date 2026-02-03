@@ -8,7 +8,6 @@ data class RegisterUserRequest(
     val firstName: String,
     val lastName: String,
     val email: String,
-    val emojis: String,
     val password: String
 ) {
 
@@ -18,7 +17,7 @@ data class RegisterUserRequest(
         firstName = firstName,
         lastName = lastName,
         email = email,
-        emojis = emojis,
+        emojis = "TODO create random 5 emojis",
         password = passwordEncoder.encode(password)
     )
 

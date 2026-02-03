@@ -13,5 +13,6 @@ data class GetSupportTicketResponse(
     val description: String?,
     val status: SupportTicketEntity.Status?,
 
+    override val updatedAt: Instant?,
     override val createdAt: Instant?
 ) : GetResponse

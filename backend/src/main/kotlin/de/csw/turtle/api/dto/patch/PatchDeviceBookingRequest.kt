@@ -3,7 +3,7 @@ package de.csw.turtle.api.dto.patch
 import de.csw.turtle.api.entity.DeviceBookingEntity
 import java.time.Instant
 
-class PatchDeviceBookingRequest(
+data class PatchDeviceBookingRequest(
     val start: Instant? = null,
     val end: Instant? = null,
     val deviceId: Long? = null,

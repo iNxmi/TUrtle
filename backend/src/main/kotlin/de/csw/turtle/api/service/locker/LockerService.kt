@@ -17,6 +17,4 @@ class LockerService(
 
     fun getByIndex(index: Int) = repository.findByIndex(index)
 
-
-
 }

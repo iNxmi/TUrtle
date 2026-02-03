@@ -10,5 +10,6 @@ class GetSystemSettingResponse(
     val type: SystemSettingEntity.Type?,
     val value: String?,
 
+    override val updatedAt: Instant?,
     override val createdAt: Instant?
 ) : GetResponse

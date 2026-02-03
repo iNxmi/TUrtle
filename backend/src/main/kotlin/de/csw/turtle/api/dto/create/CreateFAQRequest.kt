@@ -1,6 +1,6 @@
 package de.csw.turtle.api.dto.create
 
-class CreateFAQRequest(
+data class CreateFAQRequest(
     val name: String,
     val title: String,
     val content: String

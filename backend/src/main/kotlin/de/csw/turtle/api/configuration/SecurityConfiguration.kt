@@ -1,55 +1,32 @@
 package de.csw.turtle.api.configuration
 
-import de.csw.turtle.TUrtleProperties
-import de.csw.turtle.api.service.CustomUserDetailsService
+import de.csw.turtle.api.filter.JWTAuthFilter
+import de.csw.turtle.api.filter.RateLimitFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.core.session.SessionRegistry
-import org.springframework.security.crypto.factory.PasswordEncoderFactories
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 class SecurityConfiguration(
-    private val properties: TUrtleProperties,
-    private val sessionRegistry: SessionRegistry
+    private val jwtAuthFilter: JWTAuthFilter,
+    private val rateLimitFilter: RateLimitFilter
 ) {
 
     @Bean
-    fun authenticationManager(authConfig: AuthenticationConfiguration): AuthenticationManager =
-        authConfig.authenticationManager
-
-    @Bean
-    fun passwordEncoder(): PasswordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
-
-    @Bean
-    fun filterChain(http: HttpSecurity, userDetailsService: CustomUserDetailsService): SecurityFilterChain {
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { it.disable() }
             .cors { it.disable() }
-
-            .sessionManagement {
-                it.maximumSessions(properties.security.maxSessions)
-                    .sessionRegistry(sessionRegistry)
-                    .maxSessionsPreventsLogin(false)
-
-                it.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-            }
-
-            .anonymous {}
             .authorizeHttpRequests { it.anyRequest().permitAll() }
-            .userDetailsService(userDetailsService)
-
-            .formLogin { it.disable() }
-            .logout { it.disable() }
-            .httpBasic { it.disable() }
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterAfter(rateLimitFilter, JWTAuthFilter::class.java)
 
         return http.build()
     }

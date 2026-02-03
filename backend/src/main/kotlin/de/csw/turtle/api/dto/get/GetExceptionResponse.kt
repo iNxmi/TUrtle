@@ -10,5 +10,6 @@ data class GetExceptionResponse(
     val message: String?,
     val stackTrace: String?,
 
+    override val updatedAt: Instant?,
     override val createdAt: Instant?
 ) : GetResponse

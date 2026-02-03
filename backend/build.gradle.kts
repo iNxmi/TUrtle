@@ -26,7 +26,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-mail")
-    implementation("org.springframework.boot:spring-boot-starter-mustache")
+//    implementation("org.springframework.boot:spring-boot-starter-mustache")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
     implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
@@ -39,9 +40,17 @@ dependencies {
     implementation("io.github.serpro69:kotlin-faker:1.16.0")
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
 
+    implementation("com.bucket4j:bucket4j_jdk17-core:8.16.0")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
+    implementation("org.yaml:snakeyaml:2.5")
+
     kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
 
     runtimeOnly("org.postgresql:postgresql")
+
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

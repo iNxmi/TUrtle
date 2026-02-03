@@ -7,16 +7,15 @@ import jakarta.persistence.*
 class AuditLogEntity(
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    var user: UserEntity,
+    @JoinColumn(name = "user_id")
+    var user: UserEntity?,
 
-    @Column(nullable = false)
     var ipAddress: String,
 
-    @Column(nullable = false)
     var endpoint: String,
 
-    @Column(nullable = false)
+    var status: Int,
+
     @Enumerated(EnumType.STRING)
     var httpMethod: HttpMethod
 

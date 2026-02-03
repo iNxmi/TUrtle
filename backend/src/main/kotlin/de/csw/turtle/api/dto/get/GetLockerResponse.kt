@@ -10,5 +10,6 @@ data class GetLockerResponse(
     val isSoftwareUnlockable: Boolean?,
     val locked: Boolean?,
 
+    override val updatedAt: Instant?,
     override val createdAt: Instant?
 ) : GetResponse

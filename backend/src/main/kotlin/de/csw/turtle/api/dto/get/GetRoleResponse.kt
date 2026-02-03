@@ -9,5 +9,6 @@ data class GetRoleResponse(
     val name: String?,
     val permissions: Set<Permission>?,
 
+    override val updatedAt: Instant?,
     override val createdAt: Instant?
 ) : GetResponse

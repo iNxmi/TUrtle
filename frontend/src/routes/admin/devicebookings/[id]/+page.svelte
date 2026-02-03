@@ -1,5 +1,6 @@
 <script>
     import ItemDetailsPage from "$lib/components/ItemDetailsPage.svelte";
+    import { usersPath, devicesPath} from '$lib/backend'
    
     let { data } = $props();
     
@@ -11,12 +12,12 @@
         {
             name: '_User_',
             value: user.username,
-            endpoint: `/users/${user.id}`
+            endpoint: usersPath+`/${user.id}`
         },
         {
             name: '_Device_',
             value: device.name,
-            endpoint: `/devices/${device.id}`
+            endpoint: devicesPath+`/${device.id}`
         },
         {
             name: '_Start_',
@@ -36,5 +37,5 @@
         }
     ]);
 </script>
-<ItemDetailsPage title='_Devicebookings_' itemId={booking.id} {content} />
+<ItemDetailsPage title='_Devicebookings_' {content} />
 

@@ -11,6 +11,7 @@
     import LockerOpenModal from "$lib/components/LockerOpenModal.svelte";
     import DevicebookingTable from "$lib/components/DevicebookingTable.svelte";
     import { fetchDeviceBookings, convertEventToFrontend } from "$lib/utils";
+    import { deviceBookingsPath } from "$lib/backend";
     let { data } = $props();
     
     let reservations = $derived(data.reservations);
@@ -109,7 +110,8 @@
             deviceId: selectedDevice,
             start: instantBooking ? new Date(Date.now()) : bookingRange.from,
             end: bookingRange.to,
-            userId: data.user.id
+            userId: data.user.id,
+            status: instantBooking ? 'COLLECTION_READY' : 'RESERVED'
         }
         if(!instantBooking){
             newBooking.start.setHours(parseInt(bookingStartTime.substring(0,2)));
@@ -120,7 +122,7 @@
 
      calendar.addEvent(newBooking);
 
-    const response = await request('/devicebookings', {
+    const response = await request(deviceBookingsPath, {
         method: 'POST',
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify(newBooking)
@@ -136,7 +138,8 @@
                resetForm();
     }
 
-           reservations = [...reservations, newBooking];
+           reservations = [...(reservations ?? []), newBooking];
+           
   }
 
     function getDeviceType(){ 

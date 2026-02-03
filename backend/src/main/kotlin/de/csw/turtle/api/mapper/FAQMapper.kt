@@ -20,6 +20,7 @@ abstract class FAQMapper : CRUDMapper<FAQEntity, CreateFAQRequest, GetFAQRespons
         name = entity.name,
         title = entity.title,
         content = entity.markdown,
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 

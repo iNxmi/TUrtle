@@ -1,6 +1,6 @@
 package de.csw.turtle.api.filter
 
-import de.csw.turtle.api.SimpleUserDetails
+import de.csw.turtle.api.CustomUserDetails
 import de.csw.turtle.api.dto.create.CreateAuditLogRequest
 import de.csw.turtle.api.entity.AuditLogEntity
 import de.csw.turtle.api.service.AuditLogService
@@ -26,19 +26,15 @@ class AuditLogFilter(
         filterChain.doFilter(request, response)
 
         val principal = SecurityContextHolder.getContext().authentication?.principal
-        if (principal !is SimpleUserDetails)
-            return
-
-        val success = response.status in 200..<300
-        if (!success)
-            return
-
-        val user = userService.get(principal.username)
+        val userId = if (principal is CustomUserDetails) {
+            userService.getByUsername(principal.username).id
+        } else null
 
         val createAuditLogRequest = CreateAuditLogRequest(
-            userId = user.id,
+            userId = userId,
             ipAddress = request.remoteAddr,
             endpoint = request.requestURI,
+            status = response.status,
             httpMethod = AuditLogEntity.HttpMethod.valueOf(request.method.uppercase())
         )
         auditLogService.create(createAuditLogRequest)

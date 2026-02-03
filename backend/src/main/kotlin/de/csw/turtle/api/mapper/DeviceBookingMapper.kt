@@ -32,8 +32,9 @@ abstract class DeviceBookingMapper : CRUDMapper<DeviceBookingEntity, CreateDevic
         end = entity.end,
         deviceId = entity.device.id,
         userId = entity.user.id,
-        createdAt = entity.createdAt,
-        status = entity.status
+        status = entity.status,
+        updatedAt = entity.updatedAt,
+        createdAt = entity.createdAt
     )
 
     override fun patch(

@@ -1,7 +1,6 @@
 package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -10,26 +9,104 @@ import de.csw.turtle.api.dto.create.CreateDeviceRequest
 import de.csw.turtle.api.dto.get.GetDeviceResponse
 import de.csw.turtle.api.dto.patch.PatchDeviceRequest
 import de.csw.turtle.api.entity.DeviceEntity
+import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.DeviceMapper
 import de.csw.turtle.api.service.DeviceService
-import de.csw.turtle.api.service.PermissionService
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.net.URI
 
 @RestController
 @RequestMapping("/api/devices")
 class DeviceController(
-    override val endpoint: String = "/api/devices",
-
-    override val permissionCreate: Permission = BACKEND__API_DEVICES__CREATE,
-    override val permissionGet: Permission = BACKEND__API_DEVICES__GET,
-    override val permissionPatch: Permission = BACKEND__API_DEVICES__PATCH,
-    override val permissionDelete: Permission = BACKEND__API_DEVICES__DELETE,
-
-    override val service: DeviceService,
-    override val mapper: DeviceMapper,
-    override val permissionService: PermissionService
+    private val deviceService: DeviceService,
+    private val deviceMapper: DeviceMapper,
 ) : CreateController<DeviceEntity, CreateDeviceRequest, GetDeviceResponse>,
     GetController<DeviceEntity, GetDeviceResponse>,
     PatchController<DeviceEntity, PatchDeviceRequest, GetDeviceResponse>,
-    DeleteController<DeviceEntity>
+    DeleteController<DeviceEntity> {
+
+    override fun create(
+        user: UserEntity?,
+        request: CreateDeviceRequest
+    ): ResponseEntity<GetDeviceResponse> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (!user.hasPermission(Permission.MANAGE_DEVICES))
+            throw HttpException.Forbidden()
+
+        val entity = deviceService.create(request)
+        val location = URI.create("/api/devices/${entity.id}")
+        val dto = deviceMapper.get(entity)
+        return ResponseEntity.created(location).body(dto)
+    }
+
+    override fun get(
+        user: UserEntity?,
+        id: Long
+    ): ResponseEntity<GetDeviceResponse> {
+        val entity = deviceService.get(id)
+        val dto = deviceMapper.get(entity)
+        return ResponseEntity.ok(dto)
+    }
+
+    override fun getCollection(
+        user: UserEntity?,
+        rsql: String?,
+        pageNumber: Int?,
+        pageSize: Int,
+        sortProperty: String?,
+        sortDirection: Sort.Direction
+    ): ResponseEntity<Any> {
+        val sort = sortProperty?.let {
+            Sort.by(sortDirection, sortProperty)
+        } ?: Sort.unsorted()
+
+        if (pageNumber != null) {
+            val pageable = PageRequest.of(pageNumber, pageSize, sort)
+            val page = deviceService.getPage(rsql = rsql, pageable = pageable)
+            val dto = page.map { deviceMapper.get(it) }
+            return ResponseEntity.ok(dto)
+        }
+
+        val collection = deviceService.getAll(rsql = rsql, sort = sort).toMutableSet()
+        val dto = collection.map { deviceMapper.get(it) }
+        return ResponseEntity.ok(dto)
+    }
+
+    override fun patch(
+        user: UserEntity?,
+        id: Long,
+        request: PatchDeviceRequest
+    ): ResponseEntity<GetDeviceResponse> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (!user.hasPermission(Permission.MANAGE_DEVICES))
+            throw HttpException.Forbidden()
+
+        val entity = deviceService.patch(id, request)
+        val dto = deviceMapper.get(entity)
+        return ResponseEntity.ok(dto)
+    }
+
+    override fun delete(
+        user: UserEntity?,
+        id: Long
+    ): ResponseEntity<Void> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (!user.hasPermission(Permission.MANAGE_DEVICES))
+            throw HttpException.Forbidden()
+
+        deviceService.delete(id)
+        return ResponseEntity.noContent().build()
+    }
+
+}

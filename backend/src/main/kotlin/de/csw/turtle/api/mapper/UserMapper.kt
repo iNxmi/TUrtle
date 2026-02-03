@@ -21,7 +21,8 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
             lastName = request.lastName,
             email = request.email,
             emojis = request.emojis,
-            password = request.password
+            password = request.password,
+            verified = request.verified
         )
 
         val roles = request.roleIds.map { roleService.get(it) }.toSet()
@@ -38,6 +39,8 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
         email = entity.email,
         emojis = entity.emojis,
         roleIds = entity.roles.map { it.id }.toSet(),
+        verified = entity.verified,
+        updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
 
@@ -52,6 +55,7 @@ abstract class UserMapper : CRUDMapper<UserEntity, CreateUserRequest, GetUserRes
         request.email?.let { entity.email = it }
         request.emojis?.let { entity.emojis = it }
         request.password?.let { entity.password = it }
+        request.verified?.let { entity.verified = it }
 
         if (request.roleIds != null) {
             val roles = request.roleIds.map { roleService.get(it) }.toSet()

@@ -9,5 +9,6 @@ class GetFAQResponse(
     val title: String?,
     val content: String?,
 
+    override val updatedAt: Instant?,
     override val createdAt: Instant?
 ) : GetResponse

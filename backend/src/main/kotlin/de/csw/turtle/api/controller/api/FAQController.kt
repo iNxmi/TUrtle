@@ -1,7 +1,6 @@
 package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.Permission.*
 import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
@@ -10,26 +9,104 @@ import de.csw.turtle.api.dto.create.CreateFAQRequest
 import de.csw.turtle.api.dto.get.GetFAQResponse
 import de.csw.turtle.api.dto.patch.PatchFAQRequest
 import de.csw.turtle.api.entity.FAQEntity
+import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.FAQMapper
 import de.csw.turtle.api.service.FAQService
-import de.csw.turtle.api.service.PermissionService
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.net.URI
 
 @RestController
 @RequestMapping("/api/faq")
 class FAQController(
-    override val endpoint: String = "/api/faq",
-
-    override val permissionCreate: Permission = BACKEND__API_FAQ__CREATE,
-    override val permissionGet: Permission? = null,
-    override val permissionPatch: Permission = BACKEND__API_FAQ__PATCH,
-    override val permissionDelete: Permission = BACKEND__API_FAQ__DELETE,
-
-    override val service: FAQService,
-    override val mapper: FAQMapper,
-    override val permissionService: PermissionService
+    private val faqService: FAQService,
+    private val faqMapper: FAQMapper
 ) : CreateController<FAQEntity, CreateFAQRequest, GetFAQResponse>,
     GetController<FAQEntity, GetFAQResponse>,
     PatchController<FAQEntity, PatchFAQRequest, GetFAQResponse>,
-    DeleteController<FAQEntity>
+    DeleteController<FAQEntity> {
+
+    override fun create(
+        user: UserEntity?,
+        request: CreateFAQRequest
+    ): ResponseEntity<GetFAQResponse> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (!user.hasPermission(Permission.MANAGE_FAQ))
+            throw HttpException.Forbidden()
+
+        val entity = faqService.create(request)
+        val location = URI.create("/api/faq/${entity.id}")
+        val dto = faqMapper.get(entity)
+        return ResponseEntity.created(location).body(dto)
+    }
+
+    override fun get(
+        user: UserEntity?,
+        id: Long
+    ): ResponseEntity<GetFAQResponse> {
+        val entity = faqService.get(id)
+        val dto = faqMapper.get(entity)
+        return ResponseEntity.ok(dto)
+    }
+
+    override fun getCollection(
+        user: UserEntity?,
+        rsql: String?,
+        pageNumber: Int?,
+        pageSize: Int,
+        sortProperty: String?,
+        sortDirection: Sort.Direction
+    ): ResponseEntity<Any> {
+        val sort = sortProperty?.let {
+            Sort.by(sortDirection, sortProperty)
+        } ?: Sort.unsorted()
+
+        if (pageNumber != null) {
+            val pageable = PageRequest.of(pageNumber, pageSize, sort)
+            val page = faqService.getPage(rsql = rsql, pageable = pageable)
+            val dto = page.map { faqMapper.get(it) }
+            return ResponseEntity.ok(dto)
+        }
+
+        val collection = faqService.getAll(rsql = rsql, sort = sort).toMutableSet()
+        val dto = collection.map { faqMapper.get(it) }
+        return ResponseEntity.ok(dto)
+    }
+
+    override fun patch(
+        user: UserEntity?,
+        id: Long,
+        request: PatchFAQRequest
+    ): ResponseEntity<GetFAQResponse> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (!user.hasPermission(Permission.MANAGE_FAQ))
+            throw HttpException.Forbidden()
+
+        val entity = faqService.patch(id, request)
+        val dto = faqMapper.get(entity)
+        return ResponseEntity.ok(dto)
+    }
+
+    override fun delete(
+        user: UserEntity?,
+        id: Long
+    ): ResponseEntity<Void> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (!user.hasPermission(Permission.MANAGE_FAQ))
+            throw HttpException.Forbidden()
+
+        faqService.delete(id)
+        return ResponseEntity.noContent().build()
+    }
+
+}

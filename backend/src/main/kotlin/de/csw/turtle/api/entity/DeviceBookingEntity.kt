@@ -3,9 +3,14 @@ package de.csw.turtle.api.entity
 import jakarta.persistence.*
 import java.time.Instant
 
+@Suppress("unused")
 @Entity
 @Table(name = "device_bookings")
 class DeviceBookingEntity(
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    var user: UserEntity,
 
     @Column(name = "start_time")
     var start: Instant,
@@ -16,10 +21,6 @@ class DeviceBookingEntity(
     @ManyToOne
     @JoinColumn(name = "device_id")
     var device: DeviceEntity,
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    var user: UserEntity,
 
     @Enumerated(EnumType.STRING)
     var status: Status = Status.RESERVED
