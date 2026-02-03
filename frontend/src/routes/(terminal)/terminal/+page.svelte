@@ -106,7 +106,7 @@
                 {#each emoji_rows as row}
                     <div class="emoji-row w-full flex justify-between p-[0.5rem]">
                         {#each row as emoji}
-                            <button type="button" class="key w-[3rem] h-[3rem] rounded-lg bg-neutral-100 text-5xl" onclick={() => addEmoji({emoji})}>{emoji}</button>
+                            <button type="button" class="key w-[3.5rem] h-[3.5rem] rounded-lg bg-neutral-100 text-5xl active:bg-neutral-300" onclick={() => addEmoji({emoji})}>{emoji}</button>
                         {/each}
                     </div>
                 {/each}
