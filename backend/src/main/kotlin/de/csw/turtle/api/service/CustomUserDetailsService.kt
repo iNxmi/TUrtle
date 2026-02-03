@@ -14,7 +14,8 @@ class CustomUserDetailsService(
 
     @Transactional
     override fun loadUserByUsername(username: String): UserDetails {
-        val user = userService.getByUsernameOrNull(username) ?: throw HttpException.Unauthorized()
+        val user = userService.getByUsernameOrNull(username)
+            ?: throw HttpException.Unauthorized()
 
         return CustomUserDetails(
             userId = user.id,

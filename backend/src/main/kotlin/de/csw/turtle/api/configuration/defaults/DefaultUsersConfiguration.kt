@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.transaction.annotation.Transactional
 
-@Order(2)
+@Order(3)
 @Configuration
 class DefaultUsersConfiguration(
     private val userService: UserService,

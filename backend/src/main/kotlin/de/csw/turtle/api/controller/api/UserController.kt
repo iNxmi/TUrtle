@@ -33,13 +33,21 @@ class UserController(
         user: UserEntity?,
         request: CreateUserRequest
     ): ResponseEntity<GetUserResponse> {
-        if (user == null)
-            throw HttpException.Unauthorized()
+        val sanitized = if (user == null) {
+            CreateUserRequest(
+                username = request.username,
+                firstName = request.firstName,
+                lastName = request.lastName,
+                email = request.email,
+                emojis = System.currentTimeMillis().toString(),
+                password = request.password
+            )
+            //TODO CHANGE EMOJI GEN
+        } else if (user.hasPermission(Permission.MANAGE_USERS)) {
+            request
+        } else throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_USERS))
-            throw HttpException.Forbidden()
-
-        val entity = userService.create(request)
+        val entity = userService.create(sanitized)
         val location = URI.create("/api/users/${entity.id}")
         val dto = userMapper.get(entity)
         return ResponseEntity.created(location).body(dto)

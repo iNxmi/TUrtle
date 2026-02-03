@@ -86,16 +86,6 @@ class AuthController(
         return ResponseEntity.ok(dto)
     }
 
-    @PostMapping("/register")
-    fun register(
-        @RequestBody request: RegisterUserRequest
-    ): ResponseEntity<GetUserResponse> {
-        val entity = authService.register(request)
-        val dto = userMapper.get(entity)
-        val location = URI.create("/api/users/${entity.id}")
-        return ResponseEntity.created(location).body(dto)
-    }
-
     @PostMapping("/login")
     fun login(
         @RequestBody request: LoginUserRequest,

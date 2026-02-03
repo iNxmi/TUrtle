@@ -9,7 +9,6 @@ import de.csw.turtle.api.entity.SystemSettingEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.SystemSettingMapper
 import de.csw.turtle.api.repository.SystemSettingRepository
-import de.csw.turtle.api.service.locker.LockerService
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
@@ -22,20 +21,6 @@ class SystemSettingService(
     override val mapper: SystemSettingMapper,
 
     val objectMapper: ObjectMapper,
-
-    val auditLogService: AuditLogService,
-    val deviceBookingService: DeviceBookingService,
-    val deviceCategoryService: DeviceCategoryService,
-    val deviceService: DeviceService,
-    val exceptionService: ExceptionService,
-    val faqService: FAQService,
-    val lockerService: LockerService,
-    val roleService: RoleService,
-    val roomBookingService: RoomBookingService,
-    val supportTicketService: SupportTicketService,
-    val generalTemplateService: GeneralTemplateService,
-    val emailTemplateService: EmailTemplateService,
-    val userService: UserService
 ) : CRUDService<SystemSettingEntity, CreateSystemSettingRequest, GetSystemSettingResponse, PatchSystemSettingRequest>("SystemSetting") {
 
     final inline fun <reified T> getTyped(key: String): T {
@@ -75,21 +60,6 @@ class SystemSettingService(
             SystemSettingEntity.Type.TIME -> LocalTime.parse(value)
             SystemSettingEntity.Type.INSTANT -> Instant.parse(value)
             SystemSettingEntity.Type.DURATION -> Duration.parse(value)
-
-            SystemSettingEntity.Type.AUDIT_LOG_ENTITY_REFERENCE -> auditLogService.get(value.toLong())
-            SystemSettingEntity.Type.DEVICE_BOOKING_ENTITY_REFERENCE -> deviceBookingService.get(value.toLong())
-            SystemSettingEntity.Type.DEVICE_CATEGORY_ENTITY_REFERENCE -> deviceCategoryService.get(value.toLong())
-            SystemSettingEntity.Type.DEVICE_ENTITY_REFERENCE -> deviceService.get(value.toLong())
-            SystemSettingEntity.Type.EXCEPTION_ENTITY_REFERENCE -> exceptionService.get(value.toLong())
-            SystemSettingEntity.Type.FAQ_ENTITY_REFERENCE -> faqService.get(value.toLong())
-            SystemSettingEntity.Type.LOCKER_ENTITY_REFERENCE -> lockerService.get(value.toLong())
-            SystemSettingEntity.Type.ROLE_ENTITY_REFERENCE -> roleService.get(value.toLong())
-            SystemSettingEntity.Type.ROOM_BOOKING_ENTITY_REFERENCE -> roomBookingService.get(value.toLong())
-            SystemSettingEntity.Type.SUPPORT_TICKET_ENTITY_REFERENCE -> supportTicketService.get(value.toLong())
-            SystemSettingEntity.Type.SYSTEM_SETTING_ENTITY_REFERENCE -> get(value.toLong())
-            SystemSettingEntity.Type.GENERAL_TEMPLATE_ENTITY_REFERENCE -> generalTemplateService.get(value.toLong())
-            SystemSettingEntity.Type.EMAIL_TEMPLATE_ENTITY_REFERENCE -> emailTemplateService.get(value.toLong())
-            SystemSettingEntity.Type.USER_ENTITY_REFERENCE -> userService.get(value.toLong())
         }
     } catch (exception: Exception) {
         throw HttpException.BadRequest("Error parsing system setting with key '$key' -> ${exception.message}")

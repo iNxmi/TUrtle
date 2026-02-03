@@ -1,69 +1,24 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.dto.LoginUserRequest
-import de.csw.turtle.api.dto.RegisterUserRequest
-import de.csw.turtle.api.dto.create.CreateUserRequest
-import de.csw.turtle.api.entity.EmailTemplateEntity
-import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.thymeleaf.context.Context
-import java.time.Duration
 
 @Service
 class AuthService(
     private val userService: UserService,
     private val authenticationManager: AuthenticationManager,
     private val customUserDetailsService: CustomUserDetailsService,
-    private val jwtService: JWTService,
-    private val emailService: EmailService,
-    private val systemSettingService: SystemSettingService,
-    private val thymeleafService: ThymeleafService
+    private val jwtService: JWTService
 ) {
 
     data class TokenPair(
         val accessToken: String,
         val refreshToken: String
     )
-
-    @Transactional
-    fun register(
-        request: RegisterUserRequest
-    ): UserEntity {
-
-        //TODO implement random emojis
-
-        val createUserRequest = CreateUserRequest(
-            username = request.username,
-            firstName = request.firstName,
-            lastName = request.lastName,
-            email = request.email,
-            emojis = "TODO IMPLEMENT RANDOM EMOJI SOMEHOW",
-            password = request.password,
-        )
-
-        val entity = userService.create(createUserRequest)
-
-        val context = Context().apply {
-            val fqdn = systemSettingService.getTyped<String>("general.fqdn")
-            val duration = systemSettingService.getTyped<Duration>("user.verification.duration")
-
-            setVariable("url", "https://$fqdn/api/auth/verify?token=${entity.verificationToken}")
-            setVariable("user", entity)
-            setVariable("duration", duration)
-            setVariable("expiration", entity.createdAt.plusMillis(duration.toMillis()))
-        }
-
-        val template = systemSettingService.getTyped<EmailTemplateEntity>("email.template.verify")
-        val subject = thymeleafService.getRendered(template.subject, context)
-        val content = thymeleafService.getRendered(template.content, context)
-        emailService.sendHtmlEmail(entity.email, subject, content)
-
-        return entity
-    }
 
     @Transactional
     fun login(
@@ -81,6 +36,10 @@ class AuthService(
         }
 
         val userDetails = customUserDetailsService.loadUserByUsername(request.username)
+        val user = userService.getByUsername(userDetails.username)
+
+        if (!user.verified)
+            throw HttpException.Forbidden("Please verify your account.")
 
         val accessToken = jwtService.generateAccessToken(userDetails)
         val refreshToken = jwtService.generateRefreshToken(userDetails)

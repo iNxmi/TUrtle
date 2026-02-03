@@ -31,12 +31,12 @@ class DefaultSystemSettingsConfiguration(
 
     private fun setDefaultGeneralTemplate(key: String, name: String) {
         val generalTemplate = generalTemplateService.getByNameOrNull(name) ?: return
-        setDefault(key, SystemSettingEntity.Type.GENERAL_TEMPLATE_ENTITY_REFERENCE, generalTemplate.id.toString())
+        setDefault(key, SystemSettingEntity.Type.LONG, generalTemplate.id.toString())
     }
 
     private fun setDefaultEmailTemplate(key: String, name: String) {
         val emailTemplate = emailTemplateService.getByNameOrNull(name) ?: return
-        setDefault(key, SystemSettingEntity.Type.EMAIL_TEMPLATE_ENTITY_REFERENCE, emailTemplate.id.toString())
+        setDefault(key, SystemSettingEntity.Type.LONG, emailTemplate.id.toString())
     }
 
     private fun randomBase64(size: Int = 64): String {

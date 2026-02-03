@@ -1,4 +1,4 @@
-package de.csw.turtle.schedule
+package de.csw.turtle.api.schedule
 
 import de.csw.turtle.api.service.SystemSettingService
 import de.csw.turtle.api.service.UserService

@@ -20,7 +20,11 @@ Port: 8080
 * distinguish prof/student role
 * emoji code checks (no duplicates, no 5 identical emojis)
 * make admins always open door (during all times)
-* document this: rsql, system settings, templates with mustache
+* document this: rsql, system settings, templates with thymeleaf
+
+`*@stud.tu-darmstadt.de` -> ok
+`*@tu-darmstadt.de` -> ok
+`*@andere.email` -> request
 
 ## Docker Environment
 ```
