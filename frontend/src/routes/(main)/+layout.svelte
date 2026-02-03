@@ -96,7 +96,12 @@
     }
 
    async function logOut(){
-        const response = await request('/auth/logout');
+        const response = await request('/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         if(response.ok){
             goto('/',{invalidateAll: true});
         }
