@@ -1,7 +1,22 @@
 import {dev} from '$app/environment';
+import {jwtRefreshPath} from '$lib/backend';
+import {redirect} from '@sveltejs/kit';
 
 export default async function request(url, options) {
     const prefix = dev ? "dev/api" : "api";
     const endpoint = `/${prefix}${url}`;
-    return fetch(endpoint, options);
+
+    const response = await fetch(endpoint, options);
+    if (response.status !== 401)
+        return response
+
+    const refreshResponse = await fetch(`/${prefix}${jwtRefreshPath}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'}
+    });
+
+    if (refreshResponse.status === 401)
+        redirect(307, '/auth/login');
+
+    return await fetch(endpoint, options);
 }
