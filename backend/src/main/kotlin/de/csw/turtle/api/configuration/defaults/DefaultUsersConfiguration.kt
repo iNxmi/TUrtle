@@ -19,21 +19,23 @@ class DefaultUsersConfiguration(
 
     @Transactional
     override fun run(vararg args: String?) {
-        if(userService.count() > 0)
+        if (userService.count() > 0)
             return
 
         val adminRole = roleService.getByName("Administrator")
 
-        userService.create(CreateUserRequest(
-            username="admin",
-            firstName="Admin",
-            lastName="Admin",
-            email = "admin@csw.tu-darmstadt.de",
-            emojis = "12345",
-            password = "admin",
-            roleIds = setOf(adminRole.id),
-            verified = true
-        ))
+        userService.create(
+            CreateUserRequest(
+                username = "admin",
+                firstName = "Admin",
+                lastName = "Admin",
+                email = "admin@csw.tu-darmstadt.de",
+                emojis = "💩💩💩💩💩",
+                password = "admin",
+                roleIds = setOf(adminRole.id),
+                verified = true
+            )
+        )
     }
 
 }
