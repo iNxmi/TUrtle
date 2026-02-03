@@ -20,8 +20,11 @@ class RoomBookingService(
     private val maxDescriptionLength = 2048
 
     override fun create(request: CreateRoomBookingRequest): RoomBookingEntity {
-        if (request.title.isBlank())
-            throw HttpException.BadRequest("Title cannot be blank.")
+        if (request.title.isBlank() || request.title.length > maxTitleLength)
+            throw HttpException.BadRequest("Title cannot be blank or exceed $maxTitleLength characters.")
+
+        if(request.description.length > maxDescriptionLength)
+            throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
 
         if (request.start == request.end)
             throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
@@ -39,8 +42,12 @@ class RoomBookingService(
         val original = get(id)
 
         if (request.title != null)
-            if (request.title.isBlank())
-                throw HttpException.BadRequest("Title cannot be blank.")
+            if (request.title.isBlank() || request.title.length > maxTitleLength)
+                throw HttpException.BadRequest("Title cannot be blank or exceed $maxTitleLength characters.")
+
+        if(request.description != null)
+            if(request.description.length > maxDescriptionLength)
+                throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
 
         if (request.start != null && request.end != null) {
             if (request.start.isAfter(request.end)) {
