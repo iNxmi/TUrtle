@@ -12,10 +12,12 @@ interface DeviceBookingRepository : CRUDRepository<DeviceBookingEntity>{
         WHERE ((r.start >= :start AND r.start <= :end)
         OR    (r.end <= :end AND r.end >= :start))
         AND   (r.device = :device)
+        AND   (r.id != :id)
     """)
     fun findAllOverlapping(
         @Param("start") start: Instant,
         @Param("end") end: Instant,
-        @Param("device") device: DeviceEntity
+        @Param("device") device: DeviceEntity,
+        @Param("id") id: Long
     ): Set<DeviceBookingEntity>
 }

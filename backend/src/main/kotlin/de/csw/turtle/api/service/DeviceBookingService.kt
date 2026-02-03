@@ -25,7 +25,7 @@ class DeviceBookingService(
         if (request.start.isAfter(request.end))
             throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${request.end}'.")
 
-        if(getAllOverlapping(request.start, request.end, request.deviceId).isNotEmpty()) {
+        if(getAllOverlapping(request.start, request.end, request.deviceId, -1).isNotEmpty()) {
             throw HttpException.Conflict("Device with ID '${request.deviceId}' is already booked between '${request.start}' and '${request.end}'")
         }
 
@@ -41,13 +41,13 @@ class DeviceBookingService(
             } else if (request.start == request.end) {
                 throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
             } else if(request.deviceId != null){
-                if(getAllOverlapping(request.start,request.end,request.deviceId).isNotEmpty()){
+                if(getAllOverlapping(request.start,request.end,request.deviceId, id).isNotEmpty()){
                     //Eventuell Probleme wenn man versucht die Zeit so zu patchen, dass es mit der alten überlappt?
                     //Nochmal überlegen wenn request.deviceId == original.device.id
                     throw HttpException.Conflict("Device with ID '${request.deviceId}' is already booked between '${request.start}' and '${request.end}'")
                 }
             } else {
-                if(getAllOverlapping(request.start,request.end,original.device.id).isNotEmpty()){
+                if(getAllOverlapping(request.start,request.end,original.device.id, id).isNotEmpty()){
                     throw HttpException.Conflict("Device with ID '${original.device.id}' is already booked between '${request.start}' and '${request.end}'")
                 }
             }
@@ -63,7 +63,7 @@ class DeviceBookingService(
         return super.patch(id, request)
     }
 
-    fun getAllOverlapping(start: Instant, end: Instant,device: Long ): Set<DeviceBookingEntity> =
-        repository.findAllOverlapping(start, end, deviceService.get(device))
+    fun getAllOverlapping(start: Instant, end: Instant,device: Long , id: Long): Set<DeviceBookingEntity> =
+        repository.findAllOverlapping(start, end, deviceService.get(device), id)
 
 }
