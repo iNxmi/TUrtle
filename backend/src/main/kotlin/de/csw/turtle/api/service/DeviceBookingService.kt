@@ -42,6 +42,8 @@ class DeviceBookingService(
                 throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
             } else if(request.deviceId != null){
                 if(getAllOverlapping(request.start,request.end,request.deviceId).isNotEmpty()){
+                    //Eventuell Probleme wenn man versucht die Zeit so zu patchen, dass es mit der alten überlappt?
+                    //Nochmal überlegen wenn request.deviceId == original.device.id
                     throw HttpException.Conflict("Device with ID '${request.deviceId}' is already booked between '${request.start}' and '${request.end}'")
                 }
             } else {
