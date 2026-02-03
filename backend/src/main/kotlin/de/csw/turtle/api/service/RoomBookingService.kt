@@ -29,7 +29,7 @@ class RoomBookingService(
         if (request.start.isAfter(request.end))
             throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${request.end}'.")
 
-        if (getAllOverlapping(request.start, request.end).isNotEmpty())
+        if (getAllOverlapping(request.start, request.end, -1).isNotEmpty())
             throw HttpException.Conflict("Room is already booked from '${request.start}' to '${request.end}'.")
 
         return super.create(request)
@@ -47,7 +47,7 @@ class RoomBookingService(
                 throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${request.end}'.")
             } else if (request.start == request.end) {
                 throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
-            } else if (getAllOverlapping(request.start, request.end).isNotEmpty()) {
+            } else if (getAllOverlapping(request.start, request.end, id).isNotEmpty()) {
                 throw HttpException.Conflict("Room is already booked from start '${request.start}' to end '${request.end}'.")
             }
         }
@@ -61,7 +61,7 @@ class RoomBookingService(
         return super.patch(id, request)
     }
 
-    fun getAllOverlapping(start: Instant, end: Instant): Set<RoomBookingEntity> =
-        repository.findAllOverlapping(start, end)
+    fun getAllOverlapping(start: Instant, end: Instant, id: Long): Set<RoomBookingEntity> =
+        repository.findAllOverlapping(start, end, id)
 
 }

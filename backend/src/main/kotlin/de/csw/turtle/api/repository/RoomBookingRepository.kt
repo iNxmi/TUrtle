@@ -8,11 +8,13 @@ import java.time.Instant
 interface RoomBookingRepository : CRUDRepository<RoomBookingEntity>{
     @Query("""
         SELECT r FROM RoomBookingEntity r
-        WHERE (r.start >= :start AND r.start <= :end)
-        OR    (r.end <= :end AND r.end >= :start)
+        WHERE ((r.start >= :start AND r.start <= :end)
+        OR    (r.end <= :end AND r.end >= :start))
+        AND   (r.id != :id)
     """)
     fun findAllOverlapping(
         @Param("start") start: Instant,
-        @Param("end") end: Instant
+        @Param("end") end: Instant,
+        @Param("id") id: Long
     ): Set<RoomBookingEntity>
 }
