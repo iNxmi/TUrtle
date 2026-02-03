@@ -1,6 +1,7 @@
 <script>
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
     import { Button, Modal } from "flowbite-svelte";
+    import request from "$lib/api/api.js";
 
     let emojis = $state(["😈", "😃", "🎩", "👽", "💩", "❤️", "💎", "👂", "👍", "🐋", "🐶", "🐸", "❄", "🎉", "💿",
                     "🍉", "☎", "🎥", "✂", "⚽", "🚀", "💄", "🌂", "🍄", "🍀", "🚗", "🍕", "🍔", "🍨", "💣","🐧", "💼", "🌍", "🐝", "🏠", "⏰"]);
@@ -35,10 +36,19 @@
     }
 
     //richtige Backend logik noch implementieren
-    const submitInput = () => {
+    async function submitInput(){
         console.log(getPassword());
         password = ["", "", "", "", ""];
         password_index = 0;
+
+        const payload = {
+            emojis: getPassword()
+        };
+        const response = await request('/hardware/emojis', {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: {'Content-Type': 'application/json'}
+        });    
     }
     $inspect(password);
 
