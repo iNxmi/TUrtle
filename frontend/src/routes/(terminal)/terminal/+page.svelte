@@ -92,7 +92,7 @@
         <div class="login-box bg-neutral-100 rounded-xl shadow-xl border-1 border-neutral-300 w-[70vw] max-w-[40rem] h-[95vh] flex flex-col justify-around items-center p-10">
             <div class="input-row rounded-xl w-full bg-[white] flex justify-between p-[0.5rem] mb-[2rem]">
                 {#each password as emoji}
-                    <span class="text-4xl">
+                    <span class="text-5xl">
 	                    {#if emoji === ''}
 		                    🐵
 	                    {:else}
@@ -100,7 +100,7 @@
 	                    {/if}
                     </span>
                 {/each}
-                <button type = "button" class="text-4xl" onclick={backspace}>🔙</button>
+                <button type = "button" class="text-5xl" onclick={backspace}>🔙</button>
             </div>
             <div class="emoji-keyboard w-full h-full flex flex-col justify-around">
                 {#each emoji_rows as row}
