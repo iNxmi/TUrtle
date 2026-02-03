@@ -20,8 +20,11 @@ class RoomBookingService(
     private val maxDescriptionLength = 2048
 
     override fun create(request: CreateRoomBookingRequest): RoomBookingEntity {
-        if (request.title.isBlank())
-            throw HttpException.BadRequest("Title cannot be blank.")
+        if (request.title.isBlank() || request.title.length > maxTitleLength)
+            throw HttpException.BadRequest("Title cannot be blank or exceed $maxTitleLength characters.")
+
+        if(request.description.length > maxDescriptionLength)
+            throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
 
         if (request.start == request.end)
             throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
@@ -29,7 +32,7 @@ class RoomBookingService(
         if (request.start.isAfter(request.end))
             throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${request.end}'.")
 
-        if (getAllOverlapping(request.start, request.end).isNotEmpty())
+        if (getAllOverlapping(request.start, request.end, -1).isNotEmpty())
             throw HttpException.Conflict("Room is already booked from '${request.start}' to '${request.end}'.")
 
         return super.create(request)
@@ -39,15 +42,19 @@ class RoomBookingService(
         val original = get(id)
 
         if (request.title != null)
-            if (request.title.isBlank())
-                throw HttpException.BadRequest("Title cannot be blank.")
+            if (request.title.isBlank() || request.title.length > maxTitleLength)
+                throw HttpException.BadRequest("Title cannot be blank or exceed $maxTitleLength characters.")
+
+        if(request.description != null)
+            if(request.description.length > maxDescriptionLength)
+                throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
 
         if (request.start != null && request.end != null) {
             if (request.start.isAfter(request.end)) {
                 throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${request.end}'.")
             } else if (request.start == request.end) {
                 throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
-            } else if (getAllOverlapping(request.start, request.end).isNotEmpty()) {
+            } else if (getAllOverlapping(request.start, request.end, id).isNotEmpty()) {
                 throw HttpException.Conflict("Room is already booked from start '${request.start}' to end '${request.end}'.")
             }
         }
@@ -61,7 +68,7 @@ class RoomBookingService(
         return super.patch(id, request)
     }
 
-    fun getAllOverlapping(start: Instant, end: Instant): Set<RoomBookingEntity> =
-        repository.findAllOverlapping(start, end)
+    fun getAllOverlapping(start: Instant, end: Instant, id: Long): Set<RoomBookingEntity> =
+        repository.findAllOverlapping(start, end, id)
 
 }
