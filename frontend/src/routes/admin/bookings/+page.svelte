@@ -100,7 +100,7 @@
 		calendar = new Calendar(calendarEl, {
 			plugins: [timeGridPlugin, listPlugin, interactionPlugin],
 			locale: 'de',
-			height: window.innerHeight - 80,
+			height: window.innerHeight - 135,
 			editable: true,
 			events: async function(info, successCallback, failureCallback) {
 				const fetchedData = await fetchRoomBookings(info);
