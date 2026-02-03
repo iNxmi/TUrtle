@@ -37,7 +37,6 @@
 
     //richtige Backend logik noch implementieren
     async function submitInput(){
-        console.log(getPassword());
         password = ["", "", "", "", ""];
         password_index = 0;
 
