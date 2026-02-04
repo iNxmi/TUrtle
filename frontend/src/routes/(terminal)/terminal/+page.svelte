@@ -86,7 +86,7 @@
 <div class="flex">
     <div class="flex flex-col gap-2 justify-between bg-neutral-100 w-[25vw] h-screen p-4 pb-1 pt-2">
         <div class="flex flex-col items-center">
-            <TUrtleLogo/>
+            <TUrtleLogo path="/terminal"/>
         </div>
         <div>
             <div class="flex fkex-col w-full aspect-square rounded-xl bg-[#FF6A00] justify-center items-center">
