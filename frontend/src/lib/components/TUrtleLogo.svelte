@@ -3,8 +3,16 @@
     import {page} from "$app/state";
     import {goto} from "$app/navigation";
 
-    let {path = "/"} = $props();
+    const {path = "/"} = $props();
     let canRotate = $state(true);
+    let clickCount = $state(0)
+    let clickGoal = getRandomInt(5, 9)
+
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);   // round min up
+        max = Math.floor(max);  // round max down
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
     function rotate(event) {
         event.preventDefault();
@@ -13,6 +21,9 @@
             goto(path, {invalidateAll: true});
             return;
         }
+
+        if (!canRotate)
+            return;
 
         const animation = "animate-spin";
         const element = event.currentTarget;
@@ -23,6 +34,13 @@
             canRotate = true;
         }, 1000);
         canRotate = false;
+        clickCount++;
+
+        if (clickCount >= clickGoal) {
+            console.log("trigger easter egg")
+            clickCount = 0;
+            clickGoal = getRandomInt(5, 9)
+        }
     }
 </script>
 
