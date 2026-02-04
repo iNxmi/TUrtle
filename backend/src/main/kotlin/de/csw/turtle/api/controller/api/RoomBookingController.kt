@@ -27,7 +27,7 @@ class RoomBookingController(
     private val roomBookingService: RoomBookingService,
     private val roomBookingMapper: RoomBookingMapper
 ) : CreateController<RoomBookingEntity, CreateRoomBookingRequest, GetRoomBookingResponse>,
-    GetController<RoomBookingEntity, GetRoomBookingResponse>,
+    GetController<RoomBookingEntity, Long, GetRoomBookingResponse>,
     PatchController<RoomBookingEntity, PatchRoomBookingRequest, GetRoomBookingResponse>,
     DeleteController<RoomBookingEntity> {
 
@@ -60,9 +60,9 @@ class RoomBookingController(
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: Long
     ): ResponseEntity<GetRoomBookingResponse> {
-        val entity = roomBookingService.get(id)
+        val entity = roomBookingService.get(variable)
         val dto = roomBookingMapper.get(entity)
         return ResponseEntity.ok(dto)
     }

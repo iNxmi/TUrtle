@@ -27,7 +27,7 @@ class RoleController(
     private val roleService: RoleService,
     private val roleMapper: RoleMapper,
 ) : CreateController<RoleEntity, CreateRoleRequest, GetRoleResponse>,
-    GetController<RoleEntity, GetRoleResponse>,
+    GetController<RoleEntity, Long, GetRoleResponse>,
     PatchController<RoleEntity, PatchRoleRequest, GetRoleResponse>,
     DeleteController<RoleEntity> {
 
@@ -49,12 +49,12 @@ class RoleController(
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: Long
     ): ResponseEntity<GetRoleResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val entity = roleService.get(id)
+        val entity = roleService.get(variable)
         if (!user.roles.contains(entity))
             throw HttpException.Forbidden()
 

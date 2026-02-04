@@ -26,7 +26,7 @@ class FAQController(
     private val faqService: FAQService,
     private val faqMapper: FAQMapper
 ) : CreateController<FAQEntity, CreateFAQRequest, GetFAQResponse>,
-    GetController<FAQEntity, GetFAQResponse>,
+    GetController<FAQEntity, Long, GetFAQResponse>,
     PatchController<FAQEntity, PatchFAQRequest, GetFAQResponse>,
     DeleteController<FAQEntity> {
 
@@ -48,9 +48,9 @@ class FAQController(
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: Long
     ): ResponseEntity<GetFAQResponse> {
-        val entity = faqService.get(id)
+        val entity = faqService.get(variable)
         val dto = faqMapper.get(entity)
         return ResponseEntity.ok(dto)
     }

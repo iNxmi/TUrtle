@@ -27,7 +27,7 @@ class DeviceBookingController(
     private val deviceBookingService: DeviceBookingService,
     private val deviceBookingMapper: DeviceBookingMapper
 ) : CreateController<DeviceBookingEntity, CreateDeviceBookingRequest, GetDeviceBookingResponse>,
-    GetController<DeviceBookingEntity, GetDeviceBookingResponse>,
+    GetController<DeviceBookingEntity, Long, GetDeviceBookingResponse>,
     PatchController<DeviceBookingEntity, PatchDeviceBookingRequest, GetDeviceBookingResponse>,
     DeleteController<DeviceBookingEntity> {
 
@@ -58,12 +58,12 @@ class DeviceBookingController(
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: Long
     ): ResponseEntity<GetDeviceBookingResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val entity = deviceBookingService.get(id)
+        val entity = deviceBookingService.get(variable)
 
         if (!user.hasPermission(Permission.MANAGE_DEVICE_BOOKINGS))
             if (entity.user != user)

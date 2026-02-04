@@ -26,7 +26,7 @@ class GeneralTemplateController(
     private val generalTemplateService: GeneralTemplateService,
     private val generalTemplateMapper: GeneralTemplateMapper
 ) : CreateController<GeneralTemplateEntity, CreateGeneralTemplateRequest, GetGeneralTemplateResponse>,
-    GetController<GeneralTemplateEntity, GetGeneralTemplateResponse>,
+    GetController<GeneralTemplateEntity, Long, GetGeneralTemplateResponse>,
     PatchController<GeneralTemplateEntity, PatchGeneralTemplateRequest, GetGeneralTemplateResponse>,
     DeleteController<GeneralTemplateEntity> {
 
@@ -48,7 +48,7 @@ class GeneralTemplateController(
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: Long
     ): ResponseEntity<GetGeneralTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -56,7 +56,7 @@ class GeneralTemplateController(
         if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = generalTemplateService.get(id)
+        val entity = generalTemplateService.get(variable)
         val dto = generalTemplateMapper.get(entity)
         return ResponseEntity.ok(dto)
     }

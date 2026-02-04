@@ -26,7 +26,7 @@ class LockerController(
     private val lockerService: LockerService,
     private val lockerMapper: LockerMapper
 ) : CreateController<LockerEntity, CreateLockerRequest, GetLockerResponse>,
-    GetController<LockerEntity, GetLockerResponse>,
+    GetController<LockerEntity, Long, GetLockerResponse>,
     PatchController<LockerEntity, PatchLockerRequest, GetLockerResponse>,
     DeleteController<LockerEntity> {
 
@@ -48,9 +48,9 @@ class LockerController(
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: Long
     ): ResponseEntity<GetLockerResponse> {
-        val entity = lockerService.get(id)
+        val entity = lockerService.get(variable)
         val dto = lockerMapper.get(entity)
         return ResponseEntity.ok(dto)
     }

@@ -33,11 +33,8 @@ class AuthService(
 //            throw HttpException.Unauthorized("Invalid username or password.")
 //        }
 
-        val user = userService.getByUsernameOrNull(request.emailOrUsername)
-            ?: userService.getByEmailOrNull(request.emailOrUsername)
-
-        if (user == null)
-            throw HttpException.Unauthorized("Invalid username or password.")
+        val user = userService.getByEmailOrUsernameOrNull(request.emailOrUsername)
+            ?: throw HttpException.Unauthorized("Invalid username or password.")
 
         if (!passwordEncoder.matches(request.password, user.password))
             throw HttpException.Unauthorized("Invalid username or password.")

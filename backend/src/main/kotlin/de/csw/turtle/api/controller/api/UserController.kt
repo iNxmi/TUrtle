@@ -25,7 +25,7 @@ class UserController(
     private val userService: UserService,
     private val userMapper: UserMapper
 ) : CreateController<UserEntity, CreateUserRequest, GetUserResponse>,
-    GetController<UserEntity, GetUserResponse>,
+    GetController<UserEntity, String, GetUserResponse>,
     PatchController<UserEntity, PatchUserRequest, GetUserResponse>,
     DeleteController<UserEntity> {
 
@@ -55,12 +55,18 @@ class UserController(
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: String
     ): ResponseEntity<GetUserResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val entity = userService.get(id)
+        val id = variable.toLongOrNull()
+        val entity = if(id != null) {
+            userService.get(id)
+        } else {
+            userService.getByUsername(variable)
+        }
+
         if (!user.hasPermission(Permission.MANAGE_USERS))
             if (entity.id != user.id)
                 throw HttpException.Forbidden()

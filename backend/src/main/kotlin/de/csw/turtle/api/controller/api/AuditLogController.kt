@@ -21,16 +21,16 @@ import org.springframework.web.bind.annotation.RestController
 class AuditLogController(
     private val auditLogService: AuditLogService,
     private val auditLogMapper: AuditLogMapper
-) : GetController<AuditLogEntity, GetAuditLogResponse> {
+) : GetController<AuditLogEntity, Long, GetAuditLogResponse> {
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: Long
     ): ResponseEntity<GetAuditLogResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val entity = auditLogService.get(id)
+        val entity = auditLogService.get(variable)
         if (!user.hasPermission(Permission.MANAGE_AUDIT_LOGS))
             if (entity.user != user)
                 throw HttpException.Forbidden()

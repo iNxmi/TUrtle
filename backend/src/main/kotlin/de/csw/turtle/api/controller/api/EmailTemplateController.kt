@@ -26,7 +26,7 @@ class EmailTemplateController(
     private val emailTemplateService: EmailTemplateService,
     private val emailTemplateMapper: EmailTemplateMapper
 ) : CreateController<EmailTemplateEntity, CreateEmailTemplateRequest, GetEmailTemplateResponse>,
-    GetController<EmailTemplateEntity, GetEmailTemplateResponse>,
+    GetController<EmailTemplateEntity, Long, GetEmailTemplateResponse>,
     PatchController<EmailTemplateEntity, PatchEmailTemplateRequest, GetEmailTemplateResponse>,
     DeleteController<EmailTemplateEntity> {
 
@@ -48,7 +48,7 @@ class EmailTemplateController(
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: Long
     ): ResponseEntity<GetEmailTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -56,7 +56,7 @@ class EmailTemplateController(
         if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = emailTemplateService.get(id)
+        val entity = emailTemplateService.get(variable)
         val dto = emailTemplateMapper.get(entity)
         return ResponseEntity.ok(dto)
     }

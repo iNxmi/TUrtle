@@ -21,12 +21,12 @@ class ExceptionController(
     private val exceptionService: ExceptionService,
     private val exceptionMapper: ExceptionMapper
 ) :
-    GetController<ExceptionEntity, GetExceptionResponse>,
+    GetController<ExceptionEntity, Long, GetExceptionResponse>,
     DeleteController<ExceptionEntity> {
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: Long
     ): ResponseEntity<GetExceptionResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -34,7 +34,7 @@ class ExceptionController(
         if (!user.hasPermission(Permission.MANAGE_EXCEPTIONS))
             throw HttpException.Forbidden()
 
-        val entity = exceptionService.get(id)
+        val entity = exceptionService.get(variable)
         val dto = exceptionMapper.get(entity)
         return ResponseEntity.ok(dto)
     }
@@ -78,7 +78,7 @@ class ExceptionController(
 
         if (!user.hasPermission(Permission.MANAGE_EXCEPTIONS))
             throw HttpException.Forbidden()
-        
+
         exceptionService.delete(id)
         return ResponseEntity.noContent().build()
     }

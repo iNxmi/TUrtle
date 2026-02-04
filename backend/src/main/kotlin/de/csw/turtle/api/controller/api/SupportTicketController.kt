@@ -27,7 +27,7 @@ class SupportTicketController(
     private val supportTicketService: SupportTicketService,
     private val supportTicketMapper: SupportTicketMapper,
 ) : CreateController<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse>,
-    GetController<SupportTicketEntity, GetSupportTicketResponse>,
+    GetController<SupportTicketEntity, Long, GetSupportTicketResponse>,
     PatchController<SupportTicketEntity, PatchSupportTicketRequest, GetSupportTicketResponse>,
     DeleteController<SupportTicketEntity> {
 
@@ -43,12 +43,12 @@ class SupportTicketController(
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: Long
     ): ResponseEntity<GetSupportTicketResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val entity = supportTicketService.get(id)
+        val entity = supportTicketService.get(variable)
 
         if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
             if (entity.email != user.email)

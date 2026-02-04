@@ -5,6 +5,7 @@ import java.time.Instant
 
 interface UserRepository : CRUDRepository<UserEntity> {
 
+    fun findByEmailOrUsername(email: String, username: String): UserEntity?
     fun findByEmail(username: String): UserEntity?
     fun findByUsername(username: String): UserEntity?
     fun findByVerificationToken(token: String): UserEntity?

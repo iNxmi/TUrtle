@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController
 class SystemSettingController(
     private val systemSettingService: SystemSettingService,
     private val systemSettingMapper: SystemSettingMapper
-) : GetController<SystemSettingEntity, GetSystemSettingResponse>,
+) : GetController<SystemSettingEntity, String, GetSystemSettingResponse>,
     PatchController<SystemSettingEntity, PatchSystemSettingRequest, GetSystemSettingResponse> {
 
 //    @GetMapping("/export")
@@ -65,28 +65,15 @@ class SystemSettingController(
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: String
     ): ResponseEntity<GetSystemSettingResponse> {
-        val entity = systemSettingService.get(id)
-        val dto = systemSettingMapper.get(entity)
-        if (entity.visibility == SystemSettingEntity.Visibility.PUBLIC)
-            return ResponseEntity.ok(dto)
+        val id = variable.toLongOrNull()
+        val entity = if(id != null) {
+            systemSettingService.get(id)
+        } else {
+            systemSettingService.getByKey(variable)
+        }
 
-        if (user == null)
-            throw HttpException.Unauthorized()
-
-        if (!user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS))
-            throw HttpException.Forbidden()
-
-        return ResponseEntity.ok(dto)
-    }
-
-    @GetMapping("/key/{key}")
-    fun get(
-        @AuthenticationPrincipal user: UserEntity?,
-        @PathVariable key: String
-    ): ResponseEntity<GetSystemSettingResponse> {
-        val entity = systemSettingService.getByKey(key)
         val dto = systemSettingMapper.get(entity)
         if (entity.visibility == SystemSettingEntity.Visibility.PUBLIC)
             return ResponseEntity.ok(dto)

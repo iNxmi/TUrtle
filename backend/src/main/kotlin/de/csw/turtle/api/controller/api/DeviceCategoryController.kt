@@ -27,7 +27,7 @@ class DeviceCategoryController(
     private val deviceCategoryMapper: DeviceCategoryMapper
 ) :
     CreateController<DeviceCategoryEntity, CreateDeviceCategoryRequest, GetDeviceCategoryResponse>,
-    GetController<DeviceCategoryEntity, GetDeviceCategoryResponse>,
+    GetController<DeviceCategoryEntity, Long, GetDeviceCategoryResponse>,
     PatchController<DeviceCategoryEntity, PatchDeviceCategoryRequest, GetDeviceCategoryResponse>,
     DeleteController<DeviceCategoryEntity> {
 
@@ -49,9 +49,9 @@ class DeviceCategoryController(
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: Long
     ): ResponseEntity<GetDeviceCategoryResponse> {
-        val entity = deviceCategoryService.get(id)
+        val entity = deviceCategoryService.get(variable)
         val dto = deviceCategoryMapper.get(entity)
         return ResponseEntity.ok(dto)
     }

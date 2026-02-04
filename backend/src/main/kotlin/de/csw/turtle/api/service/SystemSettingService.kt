@@ -34,7 +34,7 @@ class SystemSettingService(
     }
 
     fun getByKeyOrNull(key: String): SystemSettingEntity? = repository.findByKey(key)
-    fun getByKey(key: String): SystemSettingEntity = repository.findByKey(key)
+    fun getByKey(key: String): SystemSettingEntity = getByKeyOrNull(key)
         ?: throw HttpException.NotFound("System setting with key '$key' not found.")
 
     fun parse(key: String, type: SystemSettingEntity.Type, value: String): Any = try {

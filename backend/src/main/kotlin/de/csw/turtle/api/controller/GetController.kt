@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 
-interface GetController<Entity : CRUDEntity, Response : GetResponse> {
+interface GetController<Entity : CRUDEntity, Variable : Any, Response : GetResponse> {
 
-    @GetMapping("/{id}")
+    @GetMapping("/{variable}")
     fun get(
         @AuthenticationPrincipal user: UserEntity?,
-        @PathVariable id: Long
+        @PathVariable variable: Variable
     ): ResponseEntity<Response>
 
     @GetMapping

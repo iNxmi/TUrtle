@@ -26,7 +26,7 @@ class DeviceController(
     private val deviceService: DeviceService,
     private val deviceMapper: DeviceMapper,
 ) : CreateController<DeviceEntity, CreateDeviceRequest, GetDeviceResponse>,
-    GetController<DeviceEntity, GetDeviceResponse>,
+    GetController<DeviceEntity, Long, GetDeviceResponse>,
     PatchController<DeviceEntity, PatchDeviceRequest, GetDeviceResponse>,
     DeleteController<DeviceEntity> {
 
@@ -48,9 +48,9 @@ class DeviceController(
 
     override fun get(
         user: UserEntity?,
-        id: Long
+        variable: Long
     ): ResponseEntity<GetDeviceResponse> {
-        val entity = deviceService.get(id)
+        val entity = deviceService.get(variable)
         val dto = deviceMapper.get(entity)
         return ResponseEntity.ok(dto)
     }

@@ -73,6 +73,10 @@ class UserService(
     fun getByEmojisOrNull(emojis: String): UserEntity? = repository.findByEmojis(emojis)
     fun getByEmojis(emojis: String): UserEntity = getByEmojisOrNull(emojis) ?: throw HttpException.NotFound(emojis)
 
+    fun getByEmailOrUsernameOrNull(value: String): UserEntity? = repository.findByEmailOrUsername(value, value)
+    fun getByEmailOrUsername(value: String): UserEntity =
+        getByEmailOrUsernameOrNull(value) ?: throw HttpException.NotFound(value)
+
     override fun patch(id: Long, request: PatchUserRequest): UserEntity {
         val patched = if (request.password != null) {
             request.copy(password = passwordEncoder.encode(request.password))
