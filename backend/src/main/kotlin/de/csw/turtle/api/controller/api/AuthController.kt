@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*
 import java.time.Duration
 import java.time.Instant
 
+private const val COOKIE_NAME_ACCESS_TOKEN = "access_token"
+private const val COOKIE_NAME_REFRESH_TOKEN = "refresh_token"
+
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
@@ -91,12 +94,12 @@ class AuthController(
     ): ResponseEntity<Void> {
         val tokens = authService.login(request)
 
-        setCookie("access_token", tokens.accessToken, getDurationAccess(), response)
+        setCookie(COOKIE_NAME_ACCESS_TOKEN, tokens.accessToken, getDurationAccess(), response)
 
         if (request.rememberMe) {
-            setCookie("refresh_token", tokens.refreshToken, getDurationRefresh(), response)
+            setCookie(COOKIE_NAME_REFRESH_TOKEN, tokens.refreshToken, getDurationRefresh(), response)
         } else {
-            deleteCookie("refresh_token", response)
+            deleteCookie(COOKIE_NAME_REFRESH_TOKEN, response)
         }
 
         return ResponseEntity.noContent().build()
@@ -107,13 +110,13 @@ class AuthController(
         request: HttpServletRequest,
         response: HttpServletResponse
     ): ResponseEntity<Void> {
-        val token = request.cookies?.find { it.name == "refresh_token" }?.value
+        val token = request.cookies?.find { it.name == COOKIE_NAME_REFRESH_TOKEN }?.value
             ?: throw HttpException.Unauthorized("Refresh token is required.")
 
         val tokens = authService.refresh(token)
 
-        setCookie("access_token", tokens.accessToken, getDurationAccess(), response)
-        setCookie("refresh_token", tokens.refreshToken, getDurationRefresh(), response)
+        setCookie(COOKIE_NAME_ACCESS_TOKEN, tokens.accessToken, getDurationAccess(), response)
+        setCookie(COOKIE_NAME_REFRESH_TOKEN, tokens.refreshToken, getDurationRefresh(), response)
 
         return ResponseEntity.noContent().build()
     }
@@ -122,8 +125,8 @@ class AuthController(
     fun logout(
         response: HttpServletResponse
     ): ResponseEntity<Void> {
-        deleteCookie("access_token", response)
-        deleteCookie("refresh_token", response)
+        deleteCookie(COOKIE_NAME_ACCESS_TOKEN, response)
+        deleteCookie(COOKIE_NAME_REFRESH_TOKEN, response)
 
         return ResponseEntity.noContent().build()
     }

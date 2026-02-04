@@ -2,6 +2,7 @@ package de.csw.turtle.api.filter
 
 import de.csw.turtle.api.service.CustomUserDetailsService
 import de.csw.turtle.api.service.JWTService
+import de.csw.turtle.api.service.UserService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -11,12 +12,14 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
-private const val PREFIX = "Bearer "
+private const val BEARER_PREFIX = "Bearer "
+private const val COOKIE_NAME = "access_token"
 
 @Component
 class JWTAuthFilter(
     private val jwtService: JWTService,
-    private val userDetailsService: CustomUserDetailsService
+    private val userDetailsService: CustomUserDetailsService,
+    private val userService: UserService
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -24,22 +27,30 @@ class JWTAuthFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val token = request.cookies?.find { it.name == "access_token" }?.value
-            ?: request.getHeader("Authorization")?.takeIf { it.startsWith(PREFIX) }?.substringAfter(PREFIX)
+        val cookieToken = request.cookies
+            ?.find { it.name == COOKIE_NAME }
+            ?.value
 
-        if(token != null) {
+        val headerToken = request.getHeader("Authorization")
+            ?.takeIf { it.startsWith(BEARER_PREFIX) }
+            ?.substringAfter(BEARER_PREFIX)
+
+        val token = cookieToken ?: headerToken
+
+        if (token != null) {
             try {
-                val username = jwtService.extract(token)
-                if (SecurityContextHolder.getContext().authentication == null) {
-                    val userDetails = userDetailsService.loadUserByUsername(username)
-                    if (jwtService.isValid(token!!, userDetails)) {
+                val data = jwtService.getData(token)
+                if (data.type == JWTService.Type.ACCESS) {
+                    val user = userService.get(data.subject)
+                    val userDetails = userDetailsService.loadUserByUsername(user.username)
+                    if (!jwtService.isExpired(token)) {
                         val authToken = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
                         authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
                         SecurityContextHolder.getContext().authentication = authToken
                     }
                 }
-            } catch(_:Exception){
-                // invalid token -> ignore, request remains unauthenticated
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
 

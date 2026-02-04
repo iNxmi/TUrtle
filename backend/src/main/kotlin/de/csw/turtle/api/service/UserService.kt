@@ -27,7 +27,7 @@ class UserService(
     override fun create(request: CreateUserRequest): UserEntity {
         if (getByUsernameOrNull(request.username) != null)
             throw HttpException.Conflict("Username '${request.username}' already exists")
-        else if(request.username.isBlank())
+        else if (request.username.isBlank())
             throw HttpException.BadRequest("Username cannot be blank.")
 
 
@@ -65,6 +65,10 @@ class UserService(
     fun getByUsernameOrNull(username: String): UserEntity? = repository.findByUsername(username)
     fun getByUsername(username: String): UserEntity =
         getByUsernameOrNull(username) ?: throw HttpException.NotFound(username)
+
+    fun getByEmailOrNull(email: String): UserEntity? = repository.findByEmail(email)
+    fun getByEmail(email: String): UserEntity =
+        getByEmailOrNull(email) ?: throw HttpException.NotFound(email)
 
     fun getByEmojisOrNull(emojis: String): UserEntity? = repository.findByEmojis(emojis)
     fun getByEmojis(emojis: String): UserEntity = getByEmojisOrNull(emojis) ?: throw HttpException.NotFound(emojis)
