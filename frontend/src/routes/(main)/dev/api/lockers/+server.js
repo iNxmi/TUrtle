@@ -8,6 +8,8 @@ export async function GET(){
     name: "3rd Locker",
     index: 3,
     isSoftwareUnlockable: false,
+    locked: false,
+    updatedAt: '2025-12-24T13:42:09.616072Z',
     createdAt: "2025-12-24T13:42:09.613448Z"
   },
   {
@@ -15,6 +17,8 @@ export async function GET(){
     name: "4th Locker",
     index: 4,
     isSoftwareUnlockable: false,
+     locked: false,
+    updatedAt: '2025-12-24T13:42:09.616072Z',
     createdAt: "2025-12-24T13:42:09.616072Z"
   },
   {
@@ -22,6 +26,8 @@ export async function GET(){
     name: "6th Locker",
     index: 6,
     isSoftwareUnlockable: true,
+     locked: false,
+    updatedAt: '2025-12-24T13:42:09.616072Z',
     createdAt: "2025-12-24T13:42:09.616779Z"
   },
   {
@@ -29,6 +35,8 @@ export async function GET(){
     name: "7th Locker",
     index: 7,
     isSoftwareUnlockable: true,
+    locked: false,
+    updatedAt: '2025-12-24T13:42:09.616072Z',
     createdAt: "2025-12-24T13:42:09.618018Z"
   }
 ];
