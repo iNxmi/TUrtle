@@ -29,6 +29,10 @@
     function addEmoji(emoji) {
         password[password_index] = emoji;
         password_index += 1;
+        if(password_index < 5){
+            password[password_index] = emoji;
+            password_index += 1;
+        }
         if (password_index === 5) {
             submitInput();
         }
@@ -46,6 +50,7 @@
             headers: {'Content-Type': 'application/json'}
         });
 
+        shuffle();
         password = ["", "", "", "", ""];
         password_index = 0;
     }
@@ -74,11 +79,8 @@
         emojis = arr;
     }
 
-    let defaultModal = $state(false);
-
     shuffle();
-    $inspect(emojis);
-    $inspect(emoji_rows);
+    let defaultModal = $state(false);
 </script>
 
 <div class="flex">
@@ -87,10 +89,10 @@
             <TUrtleLogo path="/terminal"/>
         </div>
         <div>
-            <div class="flex fkex-col w-full aspect-square rounded-xl bg-[#FF6A00] justify-center items-center">
+            <div class="flex flex-col w-full aspect-square rounded-xl bg-[#FF6A00] justify-center items-center">
                 <p>QR-Code (?)</p>
             </div>
-            <div class="self-center w-full mt-3 mb-3 bg-white text-gray-900">
+            <div class="self-center w-full mt-3 mb-3 bg-white text-gray-900 select-none">
                 <Button onclick={() => (defaultModal = true)}>Problem melden</Button>
                 <Modal title="Problem Melden" form bind:open={defaultModal} theme="light">
                 </Modal>
@@ -101,7 +103,7 @@
         <div class="login-box bg-neutral-100 rounded-xl shadow-xl border-1 border-neutral-300 w-[70vw] max-w-[40rem] h-[95vh] flex flex-col justify-around items-center p-10">
             <div class="input-row rounded-xl w-full bg-[white] flex justify-between p-[0.5rem] mb-[2rem]">
                 {#each password as emoji}
-                    <span class="text-5xl">
+                    <span class="text-5xl select-none">
 	                    {#if emoji === ''}
 		                    🐵
 	                    {:else}
@@ -109,14 +111,14 @@
 	                    {/if}
                     </span>
                 {/each}
-                <button type="button" class="text-5xl" onclick={backspace}>🔙</button>
+                <button type="button" class="text-5xl select-none" onclick={backspace}>🔙</button>
             </div>
             <div class="emoji-keyboard w-full h-full flex flex-col justify-around">
                 {#each emoji_rows as row}
                     <div class="emoji-row w-full flex justify-between p-[0.5rem]">
                         {#each row as emoji}
                             <button type="button"
-                                    class="key w-[3.5rem] h-[3.5rem] rounded-lg bg-neutral-100 text-5xl active:bg-neutral-300"
+                                    class="key w-[3.5rem] h-[3.5rem] rounded-lg bg-neutral-100 text-5xl active:bg-neutral-300 select-none"
                                     onclick={() => addEmoji(emoji)}>{emoji}</button>
                         {/each}
                     </div>

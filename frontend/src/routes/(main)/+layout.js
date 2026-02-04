@@ -9,7 +9,7 @@ export async function load({url}) {
 
     let user = {} 
     let userPermissions = []
-    if(url.pathname === '/auth/login'){
+    if(url.pathname.startsWith('/auth/')){
         return {userPermissions, user};
     }
     const permissionsResponse = await request(permissionsPath);
