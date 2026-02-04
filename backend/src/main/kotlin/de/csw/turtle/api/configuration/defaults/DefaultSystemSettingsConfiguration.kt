@@ -1,7 +1,9 @@
 package de.csw.turtle.api.configuration.defaults
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import de.csw.turtle.api.dto.create.CreateSystemSettingRequest
 import de.csw.turtle.api.entity.SystemSettingEntity
+import de.csw.turtle.api.entity.SystemSettingEntity.Visibility
 import de.csw.turtle.api.service.EmailTemplateService
 import de.csw.turtle.api.service.GeneralTemplateService
 import de.csw.turtle.api.service.SystemSettingService
@@ -26,7 +28,7 @@ class DefaultSystemSettingsConfiguration(
         key: String,
         type: SystemSettingEntity.Type,
         value: Any,
-        visibility: SystemSettingEntity.Visibility = SystemSettingEntity.Visibility.PRIVATE
+        visibility: Visibility = Visibility.PRIVATE
     ) {
         if (service.getByKeyOrNull(key) != null)
             return
@@ -37,7 +39,7 @@ class DefaultSystemSettingsConfiguration(
     private fun setDefaultGeneralTemplate(
         key: String,
         name: String,
-        visibility: SystemSettingEntity.Visibility = SystemSettingEntity.Visibility.PRIVATE
+        visibility: Visibility = Visibility.PRIVATE
     ) {
         val generalTemplate = generalTemplateService.getByNameOrNull(name) ?: return
         setDefault(key, SystemSettingEntity.Type.LONG, generalTemplate.id.toString(), visibility)
@@ -46,7 +48,7 @@ class DefaultSystemSettingsConfiguration(
     private fun setDefaultEmailTemplate(
         key: String,
         name: String,
-        visibility: SystemSettingEntity.Visibility = SystemSettingEntity.Visibility.PRIVATE
+        visibility: Visibility = Visibility.PRIVATE
     ) {
         val emailTemplate = emailTemplateService.getByNameOrNull(name) ?: return
         setDefault(key, SystemSettingEntity.Type.LONG, emailTemplate.id.toString(), visibility)
@@ -65,30 +67,72 @@ class DefaultSystemSettingsConfiguration(
         return result
     }
 
+    private val emojis = setOf(
+        "😈",
+        "😃",
+        "🎩",
+        "👽",
+        "💩",
+        "❤️",
+        "💎",
+        "👂",
+        "👍",
+        "🐋",
+        "🐶",
+        "🐸",
+        "❄",
+        "🎉",
+        "💿",
+        "🍉",
+        "☎",
+        "🎥",
+        "✂",
+        "⚽",
+        "🚀",
+        "💄",
+        "🌂",
+        "🍄",
+        "🍀",
+        "🚗",
+        "🍕",
+        "🍔",
+        "🍨",
+        "💣",
+        "🐧",
+        "💼",
+        "🌍",
+        "🐝",
+        "🏠",
+        "⏰"
+    )
+
     @Transactional
     override fun run(vararg args: String) {
-        setDefault("general.fqdn", SystemSettingEntity.Type.STRING, "csw.tu-darmstadt.de", SystemSettingEntity.Visibility.PUBLIC)
+        val objectMapper = ObjectMapper()
 
-        setDefault("calendar.time.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), SystemSettingEntity.Visibility.PUBLIC)
-        setDefault("calendar.time.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), SystemSettingEntity.Visibility.PUBLIC)
+        setDefault("general.emojis", SystemSettingEntity.Type.STRING_LIST, objectMapper.writeValueAsString(emojis), Visibility.PUBLIC)
+        setDefault("general.fqdn", SystemSettingEntity.Type.STRING, "csw.tu-darmstadt.de", Visibility.PUBLIC)
+
+        setDefault("calendar.time.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
+        setDefault("calendar.time.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
 
         setDefault("user.verification.duration", SystemSettingEntity.Type.DURATION, Duration.ofDays(2))
 
-        setDefault("captcha.type", SystemSettingEntity.Type.STRING, "reCAPTCHA", SystemSettingEntity.Visibility.PUBLIC)
-        setDefault("captcha.key.site", SystemSettingEntity.Type.STRING, "", SystemSettingEntity.Visibility.PUBLIC)
+        setDefault("captcha.type", SystemSettingEntity.Type.STRING, "reCAPTCHA", Visibility.PUBLIC)
+        setDefault("captcha.key.site", SystemSettingEntity.Type.STRING, "", Visibility.PUBLIC)
         setDefault("captcha.key.server", SystemSettingEntity.Type.STRING, "")
 
-        setDefault("door.open.duration", SystemSettingEntity.Type.DURATION, Duration.ofSeconds(5), SystemSettingEntity.Visibility.PUBLIC)
-        setDefault("door.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), SystemSettingEntity.Visibility.PUBLIC)
-        setDefault("door.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), SystemSettingEntity.Visibility.PUBLIC)
+        setDefault("door.open.duration", SystemSettingEntity.Type.DURATION, Duration.ofSeconds(5), Visibility.PUBLIC)
+        setDefault("door.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
+        setDefault("door.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
         setDefault("door.ssh.command", SystemSettingEntity.Type.STRING, "~/doorOpen.sh [[\${duration.toSeconds()}]]")
         setDefault("door.ssh.hostname", SystemSettingEntity.Type.STRING, "192.168.0.107")
         setDefault("door.ssh.port", SystemSettingEntity.Type.INT, 22)
         setDefault("door.ssh.username", SystemSettingEntity.Type.STRING, "")
         setDefault("door.ssh.password", SystemSettingEntity.Type.STRING, "")
 
-        setDefault("locker.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), SystemSettingEntity.Visibility.PUBLIC)
-        setDefault("locker.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), SystemSettingEntity.Visibility.PUBLIC)
+        setDefault("locker.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
+        setDefault("locker.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
         setDefault("locker.ssh.command", SystemSettingEntity.Type.STRING, "~/cabinet[[\${index}]]Open.sh")
         setDefault("locker.ssh.hostname", SystemSettingEntity.Type.STRING, "192.168.0.107")
         setDefault("locker.ssh.port", SystemSettingEntity.Type.INT, 22)

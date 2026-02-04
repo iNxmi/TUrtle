@@ -14,6 +14,9 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -78,6 +81,25 @@ class SystemSettingController(
         return ResponseEntity.ok(dto)
     }
 
+    @GetMapping("/key/{key}")
+    fun get(
+        @AuthenticationPrincipal user: UserEntity?,
+        @PathVariable key: String
+    ): ResponseEntity<GetSystemSettingResponse> {
+        val entity = systemSettingService.getByKey(key)
+        val dto = systemSettingMapper.get(entity)
+        if (entity.visibility == SystemSettingEntity.Visibility.PUBLIC)
+            return ResponseEntity.ok(dto)
+
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (!user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS))
+            throw HttpException.Forbidden()
+
+        return ResponseEntity.ok(dto)
+    }
+
     override fun getCollection(
         user: UserEntity?,
         rsql: String?,
@@ -89,7 +111,10 @@ class SystemSettingController(
 
         val specification = if (user == null || !user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS)) {
             Specification { root, _, builder ->
-                builder.equal(root.get<SystemSettingEntity.Visibility>("visibility"), SystemSettingEntity.Visibility.PUBLIC)
+                builder.equal(
+                    root.get<SystemSettingEntity.Visibility>("visibility"),
+                    SystemSettingEntity.Visibility.PUBLIC
+                )
             }
         } else Specification.unrestricted<SystemSettingEntity>()
 
@@ -104,7 +129,8 @@ class SystemSettingController(
             return ResponseEntity.ok(dto)
         }
 
-        val collection = systemSettingService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
+        val collection =
+            systemSettingService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
         val dto = collection.map { systemSettingMapper.get(it) }
         return ResponseEntity.ok(dto)
     }
