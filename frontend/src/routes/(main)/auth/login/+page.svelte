@@ -1,16 +1,19 @@
 <script>
-    import {A, Button, Checkbox, Heading, Input, Label, P} from 'flowbite-svelte';
+    import {A, Button, Checkbox, Heading, Input, Label} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
     import request from '$lib/api/api.js';
     import {goto} from '$app/navigation';
     import {page} from '$app/state';
     import {authPath} from '$lib/backend'
+    import Altcha from "$lib/components/Altcha.svelte";
 
     let apiResponse = $state(null);
     let modal = $state(false);
     let username = $state('');
     let password = $state('');
     let rememberMe = $state(false);
+    let altchaToken = $state("");
+    const {data} = $props();
 
     async function login(event) {
         event.preventDefault();
@@ -18,7 +21,8 @@
         const payload = {
             emailOrUsername: $state.snapshot(username),
             password: $state.snapshot(password),
-            rememberMe: $state.snapshot(rememberMe)
+            rememberMe: $state.snapshot(rememberMe),
+            altchaToken: $state.snapshot(altchaToken),
         };
 
         const response = await request(authPath + '/login', {
@@ -37,7 +41,7 @@
     }
 </script>
 
-<div class="flex justify-center w-120 h-160 bg-neutral-100 dark:bg-[#1E2939] rounded-lg p-0 pt-20 mx-auto max-w-full shadow-xl border border-neutral-300 dark:border-gray-700">
+<div class="flex justify-center w-120 bg-neutral-100 dark:bg-[#1E2939] rounded-lg p-20 mx-auto max-w-full shadow-xl border border-neutral-300 dark:border-gray-700">
     <form class="flex flex-col gap-5" onsubmit={login}>
         <Heading tag="h3" class="text-center">
             {m.login__title()}
@@ -55,9 +59,7 @@
 
         <Checkbox bind:checked={rememberMe}>{m.login__remember_me({days: 30})}</Checkbox>
 
-        <div class="border border-dashed">
-            <P class="text-center m-8">I am not a Robot ✅</P>
-        </div>
+        <Altcha bind:value={altchaToken}/>
 
         <Button type="submit">{m.login__button()}</Button>
 

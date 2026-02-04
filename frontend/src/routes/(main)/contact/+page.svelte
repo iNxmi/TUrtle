@@ -1,9 +1,16 @@
 <script>
-    import {Button, Checkbox, Heading, Input, Hr, Label, Select, Textarea} from 'flowbite-svelte';
+    import {Button, Checkbox, Heading, Hr, Input, Label, Select, Textarea} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
-    import ReCAPTCHA from '$lib/components/ReCAPTCHA.svelte';
+    import Altcha from '$lib/components/Altcha.svelte';
     import request from "$lib/api/api.js";
     import Markdown from "$lib/components/Markdown.svelte";
+
+    let urgency = $state('');
+    let category = $state('');
+    let email = $state('');
+    let subject = $state('');
+    let description = $state('');
+    let altchaToken = $state('');
 
     const {data} = $props();
     let content = $derived(data.content);
@@ -26,14 +33,15 @@
         event.preventDefault();
 
         const payload = {
-            urgency: document.getElementById("input_urgency").value,
-            category: document.getElementById("input_category").value,
-            email: document.getElementById("input_email").value,
-            subject: document.getElementById("input_subject").value,
-            description: document.getElementById("input_description").value
+            urgency: $state.snapshot(urgency),
+            category: $state.snapshot(category),
+            email: $state.snapshot(email),
+            subject: $state.snapshot(subject),
+            description: $state.snapshot(description),
+            altchaToken: $state.snapshot(altchaToken)
         }
 
-        const response = await request("/support", {
+        const response = await request("/support-tickets", {
             method: "POST",
             body: JSON.stringify(payload),
             headers: {"Content-Type": "application/json"}
@@ -50,33 +58,32 @@
         <div class="flex gap-5">
             <Label class="flex flex-1 flex-col">
                 <span>{m.contact__urgency_label()}</span>
-                <Select id="input_urgency" items={urgencies} required/>
+                <Select bind:value={urgency} items={urgencies} required/>
             </Label>
             <Label class="flex flex-1 flex-col">
                 <span>{m.contact__category_label()}</span>
-                <Select id="input_category" items={categories} required/>
+                <Select bind:value={category} items={categories} required/>
             </Label>
         </div>
 
         <Label>
             <span>{m.contact__email_label()}</span>
-            <Input id="input_email" type="email" required/>
+            <Input bind:value={email} type="email" required/>
         </Label>
 
         <Label>
             <span>{m.contact__subject_label()}</span>
-            <Input id="input_subject" type="text" required/>
+            <Input bind:value={subject} type="text" required/>
         </Label>
 
         <Label>
             <span>{m.contact__description_label()}</span>
-            <Textarea id="input_description" class="w-full" placeholder="_describe_your_issue" required/>
+            <Textarea bind:value={description} class="w-full" placeholder="_describe_your_issue" required/>
         </Label>
 
-        <div class="flex items-center gap-5 justify-between">
-            <Checkbox id="input_agree_tos" required>{m.contact__i_agree_to_tos()}</Checkbox>
-            <ReCAPTCHA/>
-        </div>
+        <Checkbox required>{m.contact__i_agree_to_tos()}</Checkbox>
+
+        <Altcha bind:value={altchaToken}/>
 
         <Button type="submit">{m.contact__button()}</Button>
     </form>

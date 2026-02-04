@@ -54,11 +54,10 @@ class DefaultSystemSettingsConfiguration(
         setDefault(key, SystemSettingEntity.Type.LONG, emailTemplate.id.toString(), visibility)
     }
 
+    private val secureRandom = SecureRandom()
     private fun randomBase64(size: Int = 64): String {
         val bytes = ByteArray(size)
-
-        val random = SecureRandom()
-        random.nextBytes(bytes)
+        secureRandom.nextBytes(bytes)
 
         val result = Base64.getEncoder()
             .withoutPadding()
@@ -109,18 +108,20 @@ class DefaultSystemSettingsConfiguration(
     @Transactional
     override fun run(vararg args: String) {
         val objectMapper = ObjectMapper()
-
-        setDefault("general.emojis", SystemSettingEntity.Type.STRING_LIST, objectMapper.writeValueAsString(emojis), Visibility.PUBLIC)
         setDefault("general.fqdn", SystemSettingEntity.Type.STRING, "csw.tu-darmstadt.de", Visibility.PUBLIC)
+
+        setDefault("emojis.set", SystemSettingEntity.Type.STRING_LIST, objectMapper.writeValueAsString(emojis), Visibility.PUBLIC)
+        setDefault("emojis.size", SystemSettingEntity.Type.INT, 5, Visibility.PUBLIC)
+        setDefault("emojis.retries.max", SystemSettingEntity.Type.INT, 64)
 
         setDefault("calendar.time.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
         setDefault("calendar.time.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
 
         setDefault("user.verification.duration", SystemSettingEntity.Type.DURATION, Duration.ofDays(2))
 
-        setDefault("captcha.type", SystemSettingEntity.Type.STRING, "reCAPTCHA", Visibility.PUBLIC)
-        setDefault("captcha.key.site", SystemSettingEntity.Type.STRING, "", Visibility.PUBLIC)
-        setDefault("captcha.key.server", SystemSettingEntity.Type.STRING, "")
+        setDefault("altcha.secret", SystemSettingEntity.Type.STRING, randomBase64())
+        setDefault("altcha.max-number", SystemSettingEntity.Type.LONG, 1_000_000L)
+        setDefault("altcha.duration", SystemSettingEntity.Type.DURATION, Duration.ofMinutes(3))
 
         setDefault("door.open.duration", SystemSettingEntity.Type.DURATION, Duration.ofSeconds(5), Visibility.PUBLIC)
         setDefault("door.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
@@ -139,9 +140,9 @@ class DefaultSystemSettingsConfiguration(
         setDefault("locker.ssh.username", SystemSettingEntity.Type.STRING, "")
         setDefault("locker.ssh.password", SystemSettingEntity.Type.STRING, "")
 
-        setDefault("auth.jwt.secret", SystemSettingEntity.Type.STRING, randomBase64())
-        setDefault("auth.jwt.duration.access", SystemSettingEntity.Type.DURATION, Duration.ofMinutes(15))
-        setDefault("auth.jwt.duration.refresh", SystemSettingEntity.Type.DURATION, Duration.ofDays(30))
+        setDefault("jwt.secret", SystemSettingEntity.Type.STRING, randomBase64())
+        setDefault("jwt.duration.access", SystemSettingEntity.Type.DURATION, Duration.ofMinutes(15))
+        setDefault("jwt.duration.refresh", SystemSettingEntity.Type.DURATION, Duration.ofDays(30))
 
         setDefaultGeneralTemplate("content.template.imprint", "imprint")
         setDefaultGeneralTemplate("content.template.gdpr", "gdpr")

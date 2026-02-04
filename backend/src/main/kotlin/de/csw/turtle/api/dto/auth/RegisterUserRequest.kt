@@ -1,4 +1,4 @@
-package de.csw.turtle.api.dto
+package de.csw.turtle.api.dto.auth
 
 import de.csw.turtle.api.entity.UserEntity
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -8,7 +8,8 @@ data class RegisterUserRequest(
     val firstName: String,
     val lastName: String,
     val email: String,
-    val password: String
+    val password: String,
+    val altchaToken: String
 ) {
 
     //TODO remove create method

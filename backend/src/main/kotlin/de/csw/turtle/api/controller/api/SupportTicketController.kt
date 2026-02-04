@@ -12,6 +12,7 @@ import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.SupportTicketMapper
+import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.SupportTicketService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -26,6 +27,7 @@ import java.net.URI
 class SupportTicketController(
     private val supportTicketService: SupportTicketService,
     private val supportTicketMapper: SupportTicketMapper,
+    private val altchaService: AltchaService
 ) : CreateController<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse>,
     GetController<SupportTicketEntity, Long, GetSupportTicketResponse>,
     PatchController<SupportTicketEntity, PatchSupportTicketRequest, GetSupportTicketResponse>,
@@ -35,6 +37,11 @@ class SupportTicketController(
         user: UserEntity?,
         request: CreateSupportTicketRequest
     ): ResponseEntity<GetSupportTicketResponse> {
+
+        if (user == null)
+            if (request.altchaToken == null || altchaService.isValid(request.altchaToken))
+                throw HttpException.Forbidden("Invalid captcha token.")
+
         val entity = supportTicketService.create(request)
         val location = URI.create("/api/support-tickets/${entity.id}")
         val dto = supportTicketMapper.get(entity)

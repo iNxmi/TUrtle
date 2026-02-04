@@ -19,13 +19,6 @@ class OpenApiConfiguration {
         }
 
         return OpenAPI().info(info)
-            .addSecurityItem(SecurityRequirement().addList("bearerAuth"))
-            .components(
-                Components().addSecuritySchemes(
-                    "bearerAuth",
-                    SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
-                )
-            )
     }
 
 }

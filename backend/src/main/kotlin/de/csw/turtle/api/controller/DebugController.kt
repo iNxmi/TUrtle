@@ -1,6 +1,7 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.exception.DebugException
+import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.EmailService
 import de.csw.turtle.api.service.door.DoorControlService
 import de.csw.turtle.api.service.locker.LockerControlService
@@ -14,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.Duration
 
 @RestController
-@RequestMapping("/api/debug")
+@RequestMapping("/debug")
 class DebugController(
     private val emailService: EmailService,
     private val doorControlService: DoorControlService,
     private val lockerService: LockerService,
-    private val lockerControlService: LockerControlService
+    private val lockerControlService: LockerControlService,
+    private val altchaService: AltchaService
 ) {
 
     @GetMapping("/headers")
@@ -66,5 +68,10 @@ class DebugController(
         val locker = lockerService.get(id)
         return lockerControlService.trigger(locker)
     }
+
+    @GetMapping("/altcha")
+    fun altcha(
+        @RequestParam token: String
+    ) = altchaService.isValid(token)
 
 }

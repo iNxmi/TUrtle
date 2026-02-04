@@ -1,11 +1,14 @@
 package de.csw.turtle.api.controller.api
 
-import de.csw.turtle.api.dto.LoginUserRequest
+import de.csw.turtle.api.dto.auth.LoginUserRequest
+import de.csw.turtle.api.dto.auth.RegisterUserRequest
+import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.UserMapper
+import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.AuthService
 import de.csw.turtle.api.service.SystemSettingService
 import de.csw.turtle.api.service.UserService
@@ -14,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
+import java.net.URI
 import java.time.Duration
 import java.time.Instant
 
@@ -26,7 +30,8 @@ class AuthController(
     private val authService: AuthService,
     private val systemSettingService: SystemSettingService,
     private val userMapper: UserMapper,
-    private val userService: UserService
+    private val userService: UserService,
+    private val altchaService: AltchaService
 ) {
 
     private fun setCookie(name: String, value: String, duration: Duration, response: HttpServletResponse) {
@@ -92,6 +97,9 @@ class AuthController(
         @RequestBody request: LoginUserRequest,
         response: HttpServletResponse
     ): ResponseEntity<Void> {
+        if(!altchaService.isValid(request.altchaToken))
+            throw HttpException.Forbidden("Invalid captcha token.")
+
         val tokens = authService.login(request)
 
         setCookie(COOKIE_NAME_ACCESS_TOKEN, tokens.accessToken, getDurationAccess(), response)

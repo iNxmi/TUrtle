@@ -24,12 +24,26 @@ class UserService(
     private val emailTemplateService: EmailTemplateService
 ) : CRUDService<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest>("User") {
 
+    fun generateEmojis(): String {
+        val emojis = systemSettingService.getTyped<List<String>>("emojis.set")
+        val maxRetries = systemSettingService.getTyped<Int>("emojis.retries.max")
+        val size = systemSettingService.getTyped<Int>("emojis.size")
+
+        repeat(maxRetries) {
+            val selected = emojis.shuffled().take(size).joinToString("")
+           if (getByEmojisOrNull(selected) == null)
+               return selected
+        }
+
+        throw HttpException.InternalServerError("Could not generate emojis. Contact system administrator. (Most likely too many users in DB).")
+    }
+
     override fun create(request: CreateUserRequest): UserEntity {
         if (getByUsernameOrNull(request.username) != null)
             throw HttpException.Conflict("Username '${request.username}' already exists")
+
         else if (request.username.isBlank())
             throw HttpException.BadRequest("Username cannot be blank.")
-
 
         val hashed = request.copy(password = passwordEncoder.encode(request.password))
         val entity = super.create(hashed)

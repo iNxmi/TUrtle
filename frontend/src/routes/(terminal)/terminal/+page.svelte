@@ -27,8 +27,6 @@
     let emoji_rows = $derived(make_rows(emojis));
 
     function addEmoji(emoji) {
-        console.log(JSON.stringify(emoji))
-
         password[password_index] = emoji;
         password_index += 1;
         if (password_index === 5) {

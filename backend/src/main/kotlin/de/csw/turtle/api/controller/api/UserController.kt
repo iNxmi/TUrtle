@@ -11,9 +11,11 @@ import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.UserMapper
+import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.UserService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -23,7 +25,8 @@ import java.net.URI
 @RequestMapping("/api/users")
 class UserController(
     private val userService: UserService,
-    private val userMapper: UserMapper
+    private val userMapper: UserMapper,
+    private val altchaService: AltchaService,
 ) : CreateController<UserEntity, CreateUserRequest, GetUserResponse>,
     GetController<UserEntity, String, GetUserResponse>,
     PatchController<UserEntity, PatchUserRequest, GetUserResponse>,
@@ -34,15 +37,17 @@ class UserController(
         request: CreateUserRequest
     ): ResponseEntity<GetUserResponse> {
         val sanitized = if (user == null) {
+            if(request.altchaToken == null || altchaService.isValid(request.altchaToken))
+                throw HttpException.Forbidden("Invalid captcha token.")
+
             CreateUserRequest(
                 username = request.username,
                 firstName = request.firstName,
                 lastName = request.lastName,
                 email = request.email,
-                emojis = System.currentTimeMillis().toString(),
+                emojis = userService.generateEmojis(),
                 password = request.password
             )
-            //TODO CHANGE EMOJI GEN
         } else if (user.hasPermission(Permission.MANAGE_USERS)) {
             request
         } else throw HttpException.Unauthorized()

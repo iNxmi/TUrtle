@@ -7,5 +7,6 @@ data class CreateSupportTicketRequest(
     val category: SupportTicketEntity.Category,
     val email: String,
     val subject: String,
-    val description: String
+    val description: String,
+    val altchaToken: String? = null
 ) : CreateRequest

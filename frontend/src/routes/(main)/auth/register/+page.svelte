@@ -1,28 +1,34 @@
 <script>
     import {A, Button, Checkbox, Heading, Input, Label, Modal, P} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
-    import ReCAPTCHA from '$lib/components/ReCAPTCHA.svelte';
+    import Altcha from '$lib/components/Altcha.svelte';
     import request from "$lib/api/api.js";
-    import { authPath} from '$lib/backend'
 
     let apiResponse = $state(null);
     let modal = $state(false);
+    let username = $state('');
+    let firstName = $state('');
+    let lastName = $state('');
+    let email = $state('');
+    let password = $state('');
+    let passwordRepeat = $state('');
+    let altchaToken = $state("");
+
+    const {data} = $props();
 
     async function register(event) {
         event.preventDefault();
 
         const payload = {
-            username:  document.getElementById('username').value,
-            firstName: document.getElementById('first_name').value,
-            lastName: document.getElementById('last_name').value,
-            email: document.getElementById('email').value,
-            studentId: document.getElementById('student_id').value,
-            password: document.getElementById('password').value
+            username: $state.snapshot(username),
+            firstName: $state.snapshot(firstName),
+            lastName: $state.snapshot(lastName),
+            email: $state.snapshot(email),
+            password: $state.snapshot(password),
+            altchaToken: $state.snapshot(altchaToken)
         };
 
-        alert(JSON.stringify(payload, null, 2));
-
-        const response = await request(authPath+'/register', {
+        const response = await request("/users", {
             method: 'POST',
             body: JSON.stringify(payload),
             headers: {'Content-Type': 'application/json'}
@@ -41,45 +47,39 @@
 
         <Label>
             <span>{m.register__username_label()}</span>
-            <Input id="username" type="text" required/>
+            <Input bind:value={username} type="text" required/>
         </Label>
 
         <div class="flex gap-5">
             <Label class="flex-1">
                 <span>{m.register__first_name_label()}</span>
-                <Input id="first_name" type="text" required/>
+                <Input bind:value={firstName} type="text" required/>
             </Label>
             <Label class="flex-1">
                 <span>{m.register__last_name_label()}</span>
-                <Input id="last_name" type="text" required/>
+                <Input bind:value={lastName} type="text" required/>
             </Label>
         </div>
 
         <Label>
             <span>{m.register__email_label()}</span>
-            <Input id="email" type="email" required/>
-        </Label>
-
-        <Label>
-            <span>{m.register__student_id_label()}</span>
-            <Input id="student_id" type="text" required/>
+            <Input bind:value={email} type="email" required/>
         </Label>
 
         <div class="flex gap-5">
             <Label class="flex-1">
                 <span>{m.register__password_label()}</span>
-                <Input id="password" type="password" required/>
+                <Input bind:value={password} type="password" required/>
             </Label>
             <Label class="flex-1">
                 <span>{m.register__password_repeat_label()}</span>
-                <Input id="password_repeat" type="password" required/>
+                <Input bind:value={passwordRepeat} type="password" required/>
             </Label>
         </div>
 
-        <div class="flex items-start gap-5 justify-between">
-            <Checkbox id="agree_tos">{m.register__i_agree_to_tos()}</Checkbox>
-            <ReCAPTCHA/>
-        </div>
+        <Checkbox id="agree_tos" required>{m.register__i_agree_to_tos()}</Checkbox>
+
+        <Altcha bind:value={altchaToken}/>
 
         <Button type="submit" class="w-full1">{m.register__button()}</Button>
 

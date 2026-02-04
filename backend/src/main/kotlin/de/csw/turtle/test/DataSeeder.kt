@@ -49,7 +49,7 @@ class DataSeeder(
                     firstName = firstName,
                     lastName = lastName,
                     email = email,
-                    emojis = System.currentTimeMillis().toString(),
+                    emojis = userService.generateEmojis(),
                     password = username,
                     roleIds = setOf(role.id),
                     verified = true

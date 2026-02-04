@@ -22,8 +22,35 @@ class DefaultUsersConfiguration(
         if (userService.count() > 0)
             return
 
-        val adminRole = roleService.getByName("Administrator")
+        val studentRole = roleService.getByName("Student")
+        userService.create(
+            CreateUserRequest(
+                username = "student",
+                firstName = "Student",
+                lastName = "Student",
+                email = "student@stud.tu-darmstadt.de",
+                emojis = "🍉🍉🍉🍉🍉",
+                password = "student",
+                roleIds = setOf(studentRole.id),
+                verified = true
+            )
+        )
 
+        val professorRole = roleService.getByName("Professor")
+        userService.create(
+            CreateUserRequest(
+                username = "professor",
+                firstName = "Professor",
+                lastName = "Professor",
+                email = "professor@tu-darmstadt.de",
+                emojis = "🌍🌍🌍🌍🌍",
+                password = "professor",
+                roleIds = setOf(professorRole.id),
+                verified = true
+            )
+        )
+
+        val administratorRole = roleService.getByName("Administrator")
         userService.create(
             CreateUserRequest(
                 username = "admin",
@@ -32,7 +59,7 @@ class DefaultUsersConfiguration(
                 email = "admin@csw.tu-darmstadt.de",
                 emojis = "💩💩💩💩💩",
                 password = "admin",
-                roleIds = setOf(adminRole.id),
+                roleIds = setOf(administratorRole.id),
                 verified = true
             )
         )

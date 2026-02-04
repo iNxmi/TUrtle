@@ -1,6 +1,6 @@
 package de.csw.turtle.api.service
 
-import de.csw.turtle.api.dto.LoginUserRequest
+import de.csw.turtle.api.dto.auth.LoginUserRequest
 import de.csw.turtle.api.exception.HttpException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service

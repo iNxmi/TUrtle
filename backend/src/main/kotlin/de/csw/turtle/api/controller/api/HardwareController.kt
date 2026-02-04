@@ -1,7 +1,7 @@
 package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.dto.OpenDoorEmojisRequest
+import de.csw.turtle.api.dto.hardware.OpenDoorEmojisRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.NetworkService

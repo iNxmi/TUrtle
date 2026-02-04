@@ -21,15 +21,12 @@ Port: 8080
 * emoji code checks (no duplicates, no 5 identical emojis)
 * make admins always open door (during all times)
 * document this: rsql, system settings, templates with thymeleaf
-
-`*@stud.tu-darmstadt.de` -> ok
-`*@tu-darmstadt.de` -> ok
-`*@andere.email` -> request
+* `*@stud.tu-darmstadt.de` -> ok
+* `*@tu-darmstadt.de` -> ok
+* `*@andere.email` -> request
 
 ## Docker Environment
 ```
-FQDN: ${FQDN}
-
 DATASOURCE_SERVER: ${IP:PORT}
 DATASOURCE_DATABASE: ${DATABASE}
 DATASOURCE_USERNAME: ${USERNAME}

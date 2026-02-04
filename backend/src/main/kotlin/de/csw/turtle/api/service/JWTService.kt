@@ -17,7 +17,7 @@ class JWTService(
 ) {
 
     private fun getKey(): SecretKey {
-        val secret = systemSettingService.getTyped<String>("auth.jwt.secret")
+        val secret = systemSettingService.getTyped<String>("jwt.secret")
         val bytes = Decoders.BASE64.decode(secret)
         return Keys.hmacShaKeyFor(bytes)
     }
@@ -67,8 +67,8 @@ class JWTService(
         .body
 
     enum class Type(val key: String) {
-        ACCESS("auth.jwt.duration.access"),
-        REFRESH("auth.jwt.duration.refresh");
+        ACCESS("jwt.duration.access"),
+        REFRESH("jwt.duration.refresh");
     }
 
     data class Data(
