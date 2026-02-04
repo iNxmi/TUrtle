@@ -10,6 +10,8 @@ import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.AuthService
+import de.csw.turtle.api.service.JWTService
+import de.csw.turtle.api.service.JWTService.Type
 import de.csw.turtle.api.service.SystemSettingService
 import de.csw.turtle.api.service.UserService
 import jakarta.servlet.http.HttpServletRequest
@@ -62,8 +64,7 @@ class AuthController(
         response.addHeader("Set-Cookie", header)
     }
 
-    private fun getDurationRefresh() = systemSettingService.getTyped<Duration>("auth.jwt.duration.refresh")
-    private fun getDurationAccess() = systemSettingService.getTyped<Duration>("auth.jwt.duration.access")
+    private fun getDuration(type: JWTService.Type) = systemSettingService.getTyped<Duration>(type.key)
 
     @GetMapping("/me")
     fun verify(
@@ -102,10 +103,10 @@ class AuthController(
 
         val tokens = authService.login(request)
 
-        setCookie(COOKIE_NAME_ACCESS_TOKEN, tokens.accessToken, getDurationAccess(), response)
+        setCookie(COOKIE_NAME_ACCESS_TOKEN, tokens.accessToken, getDuration(Type.ACCESS), response)
 
         if (request.rememberMe) {
-            setCookie(COOKIE_NAME_REFRESH_TOKEN, tokens.refreshToken, getDurationRefresh(), response)
+            setCookie(COOKIE_NAME_REFRESH_TOKEN, tokens.refreshToken, getDuration(Type.REFRESH), response)
         } else {
             deleteCookie(COOKIE_NAME_REFRESH_TOKEN, response)
         }
@@ -123,8 +124,8 @@ class AuthController(
 
         val tokens = authService.refresh(token)
 
-        setCookie(COOKIE_NAME_ACCESS_TOKEN, tokens.accessToken, getDurationAccess(), response)
-        setCookie(COOKIE_NAME_REFRESH_TOKEN, tokens.refreshToken, getDurationRefresh(), response)
+        setCookie(COOKIE_NAME_ACCESS_TOKEN, tokens.accessToken, getDuration(Type.ACCESS), response)
+        setCookie(COOKIE_NAME_REFRESH_TOKEN, tokens.refreshToken, getDuration(Type.REFRESH), response)
 
         return ResponseEntity.noContent().build()
     }
