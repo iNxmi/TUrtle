@@ -16,7 +16,7 @@
 		event.preventDefault();
 
 		const payload = {
-			username: $state.snapshot(username),
+			emailOrUsername: $state.snapshot(username),
 			password: $state.snapshot(password),
 			rememberMe: $state.snapshot(rememberMe)
 		};

@@ -6,6 +6,7 @@ import de.csw.turtle.api.service.ExceptionService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.mapping.PropertyReferenceException
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.MissingServletRequestParameterException
@@ -38,7 +39,8 @@ class GlobalControllerExceptionHandler(
         MethodArgumentTypeMismatchException::class,
         HttpRequestMethodNotSupportedException::class,
         PropertyReferenceException::class,
-        MethodArgumentNotValidException::class
+        MethodArgumentNotValidException::class,
+        HttpMessageNotReadableException::class
     )
     fun badRequest(
         exception: Exception,
