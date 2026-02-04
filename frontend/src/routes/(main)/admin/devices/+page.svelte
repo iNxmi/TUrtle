@@ -1,9 +1,10 @@
 <script>
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
     import {Tabs, TabItem, Heading} from 'flowbite-svelte';
     import TableView from '$lib/components/TableView.svelte';
-    import {devicesPath, deviceCategoriesPath} from '$lib/backend';
+    import {devicesPath, deviceCategoriesPath, lockersPath} from '$lib/backend';
     import { page } from '$app/state';
+    import LockerTable from '$lib/components/LockerTable.svelte';
     let {data} = $props();
 
     const devicesHeaders = [
@@ -33,7 +34,7 @@
 </script>
 <Tabs>
     {#if data.userPermissions.includes('MANAGE_DEVICES')}
-    <TabItem onclick={() => goto(`?endpoint=${devicesPath}`, {invalidateAll: true}) } classes={{button: 'cursor-pointer'}} open={currentTab === devicesPath} title='_Devices_'>
+    <TabItem onclick={() => goto(`?endpoint=${devicesPath}`, {invalidateAll: true})} classes={{button: 'cursor-pointer'}} open={currentTab === devicesPath} title='_Devices_'>
         <Heading tag="h2" class="text-center mb-4">_Manage Devices_</Heading>
             <TableView
                     endpoint="/admin/devices"
@@ -44,7 +45,7 @@
     </TabItem>
     {/if}
     {#if data.userPermissions.includes('MANAGE_DEVICE_CATEGORIES')}
-    <TabItem onclick={() => goto(`?endpoint=${deviceCategoriesPath}`, {invalidateAll: true}) } classes={{button: 'cursor-pointer'}} open={currentTab === deviceCategoriesPath} title='_Device Categories_'>
+    <TabItem onclick={() => goto(`?endpoint=${deviceCategoriesPath}`, {invalidateAll: true})} classes={{button: 'cursor-pointer'}} open={currentTab === deviceCategoriesPath} title='_Device Categories_'>
         <Heading tag="h2" class="text-center mb-4">_Manage Device Categories_</Heading>
             <TableView
                     endpoint="/admin/devicecategories"
@@ -52,6 +53,12 @@
                     contentPage={data.page}
                     bind:showNewElementModal={showNewDeviceCategoryModal}
             />
+    </TabItem>
+    {/if}
+    {#if data.userPermissions.includes('MANAGE_DEVICES')}
+    <TabItem onclick={() => goto(`?endpoint=${lockersPath}`, {invalidateAll: true})} classes={{button: 'cursor-pointer'}} open={currentTab === lockersPath} title="_Lockers_">
+        <Heading tag="h2" class="text-center mb-4">_Manage Lockers_</Heading>
+        <LockerTable lockers={data.page} />
     </TabItem>
     {/if}
 </Tabs>
