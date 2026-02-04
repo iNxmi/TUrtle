@@ -3,10 +3,11 @@ import {checkAuthorization} from "$lib/utils";
 
 export function create(
     endpoint,
-    properties = []
+    properties = [],
+    initialRSQL
 ) {
 
-    return async function load({url}) {
+    return async function load({url, params}) {
 
         const parameters = new URLSearchParams()
         const finalEndpoint = url.searchParams.get('endpoint') || endpoint;
@@ -30,6 +31,9 @@ export function create(
         const sortDirection = url.searchParams.get("sortDirection");
         if (sortDirection != null)
             parameters.set("sortDirection", sortDirection)
+        if(initialRSQL){
+            parameters.set('rsql', initialRSQL+`${params.id}`)
+        }
 
         const response = await request(`${finalEndpoint}?${parameters}`);
 
