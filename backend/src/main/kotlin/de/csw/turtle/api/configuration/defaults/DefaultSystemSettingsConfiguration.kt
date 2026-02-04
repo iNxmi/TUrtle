@@ -61,6 +61,10 @@ class DefaultSystemSettingsConfiguration(
 
         setDefault("user.verification.duration", SystemSettingEntity.Type.DURATION, Duration.ofDays(2))
 
+        setDefault("captcha.type", SystemSettingEntity.Type.STRING, "reCAPTCHA")
+        setDefault("captcha.secret.site", SystemSettingEntity.Type.STRING, "")
+        setDefault("captcha.secret.server", SystemSettingEntity.Type.STRING, "")
+
         setDefault("door.open.duration", SystemSettingEntity.Type.DURATION, Duration.ofSeconds(5))
         setDefault("door.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0))
         setDefault("door.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0))

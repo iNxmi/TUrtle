@@ -1,7 +1,6 @@
 package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.dto.LoginUserRequest
-import de.csw.turtle.api.dto.RegisterUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
@@ -15,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
-import java.net.URI
 import java.time.Duration
 import java.time.Instant
 
@@ -95,8 +93,11 @@ class AuthController(
 
         setCookie("access_token", tokens.accessToken, getDurationAccess(), response)
 
-        if (request.rememberMe)
+        if (request.rememberMe) {
             setCookie("refresh_token", tokens.refreshToken, getDurationRefresh(), response)
+        } else {
+            deleteCookie("refresh_token", response)
+        }
 
         return ResponseEntity.noContent().build()
     }
