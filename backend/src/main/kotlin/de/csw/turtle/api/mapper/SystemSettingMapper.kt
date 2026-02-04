@@ -7,12 +7,14 @@ import de.csw.turtle.api.entity.SystemSettingEntity
 import org.mapstruct.Mapper
 
 @Mapper(componentModel = "spring")
-abstract class SystemSettingMapper : CRUDMapper<SystemSettingEntity, CreateSystemSettingRequest, GetSystemSettingResponse, PatchSystemSettingRequest> {
+abstract class SystemSettingMapper :
+    CRUDMapper<SystemSettingEntity, CreateSystemSettingRequest, GetSystemSettingResponse, PatchSystemSettingRequest> {
 
     override fun create(request: CreateSystemSettingRequest) = SystemSettingEntity(
         key = request.key,
         type = request.type,
-        value = request.value
+        value = request.value,
+        visibility = request.visibility
     )
 
     override fun get(entity: SystemSettingEntity) = GetSystemSettingResponse(
@@ -20,6 +22,7 @@ abstract class SystemSettingMapper : CRUDMapper<SystemSettingEntity, CreateSyste
         key = entity.key,
         type = entity.type,
         value = entity.value,
+        visibility = entity.visibility,
         updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )
@@ -31,6 +34,7 @@ abstract class SystemSettingMapper : CRUDMapper<SystemSettingEntity, CreateSyste
         request.key?.let { entity.key = it }
         request.type?.let { entity.type = it }
         request.value?.let { entity.value = it }
+        request.visibility?.let { entity.visibility = it }
         return entity
     }
 

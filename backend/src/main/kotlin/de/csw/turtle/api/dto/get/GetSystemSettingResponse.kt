@@ -9,6 +9,7 @@ class GetSystemSettingResponse(
     val key: String?,
     val type: SystemSettingEntity.Type?,
     val value: String?,
+    val visibility: SystemSettingEntity.Visibility?,
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?

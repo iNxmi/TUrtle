@@ -21,7 +21,6 @@ Port: 8080
 * emoji code checks (no duplicates, no 5 identical emojis)
 * make admins always open door (during all times)
 * document this: rsql, system settings, templates with thymeleaf
-* fix jwt access/refresh token interchangeability
 
 `*@stud.tu-darmstadt.de` -> ok
 `*@tu-darmstadt.de` -> ok

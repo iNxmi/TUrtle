@@ -22,21 +22,34 @@ class DefaultSystemSettingsConfiguration(
     private val emailTemplateService: EmailTemplateService,
 ) : CommandLineRunner {
 
-    private fun setDefault(key: String, type: SystemSettingEntity.Type, value: Any) {
+    private fun setDefault(
+        key: String,
+        type: SystemSettingEntity.Type,
+        value: Any,
+        visibility: SystemSettingEntity.Visibility = SystemSettingEntity.Visibility.PRIVATE
+    ) {
         if (service.getByKeyOrNull(key) != null)
             return
 
-        service.create(CreateSystemSettingRequest(key, type, value.toString()))
+        service.create(CreateSystemSettingRequest(key, type, value.toString(), visibility))
     }
 
-    private fun setDefaultGeneralTemplate(key: String, name: String) {
+    private fun setDefaultGeneralTemplate(
+        key: String,
+        name: String,
+        visibility: SystemSettingEntity.Visibility = SystemSettingEntity.Visibility.PRIVATE
+    ) {
         val generalTemplate = generalTemplateService.getByNameOrNull(name) ?: return
-        setDefault(key, SystemSettingEntity.Type.LONG, generalTemplate.id.toString())
+        setDefault(key, SystemSettingEntity.Type.LONG, generalTemplate.id.toString(), visibility)
     }
 
-    private fun setDefaultEmailTemplate(key: String, name: String) {
+    private fun setDefaultEmailTemplate(
+        key: String,
+        name: String,
+        visibility: SystemSettingEntity.Visibility = SystemSettingEntity.Visibility.PRIVATE
+    ) {
         val emailTemplate = emailTemplateService.getByNameOrNull(name) ?: return
-        setDefault(key, SystemSettingEntity.Type.LONG, emailTemplate.id.toString())
+        setDefault(key, SystemSettingEntity.Type.LONG, emailTemplate.id.toString(), visibility)
     }
 
     private fun randomBase64(size: Int = 64): String {
@@ -54,28 +67,28 @@ class DefaultSystemSettingsConfiguration(
 
     @Transactional
     override fun run(vararg args: String) {
-        setDefault("general.fqdn", SystemSettingEntity.Type.STRING, "csw.tu-darmstadt.de")
+        setDefault("general.fqdn", SystemSettingEntity.Type.STRING, "csw.tu-darmstadt.de", SystemSettingEntity.Visibility.PUBLIC)
 
-        setDefault("calendar.time.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0))
-        setDefault("calendar.time.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0))
+        setDefault("calendar.time.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), SystemSettingEntity.Visibility.PUBLIC)
+        setDefault("calendar.time.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), SystemSettingEntity.Visibility.PUBLIC)
 
         setDefault("user.verification.duration", SystemSettingEntity.Type.DURATION, Duration.ofDays(2))
 
-        setDefault("captcha.type", SystemSettingEntity.Type.STRING, "reCAPTCHA")
-        setDefault("captcha.secret.site", SystemSettingEntity.Type.STRING, "")
-        setDefault("captcha.secret.server", SystemSettingEntity.Type.STRING, "")
+        setDefault("captcha.type", SystemSettingEntity.Type.STRING, "reCAPTCHA", SystemSettingEntity.Visibility.PUBLIC)
+        setDefault("captcha.key.site", SystemSettingEntity.Type.STRING, "", SystemSettingEntity.Visibility.PUBLIC)
+        setDefault("captcha.key.server", SystemSettingEntity.Type.STRING, "")
 
-        setDefault("door.open.duration", SystemSettingEntity.Type.DURATION, Duration.ofSeconds(5))
-        setDefault("door.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0))
-        setDefault("door.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0))
+        setDefault("door.open.duration", SystemSettingEntity.Type.DURATION, Duration.ofSeconds(5), SystemSettingEntity.Visibility.PUBLIC)
+        setDefault("door.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), SystemSettingEntity.Visibility.PUBLIC)
+        setDefault("door.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), SystemSettingEntity.Visibility.PUBLIC)
         setDefault("door.ssh.command", SystemSettingEntity.Type.STRING, "~/doorOpen.sh [[\${duration.toSeconds()}]]")
         setDefault("door.ssh.hostname", SystemSettingEntity.Type.STRING, "192.168.0.107")
         setDefault("door.ssh.port", SystemSettingEntity.Type.INT, 22)
         setDefault("door.ssh.username", SystemSettingEntity.Type.STRING, "")
         setDefault("door.ssh.password", SystemSettingEntity.Type.STRING, "")
 
-        setDefault("locker.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0))
-        setDefault("locker.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0))
+        setDefault("locker.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), SystemSettingEntity.Visibility.PUBLIC)
+        setDefault("locker.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), SystemSettingEntity.Visibility.PUBLIC)
         setDefault("locker.ssh.command", SystemSettingEntity.Type.STRING, "~/cabinet[[\${index}]]Open.sh")
         setDefault("locker.ssh.hostname", SystemSettingEntity.Type.STRING, "192.168.0.107")
         setDefault("locker.ssh.port", SystemSettingEntity.Type.INT, 22)

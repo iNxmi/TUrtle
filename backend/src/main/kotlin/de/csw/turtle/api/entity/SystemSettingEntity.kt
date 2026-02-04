@@ -12,7 +12,10 @@ class SystemSettingEntity(
     @Enumerated(EnumType.STRING)
     var type: Type,
 
-    var value: String
+    var value: String,
+
+    @Enumerated(EnumType.STRING)
+    var visibility: Visibility
 
 ) : CRUDEntity() {
 
@@ -29,6 +32,10 @@ class SystemSettingEntity(
 
         //ISO-8601
         DATE, TIME, INSTANT, DURATION
+    }
+
+    enum class Visibility {
+        PUBLIC, PRIVATE
     }
 
 }
