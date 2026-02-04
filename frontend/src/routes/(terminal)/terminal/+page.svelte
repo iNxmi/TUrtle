@@ -27,16 +27,15 @@
     let emoji_rows = $derived(make_rows(emojis));
 
     function addEmoji(emoji) {
-        console.log(JSON.stringify(emoji))
-
-        password[password_index] = emoji;
-        password_index += 1;
+        if(password_index < 5){
+            password[password_index] = emoji;
+            password_index += 1;  
+        }
         if (password_index === 5) {
             submitInput();
         }
     }
 
-    //richtige Backend logik noch implementieren
     async function submitInput() {
         const payload = {
             emojis: getPassword()
@@ -48,6 +47,7 @@
             headers: {'Content-Type': 'application/json'}
         });
 
+        shuffle();
         password = ["", "", "", "", ""];
         password_index = 0;
     }
@@ -67,7 +67,7 @@
     }
     const shuffle = () => {
         let arr = emojis;
-        for (let i = 0; i < arr.length; i++) {
+        for(let i=0; i<arr.length; i++){
             let j = parseInt((Math.random() * (arr.length - i))) + i;
             let tmp = arr[i];
             arr[i] = arr[j];
@@ -76,11 +76,8 @@
         emojis = arr;
     }
 
-    let defaultModal = $state(false);
-
     shuffle();
-    $inspect(emojis);
-    $inspect(emoji_rows);
+    let defaultModal = $state(false);
 </script>
 
 <div class="flex">
