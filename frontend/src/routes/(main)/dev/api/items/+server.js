@@ -14,5 +14,10 @@ export async function GET(){
     },
     ];
 
-    return json(devices);
+    return json({content: devices, page: {
+        size: 20,
+        number: 0,
+        totalElements: 4,
+        totalPages: 1
+    }});
 }

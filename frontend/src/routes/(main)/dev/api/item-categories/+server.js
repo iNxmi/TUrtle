@@ -8,5 +8,10 @@ export async function GET(){
         id: "1", name:"Tablet"
     }];  
 
-    return json(testDeviceCategories);
+    return json({content: testDeviceCategories, page: {
+        size: 20,
+        number: 0,
+        totalElements: 4,
+        totalPages: 1
+    }});
 }
