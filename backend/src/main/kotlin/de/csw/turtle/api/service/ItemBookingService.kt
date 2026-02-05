@@ -65,7 +65,7 @@ class ItemBookingService(
     fun getAllOverlapping(start: Instant, end: Instant,item: Long , id: Long): Set<ItemBookingEntity> =
         repository.findAllOverlapping(start, end, itemService.get(item), id)
 
-    fun getCurrent(itemId: Long, lockerId: Long): ItemBookingEntity? =
-        repository.findCurrent(Instant.now(), itemId, lockerId)
+    fun getCurrent(userId: Long, lockerId: Long): Set<ItemBookingEntity> =
+        repository.findCurrent(Instant.now(), userId, lockerId)
 
 }

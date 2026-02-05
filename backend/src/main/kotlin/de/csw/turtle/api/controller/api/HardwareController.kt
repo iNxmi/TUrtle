@@ -3,8 +3,10 @@ package de.csw.turtle.api.controller.api
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.hardware.OpenDoorEmojisRequest
+import de.csw.turtle.api.entity.LockerEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
+import de.csw.turtle.api.service.ItemBookingService
 import de.csw.turtle.api.service.NetworkService
 import de.csw.turtle.api.service.RoomBookingService
 import de.csw.turtle.api.service.SystemSettingService
@@ -28,6 +30,7 @@ class HardwareController(
     private val userService: UserService,
     private val networkService: NetworkService,
     private val systemSettingService: SystemSettingService,
+    private val itemBookingService: ItemBookingService,
     private val roomBookingService: RoomBookingService
 ) {
 
@@ -76,7 +79,7 @@ class HardwareController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        checkLockerPermissions(user, request)
+        checkLockerPermissions(user, id, request)
 
         val locker = lockerService.get(id)
         val response = lockerControlService.trigger(locker = locker)
@@ -100,7 +103,7 @@ class HardwareController(
             throw HttpException.Unauthorized("User '${user.id}' not in whitelist for current Room Booking.")
     }
 
-    private fun checkLockerPermissions(user: UserEntity, request: HttpServletRequest) {
+    private fun checkLockerPermissions(user: UserEntity,lockerId: Long, request: HttpServletRequest) {
         if (user.hasPermission(Permission.MANAGE_LOCKERS))
             return
 
@@ -112,7 +115,8 @@ class HardwareController(
         if (isNowBetween(start, end))
             throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
 
-        TODO("implement check if user has a running item bookings at current time")
+        if(itemBookingService.getCurrent(user.id, lockerId).isEmpty())
+            throw HttpException.Forbidden("No Item Bookings found for this locker and user.")
     }
 
     private fun isNowBetween(start: LocalTime, end: LocalTime, now: LocalTime = LocalTime.now()) =
