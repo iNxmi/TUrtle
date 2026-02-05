@@ -7,9 +7,6 @@ enum class Settings(val key:String) {
     EMOJIS_SIZE("emojis.size"),
     EMOJIS_MAX_RETRIES("emojis.max-retries"),
 
-    CALENDAR_TIME_START("calendar.time.start"),
-    CALENDAR_TIME_END("calendar.time.end"),
-
     USER_VERIFICATION_DURATION("user.verification.duration"),
 
     ALTCHA_SECRET("altcha.secret"),

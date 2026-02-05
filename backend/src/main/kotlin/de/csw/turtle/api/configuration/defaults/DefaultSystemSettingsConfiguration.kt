@@ -1,8 +1,9 @@
 package de.csw.turtle.api.configuration.defaults
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.create.CreateSystemSettingRequest
-import de.csw.turtle.api.entity.SystemSettingEntity
+import de.csw.turtle.api.entity.SystemSettingEntity.Type
 import de.csw.turtle.api.entity.SystemSettingEntity.Visibility
 import de.csw.turtle.api.service.EmailTemplateService
 import de.csw.turtle.api.service.GeneralTemplateService
@@ -25,11 +26,13 @@ class DefaultSystemSettingsConfiguration(
 ) : CommandLineRunner {
 
     private fun setDefault(
-        key: String,
-        type: SystemSettingEntity.Type,
+        setting: Settings,
+        type: Type,
         value: Any,
         visibility: Visibility = Visibility.PRIVATE
     ) {
+        val key = setting.key
+
         if (service.getByKeyOrNull(key) != null)
             return
 
@@ -37,21 +40,21 @@ class DefaultSystemSettingsConfiguration(
     }
 
     private fun setDefaultGeneralTemplate(
-        key: String,
+        setting: Settings,
         name: String,
         visibility: Visibility = Visibility.PRIVATE
     ) {
         val generalTemplate = generalTemplateService.getByNameOrNull(name) ?: return
-        setDefault(key, SystemSettingEntity.Type.LONG, generalTemplate.id.toString(), visibility)
+        setDefault(setting, Type.LONG, generalTemplate.id.toString(), visibility)
     }
 
     private fun setDefaultEmailTemplate(
-        key: String,
+        setting: Settings,
         name: String,
         visibility: Visibility = Visibility.PRIVATE
     ) {
         val emailTemplate = emailTemplateService.getByNameOrNull(name) ?: return
-        setDefault(key, SystemSettingEntity.Type.LONG, emailTemplate.id.toString(), visibility)
+        setDefault(setting, Type.LONG, emailTemplate.id.toString(), visibility)
     }
 
     private val secureRandom = SecureRandom()
@@ -108,49 +111,46 @@ class DefaultSystemSettingsConfiguration(
     @Transactional
     override fun run(vararg args: String) {
         val objectMapper = ObjectMapper()
-        setDefault("general.fqdn", SystemSettingEntity.Type.STRING, "csw.tu-darmstadt.de", Visibility.PUBLIC)
+        setDefault(Settings.GENERAL_FQDN, Type.STRING, "csw.tu-darmstadt.de", Visibility.PUBLIC)
 
-        setDefault("emojis.set", SystemSettingEntity.Type.STRING_LIST, objectMapper.writeValueAsString(emojis), Visibility.PUBLIC)
-        setDefault("emojis.size", SystemSettingEntity.Type.INT, 5, Visibility.PUBLIC)
-        setDefault("emojis.retries.max", SystemSettingEntity.Type.INT, 64)
+        setDefault(Settings.EMOJIS_ALL, Type.STRING_LIST, objectMapper.writeValueAsString(emojis), Visibility.PUBLIC)
+        setDefault(Settings.EMOJIS_SIZE, Type.INT, 5, Visibility.PUBLIC)
+        setDefault(Settings.EMOJIS_MAX_RETRIES, Type.INT, 64)
 
-        setDefault("calendar.time.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
-        setDefault("calendar.time.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
+        setDefault(Settings.USER_VERIFICATION_DURATION, Type.DURATION, Duration.ofDays(2))
 
-        setDefault("user.verification.duration", SystemSettingEntity.Type.DURATION, Duration.ofDays(2))
+        setDefault(Settings.ALTCHA_SECRET, Type.STRING, randomBase64())
+        setDefault(Settings.ALTCHA_MAX_NUMBER, Type.LONG, 100_000L)
+        setDefault(Settings.ALTCHA_DURATION, Type.DURATION, Duration.ofMinutes(3))
 
-        setDefault("altcha.secret", SystemSettingEntity.Type.STRING, randomBase64())
-        setDefault("altcha.max-number", SystemSettingEntity.Type.LONG, 1_000_000L)
-        setDefault("altcha.duration", SystemSettingEntity.Type.DURATION, Duration.ofMinutes(3))
+        setDefault(Settings.DOOR_OPEN_DURATION, Type.DURATION, Duration.ofSeconds(5), Visibility.PUBLIC)
+        setDefault(Settings.DOOR_SCHEDULE_START, Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
+        setDefault(Settings.DOOR_SCHEDULE_END, Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
+        setDefault(Settings.DOOR_SSH_COMMAND, Type.STRING, "~/doorOpen.sh [[\${duration.toSeconds()}]]")
+        setDefault(Settings.DOOR_SSH_HOSTNAME, Type.STRING, "192.168.0.107")
+        setDefault(Settings.DOOR_SSH_PORT, Type.INT, 22)
+        setDefault(Settings.DOOR_SSH_USERNAME, Type.STRING, "")
+        setDefault(Settings.DOOR_SSH_PASSWORD, Type.STRING, "")
 
-        setDefault("door.open.duration", SystemSettingEntity.Type.DURATION, Duration.ofSeconds(5), Visibility.PUBLIC)
-        setDefault("door.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
-        setDefault("door.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
-        setDefault("door.ssh.command", SystemSettingEntity.Type.STRING, "~/doorOpen.sh [[\${duration.toSeconds()}]]")
-        setDefault("door.ssh.hostname", SystemSettingEntity.Type.STRING, "192.168.0.107")
-        setDefault("door.ssh.port", SystemSettingEntity.Type.INT, 22)
-        setDefault("door.ssh.username", SystemSettingEntity.Type.STRING, "")
-        setDefault("door.ssh.password", SystemSettingEntity.Type.STRING, "")
+        setDefault(Settings.LOCKER_SCHEDULE_START, Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
+        setDefault(Settings.LOCKER_SCHEDULE_END, Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
+        setDefault(Settings.LOCKER_SSH_COMMAND, Type.STRING, "~/cabinet[[\${index}]]Open.sh")
+        setDefault(Settings.LOCKER_SSH_HOSTNAME, Type.STRING, "192.168.0.107")
+        setDefault(Settings.LOCKER_SSH_PORT, Type.INT, 22)
+        setDefault(Settings.LOCKER_SSH_USERNAME, Type.STRING, "")
+        setDefault(Settings.LOCKER_SSH_PASSWORD, Type.STRING, "")
 
-        setDefault("locker.schedule.start", SystemSettingEntity.Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
-        setDefault("locker.schedule.end", SystemSettingEntity.Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
-        setDefault("locker.ssh.command", SystemSettingEntity.Type.STRING, "~/cabinet[[\${index}]]Open.sh")
-        setDefault("locker.ssh.hostname", SystemSettingEntity.Type.STRING, "192.168.0.107")
-        setDefault("locker.ssh.port", SystemSettingEntity.Type.INT, 22)
-        setDefault("locker.ssh.username", SystemSettingEntity.Type.STRING, "")
-        setDefault("locker.ssh.password", SystemSettingEntity.Type.STRING, "")
+        setDefault(Settings.JWT_SECRET, Type.STRING, randomBase64())
+        setDefault(Settings.JWT_DURATION_ACCESS, Type.DURATION, Duration.ofMinutes(5))
+        setDefault(Settings.JWT_DURATION_REFRESH, Type.DURATION, Duration.ofDays(30))
 
-        setDefault("jwt.secret", SystemSettingEntity.Type.STRING, randomBase64())
-        setDefault("jwt.duration.access", SystemSettingEntity.Type.DURATION, Duration.ofMinutes(15))
-        setDefault("jwt.duration.refresh", SystemSettingEntity.Type.DURATION, Duration.ofDays(30))
+        setDefaultGeneralTemplate(Settings.CONTENT_TEMPLATE_IMPRINT, "imprint")
+        setDefaultGeneralTemplate(Settings.CONTENT_TEMPLATE_GDPR, "gdpr")
+        setDefaultGeneralTemplate(Settings.CONTENT_TEMPLATE_TOS, "tos")
+        setDefaultGeneralTemplate(Settings.CONTENT_TEMPLATE_CONTACT, "contact")
+        setDefaultGeneralTemplate(Settings.CONTENT_TEMPLATE_ABOUT, "about")
 
-        setDefaultGeneralTemplate("content.template.imprint", "imprint")
-        setDefaultGeneralTemplate("content.template.gdpr", "gdpr")
-        setDefaultGeneralTemplate("content.template.tos", "tos")
-        setDefaultGeneralTemplate("content.template.contact", "contact")
-        setDefaultGeneralTemplate("content.template.about", "about")
-
-        setDefaultEmailTemplate("email.template.verify", "verify")
+        setDefaultEmailTemplate(Settings.EMAIL_TEMPLATE_VERIFY, "verify")
     }
 
 }
