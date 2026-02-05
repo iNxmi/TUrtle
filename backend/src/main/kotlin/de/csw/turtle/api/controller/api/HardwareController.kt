@@ -36,79 +36,85 @@ class HardwareController(
         @RequestBody request: OpenDoorEmojisRequest,
         httpRequest: HttpServletRequest
     ): ResponseEntity<String> {
-        val now = LocalTime.now()
-        val start = systemSettingService.getTyped<LocalTime>("door.schedule.start")
-        val end = systemSettingService.getTyped<LocalTime>("door.schedule.end")
-        if (now.isBefore(start) || now.isAfter(end))
-            throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
+        val user = userService.getByEmojisOrNull(request.emojis)
 
-        if (!networkService.isLocalNetwork(httpRequest))
-            throw HttpException.Unauthorized("External network.")
+        if (user == null) {
+            if (!networkService.isLocalNetwork(httpRequest))
+                throw HttpException.Forbidden("External network.")
 
-        if (userService.getByEmojisOrNull(request.emojis) == null)
             throw HttpException.Unauthorized("Incorrect emojis.")
+        }
+
+        if (!user.hasPermission(Permission.MANAGE_DOOR))
+            checkDoorPermissions(user, httpRequest)
 
         val duration = systemSettingService.getTyped<Duration>("door.open.duration")
         val response = doorControlService.trigger(duration)
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("/door/button")
+    @PostMapping("/door/open")
     fun door(
         @AuthenticationPrincipal user: UserEntity?,
-        httpRequest: HttpServletRequest
-    ): ResponseEntity<String> {
-        val now = LocalTime.now()
-        val start = systemSettingService.getTyped<LocalTime>("door.schedule.start")
-        val end = systemSettingService.getTyped<LocalTime>("door.schedule.end")
-        if (now.isBefore(start) || now.isAfter(end))
-            throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
-
-        if (!networkService.isLocalNetwork(httpRequest))
-            throw HttpException.Unauthorized("External network.")
-
-        if (user == null)
-            throw HttpException.Unauthorized()
-
-        val bookings = roomBookingService.getAllCurrent(Instant.now())
-        if(bookings.isNotEmpty()){
-            if(bookings.elementAt(0).whitelist.isNotEmpty() && !bookings.elementAt(0).whitelist.contains(user))
-                throw HttpException.Unauthorized("User '${user.id}' not in whitelist for current Room Booking.")
-        }
-
-        val response = doorControlService.trigger(Duration.ofSeconds(5))
-        return ResponseEntity.ok(response)
-    }
-
-    @GetMapping("/door/override")
-    fun door(
-        @AuthenticationPrincipal user: UserEntity?,
-        @RequestParam duration: Duration = Duration.ofSeconds(5)
+        @RequestParam duration: Duration = Duration.ofSeconds(5),
+        request: HttpServletRequest
     ): ResponseEntity<String> {
         if (user == null)
             throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_DOOR))
-            throw HttpException.Forbidden()
+            checkDoorPermissions(user, request)
 
         val response = doorControlService.trigger(duration)
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("/locker/override")
+    @PostMapping("/locker/open")
     fun locker(
         @AuthenticationPrincipal user: UserEntity?,
-        @RequestParam id: Long
+        @RequestParam id: Long,
+        request: HttpServletRequest
     ): ResponseEntity<String> {
         if (user == null)
             throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_LOCKERS))
-            throw HttpException.Forbidden()
+            checkLockerPermissions(user, request)
 
         val locker = lockerService.get(id)
         val response = lockerControlService.trigger(locker = locker)
         return ResponseEntity.ok(response)
     }
+
+    private fun checkDoorPermissions(user: UserEntity, request: HttpServletRequest) {
+        if (!networkService.isLocalNetwork(request))
+            throw HttpException.Forbidden("External network.")
+
+        val start = systemSettingService.getTyped<LocalTime>("door.schedule.start")
+        val end = systemSettingService.getTyped<LocalTime>("door.schedule.end")
+        if (isNowBetween(start, end))
+            throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
+
+        val bookings = roomBookingService.getAllCurrent(Instant.now())
+        if (bookings.isNotEmpty()) {
+            if (bookings.elementAt(0).whitelist.isNotEmpty() && !bookings.elementAt(0).whitelist.contains(user))
+                throw HttpException.Forbidden("User with id '${user.id}' is not in whitelist for current Room Booking.")
+        }
+    }
+
+    private fun checkLockerPermissions(user: UserEntity, request: HttpServletRequest) {
+        if (!networkService.isLocalNetwork(request))
+            throw HttpException.Forbidden("External network.")
+
+        val start = systemSettingService.getTyped<LocalTime>("locker.schedule.start")
+        val end = systemSettingService.getTyped<LocalTime>("locker.schedule.end")
+        if (isNowBetween(start, end))
+            throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
+
+        TODO("implement check if user has a running device bookings at current time")
+    }
+
+    private fun isNowBetween(start: LocalTime, end: LocalTime, now: LocalTime = LocalTime.now()) =
+        now.isBefore(start) || now.isAfter(end)
 
 }

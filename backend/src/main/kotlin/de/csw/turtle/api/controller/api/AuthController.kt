@@ -1,25 +1,18 @@
 package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.dto.auth.LoginUserRequest
-import de.csw.turtle.api.dto.auth.RegisterUserRequest
-import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.UserMapper
-import de.csw.turtle.api.service.AltchaService
-import de.csw.turtle.api.service.AuthService
-import de.csw.turtle.api.service.JWTService
+import de.csw.turtle.api.service.*
 import de.csw.turtle.api.service.JWTService.Type
-import de.csw.turtle.api.service.SystemSettingService
-import de.csw.turtle.api.service.UserService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
-import java.net.URI
 import java.time.Duration
 import java.time.Instant
 
@@ -36,13 +29,16 @@ class AuthController(
     private val altchaService: AltchaService
 ) {
 
-    private fun setCookie(name: String, value: String, duration: Duration, response: HttpServletResponse) {
+    private fun setCookie(name: String, value: String, duration: Duration?, response: HttpServletResponse) {
         //Enable HTTPS only
         //cookie.secure = true
 
         val header = buildString {
             append("$name=$value")
-            append("; Max-Age=${duration.toSeconds()}")
+
+            if (duration != null)
+                append("; Max-Age=${duration.toSeconds()}")
+
             append("; Path=/")
             append("; HttpOnly")
             append("; SameSite=Strict")
@@ -64,7 +60,7 @@ class AuthController(
         response.addHeader("Set-Cookie", header)
     }
 
-    private fun getDuration(type: JWTService.Type) = systemSettingService.getTyped<Duration>(type.key)
+    private fun getDuration(type: Type) = systemSettingService.getTyped<Duration>(type.key)
 
     @GetMapping("/me")
     fun verify(
@@ -98,18 +94,18 @@ class AuthController(
         @RequestBody request: LoginUserRequest,
         response: HttpServletResponse
     ): ResponseEntity<Void> {
-        if(!altchaService.isValid(request.altchaToken))
+        if (!altchaService.isValid(request.altchaToken))
             throw HttpException.Forbidden("Invalid captcha token.")
 
         val tokens = authService.login(request)
 
         setCookie(COOKIE_NAME_ACCESS_TOKEN, tokens.accessToken, getDuration(Type.ACCESS), response)
 
-        if (request.rememberMe) {
-            setCookie(COOKIE_NAME_REFRESH_TOKEN, tokens.refreshToken, getDuration(Type.REFRESH), response)
-        } else {
-            deleteCookie(COOKIE_NAME_REFRESH_TOKEN, response)
-        }
+        val refreshTokenDuration = if (request.rememberMe) {
+            getDuration(Type.REFRESH)
+        } else null
+
+        setCookie(COOKIE_NAME_REFRESH_TOKEN, tokens.refreshToken, refreshTokenDuration, response)
 
         return ResponseEntity.noContent().build()
     }
