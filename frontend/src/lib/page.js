@@ -15,7 +15,7 @@ export function create(
         if(!Array.isArray(finalEndpoint)){
             endpoints = finalEndpoint.split(',');
         } else {
-            endpoints = finalEndpoint;
+            endpoints = [...finalEndpoint];
         }
         const search = url.searchParams.get("search");
         if (search != null) {
@@ -42,12 +42,18 @@ export function create(
         }
 
         let page = [];
+ 
+        const response = await request(`${endpoints[0]}?${parameters}`);
+        checkAuthorization(response, url.pathname);
+        page.push(await response.json());
+        
+        endpoints.shift();
 
         for(const endpoint of endpoints){
              
-            const response = await request(`${endpoint}?${parameters}`);
+            const response = await request(`${endpoint}`);
             checkAuthorization(response, url.pathname);
-            page.push(await response.json());
+            page.push({content: await response.json()});
         }
        
         if(page.length === 1) {
