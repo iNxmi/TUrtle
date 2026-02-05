@@ -46,7 +46,7 @@
             />
         </TabItem>
         {/if}
-        {#if data.userPermissions.includes('MANAGE_DEVICE_BOOKINGS')}
+        {#if data.userPermissions.includes('MANAGE_ITEM_BOOKINGS')}
         <TabItem onclick={() => goto(`?endpoint=${deviceBookingsPath}`, {invalidateAll: true})} classes={{button:"cursor-pointer"}} title="devicebookings" open={currentTab === deviceBookingsPath}>
             <Heading tag="h2" class="text-center mb-4">_Device Booking Management_</Heading>
             <TableView 

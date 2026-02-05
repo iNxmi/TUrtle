@@ -30,10 +30,10 @@
     let showNewDeviceModal = $state(false);
     let showNewDeviceCategoryModal = $state(false);
     
-    let currentTab = $state(page.url.searchParams.get("endpoint" || '/devices'));
+    let currentTab = $state(page.url.searchParams.get("endpoint") || devicesPath);
 </script>
 <Tabs>
-    {#if data.userPermissions.includes('MANAGE_DEVICES')}
+    {#if data.userPermissions.includes('MANAGE_ITEMS')}
     <TabItem onclick={() => goto(`?endpoint=${devicesPath}`, {invalidateAll: true})} classes={{button: 'cursor-pointer'}} open={currentTab === devicesPath} title='_Devices_'>
         <Heading tag="h2" class="text-center mb-4">_Manage Devices_</Heading>
             <TableView
@@ -44,7 +44,7 @@
             />
     </TabItem>
     {/if}
-    {#if data.userPermissions.includes('MANAGE_DEVICE_CATEGORIES')}
+    {#if data.userPermissions.includes('MANAGE_ITEM_CATEGORIES')}
     <TabItem onclick={() => goto(`?endpoint=${deviceCategoriesPath}`, {invalidateAll: true})} classes={{button: 'cursor-pointer'}} open={currentTab === deviceCategoriesPath} title='_Device Categories_'>
         <Heading tag="h2" class="text-center mb-4">_Manage Device Categories_</Heading>
             <TableView
@@ -55,7 +55,7 @@
             />
     </TabItem>
     {/if}
-    {#if data.userPermissions.includes('MANAGE_DEVICES')}
+    {#if data.userPermissions.includes('MANAGE_ITEMS')}
     <TabItem onclick={() => goto(`?endpoint=${lockersPath}`, {invalidateAll: true})} classes={{button: 'cursor-pointer'}} open={currentTab === lockersPath} title="_Lockers_">
         <Heading tag="h2" class="text-center mb-4">_Manage Lockers_</Heading>
         <LockerTable lockers={data.page} />

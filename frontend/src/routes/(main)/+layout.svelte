@@ -155,7 +155,7 @@
     }];
 
     const itemsAdmin = [{
-        permission: ["MANAGE_USERS", "MANAGE_DEVICE_BOOKINGS"],
+        permission: ["MANAGE_USERS", "MANAGE_ITEM_BOOKINGS"],
         label: m.sidebar_admin_manage_user_entities(),
         href: '/admin/userdata',
         icon: UsersGroupSolid
@@ -165,7 +165,7 @@
         href: '/admin/bookings',
         icon: CalendarEditSolid
     }, {
-        permission: ['MANAGE_DEVICES', 'MANAGE_DEVICE_CATEGORIES'],
+        permission: ['MANAGE_ITEMS', 'MANAGE_ITEM_CATEGORIES'],
         label: '_Manage Devices',
         href: '/admin/devices',
         icon: DesktopPcSolid
@@ -304,7 +304,6 @@
                     <SunOutline class="mr-1"/> _Hell_
                     {/if}
                 </button>
-                {#if permissions.includes('VIEW__SIDEBAR_ITEM__PROFILE')}
                     <button size="xl" class="sizes cursor-pointer inline-flex items-center justify-center ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none border border-gray-300 border-input bg-transparent hover:bg-gray-50 px-3 relative h-10 w-10 rounded-full">
                         <span class="relative flex shrink-0 overflow-hidden rounded-full h-9 w-9">
                             <span class="flex h-full w-full items-center justify-center rounded-full bg-gray-100">
@@ -344,7 +343,6 @@
                         <DropdownDivider />
                         <DropdownItem class onclick={logOut}><span class="text-red-600">_Log out_</span></DropdownItem>
                     </Dropdown>
-                {/if}
             </div>
             {@render children?.()}
         </div>
