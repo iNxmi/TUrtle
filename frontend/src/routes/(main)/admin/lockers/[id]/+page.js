@@ -1,8 +1,8 @@
-import { devicesPath } from "$lib/backend";
+import { devicesPath, deviceBookingsPath } from "$lib/backend";
 import { create } from "$lib/page";
 
 export const load = create(
-    devicesPath,
+    [devicesPath, deviceBookingsPath],
     [
         "id",
         'name',

@@ -41,5 +41,10 @@ export async function GET(){
   }
 ];
 
-return json(lockers);
+return json({content: lockers, page: {
+        size: 20,
+        number: 0,
+        totalElements: 4,
+        totalPages: 1
+    }});
 }

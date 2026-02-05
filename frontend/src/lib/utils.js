@@ -1,7 +1,7 @@
 import request from './api/api';
 import {dev} from '$app/environment';
 import {error, redirect} from '@sveltejs/kit';
-import {hardwarePath, deviceBookingsPath, roomBookingsPath, jwtRefreshPath} from '$lib/backend';
+import {hardwarePath, deviceBookingsPath, roomBookingsPath} from '$lib/backend';
 
 export function convertEventToBackend(calendarEvent) {
     if (dev) {
