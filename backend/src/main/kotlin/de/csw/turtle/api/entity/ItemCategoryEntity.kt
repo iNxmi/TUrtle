@@ -6,13 +6,13 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "device_categories")
-class DeviceCategoryEntity(
+@Table(name = "item_categories")
+class ItemCategoryEntity(
 
     @Column(unique = true)
     var name: String,
 
     @OneToMany(mappedBy = "category")
-    val devices: MutableSet<DeviceEntity> = mutableSetOf()
+    val items: MutableSet<ItemEntity> = mutableSetOf()
 
 ) : CRUDEntity()

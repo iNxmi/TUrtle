@@ -2,7 +2,7 @@ package de.csw.turtle.api.dto.patch
 
 import java.time.Instant
 
-data class PatchDeviceRequest(
+data class PatchItemRequest(
     val name: String? = null,
     val description: String? = null,
     val categoryId: Long? = null,

@@ -5,14 +5,14 @@ import de.csw.turtle.api.controller.CreateController
 import de.csw.turtle.api.controller.DeleteController
 import de.csw.turtle.api.controller.GetController
 import de.csw.turtle.api.controller.PatchController
-import de.csw.turtle.api.dto.create.CreateDeviceRequest
-import de.csw.turtle.api.dto.get.GetDeviceResponse
-import de.csw.turtle.api.dto.patch.PatchDeviceRequest
-import de.csw.turtle.api.entity.DeviceEntity
+import de.csw.turtle.api.dto.create.CreateItemCategoryRequest
+import de.csw.turtle.api.dto.get.GetItemCategoryResponse
+import de.csw.turtle.api.dto.patch.PatchItemCategoryRequest
+import de.csw.turtle.api.entity.ItemCategoryEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.DeviceMapper
-import de.csw.turtle.api.service.DeviceService
+import de.csw.turtle.api.mapper.ItemCategoryMapper
+import de.csw.turtle.api.service.ItemCategoryService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
@@ -21,37 +21,38 @@ import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
-@RequestMapping("/api/devices")
-class DeviceController(
-    private val deviceService: DeviceService,
-    private val deviceMapper: DeviceMapper,
-) : CreateController<DeviceEntity, CreateDeviceRequest, GetDeviceResponse>,
-    GetController<DeviceEntity, Long, GetDeviceResponse>,
-    PatchController<DeviceEntity, PatchDeviceRequest, GetDeviceResponse>,
-    DeleteController<DeviceEntity> {
+@RequestMapping("/api/item-categories")
+class ItemCategoryController(
+    private val itemCategoryService: ItemCategoryService,
+    private val itemCategoryMapper: ItemCategoryMapper
+) :
+    CreateController<ItemCategoryEntity, CreateItemCategoryRequest, GetItemCategoryResponse>,
+    GetController<ItemCategoryEntity, Long, GetItemCategoryResponse>,
+    PatchController<ItemCategoryEntity, PatchItemCategoryRequest, GetItemCategoryResponse>,
+    DeleteController<ItemCategoryEntity> {
 
     override fun create(
         user: UserEntity?,
-        request: CreateDeviceRequest
-    ): ResponseEntity<GetDeviceResponse> {
+        request: CreateItemCategoryRequest
+    ): ResponseEntity<GetItemCategoryResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_DEVICES))
+        if (!user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
             throw HttpException.Forbidden()
 
-        val entity = deviceService.create(request)
-        val location = URI.create("/api/devices/${entity.id}")
-        val dto = deviceMapper.get(entity)
+        val entity = itemCategoryService.create(request)
+        val location = URI.create("/api/item-categories/${entity.id}")
+        val dto = itemCategoryMapper.get(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
     override fun get(
         user: UserEntity?,
         variable: Long
-    ): ResponseEntity<GetDeviceResponse> {
-        val entity = deviceService.get(variable)
-        val dto = deviceMapper.get(entity)
+    ): ResponseEntity<GetItemCategoryResponse> {
+        val entity = itemCategoryService.get(variable)
+        val dto = itemCategoryMapper.get(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -69,29 +70,29 @@ class DeviceController(
 
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = deviceService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { deviceMapper.get(it) }
+            val page = itemCategoryService.getPage(rsql = rsql, pageable = pageable)
+            val dto = page.map { itemCategoryMapper.get(it) }
             return ResponseEntity.ok(dto)
         }
 
-        val collection = deviceService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { deviceMapper.get(it) }
+        val collection = itemCategoryService.getAll(rsql = rsql, sort = sort).toMutableSet()
+        val dto = collection.map { itemCategoryMapper.get(it) }
         return ResponseEntity.ok(dto)
     }
 
     override fun patch(
         user: UserEntity?,
         id: Long,
-        request: PatchDeviceRequest
-    ): ResponseEntity<GetDeviceResponse> {
+        request: PatchItemCategoryRequest
+    ): ResponseEntity<GetItemCategoryResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_DEVICES))
+        if (!user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
             throw HttpException.Forbidden()
 
-        val entity = deviceService.patch(id, request)
-        val dto = deviceMapper.get(entity)
+        val entity = itemCategoryService.patch(id, request)
+        val dto = itemCategoryMapper.get(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -102,10 +103,10 @@ class DeviceController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_DEVICES))
+        if (!user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
             throw HttpException.Forbidden()
 
-        deviceService.delete(id)
+        itemCategoryService.delete(id)
         return ResponseEntity.noContent().build()
     }
 

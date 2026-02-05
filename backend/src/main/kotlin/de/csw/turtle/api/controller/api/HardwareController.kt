@@ -115,7 +115,7 @@ class HardwareController(
         if (isNowBetween(start, end))
             throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
 
-        TODO("implement check if user has a running device bookings at current time")
+        TODO("implement check if user has a running item bookings at current time")
     }
 
     private fun isNowBetween(start: LocalTime, end: LocalTime, now: LocalTime = LocalTime.now()) =

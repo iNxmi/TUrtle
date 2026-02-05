@@ -2,7 +2,7 @@ package de.csw.turtle.api.dto.get
 
 import java.time.Instant
 
-data class GetDeviceCategoryResponse(
+data class GetItemCategoryResponse(
     override val id: Long?,
 
     val name: String?,

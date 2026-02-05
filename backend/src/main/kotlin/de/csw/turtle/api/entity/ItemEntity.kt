@@ -4,8 +4,8 @@ import jakarta.persistence.*
 import java.time.Instant
 
 @Entity
-@Table(name = "devices")
-class DeviceEntity(
+@Table(name = "items")
+class ItemEntity(
 
     @Column(unique = true)
     var name: String,
@@ -15,7 +15,7 @@ class DeviceEntity(
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    var category: DeviceCategoryEntity,
+    var category: ItemCategoryEntity,
 
     @ManyToOne
     @JoinColumn(name = "locker_id")
@@ -23,7 +23,7 @@ class DeviceEntity(
 
     var acquiredAt: Instant,
 
-    @OneToMany(mappedBy = "device")
-    val bookings: MutableSet<DeviceBookingEntity> = mutableSetOf()
+    @OneToMany(mappedBy = "item")
+    val bookings: MutableSet<ItemBookingEntity> = mutableSetOf()
 
 ) : CRUDEntity()

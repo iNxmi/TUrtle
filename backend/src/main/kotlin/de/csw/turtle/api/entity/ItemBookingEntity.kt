@@ -4,8 +4,8 @@ import jakarta.persistence.*
 import java.time.Instant
 
 @Entity
-@Table(name = "device_bookings")
-class DeviceBookingEntity(
+@Table(name = "item_bookings")
+class ItemBookingEntity(
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -18,8 +18,8 @@ class DeviceBookingEntity(
     var end: Instant,
 
     @ManyToOne
-    @JoinColumn(name = "device_id")
-    var device: DeviceEntity,
+    @JoinColumn(name = "item_id")
+    var item: ItemEntity,
 
     @Enumerated(EnumType.STRING)
     var status: Status = Status.RESERVED
@@ -29,9 +29,9 @@ class DeviceBookingEntity(
     enum class Status {
         RESERVED,
         COLLECTION_READY,
-        DEVICE_COLLECTED,
+        ITEM_COLLECTED,
         RESERVATION_ENDED,
-        DEVICE_RETURNED,
+        ITEM_RETURNED,
         CANCELLED
     }
 

@@ -1,5 +1,5 @@
 package de.csw.turtle.api.dto.create
 
-data class CreateDeviceCategoryRequest(
+data class CreateItemCategoryRequest(
     val name: String
 ) : CreateRequest

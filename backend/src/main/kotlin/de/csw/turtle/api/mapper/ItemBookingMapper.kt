@@ -1,36 +1,36 @@
 package de.csw.turtle.api.mapper
 
-import de.csw.turtle.api.dto.create.CreateDeviceBookingRequest
-import de.csw.turtle.api.dto.get.GetDeviceBookingResponse
-import de.csw.turtle.api.dto.patch.PatchDeviceBookingRequest
-import de.csw.turtle.api.entity.DeviceBookingEntity
-import de.csw.turtle.api.service.DeviceService
+import de.csw.turtle.api.dto.create.CreateItemBookingRequest
+import de.csw.turtle.api.dto.get.GetItemBookingResponse
+import de.csw.turtle.api.dto.patch.PatchItemBookingRequest
+import de.csw.turtle.api.entity.ItemBookingEntity
+import de.csw.turtle.api.service.ItemService
 import de.csw.turtle.api.service.UserService
 import org.mapstruct.Mapper
 import org.springframework.beans.factory.annotation.Autowired
 
 @Mapper(componentModel = "spring")
-abstract class DeviceBookingMapper : CRUDMapper<DeviceBookingEntity, CreateDeviceBookingRequest, GetDeviceBookingResponse, PatchDeviceBookingRequest> {
+abstract class ItemBookingMapper : CRUDMapper<ItemBookingEntity, CreateItemBookingRequest, GetItemBookingResponse, PatchItemBookingRequest> {
 
     @Autowired
     protected lateinit var userService: UserService
 
     @Autowired
-    protected lateinit var deviceService: DeviceService
+    protected lateinit var itemService: ItemService
 
-    override fun create(request: CreateDeviceBookingRequest) = DeviceBookingEntity(
+    override fun create(request: CreateItemBookingRequest) = ItemBookingEntity(
         start = request.start,
         end = request.end,
-        device = deviceService.get(request.deviceId),
+        item = itemService.get(request.itemId),
         user = userService.get(request.userId),
         status = request.status
     )
 
-    override fun get(entity: DeviceBookingEntity) = GetDeviceBookingResponse(
+    override fun get(entity: ItemBookingEntity) = GetItemBookingResponse(
         id = entity.id,
         start = entity.start,
         end = entity.end,
-        deviceId = entity.device.id,
+        itemId = entity.item.id,
         userId = entity.user.id,
         status = entity.status,
         updatedAt = entity.updatedAt,
@@ -38,12 +38,12 @@ abstract class DeviceBookingMapper : CRUDMapper<DeviceBookingEntity, CreateDevic
     )
 
     override fun patch(
-        entity: DeviceBookingEntity,
-        request: PatchDeviceBookingRequest
-    ): DeviceBookingEntity {
+        entity: ItemBookingEntity,
+        request: PatchItemBookingRequest
+    ): ItemBookingEntity {
         request.start?.let { entity.start = it }
         request.end?.let { entity.end = it }
-        request.deviceId?.let { entity.device = deviceService.get(it) }
+        request.itemId?.let { entity.item = itemService.get(it) }
         request.userId?.let { entity.user = userService.get(it) }
         request.status?.let { entity.status = it }
         return entity

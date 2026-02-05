@@ -1,6 +1,6 @@
 package de.csw.turtle.test
 
-import de.csw.turtle.api.dto.create.CreateDeviceRequest
+import de.csw.turtle.api.dto.create.CreateItemRequest
 import de.csw.turtle.api.dto.create.CreateRoomBookingRequest
 import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.create.CreateUserRequest
@@ -20,8 +20,8 @@ import kotlin.math.floor
 @Component
 class DataSeeder(
     private val lockerService: LockerService,
-    private val deviceCategoryService: DeviceCategoryService,
-    private val deviceService: DeviceService,
+    private val itemCategoryService: ItemCategoryService,
+    private val itemService: ItemService,
     private val supportTicketService: SupportTicketService,
     private val roleService: RoleService,
     private val roomBookingService: RoomBookingService,
@@ -124,35 +124,35 @@ class DataSeeder(
     @Order(2)
     @EventListener(ApplicationReadyEvent::class)
     fun seedDevices() {
-        if (deviceService.count() > 0)
+        if (itemService.count() > 0)
             return
 
-        val xbox360 = CreateDeviceRequest(
+        val xbox360 = CreateItemRequest(
             name = "Xbox 360",
             description = "The Xbox 360 (we love it)",
-            categoryId = deviceCategoryService.getByName("Gaming").id,
+            categoryId = itemCategoryService.getByName("Gaming").id,
             lockerId = lockerService.getByIndex(6)!!.id,
             acquiredAt = Instant.now()
         )
-        deviceService.create(xbox360)
+        itemService.create(xbox360)
 
-        val ps4 = CreateDeviceRequest(
+        val ps4 = CreateItemRequest(
             name = "PlayStation 4",
             description = "The PS4 (we love it not as much as the 360)",
-            categoryId = deviceCategoryService.getByName("Gaming").id,
+            categoryId = itemCategoryService.getByName("Gaming").id,
             lockerId = lockerService.getByIndex(6)!!.id,
             acquiredAt = Instant.now()
         )
-        deviceService.create(ps4)
+        itemService.create(ps4)
 
-        val laptop = CreateDeviceRequest(
+        val laptop = CreateItemRequest(
             name = "Dell Laptop",
             description = "laptop from dell",
-            categoryId = deviceCategoryService.getByName("Laptop").id,
+            categoryId = itemCategoryService.getByName("Laptop").id,
             lockerId = lockerService.getByIndex(7)!!.id,
             acquiredAt = Instant.now()
         )
-        deviceService.create(laptop)
+        itemService.create(laptop)
     }
 
 }

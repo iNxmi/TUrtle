@@ -1,5 +1,5 @@
 package de.csw.turtle.api.dto.patch
 
-data class PatchDeviceCategoryRequest(
+data class PatchItemCategoryRequest(
     val name: String? = null
 ) : PatchRequest

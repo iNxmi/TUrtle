@@ -43,7 +43,7 @@ class UserEntity(
     val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf(),
 
     @OneToMany(mappedBy = "user")
-    val deviceBookings: MutableSet<DeviceBookingEntity> = mutableSetOf()
+    val itemBookings: MutableSet<ItemBookingEntity> = mutableSetOf()
 
 ) : CRUDEntity() {
 
