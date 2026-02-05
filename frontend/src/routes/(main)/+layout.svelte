@@ -294,7 +294,7 @@
         </div>
     </Sidebar>
 
-    <div class="min-h-svh justify-between flex flex-col w-full dark:bg-gray-900">
+    <div class="min-h-svh justify-between flex flex-col w-full bg-background">
         <div class="mx-10 my-3 mb-2">
             <div class="flex justify-end items-center gap-2 mb-1">
                 <button onclick={toggleDarkMode} class="cursor-pointer inline-flex items-center justify-center text-md dark:text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md px-3 h-8">
@@ -306,8 +306,8 @@
                 </button>
                     <button size="xl" class="sizes cursor-pointer inline-flex items-center justify-center ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none border border-gray-300 border-input bg-transparent hover:bg-gray-50 px-3 relative h-10 w-10 rounded-full">
                         <span class="relative flex shrink-0 overflow-hidden rounded-full h-9 w-9">
-                            <span class="flex h-full w-full items-center justify-center rounded-full bg-gray-100">
-                                JR
+                            <span class="flex h-full w-full items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-text">
+                                {user.firstName.charAt(0).toUpperCase()+user.lastName.charAt(0).toUpperCase()}
                             </span>
                         </span>
                     </button>
