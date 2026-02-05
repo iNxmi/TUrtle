@@ -77,7 +77,7 @@ class HardwareController(
                 throw HttpException.Unauthorized("User '${user.id}' not in whitelist for current Room Booking.")
         }
 
-        val response = doorControlService.trigger(Duration.ofSeconds(5))
+        val response = doorControlService.trigger(systemSettingService.getTyped<Duration>(Settings.DOOR_OPEN_DURATION))
         return ResponseEntity.ok(response)
     }
 
