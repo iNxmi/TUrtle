@@ -59,17 +59,17 @@ class HardwareController(
         @AuthenticationPrincipal user: UserEntity?,
         httpRequest: HttpServletRequest
     ): ResponseEntity<String> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (!networkService.isLocalNetwork(httpRequest))
+            throw HttpException.Unauthorized("External network.")
+
         val now = LocalTime.now()
         val start = systemSettingService.getTyped<LocalTime>(Settings.DOOR_SCHEDULE_START)
         val end = systemSettingService.getTyped<LocalTime>(Settings.DOOR_SCHEDULE_END)
         if (now.isBefore(start) || now.isAfter(end))
             throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
-
-        if (!networkService.isLocalNetwork(httpRequest))
-            throw HttpException.Unauthorized("External network.")
-
-        if (user == null)
-            throw HttpException.Unauthorized()
 
         val booking = roomBookingService.getCurrent()
         if(booking != null){
