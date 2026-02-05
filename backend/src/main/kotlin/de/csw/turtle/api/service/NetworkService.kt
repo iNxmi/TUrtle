@@ -7,9 +7,12 @@ import java.net.InetAddress
 @Service
 class NetworkService {
 
+    fun getClientIp(request: HttpServletRequest): String = request.getHeader("X-Real-Ip")
+
     //TODO needs testing to see if it really blocks external calls
     fun isLocalNetwork(request: HttpServletRequest): Boolean {
-        val address = InetAddress.getByName(request.remoteAddr)
+        val ipAddress = getClientIp(request)
+        val address = InetAddress.getByName(ipAddress)
         return address.isLoopbackAddress || address.isSiteLocalAddress
     }
 

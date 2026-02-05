@@ -3,6 +3,7 @@ package de.csw.turtle.api.controller
 import de.csw.turtle.api.exception.DebugException
 import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.EmailService
+import de.csw.turtle.api.service.NetworkService
 import de.csw.turtle.api.service.door.DoorControlService
 import de.csw.turtle.api.service.locker.LockerControlService
 import de.csw.turtle.api.service.locker.LockerService
@@ -15,14 +16,26 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.Duration
 
 @RestController
-@RequestMapping("/debug")
+@RequestMapping("/api/debug")
 class DebugController(
     private val emailService: EmailService,
     private val doorControlService: DoorControlService,
     private val lockerService: LockerService,
     private val lockerControlService: LockerControlService,
-    private val altchaService: AltchaService
+    private val altchaService: AltchaService,
+    private val networkService: NetworkService
 ) {
+
+    @GetMapping("/network")
+    fun network(
+        request: HttpServletRequest
+    ): ResponseEntity<Map<String, Any>> {
+        val dto = mapOf(
+            "ipAddress" to networkService.getClientIp(request),
+            "isLocalNetwork" to networkService.isLocalNetwork(request)
+        )
+        return ResponseEntity.ok(dto)
+    }
 
     @GetMapping("/headers")
     fun headers(
