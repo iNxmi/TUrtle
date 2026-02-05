@@ -12,6 +12,7 @@ import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.service.AltchaService
+import de.csw.turtle.api.service.NetworkService
 import de.csw.turtle.api.service.UserService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -28,6 +29,7 @@ class UserController(
     private val userService: UserService,
     private val userMapper: UserMapper,
     private val altchaService: AltchaService,
+    private val networkService: NetworkService
 ) : CreateController<UserEntity, CreateUserRequest, GetUserResponse>,
     GetController<UserEntity, String, GetUserResponse>,
     PatchController<UserEntity, PatchUserRequest, GetUserResponse>,
@@ -42,7 +44,8 @@ class UserController(
         httpResponse: HttpServletResponse
     ): ResponseEntity<GetUserResponse> {
         val sanitized = if (user == null) {
-            if (request.altchaToken == null || altchaService.isValid(httpRequest.remoteAddr, request.altchaToken))
+            val ipAddress = networkService.getClientIp(httpRequest)
+            if (request.altchaToken == null || altchaService.isValid(ipAddress, request.altchaToken))
                 throw HttpException.Forbidden("Invalid captcha token.")
 
             CreateUserRequest(

@@ -7,7 +7,7 @@ import java.net.InetAddress
 @Service
 class NetworkService {
 
-    fun getClientIp(request: HttpServletRequest): String = request.getHeader("X-Real-Ip")
+    fun getClientIp(request: HttpServletRequest): String = request.getHeader("x-real-ip") ?: request.remoteAddr
 
     //TODO needs testing to see if it really blocks external calls
     fun isLocalNetwork(request: HttpServletRequest): Boolean {

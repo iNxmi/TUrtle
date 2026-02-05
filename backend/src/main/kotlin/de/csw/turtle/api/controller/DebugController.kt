@@ -82,10 +82,4 @@ class DebugController(
         return lockerControlService.trigger(locker)
     }
 
-    @GetMapping("/altcha")
-    fun altcha(
-        @RequestParam token: String,
-        request: HttpServletRequest
-    ) = altchaService.isValid(request.remoteAddr, token)
-
 }

@@ -13,6 +13,7 @@ import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.SupportTicketMapper
 import de.csw.turtle.api.service.AltchaService
+import de.csw.turtle.api.service.NetworkService
 import de.csw.turtle.api.service.SupportTicketService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -29,7 +30,8 @@ import java.net.URI
 class SupportTicketController(
     private val supportTicketService: SupportTicketService,
     private val supportTicketMapper: SupportTicketMapper,
-    private val altchaService: AltchaService
+    private val altchaService: AltchaService,
+    private val networkService: NetworkService
 ) : CreateController<SupportTicketEntity, CreateSupportTicketRequest, GetSupportTicketResponse>,
     GetController<SupportTicketEntity, Long, GetSupportTicketResponse>,
     PatchController<SupportTicketEntity, PatchSupportTicketRequest, GetSupportTicketResponse>,
@@ -44,9 +46,11 @@ class SupportTicketController(
         httpResponse: HttpServletResponse
     ): ResponseEntity<GetSupportTicketResponse> {
 
-        if (user == null)
-            if (request.altchaToken == null || altchaService.isValid(httpRequest.remoteAddr, request.altchaToken))
+        if (user == null) {
+            val ipAddress = networkService.getClientIp(httpRequest)
+            if (request.altchaToken == null || altchaService.isValid(ipAddress, request.altchaToken))
                 throw HttpException.Forbidden("Invalid captcha token.")
+        }
 
         val entity = supportTicketService.create(request)
         val location = URI.create("/api/support-tickets/${entity.id}")

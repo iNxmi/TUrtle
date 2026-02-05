@@ -2,6 +2,8 @@ package de.csw.turtle.api.filter
 
 import de.csw.turtle.api.CustomUserDetails
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.exception.HttpException
+import de.csw.turtle.api.service.NetworkService
 import de.csw.turtle.api.service.RateLimiterService
 import de.csw.turtle.api.service.UserService
 import jakarta.servlet.FilterChain
@@ -14,7 +16,8 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Component
 class RateLimitFilter(
     private val userService: UserService,
-    private val rateLimiterService: RateLimiterService
+    private val rateLimiterService: RateLimiterService,
+    private val networkService: NetworkService
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -22,10 +25,10 @@ class RateLimitFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val ip = request.remoteAddr
         val user = getUser()
 
-        if (!rateLimiterService.tryConsume(ip, user)) {
+        val ipAddress = networkService.getClientIp(request)
+        if (!rateLimiterService.tryConsume(ipAddress, user)) {
             response.status = 429
             response.writer.write("Too many requests.")
             return

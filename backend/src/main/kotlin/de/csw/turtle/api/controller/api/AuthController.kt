@@ -10,6 +10,7 @@ import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.AuthService
 import de.csw.turtle.api.service.JWTService.Type
+import de.csw.turtle.api.service.NetworkService
 import de.csw.turtle.api.service.SystemSettingService
 import de.csw.turtle.api.service.UserService
 import jakarta.servlet.http.HttpServletRequest
@@ -30,7 +31,8 @@ class AuthController(
     private val systemSettingService: SystemSettingService,
     private val userMapper: UserMapper,
     private val userService: UserService,
-    private val altchaService: AltchaService
+    private val altchaService: AltchaService,
+    private val networkService: NetworkService
 ) {
 
     private fun setCookie(name: String, value: String, duration: Duration?, response: HttpServletResponse) {
@@ -99,7 +101,8 @@ class AuthController(
         httpRequest: HttpServletRequest,
         response: HttpServletResponse
     ): ResponseEntity<Void> {
-        if (!altchaService.isValid(httpRequest.remoteAddr, request.altchaToken))
+        val ipAddress = networkService.getClientIp(httpRequest)
+        if (request.altchaToken == null || altchaService.isValid(ipAddress, request.altchaToken))
             throw HttpException.Forbidden("Invalid captcha token.")
 
         val tokens = authService.login(request)

@@ -4,6 +4,7 @@ import de.csw.turtle.api.CustomUserDetails
 import de.csw.turtle.api.dto.create.CreateAuditLogRequest
 import de.csw.turtle.api.entity.AuditLogEntity
 import de.csw.turtle.api.service.AuditLogService
+import de.csw.turtle.api.service.NetworkService
 import de.csw.turtle.api.service.UserService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -15,7 +16,8 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Component
 class AuditLogFilter(
     private val auditLogService: AuditLogService,
-    private val userService: UserService
+    private val userService: UserService,
+    private val networkService: NetworkService
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -30,9 +32,11 @@ class AuditLogFilter(
             userService.getByUsername(principal.username).id
         } else null
 
+        val ipAddress = networkService.getClientIp(request)
+
         val createAuditLogRequest = CreateAuditLogRequest(
             userId = userId,
-            ipAddress = request.remoteAddr,
+            ipAddress = ipAddress,
             endpoint = request.requestURI,
             status = response.status,
             httpMethod = AuditLogEntity.HttpMethod.valueOf(request.method.uppercase())

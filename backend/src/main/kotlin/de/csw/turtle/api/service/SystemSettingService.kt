@@ -68,7 +68,7 @@ class SystemSettingService(
 
     override fun create(request: CreateSystemSettingRequest): SystemSettingEntity {
         //Will throw if parsing fails
-        val parsed = parse(
+        parse(
             request.key,
             request.type,
             request.value
@@ -81,7 +81,7 @@ class SystemSettingService(
         val original = get(id)
 
         //Will throw if parsing fails
-        val parsed = parse(
+        parse(
             request.key ?: original.key,
             request.type ?: original.type,
             request.value ?: original.value
