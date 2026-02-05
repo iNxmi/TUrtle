@@ -6,12 +6,12 @@ import de.csw.turtle.api.dto.patch.PatchItemCategoryRequest
 import de.csw.turtle.api.entity.ItemCategoryEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.ItemCategoryMapper
-import de.csw.turtle.api.repository.DeviceCategoryRepository
+import de.csw.turtle.api.repository.ItemCategoryRepository
 import org.springframework.stereotype.Service
 
 @Service
 class ItemCategoryService(
-    override val repository: DeviceCategoryRepository,
+    override val repository: ItemCategoryRepository,
     override val mapper: ItemCategoryMapper
 ) : CRUDService<ItemCategoryEntity, CreateItemCategoryRequest, GetItemCategoryResponse, PatchItemCategoryRequest>(
     "DeviceCategory"

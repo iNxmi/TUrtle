@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.time.Instant
 
-interface DeviceBookingRepository : CRUDRepository<ItemBookingEntity>{
+interface ItemBookingRepository : CRUDRepository<ItemBookingEntity>{
     @Query(
         """
         SELECT r FROM ItemBookingEntity r
@@ -14,8 +14,7 @@ interface DeviceBookingRepository : CRUDRepository<ItemBookingEntity>{
         OR    (r.end <= :end AND r.end >= :start))
         AND   (r.item = :item)
         AND   (r.id != :id)
-    """
-    )
+    """)
     fun findAllOverlapping(
         @Param("start") start: Instant,
         @Param("end") end: Instant,

@@ -6,12 +6,12 @@ import de.csw.turtle.api.dto.patch.PatchItemRequest
 import de.csw.turtle.api.entity.ItemEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.ItemMapper
-import de.csw.turtle.api.repository.DeviceRepository
+import de.csw.turtle.api.repository.ItemRepository
 import org.springframework.stereotype.Service
 
 @Service
 class ItemService(
-    override val repository: DeviceRepository,
+    override val repository: ItemRepository,
     override val mapper: ItemMapper
 ) : CRUDService<ItemEntity, CreateItemRequest, GetItemResponse, PatchItemRequest>("Item"){
 

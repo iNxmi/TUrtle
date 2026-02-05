@@ -71,7 +71,6 @@ class RoomBookingService(
     fun getAllOverlapping(start: Instant, end: Instant, id: Long): Set<RoomBookingEntity> =
         repository.findAllOverlapping(start, end, id)
 
-    fun getCurrent(): RoomBookingEntity? =
-        repository.findCurrent(Instant.now())
+    fun getCurrent(): RoomBookingEntity? = repository.findCurrent(Instant.now())
 
 }

@@ -2,6 +2,6 @@ package de.csw.turtle.api.repository
 
 import de.csw.turtle.api.entity.ItemEntity
 
-interface DeviceRepository : CRUDRepository<ItemEntity> {
+interface ItemRepository : CRUDRepository<ItemEntity> {
     fun findByName(name: String): ItemEntity?
 }

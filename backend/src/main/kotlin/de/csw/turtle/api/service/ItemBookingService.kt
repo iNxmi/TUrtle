@@ -6,13 +6,13 @@ import de.csw.turtle.api.dto.patch.PatchItemBookingRequest
 import de.csw.turtle.api.entity.ItemBookingEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.ItemBookingMapper
-import de.csw.turtle.api.repository.DeviceBookingRepository
+import de.csw.turtle.api.repository.ItemBookingRepository
 import org.springframework.stereotype.Service
 import java.time.Instant
 
 @Service
 class ItemBookingService(
-    override val repository: DeviceBookingRepository,
+    override val repository: ItemBookingRepository,
     override val mapper: ItemBookingMapper,
     private val itemService: ItemService
 ): CRUDService<ItemBookingEntity, CreateItemBookingRequest, GetItemBookingResponse, PatchItemBookingRequest>("DeviceBooking"){
