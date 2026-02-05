@@ -22,7 +22,7 @@ Port: 8080
 * `*@stud.tu-darmstadt.de` -> ok
 * `*@tu-darmstadt.de` -> ok
 * `*@andere.email` -> request
-* local dns
+* local dns via PI Hole
 
 ## Docker Environment
 ```

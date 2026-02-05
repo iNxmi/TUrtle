@@ -22,14 +22,13 @@ interface ItemBookingRepository : CRUDRepository<ItemBookingEntity>{
         @Param("id") id: Long
     ): Set<ItemBookingEntity>
 
-
     @Query("""
         SELECT r FROM ItemBookingEntity r
-        WHERE (r.start <= :current AND r.end >= :current)
+        WHERE (r.start <= :now AND r.end >= :current)
         AND   (r.item.id = :item)
     """)
     fun findCurrent(
-        @Param("current") current: Instant,
+        @Param("now") now: Instant,
         @Param("item") item: Long
     ): ItemBookingEntity?
 }
