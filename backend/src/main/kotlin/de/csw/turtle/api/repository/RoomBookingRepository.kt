@@ -17,4 +17,12 @@ interface RoomBookingRepository : CRUDRepository<RoomBookingEntity>{
         @Param("end") end: Instant,
         @Param("id") id: Long
     ): Set<RoomBookingEntity>
+
+    @Query("""
+        SELECT r FROM RoomBookingEntity r
+        WHERE (r.start <= :current AND r.end >= :current)
+    """)
+    fun findAllCurrent(
+        @Param("current") current: Instant
+    ): Set<RoomBookingEntity>
 }

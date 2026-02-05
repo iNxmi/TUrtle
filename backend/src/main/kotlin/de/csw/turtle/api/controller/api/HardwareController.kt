@@ -5,6 +5,7 @@ import de.csw.turtle.api.dto.hardware.OpenDoorEmojisRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.NetworkService
+import de.csw.turtle.api.service.RoomBookingService
 import de.csw.turtle.api.service.SystemSettingService
 import de.csw.turtle.api.service.UserService
 import de.csw.turtle.api.service.door.DoorControlService
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.time.Duration
+import java.time.Instant
 import java.time.LocalTime
 
 @RestController
@@ -25,7 +27,8 @@ class HardwareController(
     private val lockerControlService: LockerControlService,
     private val userService: UserService,
     private val networkService: NetworkService,
-    private val systemSettingService: SystemSettingService
+    private val systemSettingService: SystemSettingService,
+    private val roomBookingService: RoomBookingService
 ) {
 
     @PostMapping("/door/emojis")
@@ -47,6 +50,33 @@ class HardwareController(
 
         val duration = systemSettingService.getTyped<Duration>("door.open.duration")
         val response = doorControlService.trigger(duration)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/door/button")
+    fun door(
+        @AuthenticationPrincipal user: UserEntity?,
+        httpRequest: HttpServletRequest
+    ): ResponseEntity<String> {
+        val now = LocalTime.now()
+        val start = systemSettingService.getTyped<LocalTime>("door.schedule.start")
+        val end = systemSettingService.getTyped<LocalTime>("door.schedule.end")
+        if (now.isBefore(start) || now.isAfter(end))
+            throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
+
+        if (!networkService.isLocalNetwork(httpRequest))
+            throw HttpException.Unauthorized("External network.")
+
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        val bookings = roomBookingService.getAllCurrent(Instant.now())
+        if(bookings.isNotEmpty()){
+            if(bookings.elementAt(0).whitelist.isNotEmpty() && !bookings.elementAt(0).whitelist.contains(user))
+                throw HttpException.Unauthorized("User '${user.id}' not in whitelist for current Room Booking.")
+        }
+
+        val response = doorControlService.trigger(Duration.ofSeconds(5))
         return ResponseEntity.ok(response)
     }
 
