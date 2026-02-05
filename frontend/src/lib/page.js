@@ -11,6 +11,12 @@ export function create(
 
         const parameters = new URLSearchParams()
         const finalEndpoint = url.searchParams.get('endpoint') || endpoint;
+        let endpoints;
+        if(!Array.isArray(finalEndpoint)){
+            endpoints = finalEndpoint.split(',');
+        } else {
+            endpoints = finalEndpoint;
+        }
         const search = url.searchParams.get("search");
         if (search != null) {
             const rsql = properties.map(property => `${property}=like=${search}`).join(",")
@@ -35,12 +41,19 @@ export function create(
             parameters.set('rsql', initialRSQL+`${params.id}`)
         }
 
-        const response = await request(`${finalEndpoint}?${parameters}`);
+        let page = [];
 
-        checkAuthorization(response, url.pathname);
-        const payload = await response.json();
-
-        return {page: payload};
+        for(const endpoint of endpoints){
+             
+            const response = await request(`${endpoint}?${parameters}`);
+            checkAuthorization(response, url.pathname);
+            page.push(await response.json());
+        }
+       
+        if(page.length === 1) {
+            page = page[0];
+        }
+        return {page};
     }
 
 }
