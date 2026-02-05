@@ -43,8 +43,6 @@ class ItemBookingService(
                 throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
             } else if(request.itemId != null){
                 if(getAllOverlapping(request.start,request.end,request.itemId, id).isNotEmpty()){
-                    //Eventuell Probleme wenn man versucht die Zeit so zu patchen, dass es mit der alten überlappt?
-                    //Nochmal überlegen wenn request.itemId == original.item.id
                     throw HttpException.Conflict("Item with ID '${request.itemId}' is already booked between '${request.start}' and '${request.end}'")
                 }
             } else {
@@ -67,7 +65,7 @@ class ItemBookingService(
     fun getAllOverlapping(start: Instant, end: Instant,item: Long , id: Long): Set<ItemBookingEntity> =
         repository.findAllOverlapping(start, end, itemService.get(item), id)
 
-    fun getCurrent(item: Long, lockerId: Long): ItemBookingEntity? =
-        repository.findCurrent(Instant.now(),item, lockerId)
+    fun getCurrent(itemId: Long, lockerId: Long): ItemBookingEntity? =
+        repository.findCurrent(Instant.now(), itemId, lockerId)
 
 }
