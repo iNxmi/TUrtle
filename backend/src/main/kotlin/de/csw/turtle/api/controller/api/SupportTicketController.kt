@@ -48,7 +48,7 @@ class SupportTicketController(
 
         if (user == null) {
             val ipAddress = networkService.getClientIp(httpRequest)
-            if (request.altchaToken == null || altchaService.isValid(ipAddress, request.altchaToken))
+            if (request.altchaToken == null || !altchaService.isValid(ipAddress, request.altchaToken))
                 throw HttpException.Forbidden("Invalid captcha token.")
         }
 

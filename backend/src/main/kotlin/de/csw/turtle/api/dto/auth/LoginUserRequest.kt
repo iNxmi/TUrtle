@@ -4,5 +4,5 @@ data class LoginUserRequest(
     val emailOrUsername: String,
     val password: String,
     val rememberMe: Boolean = false,
-    val altchaToken: String
+    val altchaToken: String?
 )

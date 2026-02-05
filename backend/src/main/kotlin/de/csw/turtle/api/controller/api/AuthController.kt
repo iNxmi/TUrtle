@@ -102,7 +102,7 @@ class AuthController(
         response: HttpServletResponse
     ): ResponseEntity<Void> {
         val ipAddress = networkService.getClientIp(httpRequest)
-        if (request.altchaToken == null || altchaService.isValid(ipAddress, request.altchaToken))
+        if (request.altchaToken == null || !altchaService.isValid(ipAddress, request.altchaToken))
             throw HttpException.Forbidden("Invalid captcha token.")
 
         val tokens = authService.login(request)
