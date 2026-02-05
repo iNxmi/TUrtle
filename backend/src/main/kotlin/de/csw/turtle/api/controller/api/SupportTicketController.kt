@@ -14,6 +14,8 @@ import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.SupportTicketMapper
 import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.SupportTicketService
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
@@ -35,11 +37,15 @@ class SupportTicketController(
 
     override fun create(
         user: UserEntity?,
-        request: CreateSupportTicketRequest
+
+        request: CreateSupportTicketRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetSupportTicketResponse> {
 
         if (user == null)
-            if (request.altchaToken == null || altchaService.isValid(request.altchaToken))
+            if (request.altchaToken == null || altchaService.isValid(httpRequest.remoteAddr, request.altchaToken))
                 throw HttpException.Forbidden("Invalid captcha token.")
 
         val entity = supportTicketService.create(request)
@@ -50,7 +56,11 @@ class SupportTicketController(
 
     override fun get(
         user: UserEntity?,
-        variable: Long
+
+        variable: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetSupportTicketResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -67,11 +77,15 @@ class SupportTicketController(
 
     override fun getCollection(
         user: UserEntity?,
+
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
-        sortDirection: Sort.Direction
+        sortDirection: Sort.Direction,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -102,8 +116,12 @@ class SupportTicketController(
 
     override fun patch(
         user: UserEntity?,
+
         id: Long,
-        request: PatchSupportTicketRequest
+        request: PatchSupportTicketRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetSupportTicketResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -118,7 +136,11 @@ class SupportTicketController(
 
     override fun delete(
         user: UserEntity?,
-        id: Long
+
+        id: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Void> {
         if (user == null)
             throw HttpException.Unauthorized()

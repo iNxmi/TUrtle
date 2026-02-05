@@ -10,6 +10,8 @@ import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.SystemSettingMapper
 import de.csw.turtle.api.service.SystemSettingService
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
@@ -65,7 +67,11 @@ class SystemSettingController(
 
     override fun get(
         user: UserEntity?,
-        variable: String
+
+        variable: String,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetSystemSettingResponse> {
         val id = variable.toLongOrNull()
         val entity = if(id != null) {
@@ -89,11 +95,15 @@ class SystemSettingController(
 
     override fun getCollection(
         user: UserEntity?,
+
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
-        sortDirection: Sort.Direction
+        sortDirection: Sort.Direction,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
 
         val specification = if (user == null || !user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS)) {
@@ -124,8 +134,12 @@ class SystemSettingController(
 
     override fun patch(
         user: UserEntity?,
+
         id: Long,
-        request: PatchSystemSettingRequest
+        request: PatchSystemSettingRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetSystemSettingResponse> {
         if (user == null)
             throw HttpException.Unauthorized()

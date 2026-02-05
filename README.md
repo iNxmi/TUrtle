@@ -18,8 +18,6 @@ Port: 8080
 * email sending; noreply@mail.de (verification email, confirmation email(booking, returning, deadline reminder), support confirmation email, password/pin reset email)
 * statistics
 * distinguish prof/student role
-* emoji code checks (no duplicates, no 5 identical emojis)
-* make admins always open door (during all times)
 * document this: rsql, system settings, templates with thymeleaf
 * `*@stud.tu-darmstadt.de` -> ok
 * `*@tu-darmstadt.de` -> ok

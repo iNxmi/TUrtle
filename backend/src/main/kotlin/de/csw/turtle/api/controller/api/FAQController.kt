@@ -13,6 +13,8 @@ import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.FAQMapper
 import de.csw.turtle.api.service.FAQService
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
@@ -32,7 +34,11 @@ class FAQController(
 
     override fun create(
         user: UserEntity?,
-        request: CreateFAQRequest
+
+        request: CreateFAQRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetFAQResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -48,7 +54,11 @@ class FAQController(
 
     override fun get(
         user: UserEntity?,
-        variable: Long
+
+        variable: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetFAQResponse> {
         val entity = faqService.get(variable)
         val dto = faqMapper.get(entity)
@@ -57,11 +67,15 @@ class FAQController(
 
     override fun getCollection(
         user: UserEntity?,
+
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
-        sortDirection: Sort.Direction
+        sortDirection: Sort.Direction,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -81,8 +95,12 @@ class FAQController(
 
     override fun patch(
         user: UserEntity?,
+
         id: Long,
-        request: PatchFAQRequest
+        request: PatchFAQRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetFAQResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -97,7 +115,11 @@ class FAQController(
 
     override fun delete(
         user: UserEntity?,
-        id: Long
+
+        id: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Void> {
         if (user == null)
             throw HttpException.Unauthorized()

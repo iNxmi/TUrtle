@@ -3,6 +3,8 @@ package de.csw.turtle.api.controller
 import de.csw.turtle.api.dto.get.GetResponse
 import de.csw.turtle.api.entity.CRUDEntity
 import de.csw.turtle.api.entity.UserEntity
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.Sort.Direction
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -15,7 +17,10 @@ interface GetController<Entity : CRUDEntity, Variable : Any, Response : GetRespo
     @GetMapping("/{variable}")
     fun get(
         @AuthenticationPrincipal user: UserEntity?,
-        @PathVariable variable: Variable
+        @PathVariable variable: Variable,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Response>
 
     @GetMapping
@@ -28,7 +33,10 @@ interface GetController<Entity : CRUDEntity, Variable : Any, Response : GetRespo
         @RequestParam pageSize: Int = 25,
 
         @RequestParam sortProperty: String? = null,
-        @RequestParam sortDirection: Direction = Direction.DESC
+        @RequestParam sortDirection: Direction = Direction.DESC,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Any>
 
 }

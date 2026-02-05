@@ -59,7 +59,9 @@
 
         <Checkbox bind:checked={rememberMe}>{m.login__remember_me({days: 30})}</Checkbox>
 
-        <Altcha bind:value={altchaToken}/>
+        {#if !data.trusted}
+            <Altcha bind:value={altchaToken}/>
+        {/if}
 
         <Button type="submit">{m.login__button()}</Button>
 

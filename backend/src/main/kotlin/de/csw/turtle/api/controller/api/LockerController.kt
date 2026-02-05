@@ -13,6 +13,8 @@ import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.LockerMapper
 import de.csw.turtle.api.service.locker.LockerService
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
@@ -32,7 +34,11 @@ class LockerController(
 
     override fun create(
         user: UserEntity?,
-        request: CreateLockerRequest
+
+        request: CreateLockerRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetLockerResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -48,7 +54,11 @@ class LockerController(
 
     override fun get(
         user: UserEntity?,
-        variable: Long
+
+        variable: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetLockerResponse> {
         val entity = lockerService.get(variable)
         val dto = lockerMapper.get(entity)
@@ -57,11 +67,15 @@ class LockerController(
 
     override fun getCollection(
         user: UserEntity?,
+
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
-        sortDirection: Sort.Direction
+        sortDirection: Sort.Direction,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -81,8 +95,12 @@ class LockerController(
 
     override fun patch(
         user: UserEntity?,
+
         id: Long,
-        request: PatchLockerRequest
+        request: PatchLockerRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetLockerResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -97,7 +115,11 @@ class LockerController(
 
     override fun delete(
         user: UserEntity?,
-        id: Long
+
+        id: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Void> {
         if (user == null)
             throw HttpException.Unauthorized()

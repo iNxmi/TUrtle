@@ -27,7 +27,15 @@ class AltchaService(
         return Altcha.createChallenge(options)
     }
 
-    fun isValid(token: String): Boolean {
+    fun isTrusted(ipAddress: String): Boolean {
+        val trustedIps = systemSettingService.getTyped<List<String>>(Settings.ALTCHA_TRUSTED_IPS)
+        return trustedIps.contains(ipAddress)
+    }
+
+    fun isValid(ipAddress: String, token: String): Boolean {
+        if (isTrusted(ipAddress))
+            return true
+
         try {
             val secret = getSecret()
             return Altcha.verifySolution(token, secret, true)

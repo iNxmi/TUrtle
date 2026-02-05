@@ -71,7 +71,8 @@ class DebugController(
 
     @GetMapping("/altcha")
     fun altcha(
-        @RequestParam token: String
-    ) = altchaService.isValid(token)
+        @RequestParam token: String,
+        request: HttpServletRequest
+    ) = altchaService.isValid(request.remoteAddr, token)
 
 }

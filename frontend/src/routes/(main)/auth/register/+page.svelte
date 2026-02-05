@@ -79,7 +79,9 @@
 
         <Checkbox id="agree_tos" required>{m.register__i_agree_to_tos()}</Checkbox>
 
-        <Altcha bind:value={altchaToken}/>
+        {#if !data.trusted}
+            <Altcha bind:value={altchaToken}/>
+        {/if}
 
         <Button type="submit" class="w-full1">{m.register__button()}</Button>
 

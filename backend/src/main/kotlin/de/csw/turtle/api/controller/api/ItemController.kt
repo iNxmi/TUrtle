@@ -13,6 +13,8 @@ import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.ItemMapper
 import de.csw.turtle.api.service.ItemService
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
@@ -32,7 +34,11 @@ class ItemController(
 
     override fun create(
         user: UserEntity?,
-        request: CreateItemRequest
+
+        request: CreateItemRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetItemResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -48,7 +54,11 @@ class ItemController(
 
     override fun get(
         user: UserEntity?,
-        variable: Long
+
+        variable: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetItemResponse> {
         val entity = itemService.get(variable)
         val dto = itemMapper.get(entity)
@@ -57,11 +67,15 @@ class ItemController(
 
     override fun getCollection(
         user: UserEntity?,
+
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
-        sortDirection: Sort.Direction
+        sortDirection: Sort.Direction,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -81,8 +95,12 @@ class ItemController(
 
     override fun patch(
         user: UserEntity?,
+
         id: Long,
-        request: PatchItemRequest
+        request: PatchItemRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetItemResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -97,7 +115,11 @@ class ItemController(
 
     override fun delete(
         user: UserEntity?,
-        id: Long
+
+        id: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Void> {
         if (user == null)
             throw HttpException.Unauthorized()

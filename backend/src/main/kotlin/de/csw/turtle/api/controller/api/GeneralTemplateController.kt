@@ -13,6 +13,8 @@ import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.GeneralTemplateMapper
 import de.csw.turtle.api.service.GeneralTemplateService
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
@@ -32,7 +34,11 @@ class GeneralTemplateController(
 
     override fun create(
         user: UserEntity?,
-        request: CreateGeneralTemplateRequest
+
+        request: CreateGeneralTemplateRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetGeneralTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -48,7 +54,11 @@ class GeneralTemplateController(
 
     override fun get(
         user: UserEntity?,
-        variable: Long
+
+        variable: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetGeneralTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -63,11 +73,15 @@ class GeneralTemplateController(
 
     override fun getCollection(
         user: UserEntity?,
+
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
-        sortDirection: Sort.Direction
+        sortDirection: Sort.Direction,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -93,8 +107,12 @@ class GeneralTemplateController(
 
     override fun patch(
         user: UserEntity?,
+
         id: Long,
-        request: PatchGeneralTemplateRequest
+        request: PatchGeneralTemplateRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetGeneralTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -109,7 +127,11 @@ class GeneralTemplateController(
 
     override fun delete(
         user: UserEntity?,
-        id: Long
+
+        id: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Void> {
         if (user == null)
             throw HttpException.Unauthorized()

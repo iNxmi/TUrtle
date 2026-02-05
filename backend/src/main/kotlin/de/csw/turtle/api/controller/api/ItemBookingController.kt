@@ -13,6 +13,8 @@ import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.ItemBookingMapper
 import de.csw.turtle.api.service.ItemBookingService
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
@@ -33,7 +35,11 @@ class ItemBookingController(
 
     override fun create(
         user: UserEntity?,
-        request: CreateItemBookingRequest
+
+        request: CreateItemBookingRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetItemBookingResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -58,7 +64,11 @@ class ItemBookingController(
 
     override fun get(
         user: UserEntity?,
-        variable: Long
+
+        variable: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetItemBookingResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -75,11 +85,15 @@ class ItemBookingController(
 
     override fun getCollection(
         user: UserEntity?,
+
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
-        sortDirection: Sort.Direction
+        sortDirection: Sort.Direction,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -110,8 +124,12 @@ class ItemBookingController(
 
     override fun patch(
         user: UserEntity?,
+
         id: Long,
-        request: PatchItemBookingRequest
+        request: PatchItemBookingRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetItemBookingResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -132,7 +150,11 @@ class ItemBookingController(
 
     override fun delete(
         user: UserEntity?,
-        id: Long
+
+        id: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Void> {
         if (user == null)
             throw HttpException.Unauthorized()

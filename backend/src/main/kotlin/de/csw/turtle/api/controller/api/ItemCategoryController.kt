@@ -13,6 +13,8 @@ import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.ItemCategoryMapper
 import de.csw.turtle.api.service.ItemCategoryService
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
@@ -33,7 +35,11 @@ class ItemCategoryController(
 
     override fun create(
         user: UserEntity?,
-        request: CreateItemCategoryRequest
+
+        request: CreateItemCategoryRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetItemCategoryResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -49,7 +55,11 @@ class ItemCategoryController(
 
     override fun get(
         user: UserEntity?,
-        variable: Long
+
+        variable: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetItemCategoryResponse> {
         val entity = itemCategoryService.get(variable)
         val dto = itemCategoryMapper.get(entity)
@@ -58,11 +68,15 @@ class ItemCategoryController(
 
     override fun getCollection(
         user: UserEntity?,
+
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
-        sortDirection: Sort.Direction
+        sortDirection: Sort.Direction,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -82,8 +96,12 @@ class ItemCategoryController(
 
     override fun patch(
         user: UserEntity?,
+
         id: Long,
-        request: PatchItemCategoryRequest
+        request: PatchItemCategoryRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetItemCategoryResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -98,7 +116,11 @@ class ItemCategoryController(
 
     override fun delete(
         user: UserEntity?,
-        id: Long
+
+        id: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Void> {
         if (user == null)
             throw HttpException.Unauthorized()

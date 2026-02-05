@@ -79,29 +79,19 @@ services:
     networks:
       - network
 
-  #  certbot:
-  #    image: certbot/certbot
-  #    container_name: certbot
-  #    restart: no
-  #    volumes:
-  #      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf
-  #      - certbot_etc:/etc/letsencrypt
-  #      - certbot_etc:/var/lib/letsencrypt
-  #    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $!; done;'"
-
-#  adminer:
-#    image: adminer:latest
-#    container_name: adminer
-#    ports:
-#      - "8000:8080"
-#    depends_on:
-#      - postgres
-#    networks:
-#      - network
-#    environment:
-#      ADMINER_DEFAULT_DB_DRIVER: pgsql
-#      ADMINER_DEFAULT_SERVER: postgres:5432
-#      ADMINER_DEFAULT_DATABASE: ${DATABASE_NAME}
-#      ADMINER_DEFAULT_USERNAME: ${DATABASE_USERNAME}
-#      ADMINER_DEFAULT_PASSWORD: ${DATABASE_PASSWORD}
-#      ADMINER_PLUGINS: "tables-filter tinymce dark-switcher"
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    ports:
+      - "8000:8080"
+    depends_on:
+      - postgres
+    networks:
+      - network
+    environment:
+      ADMINER_DEFAULT_DB_DRIVER: pgsql
+      ADMINER_DEFAULT_SERVER: postgres:5432
+      ADMINER_DEFAULT_DATABASE: db
+      ADMINER_DEFAULT_USERNAME: admin
+      ADMINER_DEFAULT_PASSWORD: admin
+      ADMINER_PLUGINS: "tables-filter tinymce dark-switcher"

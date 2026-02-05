@@ -13,6 +13,8 @@ import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.RoomBookingMapper
 import de.csw.turtle.api.service.RoomBookingService
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
@@ -33,7 +35,11 @@ class RoomBookingController(
 
     override fun create(
         user: UserEntity?,
-        request: CreateRoomBookingRequest
+
+        request: CreateRoomBookingRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetRoomBookingResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -60,7 +66,11 @@ class RoomBookingController(
 
     override fun get(
         user: UserEntity?,
-        variable: Long
+
+        variable: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetRoomBookingResponse> {
         val entity = roomBookingService.get(variable)
         val dto = roomBookingMapper.get(entity)
@@ -69,11 +79,15 @@ class RoomBookingController(
 
     override fun getCollection(
         user: UserEntity?,
+
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
-        sortDirection: Sort.Direction
+        sortDirection: Sort.Direction,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -104,8 +118,12 @@ class RoomBookingController(
 
     override fun patch(
         user: UserEntity?,
+
         id: Long,
-        request: PatchRoomBookingRequest
+        request: PatchRoomBookingRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetRoomBookingResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -132,7 +150,11 @@ class RoomBookingController(
 
     override fun delete(
         user: UserEntity?,
-        id: Long
+
+        id: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Void> {
         if (user == null)
             throw HttpException.Unauthorized()

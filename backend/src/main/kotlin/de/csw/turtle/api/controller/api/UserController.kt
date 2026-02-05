@@ -13,9 +13,10 @@ import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.UserService
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -34,10 +35,14 @@ class UserController(
 
     override fun create(
         user: UserEntity?,
-        request: CreateUserRequest
+
+        request: CreateUserRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetUserResponse> {
         val sanitized = if (user == null) {
-            if(request.altchaToken == null || altchaService.isValid(request.altchaToken))
+            if (request.altchaToken == null || altchaService.isValid(httpRequest.remoteAddr, request.altchaToken))
                 throw HttpException.Forbidden("Invalid captcha token.")
 
             CreateUserRequest(
@@ -60,13 +65,17 @@ class UserController(
 
     override fun get(
         user: UserEntity?,
-        variable: String
+
+        variable: String,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetUserResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
         val id = variable.toLongOrNull()
-        val entity = if(id != null) {
+        val entity = if (id != null) {
             userService.get(id)
         } else {
             userService.getByUsername(variable)
@@ -82,11 +91,15 @@ class UserController(
 
     override fun getCollection(
         user: UserEntity?,
+
         rsql: String?,
         pageNumber: Int?,
         pageSize: Int,
         sortProperty: String?,
-        sortDirection: Sort.Direction
+        sortDirection: Sort.Direction,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -112,8 +125,12 @@ class UserController(
 
     override fun patch(
         user: UserEntity?,
+
         id: Long,
-        request: PatchUserRequest
+        request: PatchUserRequest,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<GetUserResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
@@ -136,7 +153,11 @@ class UserController(
 
     override fun delete(
         user: UserEntity?,
-        id: Long
+
+        id: Long,
+
+        httpRequest: HttpServletRequest,
+        httpResponse: HttpServletResponse
     ): ResponseEntity<Void> {
         if (user == null)
             throw HttpException.Unauthorized()

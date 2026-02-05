@@ -122,6 +122,7 @@ class DefaultSystemSettingsConfiguration(
         setDefault(Settings.ALTCHA_SECRET, Type.STRING, randomBase64())
         setDefault(Settings.ALTCHA_MAX_NUMBER, Type.LONG, 100_000L)
         setDefault(Settings.ALTCHA_DURATION, Type.DURATION, Duration.ofMinutes(3))
+        setDefault(Settings.ALTCHA_TRUSTED_IPS, Type.STRING_LIST, objectMapper.writeValueAsString(setOf("192.168.0.22", "172.18.0.1", "172.18.0.7")))
 
         setDefault(Settings.DOOR_OPEN_DURATION, Type.DURATION, Duration.ofSeconds(5), Visibility.PUBLIC)
         setDefault(Settings.DOOR_SCHEDULE_START, Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)

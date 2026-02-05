@@ -12,6 +12,7 @@ enum class Settings(val key:String) {
     ALTCHA_SECRET("altcha.secret"),
     ALTCHA_MAX_NUMBER("altcha.max-number"),
     ALTCHA_DURATION("altcha.duration"),
+    ALTCHA_TRUSTED_IPS("altcha.trusted-ips"),
 
     DOOR_OPEN_DURATION("door.open.duration"),
     DOOR_SCHEDULE_START("door.schedule.start"),

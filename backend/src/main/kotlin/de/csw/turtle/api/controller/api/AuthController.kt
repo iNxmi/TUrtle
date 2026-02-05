@@ -7,8 +7,11 @@ import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.UserMapper
-import de.csw.turtle.api.service.*
+import de.csw.turtle.api.service.AltchaService
+import de.csw.turtle.api.service.AuthService
 import de.csw.turtle.api.service.JWTService.Type
+import de.csw.turtle.api.service.SystemSettingService
+import de.csw.turtle.api.service.UserService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
@@ -93,9 +96,10 @@ class AuthController(
     @PostMapping("/login")
     fun login(
         @RequestBody request: LoginUserRequest,
+        httpRequest: HttpServletRequest,
         response: HttpServletResponse
     ): ResponseEntity<Void> {
-        if (!altchaService.isValid(request.altchaToken))
+        if (!altchaService.isValid(httpRequest.remoteAddr, request.altchaToken))
             throw HttpException.Forbidden("Invalid captcha token.")
 
         val tokens = authService.login(request)
