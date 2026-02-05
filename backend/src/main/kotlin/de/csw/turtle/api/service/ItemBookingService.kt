@@ -4,6 +4,7 @@ import de.csw.turtle.api.dto.create.CreateItemBookingRequest
 import de.csw.turtle.api.dto.get.GetItemBookingResponse
 import de.csw.turtle.api.dto.patch.PatchItemBookingRequest
 import de.csw.turtle.api.entity.ItemBookingEntity
+import de.csw.turtle.api.entity.ItemEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.mapper.ItemBookingMapper
 import de.csw.turtle.api.repository.ItemBookingRepository
@@ -65,5 +66,8 @@ class ItemBookingService(
 
     fun getAllOverlapping(start: Instant, end: Instant,item: Long , id: Long): Set<ItemBookingEntity> =
         repository.findAllOverlapping(start, end, itemService.get(item), id)
+
+    fun getCurrent(item: Long): ItemBookingEntity? =
+        repository.findCurrent(Instant.now(),item)
 
 }
