@@ -22,7 +22,7 @@ interface RoomBookingRepository : CRUDRepository<RoomBookingEntity>{
         SELECT r FROM RoomBookingEntity r
         WHERE (r.start <= :current AND r.end >= :current)
     """)
-    fun findAllCurrent(
+    fun findCurrent(
         @Param("current") current: Instant
-    ): Set<RoomBookingEntity>
+    ): RoomBookingEntity?
 }
