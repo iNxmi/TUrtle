@@ -3,7 +3,7 @@ package de.csw.turtle.api.entity
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "auditlogs")
+@Table(name = "audit_logs")
 class AuditLogEntity(
 
     @ManyToOne
