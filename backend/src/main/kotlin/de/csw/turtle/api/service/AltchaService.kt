@@ -11,8 +11,10 @@ class AltchaService(
     private val systemSettingService: SystemSettingService
 ) {
 
+    private fun getSecret() = systemSettingService.getTyped<String>(Settings.ALTCHA_SECRET)
+
     fun create(): Altcha.Challenge {
-        val secret = systemSettingService.getTyped<String>(Settings.ALTCHA_SECRET)
+        val secret = getSecret()
         val maxNumber = systemSettingService.getTyped<Long>(Settings.ALTCHA_MAX_NUMBER)
         val duration = systemSettingService.getTyped<Duration>(Settings.ALTCHA_DURATION)
 
@@ -27,7 +29,7 @@ class AltchaService(
 
     fun isValid(token: String): Boolean {
         try {
-            val secret = systemSettingService.getTyped<String>(Settings.ALTCHA_SECRET)
+            val secret = getSecret()
             return Altcha.verifySolution(token, secret, true)
         } catch (exception: Exception) {
             throw HttpException.BadRequest("Invalid token. ${exception.message}")
