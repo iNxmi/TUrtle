@@ -1,5 +1,6 @@
 package de.csw.turtle.api.schedule
 
+import de.csw.turtle.api.Settings
 import de.csw.turtle.api.service.SystemSettingService
 import de.csw.turtle.api.service.UserService
 import org.slf4j.LoggerFactory
@@ -31,7 +32,7 @@ class UserCleanupSchedule(
         if (!ready)
             return
 
-        val duration = systemSettingService.getTyped<Duration>("user.verification.duration")
+        val duration = systemSettingService.getTyped<Duration>(Settings.USER_VERIFICATION_DURATION)
         val cutoffTime = Instant.now().minus(duration)
 
         val unverifiedUsers = userService.getUnverifiedUsers(cutoffTime)

@@ -1,6 +1,7 @@
 package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Permission
+import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.hardware.OpenDoorEmojisRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
@@ -45,10 +46,9 @@ class HardwareController(
             throw HttpException.Unauthorized("Incorrect emojis.")
         }
 
-        if (!user.hasPermission(Permission.MANAGE_DOOR))
-            checkDoorPermissions(user, httpRequest)
+        checkDoorPermissions(user, httpRequest)
 
-        val duration = systemSettingService.getTyped<Duration>("door.open.duration")
+        val duration = systemSettingService.getTyped<Duration>(Settings.DOOR_OPEN_DURATION)
         val response = doorControlService.trigger(duration)
         return ResponseEntity.ok(response)
     }
@@ -56,15 +56,14 @@ class HardwareController(
     @PostMapping("/door/open")
     fun door(
         @AuthenticationPrincipal user: UserEntity?,
-        @RequestParam duration: Duration = Duration.ofSeconds(5),
         request: HttpServletRequest
     ): ResponseEntity<String> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_DOOR))
-            checkDoorPermissions(user, request)
+        checkDoorPermissions(user, request)
 
+        val duration = systemSettingService.getTyped<Duration>(Settings.DOOR_OPEN_DURATION)
         val response = doorControlService.trigger(duration)
         return ResponseEntity.ok(response)
     }
@@ -78,8 +77,7 @@ class HardwareController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_LOCKERS))
-            checkLockerPermissions(user, request)
+        checkLockerPermissions(user, request)
 
         val locker = lockerService.get(id)
         val response = lockerControlService.trigger(locker = locker)
@@ -87,11 +85,14 @@ class HardwareController(
     }
 
     private fun checkDoorPermissions(user: UserEntity, request: HttpServletRequest) {
+        if (user.hasPermission(Permission.MANAGE_DOOR))
+            return
+
         if (!networkService.isLocalNetwork(request))
             throw HttpException.Forbidden("External network.")
 
-        val start = systemSettingService.getTyped<LocalTime>("door.schedule.start")
-        val end = systemSettingService.getTyped<LocalTime>("door.schedule.end")
+        val start = systemSettingService.getTyped<LocalTime>(Settings.DOOR_SCHEDULE_START)
+        val end = systemSettingService.getTyped<LocalTime>(Settings.DOOR_SCHEDULE_END)
         if (isNowBetween(start, end))
             throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
 
@@ -103,11 +104,14 @@ class HardwareController(
     }
 
     private fun checkLockerPermissions(user: UserEntity, request: HttpServletRequest) {
+        if (user.hasPermission(Permission.MANAGE_LOCKERS))
+            return
+
         if (!networkService.isLocalNetwork(request))
             throw HttpException.Forbidden("External network.")
 
-        val start = systemSettingService.getTyped<LocalTime>("locker.schedule.start")
-        val end = systemSettingService.getTyped<LocalTime>("locker.schedule.end")
+        val start = systemSettingService.getTyped<LocalTime>(Settings.LOCKER_SCHEDULE_START)
+        val end = systemSettingService.getTyped<LocalTime>(Settings.LOCKER_SCHEDULE_END)
         if (isNowBetween(start, end))
             throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
 

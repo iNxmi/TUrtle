@@ -1,5 +1,6 @@
 package de.csw.turtle.api.service
 
+import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
@@ -25,9 +26,9 @@ class UserService(
 ) : CRUDService<UserEntity, CreateUserRequest, GetUserResponse, PatchUserRequest>("User") {
 
     fun generateEmojis(): String {
-        val emojis = systemSettingService.getTyped<List<String>>("emojis.set")
-        val maxRetries = systemSettingService.getTyped<Int>("emojis.retries.max")
-        val size = systemSettingService.getTyped<Int>("emojis.size")
+        val emojis = systemSettingService.getTyped<List<String>>(Settings.EMOJIS_ALL)
+        val maxRetries = systemSettingService.getTyped<Int>(Settings.EMOJIS_MAX_RETRIES)
+        val size = systemSettingService.getTyped<Int>(Settings.EMOJIS_SIZE)
 
         repeat(maxRetries) {
             val selected = emojis.shuffled().take(size).joinToString("")
@@ -50,8 +51,8 @@ class UserService(
 
         if (!entity.verified) {
             val context = Context().apply {
-                val fqdn = systemSettingService.getTyped<String>("general.fqdn")
-                val duration = systemSettingService.getTyped<Duration>("user.verification.duration")
+                val fqdn = systemSettingService.getTyped<String>(Settings.GENERAL_FQDN)
+                val duration = systemSettingService.getTyped<Duration>(Settings.USER_VERIFICATION_DURATION)
 
                 setVariable("url", "https://$fqdn/api/auth/verify?token=${entity.verificationToken}")
                 setVariable("user", entity)
@@ -59,7 +60,7 @@ class UserService(
                 setVariable("expiration", entity.createdAt.plusMillis(duration.toMillis()))
             }
 
-            val templateId = systemSettingService.getTyped<Long>("email.template.verify")
+            val templateId = systemSettingService.getTyped<Long>(Settings.EMAIL_TEMPLATE_VERIFY)
             val template = emailTemplateService.get(templateId)
 
             val subject = thymeleafService.getRendered(template.subject, context)

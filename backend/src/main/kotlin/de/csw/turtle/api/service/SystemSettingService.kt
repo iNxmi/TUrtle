@@ -2,6 +2,7 @@ package de.csw.turtle.api.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.create.CreateSystemSettingRequest
 import de.csw.turtle.api.dto.get.GetSystemSettingResponse
 import de.csw.turtle.api.dto.patch.PatchSystemSettingRequest
@@ -23,12 +24,12 @@ class SystemSettingService(
     val objectMapper: ObjectMapper,
 ) : CRUDService<SystemSettingEntity, CreateSystemSettingRequest, GetSystemSettingResponse, PatchSystemSettingRequest>("SystemSetting") {
 
-    final inline fun <reified T> getTyped(key: String): T {
-        val entity = getByKey(key)
+    final inline fun <reified T> getTyped(setting: Settings): T {
+        val entity = getByKey(setting.key)
         val result = parse(entity.key, entity.type, entity.value)
 
         if (result !is T)
-            throw IllegalStateException("System setting with key '$key' expected type '${T::class.simpleName}', but was type ${result::class.simpleName}'")
+            throw IllegalStateException("System setting with key '$setting' expected type '${T::class.simpleName}', but was type ${result::class.simpleName}'")
 
         return result
     }

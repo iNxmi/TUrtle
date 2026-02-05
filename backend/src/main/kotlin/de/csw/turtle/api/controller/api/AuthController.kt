@@ -1,5 +1,6 @@
 package de.csw.turtle.api.controller.api
 
+import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.auth.LoginUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
@@ -60,7 +61,7 @@ class AuthController(
         response.addHeader("Set-Cookie", header)
     }
 
-    private fun getDuration(type: Type) = systemSettingService.getTyped<Duration>(type.key)
+    private fun getDuration(type: Type) = systemSettingService.getTyped<Duration>(type.setting)
 
     @GetMapping("/me")
     fun verify(
@@ -79,7 +80,7 @@ class AuthController(
     ): ResponseEntity<GetUserResponse> {
         val user = userService.getByVerificationToken(token)
 
-        val duration = systemSettingService.getTyped<Duration>("user.verification.duration")
+        val duration = systemSettingService.getTyped<Duration>(Settings.USER_VERIFICATION_DURATION)
         val expiryDate = user.createdAt.plusMillis(duration.toMillis())
         if (expiryDate.isBefore(Instant.now()))
             throw HttpException.Gone("Token expired.")

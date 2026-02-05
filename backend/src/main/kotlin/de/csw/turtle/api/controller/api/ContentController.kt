@@ -1,5 +1,6 @@
 package de.csw.turtle.api.controller.api
 
+import de.csw.turtle.api.Settings
 import de.csw.turtle.api.service.GeneralTemplateService
 import de.csw.turtle.api.service.SystemSettingService
 import de.csw.turtle.api.service.ThymeleafService
@@ -16,26 +17,26 @@ class ContentController(
     private val thymeleafService: ThymeleafService
 ) {
 
-    private fun getResponse(key: String): ResponseEntity<String> {
-        val templateId = systemSettingService.getTyped<Long>(key)
+    private fun getResponse(setting: Settings): ResponseEntity<String> {
+        val templateId = systemSettingService.getTyped<Long>(setting)
         val template = generalTemplateService.get(templateId)
         val content = template.getCompiledContent(thymeleafService)
         return ResponseEntity.ok(content)
     }
 
     @GetMapping("/imprint")
-    fun imprint(): ResponseEntity<String> = getResponse("content.template.imprint")
+    fun imprint(): ResponseEntity<String> = getResponse(Settings.CONTENT_TEMPLATE_IMPRINT)
 
     @GetMapping("/tos")
-    fun tos(): ResponseEntity<String> = getResponse("content.template.tos")
+    fun tos(): ResponseEntity<String> = getResponse(Settings.CONTENT_TEMPLATE_TOS)
 
     @GetMapping("/about")
-    fun about(): ResponseEntity<String> = getResponse("content.template.about")
+    fun about(): ResponseEntity<String> = getResponse(Settings.CONTENT_TEMPLATE_ABOUT)
 
     @GetMapping("/gdpr")
-    fun gdpr(): ResponseEntity<String> = getResponse("content.template.gdpr")
+    fun gdpr(): ResponseEntity<String> = getResponse(Settings.CONTENT_TEMPLATE_GDPR)
 
     @GetMapping("/contact")
-    fun contact(): ResponseEntity<String> = getResponse("content.template.contact")
+    fun contact(): ResponseEntity<String> = getResponse(Settings.CONTENT_TEMPLATE_CONTACT)
 
 }

@@ -1,5 +1,6 @@
 package de.csw.turtle.api.service
 
+import de.csw.turtle.api.Settings
 import de.csw.turtle.api.exception.HttpException
 import org.altcha.altcha.Altcha
 import org.springframework.stereotype.Service
@@ -11,9 +12,9 @@ class AltchaService(
 ) {
 
     fun create(): Altcha.Challenge {
-        val secret = systemSettingService.getTyped<String>("altcha.secret")
-        val maxNumber = systemSettingService.getTyped<Long>("altcha.max-number")
-        val duration = systemSettingService.getTyped<Duration>("altcha.duration")
+        val secret = systemSettingService.getTyped<String>(Settings.ALTCHA_SECRET)
+        val maxNumber = systemSettingService.getTyped<Long>(Settings.ALTCHA_MAX_NUMBER)
+        val duration = systemSettingService.getTyped<Duration>(Settings.ALTCHA_DURATION)
 
         val options = Altcha.ChallengeOptions()
             .setHmacKey(secret)
@@ -26,7 +27,7 @@ class AltchaService(
 
     fun isValid(token: String): Boolean {
         try {
-            val secret = systemSettingService.getTyped<String>("altcha.secret")
+            val secret = systemSettingService.getTyped<String>(Settings.ALTCHA_SECRET)
             return Altcha.verifySolution(token, secret, true)
         } catch (exception: Exception) {
             throw HttpException.BadRequest("Invalid token. ${exception.message}")
