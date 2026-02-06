@@ -50,7 +50,7 @@
         <TabItem onclick={() => goto(`?endpoint=${deviceBookingsPath}`, {invalidateAll: true})} classes={{button:"cursor-pointer"}} title="devicebookings" open={currentTab === deviceBookingsPath}>
             <Heading tag="h2" class="text-center mb-4">_Device Booking Management_</Heading>
             <TableView 
-            endpoint="/admin/devicebookings"
+            endpoint="/admin/item-bookings"
             headers={devicebookingsHeaders}
             contentPage={data.page}
             hideAdd={true}/>

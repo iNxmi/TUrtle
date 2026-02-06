@@ -167,7 +167,7 @@
     }, {
         permission: ['MANAGE_ITEMS', 'MANAGE_ITEM_CATEGORIES'],
         label: '_Manage Devices',
-        href: '/admin/devices',
+        href: '/admin/items',
         icon: DesktopPcSolid
 
     }, {
