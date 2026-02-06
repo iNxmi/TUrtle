@@ -99,7 +99,7 @@
     font-display: swap;
 }
 
-.prose .dark {
+.prose /* .dark */ {
     a{
         color: var(--color-text);
     }
