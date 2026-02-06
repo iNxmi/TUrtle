@@ -3,12 +3,8 @@ package de.csw.turtle.api.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.csw.turtle.api.Settings
-import de.csw.turtle.api.dto.create.CreateSystemSettingRequest
-import de.csw.turtle.api.dto.get.GetSystemSettingResponse
-import de.csw.turtle.api.dto.patch.PatchSystemSettingRequest
 import de.csw.turtle.api.entity.SystemSettingEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.SystemSettingMapper
 import de.csw.turtle.api.repository.SystemSettingRepository
 import org.springframework.stereotype.Service
 import java.time.Duration
@@ -19,10 +15,8 @@ import java.time.LocalTime
 @Service
 class SystemSettingService(
     override val repository: SystemSettingRepository,
-    override val mapper: SystemSettingMapper,
-
-    val objectMapper: ObjectMapper,
-) : CRUDService<SystemSettingEntity, CreateSystemSettingRequest, GetSystemSettingResponse, PatchSystemSettingRequest>("SystemSetting") {
+    val objectMapper: ObjectMapper
+) : CRUDService<SystemSettingEntity>("System Setting") {
 
     final inline fun <reified T> getTyped(setting: Settings): T {
         val entity = getByKey(setting.key)
@@ -66,28 +60,28 @@ class SystemSettingService(
         throw HttpException.BadRequest("Error parsing system setting with key '$key' -> ${exception.message}")
     }
 
-    override fun create(request: CreateSystemSettingRequest): SystemSettingEntity {
-        //Will throw if parsing fails
-        parse(
-            request.key,
-            request.type,
-            request.value
-        )
-
-        return super.create(request)
-    }
-
-    override fun patch(id: Long, request: PatchSystemSettingRequest): SystemSettingEntity {
-        val original = get(id)
-
-        //Will throw if parsing fails
-        parse(
-            request.key ?: original.key,
-            request.type ?: original.type,
-            request.value ?: original.value
-        )
-
-        return super.patch(id, request)
-    }
+//    override fun create(request: CreateSystemSettingRequest): SystemSettingEntity {
+//        //Will throw if parsing fails
+//        parse(
+//            request.key,
+//            request.type,
+//            request.value
+//        )
+//
+//        return super.create(request)
+//    }
+//
+//    override fun patch(id: Long, request: PatchSystemSettingRequest): SystemSettingEntity {
+//        val original = get(id)
+//
+//        //Will throw if parsing fails
+//        parse(
+//            request.key ?: original.key,
+//            request.type ?: original.type,
+//            request.value ?: original.value
+//        )
+//
+//        return super.patch(id, request)
+//    }
 
 }

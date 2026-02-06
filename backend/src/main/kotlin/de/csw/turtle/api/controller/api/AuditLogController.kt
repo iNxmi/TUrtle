@@ -36,7 +36,7 @@ class AuditLogController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val entity = auditLogService.get(variable)
+        val entity = auditLogService.getById(variable)
         if (!user.hasPermission(Permission.MANAGE_AUDIT_LOGS))
             if (entity.user != user)
                 throw HttpException.Forbidden()

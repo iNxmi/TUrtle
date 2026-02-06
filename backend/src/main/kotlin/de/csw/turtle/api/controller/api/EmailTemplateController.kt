@@ -66,7 +66,7 @@ class EmailTemplateController(
         if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = emailTemplateService.get(variable)
+        val entity = emailTemplateService.getById(variable)
         val dto = emailTemplateMapper.get(entity)
         return ResponseEntity.ok(dto)
     }

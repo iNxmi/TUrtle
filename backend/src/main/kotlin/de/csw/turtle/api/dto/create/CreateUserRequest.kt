@@ -6,7 +6,6 @@ data class CreateUserRequest(
     val lastName: String,
     val email: String,
     val password: String,
-    val emojis: String,
     val roleIds: Set<Long> = setOf(),
     val verified: Boolean = false,
     val altchaToken: String? = null
