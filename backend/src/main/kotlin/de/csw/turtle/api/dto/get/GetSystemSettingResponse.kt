@@ -13,4 +13,18 @@ class GetSystemSettingResponse(
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?
-) : GetResponse
+) : GetResponse {
+
+    constructor(entity: SystemSettingEntity) : this(
+        id = entity.id,
+
+        key = entity.key,
+        type = entity.type,
+        value = entity.value,
+        visibility = entity.visibility,
+
+        updatedAt = entity.updatedAt,
+        createdAt = entity.createdAt
+    )
+
+}

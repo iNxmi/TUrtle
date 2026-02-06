@@ -1,5 +1,6 @@
 package de.csw.turtle.api.dto.get
 
+import de.csw.turtle.api.entity.UserEntity
 import java.time.Instant
 
 data class GetUserResponse(
@@ -15,4 +16,21 @@ data class GetUserResponse(
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?
-) : GetResponse
+) : GetResponse {
+
+    constructor(user: UserEntity) : this(
+        id = user.id,
+
+        username = user.username,
+        firstName = user.firstName,
+        lastName = user.lastName,
+        email = user.email,
+        emojis = user.emojis,
+        roleIds = user.roles.map { it.id }.toSortedSet(),
+        verified = user.verified,
+
+        updatedAt = user.updatedAt,
+        createdAt = user.createdAt
+    )
+
+}

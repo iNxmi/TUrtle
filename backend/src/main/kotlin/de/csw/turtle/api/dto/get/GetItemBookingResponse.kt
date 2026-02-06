@@ -14,4 +14,6 @@ class GetItemBookingResponse(
 
     override val updatedAt: Instant?,
     override val createdAt: Instant
-) : GetResponse
+) : GetResponse {
+
+}

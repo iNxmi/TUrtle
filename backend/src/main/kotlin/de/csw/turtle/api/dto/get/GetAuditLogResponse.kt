@@ -14,4 +14,19 @@ data class GetAuditLogResponse(
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?
-) : GetResponse
+) : GetResponse {
+
+    constructor(entity: AuditLogEntity) : this(
+        id = entity.id,
+
+        ipAddress = entity.ipAddress,
+        userId = entity.user?.id,
+        endpoint = entity.endpoint,
+        status = entity.status,
+        httpMethod = entity.httpMethod,
+
+        updatedAt = entity.updatedAt,
+        createdAt = entity.createdAt
+    )
+
+}

@@ -1,5 +1,6 @@
 package de.csw.turtle.api.dto.get
 
+import de.csw.turtle.api.entity.ExceptionEntity
 import java.time.Instant
 
 data class GetExceptionResponse(
@@ -12,4 +13,18 @@ data class GetExceptionResponse(
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?
-) : GetResponse
+) : GetResponse {
+
+    constructor(entity: ExceptionEntity) : this(
+        id = entity.id,
+
+        endpoint = entity.endpoint,
+        exception = entity.exception,
+        message = entity.message,
+        stackTrace = entity.stackTrace,
+
+        updatedAt = entity.updatedAt,
+        createdAt = entity.createdAt
+    )
+
+}

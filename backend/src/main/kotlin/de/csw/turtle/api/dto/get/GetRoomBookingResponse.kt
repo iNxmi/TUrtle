@@ -16,4 +16,21 @@ data class GetRoomBookingResponse(
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?
-) : GetResponse
+) : GetResponse {
+
+    constructor(entity: RoomBookingEntity) : this(
+        id = entity.id,
+
+        userId = entity.user.id,
+        title = entity.title,
+        start = entity.start,
+        end = entity.end,
+        description = entity.description,
+        accessibility = entity.accessibility,
+        whitelist = entity.whitelist.map { it.id }.toSortedSet(),
+
+        updatedAt = entity.updatedAt,
+        createdAt = entity.createdAt,
+    )
+
+}
