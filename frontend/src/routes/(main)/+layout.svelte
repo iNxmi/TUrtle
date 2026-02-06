@@ -135,7 +135,7 @@
     const itemsUser = [{
         permission: "VIEW__SIDEBAR_ITEM__DASHBOARD",
         label: m.sidebar_user_dashboard(),
-        href: '/user/dashboard',
+        href: '/dashboard',
         icon: NewspaperSolid
     }, /* {
         permission: "VIEW__SIDEBAR_ITEM__PROFILE",
@@ -145,12 +145,12 @@
     }, */ {
         permission: "VIEW__SIDEBAR_ITEM__BOOK_DEVICE",
         label: m.sidebar_user_reservations(),
-        href: '/user/devices',
+        href: '/items',
         icon: DesktopPcSolid
     }, {
         permission: "VIEW__SIDEBAR_ITEM__BOOK_ROOM",
         label: m.sidebar_user_bookings(),
-        href: '/user/room',
+        href: '/room',
         icon: CalendarMonthSolid
     }];
 
@@ -233,23 +233,23 @@
                 <Hr class="m-0 p-0"/>
             {/if}
 
-           <!--  {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__PUBLIC")} -->
+           <!--  {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__PUBLIC")} 
                 <SidebarDropdownWrapper
                         class="list-none"
                         classes={{ span: 'font-bold text-text', ul: 'py-0' }}
                         isOpen={true}
                         label={m.sidebar_category_public()}
                 >
-                    {#each itemsPublic as item}
-                        <!-- {#if permissions.includes(item.permission)} -->
-                            <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
+                     {#each itemsPublic as item}
+                        {#if permissions.includes(item.permission)}
+                            <SidebarDropdownItem spanClass="text-text ms-3" label={m.sidebar_public_home()} href="/">
                                 {#snippet icon()}
-                                    <item.icon class="text-csw h-5 w-5"/>
+                                    <HomeSolid class="text-csw h-5 w-5"/>
                                 {/snippet}
                             </SidebarDropdownItem>
-                       <!--  {/if} -->
+                        {/if}
                     {/each}
-                </SidebarDropdownWrapper>
+                </SidebarDropdownWrapper> -->
            <!--  {/if} -->
 
             <!-- {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__USER")} -->
