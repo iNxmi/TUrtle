@@ -11,7 +11,6 @@ import de.csw.turtle.api.dto.patch.PatchItemCategoryRequest
 import de.csw.turtle.api.entity.ItemCategoryEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.ItemCategoryMapper
 import de.csw.turtle.api.service.ItemCategoryService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -22,13 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
+private const val ENDPOINT = "/api/item-categories"
+
 @RestController
-@RequestMapping("/api/item-categories")
+@RequestMapping(ENDPOINT)
 class ItemCategoryController(
-    private val itemCategoryService: ItemCategoryService,
-    private val itemCategoryMapper: ItemCategoryMapper
-) :
-    CreateController<ItemCategoryEntity, CreateItemCategoryRequest, GetItemCategoryResponse>,
+    private val itemCategoryService: ItemCategoryService
+) : CreateController<ItemCategoryEntity, CreateItemCategoryRequest, GetItemCategoryResponse>,
     GetController<ItemCategoryEntity, Long, GetItemCategoryResponse>,
     PatchController<ItemCategoryEntity, PatchItemCategoryRequest, GetItemCategoryResponse>,
     DeleteController<ItemCategoryEntity> {
@@ -47,9 +46,15 @@ class ItemCategoryController(
         if (!user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
             throw HttpException.Forbidden()
 
-        val entity = itemCategoryService.create(request)
-        val location = URI.create("/api/item-categories/${entity.id}")
-        val dto = itemCategoryMapper.get(entity)
+        if (itemCategoryService.getByNameOrNull(request.name) != null)
+            throw HttpException.Conflict("DeviceCategory with name '${request.name}' already exists.")
+
+        val entity = itemCategoryService.create(
+            name = request.name
+        )
+
+        val location = URI.create("$ENDPOINT/${entity.id}")
+        val dto = GetItemCategoryResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -61,8 +66,10 @@ class ItemCategoryController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<GetItemCategoryResponse> {
-        val entity = itemCategoryService.get(variable)
-        val dto = itemCategoryMapper.get(entity)
+        val entity = itemCategoryService.getById(variable)
+            ?: throw HttpException.NotFound()
+
+        val dto = GetItemCategoryResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -85,12 +92,12 @@ class ItemCategoryController(
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
             val page = itemCategoryService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { itemCategoryMapper.get(it) }
+            val dto = page.map { GetItemCategoryResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection = itemCategoryService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { itemCategoryMapper.get(it) }
+        val dto = collection.map { GetItemCategoryResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -109,8 +116,16 @@ class ItemCategoryController(
         if (!user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
             throw HttpException.Forbidden()
 
-        val entity = itemCategoryService.patch(id, request)
-        val dto = itemCategoryMapper.get(entity)
+        if (request.name != null)
+            if (itemCategoryService.getByNameOrNull(request.name) != null)
+                throw HttpException.Conflict("Item Category with name '${request.name}' already exists.")
+
+        val entity = itemCategoryService.patch(
+            id = id,
+            name = request.name
+        )
+
+        val dto = GetItemCategoryResponse(entity)
         return ResponseEntity.ok(dto)
     }
 

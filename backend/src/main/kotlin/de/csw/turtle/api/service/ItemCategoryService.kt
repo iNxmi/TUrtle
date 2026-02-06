@@ -12,19 +12,22 @@ class ItemCategoryService(
     fun getByNameOrNull(name: String): ItemCategoryEntity? = repository.findByName(name)
     fun getByName(name: String) = repository.findByName(name) ?: throw HttpException.NotFound(name)
 
-//    override fun create(request: CreateItemCategoryRequest): ItemCategoryEntity {
-//        if(getByNameOrNull(request.name) != null)
-//            throw HttpException.Conflict("DeviceCategory with name '${request.name}' already exists.")
-//
-//        return super.create(request)
-//    }
-//
-//    override fun patch(id: Long, request: PatchItemCategoryRequest): ItemCategoryEntity {
-//        if(request.name != null)
-//            if(getByNameOrNull(request.name) != null)
-//                throw HttpException.Conflict("DeviceCategory with name '${request.name}' already exists.")
-//
-//        return super.patch(id, request)
-//    }
+    fun create(
+        name: String
+    ): ItemCategoryEntity {
+        val entity = ItemCategoryEntity(name = name)
+        return repository.save(entity)
+    }
+
+    fun patch(
+        id: Long,
+        name: String? = null
+    ): ItemCategoryEntity {
+        val entity = repository.findById(id).get()
+
+        name?.let { entity.name = it }
+
+        return repository.save(entity)
+    }
 
 }

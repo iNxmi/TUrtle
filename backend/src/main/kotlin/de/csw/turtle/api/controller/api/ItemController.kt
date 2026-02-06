@@ -11,7 +11,6 @@ import de.csw.turtle.api.dto.patch.PatchItemRequest
 import de.csw.turtle.api.entity.ItemEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.ItemMapper
 import de.csw.turtle.api.service.ItemService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -22,15 +21,19 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
+private const val ENDPOINT = "/api/items"
+
 @RestController
-@RequestMapping("/api/items")
+@RequestMapping(ENDPOINT)
 class ItemController(
-    private val itemService: ItemService,
-    private val itemMapper: ItemMapper,
+    private val itemService: ItemService
 ) : CreateController<ItemEntity, CreateItemRequest, GetItemResponse>,
     GetController<ItemEntity, Long, GetItemResponse>,
     PatchController<ItemEntity, PatchItemRequest, GetItemResponse>,
     DeleteController<ItemEntity> {
+
+    private val maxNameLength = 64
+    private val maxDescriptionLength = 256
 
     override fun create(
         user: UserEntity?,
@@ -46,9 +49,25 @@ class ItemController(
         if (!user.hasPermission(Permission.MANAGE_ITEMS))
             throw HttpException.Forbidden()
 
-        val entity = itemService.create(request)
-        val location = URI.create("/api/items/${entity.id}")
-        val dto = itemMapper.get(entity)
+        if (request.name.isBlank() || request.name.length > maxNameLength)
+            throw HttpException.BadRequest("Name cannot be blank and cannot exceed $maxNameLength characters.")
+
+        if (itemService.getByNameOrNull(request.name) != null)
+            throw HttpException.Conflict("Name '${request.name}' already exists.")
+
+        if (request.description.length > maxDescriptionLength)
+            throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
+
+        val entity = itemService.create(
+            name = request.name,
+            description = request.description,
+            categoryId = request.categoryId,
+            lockerId = request.lockerId,
+            acquiredAt = request.acquiredAt
+        )
+
+        val location = URI.create("$ENDPOINT/${entity.id}")
+        val dto = GetItemResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -60,8 +79,10 @@ class ItemController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<GetItemResponse> {
-        val entity = itemService.get(variable)
-        val dto = itemMapper.get(entity)
+        val entity = itemService.getById(variable)
+            ?: throw HttpException.NotFound()
+
+        val dto = GetItemResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -84,12 +105,12 @@ class ItemController(
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
             val page = itemService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { itemMapper.get(it) }
+            val dto = page.map { GetItemResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection = itemService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { itemMapper.get(it) }
+        val dto = collection.map { GetItemResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -108,8 +129,26 @@ class ItemController(
         if (!user.hasPermission(Permission.MANAGE_ITEMS))
             throw HttpException.Forbidden()
 
-        val entity = itemService.patch(id, request)
-        val dto = itemMapper.get(entity)
+        if (request.name != null)
+            if (request.name.isBlank() || request.name.length > maxNameLength)
+                throw HttpException.BadRequest("Name cannot be blank and cannot exceed $maxNameLength characters.")
+            else if (itemService.getByNameOrNull(request.name) != null)
+                throw HttpException.Conflict("Name '${request.name}' already exists.")
+
+        if (request.description != null)
+            if (request.description.length > maxDescriptionLength)
+                throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
+
+        val entity = itemService.patch(
+            id = id,
+            name = request.name,
+            description = request.description,
+            categoryId = request.categoryId,
+            lockerId = request.lockerId,
+            acquiredAt = request.acquiredAt
+        )
+
+        val dto = GetItemResponse(entity)
         return ResponseEntity.ok(dto)
     }
 

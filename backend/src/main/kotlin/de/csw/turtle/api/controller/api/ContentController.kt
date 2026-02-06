@@ -1,6 +1,7 @@
 package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Settings
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.GeneralTemplateService
 import de.csw.turtle.api.service.SystemSettingService
 import de.csw.turtle.api.service.ThymeleafService
@@ -19,7 +20,9 @@ class ContentController(
 
     private fun getResponse(setting: Settings): ResponseEntity<String> {
         val templateId = systemSettingService.getTyped<Long>(setting)
-        val template = generalTemplateService.get(templateId)
+        val template = generalTemplateService.getById(templateId)
+            ?: throw HttpException.NotFound()
+
         val content = template.getCompiledContent(thymeleafService)
         return ResponseEntity.ok(content)
     }

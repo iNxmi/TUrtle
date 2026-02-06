@@ -3,16 +3,10 @@ package de.csw.turtle.api.controller.api
 import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.auth.LoginUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
-import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.UserMapper
-import de.csw.turtle.api.service.AltchaService
-import de.csw.turtle.api.service.AuthService
+import de.csw.turtle.api.service.*
 import de.csw.turtle.api.service.JWTService.Type
-import de.csw.turtle.api.service.NetworkService
-import de.csw.turtle.api.service.SystemSettingService
-import de.csw.turtle.api.service.UserService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
@@ -29,12 +23,12 @@ private const val COOKIE_NAME_REFRESH_TOKEN = "refresh_token"
 class AuthController(
     private val authService: AuthService,
     private val systemSettingService: SystemSettingService,
-    private val userMapper: UserMapper,
     private val userService: UserService,
     private val altchaService: AltchaService,
     private val networkService: NetworkService
 ) {
 
+    //todo replace cookie generation by more robust method
     private fun setCookie(name: String, value: String, duration: Duration?, response: HttpServletResponse) {
         //Enable HTTPS only
         //cookie.secure = true
@@ -75,7 +69,7 @@ class AuthController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val dto = userMapper.get(user)
+        val dto = GetUserResponse(user)
         return ResponseEntity.ok(dto)
     }
 
@@ -90,8 +84,8 @@ class AuthController(
         if (expiryDate.isBefore(Instant.now()))
             throw HttpException.Gone("Token expired.")
 
-        val entity = userService.patch(user.id, PatchUserRequest(verified = true))
-        val dto = userMapper.get(entity)
+        val entity = userService.patch(id = user.id, verified = true)
+        val dto = GetUserResponse(entity)
         return ResponseEntity.ok(dto)
     }
 

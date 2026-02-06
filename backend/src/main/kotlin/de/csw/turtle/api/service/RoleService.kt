@@ -1,5 +1,6 @@
 package de.csw.turtle.api.service
 
+import de.csw.turtle.api.Permission
 import de.csw.turtle.api.entity.RoleEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.RoleRepository
@@ -13,16 +14,32 @@ class RoleService(
     fun getByName(name: String) = getByNameOrNull(name) ?: throw HttpException.NotFound(name)
     fun getByNameOrNull(name: String) = repository.findByName(name)
 
-//    override fun create(request: CreateRoleRequest): RoleEntity {
-//        if(getByNameOrNull(request.name) != null)
-//            throw HttpException.Conflict("Role with name '${request.name}' already exists.")
-//        return super.create(request)
-//    }
-//
-//    override fun patch(id: Long, request: PatchRoleRequest): RoleEntity {
-//        if(request.name != null)
-//            if(getByNameOrNull(request.name) != null)
-//                throw HttpException.Conflict("Role with name '${request.name}' already exists.")
-//        return super.patch(id, request)
-//    }
+    fun create(
+        name: String,
+        permissions: Set<Permission>
+    ): RoleEntity {
+        val entity = RoleEntity(
+            name = name,
+            permissions = permissions.toMutableSet()
+        )
+
+        return repository.save(entity)
+    }
+
+    fun patch(
+        id: Long,
+        name: String? = null,
+        permissions: Set<Permission>? = null
+    ): RoleEntity {
+        val entity = repository.findById(id).get()
+
+        name?.let { entity.name = it }
+        permissions?.let {
+            entity.permissions.clear()
+            entity.permissions.addAll(permissions)
+        }
+
+        return repository.save(entity)
+    }
+
 }

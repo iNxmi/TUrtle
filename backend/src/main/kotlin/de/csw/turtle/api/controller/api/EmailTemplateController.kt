@@ -11,7 +11,6 @@ import de.csw.turtle.api.dto.patch.PatchEmailTemplateRequest
 import de.csw.turtle.api.entity.EmailTemplateEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.EmailTemplateMapper
 import de.csw.turtle.api.service.EmailTemplateService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -22,11 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
+private const val ENDPOINT = "/api/email-templates"
+
 @RestController
-@RequestMapping("/api/email-templates")
+@RequestMapping(ENDPOINT)
 class EmailTemplateController(
-    private val emailTemplateService: EmailTemplateService,
-    private val emailTemplateMapper: EmailTemplateMapper
+    private val emailTemplateService: EmailTemplateService
 ) : CreateController<EmailTemplateEntity, CreateEmailTemplateRequest, GetEmailTemplateResponse>,
     GetController<EmailTemplateEntity, Long, GetEmailTemplateResponse>,
     PatchController<EmailTemplateEntity, PatchEmailTemplateRequest, GetEmailTemplateResponse>,
@@ -46,9 +46,18 @@ class EmailTemplateController(
         if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = emailTemplateService.create(request)
-        val location = URI.create("/api/email-templates/${entity.id}")
-        val dto = emailTemplateMapper.get(entity)
+        if (emailTemplateService.getByNameOrNull(request.name) != null)
+            throw HttpException.Conflict("Email template with name '${request.name}' already exists.")
+
+        val entity = emailTemplateService.create(
+            name = request.name,
+            description = request.description,
+            subject = request.subject,
+            content = request.content
+        )
+
+        val location = URI.create("$ENDPOINT/${entity.id}")
+        val dto = GetEmailTemplateResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -67,7 +76,9 @@ class EmailTemplateController(
             throw HttpException.Forbidden()
 
         val entity = emailTemplateService.getById(variable)
-        val dto = emailTemplateMapper.get(entity)
+            ?: throw HttpException.NotFound()
+
+        val dto = GetEmailTemplateResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -96,12 +107,12 @@ class EmailTemplateController(
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
             val page = emailTemplateService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { emailTemplateMapper.get(it) }
+            val dto = page.map { GetEmailTemplateResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection = emailTemplateService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { emailTemplateMapper.get(it) }
+        val dto = collection.map { GetEmailTemplateResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -120,8 +131,19 @@ class EmailTemplateController(
         if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = emailTemplateService.patch(id, request)
-        val dto = emailTemplateMapper.get(entity)
+        if (request.name != null)
+            if (emailTemplateService.getByNameOrNull(request.name) != null)
+                throw HttpException.Conflict("Email template with name '${request.name}' already exists.")
+
+        val entity = emailTemplateService.patch(
+            id = id,
+            name = request.name,
+            description = request.description,
+            subject = request.subject,
+            content = request.content
+        )
+
+        val dto = GetEmailTemplateResponse(entity)
         return ResponseEntity.ok(dto)
     }
 

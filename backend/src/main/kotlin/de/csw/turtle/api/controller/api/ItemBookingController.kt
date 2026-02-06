@@ -11,7 +11,6 @@ import de.csw.turtle.api.dto.patch.PatchItemBookingRequest
 import de.csw.turtle.api.entity.ItemBookingEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.ItemBookingMapper
 import de.csw.turtle.api.service.ItemBookingService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -23,11 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
+private const val ENDPOINT = "/api/device-bookings"
+
 @RestController
-@RequestMapping("/api/item-bookings")
+@RequestMapping(ENDPOINT)
 class ItemBookingController(
-    private val itemBookingService: ItemBookingService,
-    private val itemBookingMapper: ItemBookingMapper
+    private val itemBookingService: ItemBookingService
 ) : CreateController<ItemBookingEntity, CreateItemBookingRequest, GetItemBookingResponse>,
     GetController<ItemBookingEntity, Long, GetItemBookingResponse>,
     PatchController<ItemBookingEntity, PatchItemBookingRequest, GetItemBookingResponse>,
@@ -44,21 +44,32 @@ class ItemBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val sanitized = if (user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS)) {
-            request
-        } else {
-            CreateItemBookingRequest(
-                start = request.start,
-                end = request.end,
-                itemId = request.itemId,
-                userId = user.id,
-                status = ItemBookingEntity.Status.RESERVED
-            )
+        var status = request.status
+        var userId = request.userId
+        if (!user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS)) {
+            userId = user.id
+            status = ItemBookingEntity.Status.RESERVED
         }
 
-        val entity = itemBookingService.create(sanitized)
-        val location = URI.create("/api/item-bookings/${entity.id}")
-        val dto = itemBookingMapper.get(entity)
+        if (request.start == request.end)
+            throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
+
+        if (request.start.isAfter(request.end))
+            throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${request.end}'.")
+
+        if (itemBookingService.getAllOverlapping(request.start, request.end, request.itemId, -1).isNotEmpty())
+            throw HttpException.Conflict("Item with ID '${request.itemId}' is already booked between '${request.start}' and '${request.end}'")
+
+        val entity = itemBookingService.create(
+            userId = userId,
+            itemId = request.itemId,
+            start = request.start,
+            end = request.end,
+            status = status
+        )
+
+        val location = URI.create("$ENDPOINT/${entity.id}")
+        val dto = GetItemBookingResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -73,13 +84,14 @@ class ItemBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val entity = itemBookingService.get(variable)
+        val entity = itemBookingService.getById(variable)
+            ?: throw HttpException.NotFound()
 
         if (!user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS))
             if (entity.user != user)
                 throw HttpException.Forbidden()
 
-        val dto = itemBookingMapper.get(entity)
+        val dto = GetItemBookingResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -112,13 +124,13 @@ class ItemBookingController(
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
             val page = itemBookingService.getPage(rsql = rsql, pageable = pageable, specification = specification)
-            val dto = page.map { itemBookingMapper.get(it) }
+            val dto = page.map { GetItemBookingResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection =
             itemBookingService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
-        val dto = collection.map { itemBookingMapper.get(it) }
+        val dto = collection.map { GetItemBookingResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -134,17 +146,50 @@ class ItemBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val entity = itemBookingService.get(id)
+        val entity = itemBookingService.getById(id)
+            ?: throw HttpException.NotFound()
 
-        val sanitized = if (!user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS)) {
+        var userId = request.userId
+        var status = request.status
+        if (!user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS)) {
             if (entity.user != user)
                 throw HttpException.Forbidden()
 
-            request.copy(userId = null, status = null)
-        } else request
+            userId = null
+            status = null
+        }
 
-        val updated = itemBookingService.patch(id, sanitized)
-        val dto = itemBookingMapper.get(updated)
+        if (request.start != null && request.end != null) {
+            if (request.start.isAfter(request.end))
+                throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${request.end}'.")
+
+            if (request.start == request.end)
+                throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
+
+            if (request.itemId != null)
+                if (itemBookingService.getAllOverlapping(request.start, request.end, request.itemId, id).isNotEmpty())
+                    throw HttpException.Conflict("Item with ID '${request.itemId}' is already booked between '${request.start}' and '${request.end}'")
+
+            if (itemBookingService.getAllOverlapping(request.start, request.end, entity.item.id, id).isNotEmpty())
+                throw HttpException.Conflict("Item with ID '${entity.item.id}' is already booked between '${request.start}' and '${request.end}'")
+        }
+
+        if (request.start != null && request.end == null && request.start.isAfter(entity.end))
+            throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${entity.end}'.")
+
+        if (request.start == null && request.end != null && request.end.isBefore(entity.start))
+            throw HttpException.BadRequest("End '${request.end}' cannot be before '${entity.start}'.")
+
+        val updated = itemBookingService.patch(
+            id = id,
+            userId = userId,
+            itemId = request.itemId,
+            start = request.start,
+            end = request.end,
+            status = status
+        )
+
+        val dto = GetItemBookingResponse(updated)
         return ResponseEntity.ok(dto)
     }
 
@@ -159,7 +204,8 @@ class ItemBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val entity = itemBookingService.get(id)
+        val entity = itemBookingService.getById(id)
+            ?: throw HttpException.NotFound()
 
         if (!user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS))
             if (entity.user != user)

@@ -11,7 +11,6 @@ import de.csw.turtle.api.dto.patch.PatchGeneralTemplateRequest
 import de.csw.turtle.api.entity.GeneralTemplateEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.GeneralTemplateMapper
 import de.csw.turtle.api.service.GeneralTemplateService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -22,11 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
+private const val ENDPOINT ="/api/general-templates"
+
 @RestController
-@RequestMapping("/api/general-templates")
+@RequestMapping(ENDPOINT)
 class GeneralTemplateController(
-    private val generalTemplateService: GeneralTemplateService,
-    private val generalTemplateMapper: GeneralTemplateMapper
+    private val generalTemplateService: GeneralTemplateService
 ) : CreateController<GeneralTemplateEntity, CreateGeneralTemplateRequest, GetGeneralTemplateResponse>,
     GetController<GeneralTemplateEntity, Long, GetGeneralTemplateResponse>,
     PatchController<GeneralTemplateEntity, PatchGeneralTemplateRequest, GetGeneralTemplateResponse>,
@@ -46,9 +46,17 @@ class GeneralTemplateController(
         if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = generalTemplateService.create(request)
-        val location = URI.create("/api/general-templates/${entity.id}")
-        val dto = generalTemplateMapper.get(entity)
+        if (generalTemplateService.getByNameOrNull(request.name) != null)
+            throw HttpException.Conflict("General template with name '${request.name}' already exists.")
+
+        val entity = generalTemplateService.create(
+            name = request.name,
+            description = request.description,
+            content = request.content
+        )
+
+        val location = URI.create("$ENDPOINT/${entity.id}")
+        val dto = GetGeneralTemplateResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -66,8 +74,10 @@ class GeneralTemplateController(
         if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = generalTemplateService.get(variable)
-        val dto = generalTemplateMapper.get(entity)
+        val entity = generalTemplateService.getById(variable)
+            ?: throw HttpException.NotFound()
+
+        val dto = GetGeneralTemplateResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -96,12 +106,12 @@ class GeneralTemplateController(
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
             val page = generalTemplateService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { generalTemplateMapper.get(it) }
+            val dto = page.map { GetGeneralTemplateResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection = generalTemplateService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { generalTemplateMapper.get(it) }
+        val dto = collection.map { GetGeneralTemplateResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -120,8 +130,18 @@ class GeneralTemplateController(
         if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = generalTemplateService.patch(id, request)
-        val dto = generalTemplateMapper.get(entity)
+        if (request.name != null)
+            if (generalTemplateService.getByNameOrNull(request.name) != null)
+                throw HttpException.Conflict("General template with name '${request.name}' already exists.")
+
+        val entity = generalTemplateService.patch(
+            id = id,
+            name = request.name,
+            description = request.description,
+            content = request.content
+        )
+
+        val dto = GetGeneralTemplateResponse(entity)
         return ResponseEntity.ok(dto)
     }
 

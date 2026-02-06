@@ -11,7 +11,6 @@ import de.csw.turtle.api.dto.patch.PatchLockerRequest
 import de.csw.turtle.api.entity.LockerEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.LockerMapper
 import de.csw.turtle.api.service.locker.LockerService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -22,11 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
+private const val ENDPOINT = "/api/lockers"
+
 @RestController
-@RequestMapping("/api/lockers")
+@RequestMapping(ENDPOINT)
 class LockerController(
-    private val lockerService: LockerService,
-    private val lockerMapper: LockerMapper
+    private val lockerService: LockerService
 ) : CreateController<LockerEntity, CreateLockerRequest, GetLockerResponse>,
     GetController<LockerEntity, Long, GetLockerResponse>,
     PatchController<LockerEntity, PatchLockerRequest, GetLockerResponse>,
@@ -46,9 +46,15 @@ class LockerController(
         if (!user.hasPermission(Permission.MANAGE_LOCKERS))
             throw HttpException.Forbidden()
 
-        val entity = lockerService.create(request)
-        val location = URI.create("/api/lockers/${entity.id}")
-        val dto = lockerMapper.get(entity)
+        val entity = lockerService.create(
+            name = request.name,
+            index = request.index,
+            isSoftwareUnlockable = request.isSoftwareUnlockable,
+            locked = request.locked
+        )
+
+        val location = URI.create("$ENDPOINT/${entity.id}")
+        val dto = GetLockerResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -60,8 +66,10 @@ class LockerController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<GetLockerResponse> {
-        val entity = lockerService.get(variable)
-        val dto = lockerMapper.get(entity)
+        val entity = lockerService.getById(variable)
+            ?: throw HttpException.NotFound()
+
+        val dto = GetLockerResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -84,12 +92,12 @@ class LockerController(
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
             val page = lockerService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { lockerMapper.get(it) }
+            val dto = page.map { GetLockerResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection = lockerService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { lockerMapper.get(it) }
+        val dto = collection.map { GetLockerResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -108,8 +116,15 @@ class LockerController(
         if (!user.hasPermission(Permission.MANAGE_LOCKERS))
             throw HttpException.Forbidden()
 
-        val entity = lockerService.patch(id, request)
-        val dto = lockerMapper.get(entity)
+        val entity = lockerService.patch(
+            id = id,
+            name = request.name,
+            index = request.index,
+            isSoftwareUnlockable = request.isSoftwareUnlockable,
+            locked = request.locked
+        )
+
+        val dto = GetLockerResponse(entity)
         return ResponseEntity.ok(dto)
     }
 

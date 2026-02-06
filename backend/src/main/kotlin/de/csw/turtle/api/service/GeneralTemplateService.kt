@@ -11,21 +11,36 @@ class GeneralTemplateService(
 ) : CRUDService<GeneralTemplateEntity>() {
 
     fun getByNameOrNull(name: String): GeneralTemplateEntity? = repository.findByName(name)
-    fun getByName(name: String): GeneralTemplateEntity = repository.findByName(name) ?: throw HttpException.NotFound(name)
+    fun getByName(name: String): GeneralTemplateEntity =
+        repository.findByName(name) ?: throw HttpException.NotFound(name)
 
-//    override fun create(request: CreateGeneralTemplateRequest): GeneralTemplateEntity {
-//        if(getByNameOrNull(request.name) != null)
-//            throw HttpException.Conflict("General template with name '${request.name}' already exists.")
-//
-//        return super.create(request)
-//    }
-//
-//    override fun patch(id: Long, request: PatchGeneralTemplateRequest): GeneralTemplateEntity {
-//        if(request.name != null)
-//            if(getByNameOrNull(request.name) != null)
-//                throw HttpException.Conflict("General template with name '${request.name}' already exists.")
-//
-//        return super.patch(id, request)
-//    }
+    fun create(
+        name: String,
+        description: String,
+        content: String
+    ): GeneralTemplateEntity {
+        val entity = GeneralTemplateEntity(
+            name = name,
+            description = description,
+            content = content
+        )
+
+        return repository.save(entity)
+    }
+
+    fun patch(
+        id: Long,
+        name: String? = null,
+        description: String? = null,
+        content: String? = null
+    ): GeneralTemplateEntity {
+        val entity = repository.findById(id).get()
+
+        name?.let { entity.name = it }
+        description?.let { entity.description = it }
+        content?.let { entity.content = it }
+
+        return repository.save(entity)
+    }
 
 }

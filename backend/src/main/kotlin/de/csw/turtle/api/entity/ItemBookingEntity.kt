@@ -11,15 +11,15 @@ class ItemBookingEntity(
     @JoinColumn(name = "user_id")
     var user: UserEntity,
 
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    var item: ItemEntity,
+
     @Column(name = "start_time")
     var start: Instant,
 
     @Column(name = "end_time")
     var end: Instant,
-
-    @ManyToOne
-    @JoinColumn(name = "item_id")
-    var item: ItemEntity,
 
     @Enumerated(EnumType.STRING)
     var status: Status = Status.RESERVED

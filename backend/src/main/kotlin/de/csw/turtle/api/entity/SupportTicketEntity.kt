@@ -20,7 +20,7 @@ class SupportTicketEntity(
     var description: String,
 
     @Enumerated(EnumType.STRING)
-    var status: Status = Status.OPEN
+    var status: Status
 
 ) : CRUDEntity() {
 

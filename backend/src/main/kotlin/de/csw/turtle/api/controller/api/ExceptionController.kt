@@ -7,7 +7,6 @@ import de.csw.turtle.api.dto.get.GetExceptionResponse
 import de.csw.turtle.api.entity.ExceptionEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.ExceptionMapper
 import de.csw.turtle.api.service.ExceptionService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -20,8 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/exceptions")
 class ExceptionController(
-    private val exceptionService: ExceptionService,
-    private val exceptionMapper: ExceptionMapper
+    private val exceptionService: ExceptionService
 ) :
     GetController<ExceptionEntity, Long, GetExceptionResponse>,
     DeleteController<ExceptionEntity> {
@@ -40,8 +38,10 @@ class ExceptionController(
         if (!user.hasPermission(Permission.MANAGE_EXCEPTIONS))
             throw HttpException.Forbidden()
 
-        val entity = exceptionService.get(variable)
-        val dto = exceptionMapper.get(entity)
+        val entity = exceptionService.getById(variable)
+            ?: throw HttpException.NotFound() //todo
+
+        val dto = GetExceptionResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -70,12 +70,12 @@ class ExceptionController(
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
             val page = exceptionService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { exceptionMapper.get(it) }
+            val dto = page.map { GetExceptionResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection = exceptionService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { exceptionMapper.get(it) }
+        val dto = collection.map { GetExceptionResponse(it) }
         return ResponseEntity.ok(dto)
     }
 

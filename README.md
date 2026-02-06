@@ -23,6 +23,8 @@ Port: 8080
 * `*@tu-darmstadt.de` -> ok
 * `*@andere.email` -> request
 * local dns via PI Hole
+* make all srvice create and patch transactional
+* invert all request overrides to make them more safe, in controllers
 
 ## Docker Environment
 ```

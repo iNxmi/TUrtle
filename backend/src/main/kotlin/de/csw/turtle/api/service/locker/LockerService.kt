@@ -2,6 +2,7 @@ package de.csw.turtle.api.service.locker
 
 import de.csw.turtle.api.entity.ItemEntity
 import de.csw.turtle.api.entity.LockerEntity
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.LockerRepository
 import de.csw.turtle.api.service.CRUDService
 import jakarta.transaction.Transactional
@@ -39,22 +40,16 @@ class LockerService(
         name: String? = null,
         index: Int? = null,
         isSoftwareUnlockable: Boolean? = null,
-        locked: Boolean? = null,
-        items: MutableSet<ItemEntity>? = null
+        locked: Boolean? = null
     ): LockerEntity {
-        val entity = getById(id)
+        val entity = repository.findById(id).get()
 
         name?.let { entity.name = it }
+        index?.let { entity.index = it }
+        isSoftwareUnlockable?.let { entity.isSoftwareUnlockable = it }
+        locked?.let { entity.locked = it }
 
-        val updated = LockerEntity(
-            name = name,
-            index = index,
-            isSoftwareUnlockable = isSoftwareUnlockable,
-            locked = locked,
-            items = items
-        )
-
-        return repository.save(updated)
+        return repository.save(entity)
     }
 
 }

@@ -3,14 +3,9 @@ package de.csw.turtle.api.controller.api
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.hardware.OpenDoorEmojisRequest
-import de.csw.turtle.api.entity.LockerEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.service.ItemBookingService
-import de.csw.turtle.api.service.NetworkService
-import de.csw.turtle.api.service.RoomBookingService
-import de.csw.turtle.api.service.SystemSettingService
-import de.csw.turtle.api.service.UserService
+import de.csw.turtle.api.service.*
 import de.csw.turtle.api.service.door.DoorControlService
 import de.csw.turtle.api.service.locker.LockerControlService
 import de.csw.turtle.api.service.locker.LockerService
@@ -81,7 +76,9 @@ class HardwareController(
 
         checkLockerPermissions(user, id, request)
 
-        val locker = lockerService.get(id)
+        val locker = lockerService.getById(id)
+            ?: throw HttpException.NotFound()
+
         val response = lockerControlService.trigger(locker = locker)
         return ResponseEntity.ok(response)
     }

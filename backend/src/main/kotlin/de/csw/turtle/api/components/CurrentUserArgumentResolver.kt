@@ -33,7 +33,7 @@ class CurrentUserArgumentResolver(
         val principal = authentication.principal as? CustomUserDetails
             ?: return null
 
-        return userService.get(principal.userId)
+        return userService.getById(principal.userId)
     }
 
 }

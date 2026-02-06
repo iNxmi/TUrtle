@@ -56,7 +56,7 @@ class AuthService(
         if (data.type != JWTService.Type.REFRESH)
             throw HttpException.Unauthorized("Invalid refresh token.")
 
-        if (userService.getByIdOrNull(data.subject) == null)
+        if (userService.getById(data.subject) == null)
             throw HttpException.Unauthorized("Invalid refresh token.")
 
         val accessToken = jwtService.generate(data.subject, JWTService.Type.ACCESS)

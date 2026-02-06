@@ -1,57 +1,40 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.entity.FAQEntity
-import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.FAQRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
 class FAQService(
     override val repository: FAQRepository
-) : CRUDService<FAQEntity>(){
+) : CRUDService<FAQEntity>() {
 
-    private val maxNameLength = 64
-    private val maxTitleLength = 64
+    fun getByName(name: String): FAQEntity? = repository.findByName(name)
 
-    fun getByNameOrNull(name: String) : FAQEntity? = repository.findByName(name)
+    @Transactional
+    fun create(
+        name: String,
+        title: String,
+        content: String
+    ): FAQEntity {
+        val entity = FAQEntity(name, title, content)
+        return repository.save(entity)
+    }
 
-//    override fun create(request: CreateFAQRequest): FAQEntity {
-//        if(request.name.isBlank() || request.name.length > maxNameLength) {
-//            throw HttpException.BadRequest("Name is required and cannot exceed $maxNameLength characters.");
-//        }
-//        else if(getByNameOrNull(request.name) != null) {
-//            throw HttpException.Conflict("Name '${request.name}' already exists.");
-//        }
-//
-//        if(request.title.isBlank() || request.title.length > maxTitleLength) {
-//            throw HttpException.BadRequest("Title is required and cannot exceed $maxTitleLength characters.");
-//        }
-//
-//        if(request.content.isBlank()){
-//            throw HttpException.BadRequest("Content is required.");
-//        }
-//
-//        return super.create(request)
-//    }
-//
-//    override fun patch(id: Long, request: PatchFAQRequest): FAQEntity {
-//        if(request.name != null)
-//            if(request.name.isBlank() || request.name.length > maxNameLength) {
-//                throw HttpException.BadRequest("Name is required and cannot exceed $maxNameLength characters.");
-//            }
-//            else if(getByNameOrNull(request.name) != null) {
-//                throw HttpException.Conflict("Name '${request.name}' already exists.");
-//            }
-//
-//        if(request.title != null)
-//            if(request.title.isBlank() || request.title.length > maxTitleLength) {
-//                throw HttpException.BadRequest("Title is required and cannot exceed $maxTitleLength characters.");
-//            }
-//
-//        if(request.content != null)
-//            if(request.content.isBlank())
-//                throw HttpException.BadRequest("Content is required.");
-//
-//        return super.patch(id, request)
-//    }
+    fun patch(
+        id: Long,
+        name: String? = null,
+        title: String? = null,
+        content: String? = null
+    ): FAQEntity {
+        val entity = repository.findById(id).get()
+
+        name?.let { entity.name = it }
+        title?.let { entity.title = it }
+        content?.let { entity.content = it }
+
+        return repository.save(entity)
+    }
+
 }

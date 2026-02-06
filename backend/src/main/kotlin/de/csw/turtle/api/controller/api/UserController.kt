@@ -10,7 +10,6 @@ import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.UserMapper
 import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.NetworkService
 import de.csw.turtle.api.service.UserService
@@ -23,11 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
+private const val ENDPOINT = "/api/users"
+
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping(ENDPOINT)
 class UserController(
     private val userService: UserService,
-    private val userMapper: UserMapper,
     private val altchaService: AltchaService,
     private val networkService: NetworkService
 ) : CreateController<UserEntity, CreateUserRequest, GetUserResponse>,
@@ -43,26 +43,36 @@ class UserController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<GetUserResponse> {
-        val sanitized = if (user == null) {
+        if (user == null) {
             val ipAddress = networkService.getClientIp(httpRequest)
             if (request.altchaToken == null || !altchaService.isValid(ipAddress, request.altchaToken))
                 throw HttpException.Forbidden("Invalid captcha token.")
+        } else if (!user.hasPermission(Permission.MANAGE_USERS))
+            throw HttpException.Forbidden()
 
-            CreateUserRequest(
-                username = request.username,
-                firstName = request.firstName,
-                lastName = request.lastName,
-                email = request.email,
-                emojis = userService.generateEmojis(),
-                password = request.password
-            )
-        } else if (user.hasPermission(Permission.MANAGE_USERS)) {
-            request
-        } else throw HttpException.Unauthorized()
+        var emojis = userService.generateEmojis()
+        if (user != null)
+            emojis = request.emojis
 
-        val entity = userService.create(sanitized)
-        val location = URI.create("/api/users/${entity.id}")
-        val dto = userMapper.get(entity)
+        if (userService.getByUsernameOrNull(request.username) != null)
+            throw HttpException.Conflict("Username '${request.username}' already exists")
+
+        if (request.username.isBlank())
+            throw HttpException.BadRequest("Username cannot be blank.")
+
+        val entity = userService.create(
+            username = request.username,
+            firstName = request.firstName,
+            lastName = request.lastName,
+            email = request.email,
+            emojis = emojis,
+            password = request.password,
+            verified = request.verified,
+            roleIds = request.roleIds
+        )
+
+        val location = URI.create("$ENDPOINT/${entity.id}")
+        val dto = GetUserResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -79,16 +89,16 @@ class UserController(
 
         val id = variable.toLongOrNull()
         val entity = if (id != null) {
-            userService.get(id)
+            userService.getById(id)
         } else {
             userService.getByUsername(variable)
-        }
+        } ?: throw HttpException.NotFound()
 
         if (!user.hasPermission(Permission.MANAGE_USERS))
             if (entity.id != user.id)
                 throw HttpException.Forbidden()
 
-        val dto = userMapper.get(entity)
+        val dto = GetUserResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -117,12 +127,12 @@ class UserController(
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
             val page = userService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { userMapper.get(it) }
+            val dto = page.map { GetUserResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection = userService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { userMapper.get(it) }
+        val dto = collection.map { GetUserResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -138,19 +148,33 @@ class UserController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val sanitized = if (user.hasPermission(Permission.MANAGE_USERS)) {
-            request
-        } else if (id == user.id) {
-            PatchUserRequest(
-                firstName = request.firstName,
-                lastName = request.lastName,
-                email = request.email,
-                password = request.password
-            )
-        } else throw HttpException.Forbidden()
+        if (user.id != id && !user.hasPermission(Permission.MANAGE_USERS))
+            throw HttpException.Forbidden()
 
-        val entity = userService.patch(id, sanitized)
-        val dto = userMapper.get(entity)
+        var username: String? = null
+        var roleIds: Set<Long>? = null
+        var verified: Boolean? = null
+        var emojis: String? = null
+        if (user.hasPermission(Permission.MANAGE_USERS)) {
+            username = request.username
+            roleIds = request.roleIds
+            verified = request.verified
+            emojis = request.emojis
+        }
+
+        val entity = userService.patch(
+            id = id,
+            username = username,
+            firstName = request.firstName,
+            lastName = request.lastName,
+            email = request.email,
+            emojis = emojis,
+            password = request.password,
+            verified = verified,
+            roleIds = roleIds
+        )
+
+        val dto = GetUserResponse(entity)
         return ResponseEntity.ok(dto)
     }
 

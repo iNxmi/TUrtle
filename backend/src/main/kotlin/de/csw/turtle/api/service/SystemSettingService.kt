@@ -60,28 +60,47 @@ class SystemSettingService(
         throw HttpException.BadRequest("Error parsing system setting with key '$key' -> ${exception.message}")
     }
 
-//    override fun create(request: CreateSystemSettingRequest): SystemSettingEntity {
-//        //Will throw if parsing fails
-//        parse(
-//            request.key,
-//            request.type,
-//            request.value
-//        )
-//
-//        return super.create(request)
-//    }
-//
-//    override fun patch(id: Long, request: PatchSystemSettingRequest): SystemSettingEntity {
-//        val original = get(id)
-//
-//        //Will throw if parsing fails
-//        parse(
-//            request.key ?: original.key,
-//            request.type ?: original.type,
-//            request.value ?: original.value
-//        )
-//
-//        return super.patch(id, request)
-//    }
+    fun create(
+        key: String,
+        type: SystemSettingEntity.Type,
+        value: String,
+        visibility: SystemSettingEntity.Visibility
+    ): SystemSettingEntity {
+        //Will throw if parsing fails
+        parse(key, type, value)
+
+        val entity = SystemSettingEntity(
+            key = key,
+            type = type,
+            value = value,
+            visibility = visibility
+        )
+
+        return repository.save(entity)
+    }
+
+    fun patch(
+        id: Long,
+        key: String? = null,
+        type: SystemSettingEntity.Type? = null,
+        value: String? = null,
+        visibility: SystemSettingEntity.Visibility? = null
+    ): SystemSettingEntity {
+        val entity = repository.findById(id).get()
+
+        //Will throw if parsing fails
+        parse(
+            key ?: entity.key,
+            type ?: entity.type,
+            value ?: entity.value
+        )
+
+        key?.let { entity.key = it }
+        type?.let { entity.type = it }
+        value?.let { entity.value = it }
+        visibility?.let { entity.visibility = it }
+
+        return repository.save(entity)
+    }
 
 }

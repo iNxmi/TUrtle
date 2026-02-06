@@ -16,7 +16,7 @@ class PermissionController {
 
     @GetMapping
     fun getPermissions(
-        @AuthenticationPrincipal user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?
     ): ResponseEntity<SortedSet<Permission>> {
         if (user == null)
             throw HttpException.Unauthorized()

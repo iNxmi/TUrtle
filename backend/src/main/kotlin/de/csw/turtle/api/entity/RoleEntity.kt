@@ -18,7 +18,7 @@ class RoleEntity(
         name = "role_permissions",
         joinColumns = [JoinColumn(name = "role_id")],
     )
-    val permissions: MutableSet<Permission> = mutableSetOf(),
+    val permissions: MutableSet<Permission>,
 
     @ManyToMany(mappedBy = "roles")
     val users: MutableSet<UserEntity> = mutableSetOf()

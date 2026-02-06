@@ -2,63 +2,56 @@ package de.csw.turtle.api.service
 
 import de.csw.turtle.api.entity.ItemBookingEntity
 import de.csw.turtle.api.repository.ItemBookingRepository
+import de.csw.turtle.api.repository.ItemRepository
+import de.csw.turtle.api.repository.UserRepository
 import org.springframework.stereotype.Service
 import java.time.Instant
 
 @Service
 class ItemBookingService(
     override val repository: ItemBookingRepository,
-    private val itemService: ItemService
+    private val userRepository: UserRepository,
+    private val itemRepository: ItemRepository
 ) : CRUDService<ItemBookingEntity>() {
-
-//    override fun create(request: CreateItemBookingRequest): ItemBookingEntity {
-//
-//        if (request.start == request.end)
-//            throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
-//
-//        if (request.start.isAfter(request.end))
-//            throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${request.end}'.")
-//
-//        if(getAllOverlapping(request.start, request.end, request.itemId, -1).isNotEmpty()) {
-//            throw HttpException.Conflict("Item with ID '${request.itemId}' is already booked between '${request.start}' and '${request.end}'")
-//        }
-//
-//        return super.create(request)
-//    }
-//
-//    override fun patch(id: Long, request: PatchItemBookingRequest): ItemBookingEntity {
-//        val original = get(id)
-//
-//        if (request.start != null && request.end != null) {
-//            if (request.start.isAfter(request.end)) {
-//                throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${request.end}'.")
-//            } else if (request.start == request.end) {
-//                throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
-//            } else if(request.itemId != null){
-//                if(getAllOverlapping(request.start,request.end,request.itemId, id).isNotEmpty()){
-//                    throw HttpException.Conflict("Item with ID '${request.itemId}' is already booked between '${request.start}' and '${request.end}'")
-//                }
-//            } else {
-//                if(getAllOverlapping(request.start,request.end,original.item.id, id).isNotEmpty()){
-//                    throw HttpException.Conflict("Item with ID '${original.item.id}' is already booked between '${request.start}' and '${request.end}'")
-//                }
-//            }
-//
-//        }
-//
-//        if (request.start != null && request.end == null && request.start.isAfter(original.end))
-//            throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${original.end}'.")
-//
-//        if (request.start == null && request.end != null && request.end.isBefore(original.start))
-//            throw HttpException.BadRequest("End '${request.end}' cannot be before '${original.start}'.")
-//
-//        return super.patch(id, request)
-//    }
 
     fun getAllOverlapping(start: Instant, end: Instant, item: Long, id: Long): Set<ItemBookingEntity> =
         repository.findAllOverlapping(start, end, itemService.getById(item), id)
 
     fun getCurrent(userId: Long, lockerId: Long): Set<ItemBookingEntity> =
         repository.findCurrent(Instant.now(), userId, lockerId)
+
+    fun create(
+        userId: Long,
+        itemId: Long,
+        start: Instant,
+        end: Instant,
+        status: ItemBookingEntity.Status
+    ): ItemBookingEntity {
+        val entity = ItemBookingEntity(
+            user = userRepository.findById(userId).get(),
+            item = itemRepository.findById(itemId).get(),
+            start = start,
+            end = end,
+            status = status
+        )
+
+        return repository.save(entity)
+    }
+
+    fun patch(
+        id: Long,
+        userId: Long? = null,
+        itemId: Long? = null,
+        start: Instant? = null,
+        end: Instant? = null,
+        status: ItemBookingEntity.Status? = null,
+    ): ItemBookingEntity {
+        val original = get(id)
+
+
+
+        return super.patch(id, request)
+    }
+
 
 }

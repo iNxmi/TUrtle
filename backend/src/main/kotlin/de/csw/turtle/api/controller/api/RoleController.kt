@@ -11,7 +11,6 @@ import de.csw.turtle.api.dto.patch.PatchRoleRequest
 import de.csw.turtle.api.entity.RoleEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.RoleMapper
 import de.csw.turtle.api.service.RoleService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -23,11 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
+private const val ENDPOINT = "/api/roles"
+
 @RestController
-@RequestMapping("/api/roles")
+@RequestMapping(ENDPOINT)
 class RoleController(
-    private val roleService: RoleService,
-    private val roleMapper: RoleMapper,
+    private val roleService: RoleService
 ) : CreateController<RoleEntity, CreateRoleRequest, GetRoleResponse>,
     GetController<RoleEntity, Long, GetRoleResponse>,
     PatchController<RoleEntity, PatchRoleRequest, GetRoleResponse>,
@@ -47,9 +47,16 @@ class RoleController(
         if (!user.hasPermission(Permission.MANAGE_ROLES))
             throw HttpException.Forbidden()
 
-        val entity = roleService.create(request)
-        val location = URI.create("/api/roles/${entity.id}")
-        val dto = roleMapper.get(entity)
+        if (roleService.getByNameOrNull(request.name) != null)
+            throw HttpException.Conflict("Role with name '${request.name}' already exists.")
+
+        val entity = roleService.create(
+            name = request.name,
+            permissions = request.permissions
+        )
+
+        val location = URI.create("$ENDPOINT/${entity.id}")
+        val dto = GetRoleResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -64,11 +71,13 @@ class RoleController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val entity = roleService.get(variable)
+        val entity = roleService.getById(variable)
+            ?: throw HttpException.NotFound()
+
         if (!user.roles.contains(entity))
             throw HttpException.Forbidden()
 
-        val dto = roleMapper.get(entity)
+        val dto = GetRoleResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -100,12 +109,12 @@ class RoleController(
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
             val page = roleService.getPage(rsql = rsql, pageable = pageable, specification = specification)
-            val dto = page.map { roleMapper.get(it) }
+            val dto = page.map { GetRoleResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection = roleService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
-        val dto = collection.map { roleMapper.get(it) }
+        val dto = collection.map { GetRoleResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -124,8 +133,17 @@ class RoleController(
         if (!user.hasPermission(Permission.MANAGE_ROLES))
             throw HttpException.Forbidden()
 
-        val entity = roleService.patch(id, request)
-        val dto = roleMapper.get(entity)
+        if (request.name != null)
+            if (roleService.getByNameOrNull(request.name) != null)
+                throw HttpException.Conflict("Role with name '${request.name}' already exists.")
+
+        val entity = roleService.patch(
+            id = id,
+            name = request.name,
+            permissions = request.permissions
+        )
+
+        val dto = GetRoleResponse(entity)
         return ResponseEntity.ok(dto)
     }
 

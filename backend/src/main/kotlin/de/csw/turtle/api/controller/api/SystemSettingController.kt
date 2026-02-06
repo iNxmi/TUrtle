@@ -8,7 +8,6 @@ import de.csw.turtle.api.dto.patch.PatchSystemSettingRequest
 import de.csw.turtle.api.entity.SystemSettingEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.SystemSettingMapper
 import de.csw.turtle.api.service.SystemSettingService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -16,17 +15,13 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/system-settings")
 class SystemSettingController(
-    private val systemSettingService: SystemSettingService,
-    private val systemSettingMapper: SystemSettingMapper
+    private val systemSettingService: SystemSettingService
 ) : GetController<SystemSettingEntity, String, GetSystemSettingResponse>,
     PatchController<SystemSettingEntity, PatchSystemSettingRequest, GetSystemSettingResponse> {
 
@@ -74,13 +69,13 @@ class SystemSettingController(
         httpResponse: HttpServletResponse
     ): ResponseEntity<GetSystemSettingResponse> {
         val id = variable.toLongOrNull()
-        val entity = if(id != null) {
-            systemSettingService.get(id)
+        val entity = if (id != null) {
+            systemSettingService.getById(id)
         } else {
             systemSettingService.getByKey(variable)
-        }
+        } ?: throw HttpException.NotFound()
 
-        val dto = systemSettingMapper.get(entity)
+        val dto = GetSystemSettingResponse(entity)
         if (entity.visibility == SystemSettingEntity.Visibility.PUBLIC)
             return ResponseEntity.ok(dto)
 
@@ -122,13 +117,13 @@ class SystemSettingController(
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
             val page = systemSettingService.getPage(rsql = rsql, pageable = pageable, specification = specification)
-            val dto = page.map { systemSettingMapper.get(it) }
+            val dto = page.map { GetSystemSettingResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection =
             systemSettingService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
-        val dto = collection.map { systemSettingMapper.get(it) }
+        val dto = collection.map { GetSystemSettingResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -147,8 +142,15 @@ class SystemSettingController(
         if (!user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS))
             throw HttpException.Forbidden()
 
-        val updated = systemSettingService.patch(id, request)
-        val dto = systemSettingMapper.get(updated)
+        val entity = systemSettingService.patch(
+            id = id,
+            key = request.key,
+            type = request.type,
+            value = request.value,
+            visibility = request.visibility
+        )
+
+        val dto = GetSystemSettingResponse(entity)
         return ResponseEntity.ok(dto)
     }
 

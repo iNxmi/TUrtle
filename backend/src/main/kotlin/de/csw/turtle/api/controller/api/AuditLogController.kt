@@ -6,7 +6,6 @@ import de.csw.turtle.api.dto.get.GetAuditLogResponse
 import de.csw.turtle.api.entity.AuditLogEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.AuditLogMapper
 import de.csw.turtle.api.service.AuditLogService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -21,8 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/audit-logs")
 class AuditLogController(
-    private val auditLogService: AuditLogService,
-    private val auditLogMapper: AuditLogMapper
+    private val auditLogService: AuditLogService
 ) : GetController<AuditLogEntity, Long, GetAuditLogResponse> {
 
     override fun get(
@@ -37,11 +35,13 @@ class AuditLogController(
             throw HttpException.Unauthorized()
 
         val entity = auditLogService.getById(variable)
+            ?: throw HttpException.NotFound() //TODO
+
         if (!user.hasPermission(Permission.MANAGE_AUDIT_LOGS))
             if (entity.user != user)
-                throw HttpException.Forbidden()
+                throw HttpException.Forbidden() //TODO
 
-        val dto = auditLogMapper.get(entity)
+        val dto = GetAuditLogResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -73,12 +73,12 @@ class AuditLogController(
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
             val page = auditLogService.getPage(rsql = rsql, pageable = pageable, specification = specification)
-            val dto = page.map { auditLogMapper.get(it) }
+            val dto = page.map { GetAuditLogResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection = auditLogService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
-        val dto = collection.map { auditLogMapper.get(it) }
+        val dto = collection.map { GetAuditLogResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
