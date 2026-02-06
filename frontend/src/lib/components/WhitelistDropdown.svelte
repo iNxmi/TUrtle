@@ -4,7 +4,7 @@
     import { Badge, CloseButton, Checkbox, Input } from 'flowbite-svelte';
 
 
-    let { users, onchange = false, value = $bindable(), sortFunction, displayFunction, filterFunction } = $props();
+    let { users, onchange = false, value = $bindable(), single = false, sortFunction, displayFunction, filterFunction } = $props();
     let searchTerm = $state("");
     let clickProtected = $state(false);
     
@@ -157,7 +157,7 @@
   
 </script>
 
-<select name="whitelistMembers" {value} hidden multiple {onchange}>
+<select name="whitelistMembers" {value} hidden multiple={!single} {onchange}>
     {#each users as user (user.value)}
         <option value={user.value}>{displayFunction(user)}</option>
     {/each}
