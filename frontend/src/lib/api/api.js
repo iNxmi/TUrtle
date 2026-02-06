@@ -1,5 +1,5 @@
 import {dev} from '$app/environment';
-import {jwtRefreshPath} from '$lib/backend';
+import {authPath, jwtRefreshPath} from '$lib/backend';
 import {redirect} from '@sveltejs/kit';
 
 export default async function request(url, options) {
@@ -15,7 +15,7 @@ export default async function request(url, options) {
         headers: {'Content-Type': 'application/json'}
     });
 
-    if (refreshResponse.status === 401)
+    if (refreshResponse.status === 401 && url !== authPath+'/me')
         redirect(307, '/auth/login');
 
     return await fetch(endpoint, options);
