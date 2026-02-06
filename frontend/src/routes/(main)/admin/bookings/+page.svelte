@@ -154,7 +154,7 @@
 			}
 		});
 		calendar.render();
-		calendar.getEvents().forEach((event) => event.backgroundColor)
+		calendar.getEvents().forEach((event) => event.backgroundColor(event.extendedProps.status === 'REQUESTED' ? '#FFF500': '#FF8C1E'));
 	});
 
 	function createEvent(e){
@@ -299,6 +299,7 @@
 						<TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
 					</button>
 				</div>
+				<WhitelistDropdown users={dropdownUsers}
 				<Label class="space-y-2"> <span>_Start_</span>
 					<Datepicker monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
 					<Timepicker divClass="shadow-none!" bind:value={startTime}/>

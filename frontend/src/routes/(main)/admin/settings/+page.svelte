@@ -63,7 +63,7 @@
         </div>
     </TabItem>
     {/if}
-    {#if data.userPermissions.includes('MANAGE_HARDWARE_OVERRIDE')}
+    {#if data.userPermissions.includes('MANAGE_DOOR') || data.userPermissions.includes('MANAGE_LOCKERS')}
     <TabItem onlick={() => goto('?endpoint=/hardwareoverrides')} classes={{button: 'cursor-pointer'}} open={currentTab === '/hardwareoverrides'}>
         {#snippet titleSlot()}
         <div class="flex items-center gap-2">
@@ -74,23 +74,27 @@
         <div class="flex flex-row gap-5">
             <div class="rounded-lg border-gray-200 p-1">
                 <Heading class="mb-5" tag='h2'>_Locker_</Heading>
-                {#each data.lockers as locker, index}
-                    {#if locker.isSoftwareUnlockable}
-                        <span class="mb-2">_Locker_ {locker.name}_</span>
-                        <div class="flex flex-row gap-2 mb-1">
-                            <Button onclick={() => openLocker(locker.id)}>_Open_</Button>
-                            <Button onclick={() => lockLocker(locker)} class="bg-red-600">
-                                {#if locker.locked === true}_Unlock_{:else}_Lock_{/if}
-                            </Button>
-                        </div>
-                    {/if}
-                {/each}
+                {#if data.userPermissions.includes('MANAGE_LOCKERS')}
+                    {#each data.lockers as locker, index}
+                        {#if locker.isSoftwareUnlockable}
+                            <span class="mb-2">_Locker_ {locker.name}_</span>
+                            <div class="flex flex-row gap-2 mb-1">
+                                <Button onclick={() => openLocker(locker.id)}>_Open_</Button>
+                                <Button onclick={() => lockLocker(locker)} class="bg-red-600">
+                                    {#if locker.locked === true}_Unlock_{:else}_Lock_{/if}
+                                </Button>
+                            </div>
+                        {/if}
+                    {/each}
+                {/if}
             </div>
-            <div class=" rounded-lg border-gray-200 p-1 text-center">
-                <Heading class="mb-5" tag="h2">_Door_</Heading>
-                <Button onclick={openDoor}>Open</Button>
-                <Button onclick={lockDoor} class="bg-red-600">Lock</Button>
-            </div>
+            {#if data.userPermissions.includes('MANAGE_DOOR')}
+                <div class=" rounded-lg border-gray-200 p-1 text-center">
+                    <Heading class="mb-5" tag="h2">_Door_</Heading>
+                    <Button onclick={openDoor}>Open</Button>
+                    <Button onclick={lockDoor} class="bg-red-600">Lock</Button>
+                </div>
+            {/if}
         </div>
 
         <!-- TODO -->
