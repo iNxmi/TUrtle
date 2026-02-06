@@ -15,7 +15,7 @@ class ItemBookingService(
 ) : CRUDService<ItemBookingEntity>() {
 
     fun getAllOverlapping(start: Instant, end: Instant, item: Long, id: Long): Set<ItemBookingEntity> =
-        repository.findAllOverlapping(start, end, itemService.getById(item), id)
+        repository.findAllOverlapping(start, end, itemRepository.findById(item).get(), id)
 
     fun getCurrent(userId: Long, lockerId: Long): Set<ItemBookingEntity> =
         repository.findCurrent(Instant.now(), userId, lockerId)
@@ -46,11 +46,15 @@ class ItemBookingService(
         end: Instant? = null,
         status: ItemBookingEntity.Status? = null,
     ): ItemBookingEntity {
-        val original = get(id)
+        val entity = repository.findById(id).get()
 
+        userId?.let { entity.user = userRepository.findById(it).get() }
+        itemId?.let { entity.item = itemRepository.findById(it).get() }
+        start?.let { entity.start = it }
+        end?.let { entity.end = it }
+        status?.let { entity.status = it }
 
-
-        return super.patch(id, request)
+        return repository.save(entity)
     }
 
 

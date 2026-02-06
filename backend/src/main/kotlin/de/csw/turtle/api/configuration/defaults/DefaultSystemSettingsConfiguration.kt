@@ -36,7 +36,7 @@ class DefaultSystemSettingsConfiguration(
         if (service.getByKeyOrNull(key) != null)
             return
 
-        service.create(CreateSystemSettingRequest(key, type, value.toString(), visibility))
+        service.create(key, type, value.toString(), visibility)
     }
 
     private fun setDefaultGeneralTemplate(

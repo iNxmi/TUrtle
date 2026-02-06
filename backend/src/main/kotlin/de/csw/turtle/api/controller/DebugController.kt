@@ -1,6 +1,7 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.exception.DebugException
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.EmailService
 import de.csw.turtle.api.service.NetworkService
@@ -67,19 +68,6 @@ class DebugController(
         emailService.sendSimpleEmail(to, subject, text)
 
         return ResponseEntity.noContent().build()
-    }
-
-    @GetMapping("/door")
-    fun door(
-        @RequestParam duration: Duration
-    ): String = doorControlService.trigger(duration)
-
-    @GetMapping("/locker")
-    fun locker(
-        @RequestParam id: Long
-    ): String {
-        val locker = lockerService.get(id)
-        return lockerControlService.trigger(locker)
     }
 
 }

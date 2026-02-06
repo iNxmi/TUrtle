@@ -57,7 +57,7 @@ abstract class CRUDService<Entity : CRUDEntity> {
     }
 
     @Transactional
-    open fun delete(id: Long) = repository.delete(getById(id))
+    open fun delete(id: Long) = repository.deleteById(id)
 
     @Transactional
     open fun deleteAll(iterable: Iterable<Entity>) = repository.deleteAll(iterable)

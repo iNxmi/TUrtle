@@ -1,6 +1,5 @@
 package de.csw.turtle.api.configuration.defaults
 
-import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.service.RoleService
 import de.csw.turtle.api.service.UserService
 import org.springframework.boot.CommandLineRunner
@@ -24,44 +23,38 @@ class DefaultUsersConfiguration(
 
         val studentRole = roleService.getByName("Student")
         userService.create(
-            CreateUserRequest(
-                username = "student",
-                firstName = "Student",
-                lastName = "Student",
-                email = "student@stud.tu-darmstadt.de",
-                emojis = "🍉🍉🍉🍉🍉",
-                password = "student",
-                roleIds = setOf(studentRole.id),
-                verified = true
-            )
+            username = "student",
+            firstName = "Student",
+            lastName = "Student",
+            email = "student@stud.tu-darmstadt.de",
+            emojis = "🍉🍉🍉🍉🍉",
+            password = "student",
+            roleIds = setOf(studentRole.id),
+            verified = true
         )
 
         val professorRole = roleService.getByName("Professor")
         userService.create(
-            CreateUserRequest(
-                username = "professor",
-                firstName = "Professor",
-                lastName = "Professor",
-                email = "professor@tu-darmstadt.de",
-                emojis = "🌍🌍🌍🌍🌍",
-                password = "professor",
-                roleIds = setOf(professorRole.id),
-                verified = true
-            )
+            username = "professor",
+            firstName = "Professor",
+            lastName = "Professor",
+            email = "professor@tu-darmstadt.de",
+            emojis = "🌍🌍🌍🌍🌍",
+            password = "professor",
+            roleIds = setOf(professorRole.id),
+            verified = true
         )
 
         val administratorRole = roleService.getByName("Administrator")
         userService.create(
-            CreateUserRequest(
-                username = "admin",
-                firstName = "Admin",
-                lastName = "Admin",
-                email = "admin@csw.tu-darmstadt.de",
-                emojis = "💩💩💩💩💩",
-                password = "admin",
-                roleIds = setOf(administratorRole.id),
-                verified = true
-            )
+            username = "admin",
+            firstName = "Admin",
+            lastName = "Admin",
+            email = "admin@csw.tu-darmstadt.de",
+            emojis = "💩💩💩💩💩",
+            password = "admin",
+            roleIds = setOf(administratorRole.id),
+            verified = true
         )
     }
 

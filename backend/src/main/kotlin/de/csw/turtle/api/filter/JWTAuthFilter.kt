@@ -41,7 +41,9 @@ class JWTAuthFilter(
             try {
                 val data = jwtService.getData(token)
                 if (data.type == JWTService.Type.ACCESS) {
-                    val user = userService.get(data.subject)
+                    val user = userService.getById(data.subject)
+                        ?: TODO("implement exception")
+
                     val userDetails = userDetailsService.loadUserByUsername(user.username)
                     if (!jwtService.isExpired(token)) {
                         val authToken = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)

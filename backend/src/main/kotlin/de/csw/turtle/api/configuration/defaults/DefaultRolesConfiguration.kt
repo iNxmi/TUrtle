@@ -26,9 +26,9 @@ class DefaultRolesConfiguration(
         if (service.count() > 0)
             return
 
-        service.create(CreateRoleRequest(name = "Student", permissions = student))
-        service.create(CreateRoleRequest(name = "Professor", permissions = professor))
-        service.create(CreateRoleRequest(name = "Administrator", permissions = administrator))
+        service.create(name = "Student", permissions = student)
+        service.create(name = "Professor", permissions = professor)
+        service.create(name = "Administrator", permissions = administrator)
     }
 
 }

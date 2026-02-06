@@ -28,7 +28,7 @@ class DefaultEmailTemplateConfiguration(
         if (service.count() > 0)
             return
 
-        service.create(CreateEmailTemplateRequest("verify", "default value by dev", "CSW - Please verify your account", verify))
+        service.create("verify", "default value by dev", "CSW - Please verify your account", verify)
     }
 
 }

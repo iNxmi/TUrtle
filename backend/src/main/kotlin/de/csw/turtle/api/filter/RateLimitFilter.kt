@@ -2,7 +2,6 @@ package de.csw.turtle.api.filter
 
 import de.csw.turtle.api.CustomUserDetails
 import de.csw.turtle.api.entity.UserEntity
-import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.NetworkService
 import de.csw.turtle.api.service.RateLimiterService
 import de.csw.turtle.api.service.UserService
@@ -44,7 +43,10 @@ class RateLimitFilter(
         val principal = authentication.principal as? CustomUserDetails
             ?: return null
 
-        return userService.get(principal.userId)
+        val user = userService.getById(principal.userId)
+            ?: TODO("implement exception")
+
+        return user
     }
 
 }

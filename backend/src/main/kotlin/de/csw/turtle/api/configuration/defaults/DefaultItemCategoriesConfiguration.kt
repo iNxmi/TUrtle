@@ -16,13 +16,13 @@ class DefaultItemCategoriesConfiguration(
         if (service.count() > 0)
             return
 
-        service.create(CreateItemCategoryRequest("Beamer"))
-        service.create(CreateItemCategoryRequest("Laptop"))
-        service.create(CreateItemCategoryRequest("Tablet"))
-        service.create(CreateItemCategoryRequest("Lernmedium"))
-        service.create(CreateItemCategoryRequest("Gaming"))
-        service.create(CreateItemCategoryRequest("Streaming"))
-        service.create(CreateItemCategoryRequest("Zubehör"))
+        service.create("Beamer")
+        service.create("Laptop")
+        service.create("Tablet")
+        service.create("Lernmedium")
+        service.create("Gaming")
+        service.create("Streaming")
+        service.create("Zubehör")
     }
 
 }

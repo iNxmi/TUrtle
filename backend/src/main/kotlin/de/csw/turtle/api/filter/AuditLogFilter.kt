@@ -1,7 +1,6 @@
 package de.csw.turtle.api.filter
 
 import de.csw.turtle.api.CustomUserDetails
-import de.csw.turtle.api.dto.create.CreateAuditLogRequest
 import de.csw.turtle.api.entity.AuditLogEntity
 import de.csw.turtle.api.service.AuditLogService
 import de.csw.turtle.api.service.NetworkService
@@ -34,14 +33,13 @@ class AuditLogFilter(
 
         val ipAddress = networkService.getClientIp(request)
 
-        val createAuditLogRequest = CreateAuditLogRequest(
+        auditLogService.create(
             userId = userId,
             ipAddress = ipAddress,
             endpoint = request.requestURI,
             status = response.status,
             httpMethod = AuditLogEntity.HttpMethod.valueOf(request.method.uppercase())
         )
-        auditLogService.create(createAuditLogRequest)
     }
 
 }

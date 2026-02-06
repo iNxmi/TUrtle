@@ -1,6 +1,5 @@
 package de.csw.turtle.api.configuration.defaults
 
-import de.csw.turtle.api.dto.create.CreateGeneralTemplateRequest
 import de.csw.turtle.api.service.GeneralTemplateService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
@@ -116,11 +115,11 @@ class DefaultGeneralTemplateConfiguration(
         if (service.count() > 0)
             return
 
-        service.create(CreateGeneralTemplateRequest("imprint", "default value by ag", imprint))
-        service.create(CreateGeneralTemplateRequest("contact", "default value by ag", contact))
-        service.create(CreateGeneralTemplateRequest("tos", "default value by ag", tos))
-        service.create(CreateGeneralTemplateRequest("about", "default value by ag", about))
-        service.create(CreateGeneralTemplateRequest("gdpr", "default value by ag", gdpr))
+        service.create("imprint", "default value by ag", imprint)
+        service.create("contact", "default value by ag", contact)
+        service.create("tos", "default value by ag", tos)
+        service.create("about", "default value by ag", about)
+        service.create("gdpr", "default value by ag", gdpr)
     }
 
 }

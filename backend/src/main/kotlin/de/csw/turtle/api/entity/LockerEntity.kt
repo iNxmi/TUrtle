@@ -20,6 +20,6 @@ class LockerEntity(
     var locked: Boolean,
 
     @OneToMany(mappedBy = "locker")
-    val items: MutableSet<ItemEntity>
+    val items: MutableSet<ItemEntity> = mutableSetOf()
 
 ) : CRUDEntity()

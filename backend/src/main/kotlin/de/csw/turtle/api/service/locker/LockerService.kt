@@ -20,15 +20,13 @@ class LockerService(
         name: String,
         index: Int,
         isSoftwareUnlockable: Boolean,
-        locked: Boolean,
-        items: MutableSet<ItemEntity> = mutableSetOf()
+        locked: Boolean
     ): LockerEntity {
         val entity = LockerEntity(
             name = name,
             index = index,
             isSoftwareUnlockable = isSoftwareUnlockable,
-            locked = locked,
-            items = items
+            locked = locked
         )
 
         return repository.save(entity)

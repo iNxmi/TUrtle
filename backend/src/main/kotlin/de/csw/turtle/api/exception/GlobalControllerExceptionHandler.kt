@@ -57,13 +57,12 @@ class GlobalControllerExceptionHandler(
     ): ResponseEntity<ExceptionResponse> {
         val url = request.requestURI
 
-        val createExceptionRequest = CreateExceptionRequest(
+        val entity = exceptionService.create(
             endpoint = url,
             exception = exception::class.simpleName!!,
             message = exception.message,
             stackTrace = getStackTraceAsString(exception)
         )
-        val entity = exceptionService.create(createExceptionRequest)
 
         exception.printStackTrace()
 

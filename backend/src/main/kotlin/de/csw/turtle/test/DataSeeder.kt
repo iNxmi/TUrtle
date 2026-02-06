@@ -1,10 +1,8 @@
 package de.csw.turtle.test
 
-import de.csw.turtle.api.dto.create.CreateItemRequest
-import de.csw.turtle.api.dto.create.CreateRoomBookingRequest
-import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
-import de.csw.turtle.api.dto.create.CreateUserRequest
+import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.entity.SupportTicketEntity
+import de.csw.turtle.api.entity.SupportTicketEntity.Status
 import de.csw.turtle.api.service.*
 import de.csw.turtle.api.service.locker.LockerService
 import io.github.serpro69.kfaker.Faker
@@ -44,7 +42,7 @@ class DataSeeder(
             val role = roles[index]
 
             try {
-                val request = CreateUserRequest(
+                userService.create(
                     username = username,
                     firstName = firstName,
                     lastName = lastName,
@@ -54,7 +52,6 @@ class DataSeeder(
                     roleIds = setOf(role.id),
                     verified = true
                 )
-                userService.create(request)
             } catch (_: Exception) {
             }
         }
@@ -73,14 +70,15 @@ class DataSeeder(
             val end = start.plus(duration.toMinutes(), ChronoUnit.MINUTES)
 
             try {
-                val createRequest = CreateRoomBookingRequest(
+                roomBookingService.create(
                     userId = userService.getByUsername("admin").id,
                     title = "${service.count()}: this is an event",
                     description = "this is the very long description",
                     start = start,
-                    end = end
+                    end = end,
+                    accessibility = RoomBookingEntity.Accessibility.UNLOCKED,
+                    whitelistIds = setOf()
                 )
-                roomBookingService.create(createRequest)
             } catch (_: Exception) {
             }
         }
@@ -106,13 +104,12 @@ class DataSeeder(
 
             try {
                 supportTicketService.create(
-                    CreateSupportTicketRequest(
-                        urgency = urgency,
-                        category = category,
-                        email = email,
-                        subject = subject,
-                        description = description
-                    )
+                    urgency = urgency,
+                    category = category,
+                    email = email,
+                    subject = subject,
+                    description = description,
+                    status = Status.OPEN
                 )
             } catch (_: Exception) {
 
@@ -127,32 +124,29 @@ class DataSeeder(
         if (itemService.count() > 0)
             return
 
-        val xbox360 = CreateItemRequest(
+        itemService.create(
             name = "Xbox 360",
             description = "The Xbox 360 (we love it)",
             categoryId = itemCategoryService.getByName("Gaming").id,
             lockerId = lockerService.getByIndex(6)!!.id,
             acquiredAt = Instant.now()
         )
-        itemService.create(xbox360)
 
-        val ps4 = CreateItemRequest(
+        itemService.create(
             name = "PlayStation 4",
             description = "The PS4 (we love it not as much as the 360)",
             categoryId = itemCategoryService.getByName("Gaming").id,
             lockerId = lockerService.getByIndex(6)!!.id,
             acquiredAt = Instant.now()
         )
-        itemService.create(ps4)
 
-        val laptop = CreateItemRequest(
+        itemService.create(
             name = "Dell Laptop",
             description = "laptop from dell",
             categoryId = itemCategoryService.getByName("Laptop").id,
             lockerId = lockerService.getByIndex(7)!!.id,
             acquiredAt = Instant.now()
         )
-        itemService.create(laptop)
     }
 
 }
