@@ -5,6 +5,9 @@
 	import { onMount } from 'svelte';
     import { SunOutline, MoonOutline } from 'flowbite-svelte-icons';
 
+    let { data } = $props();
+
+    let loggedIn = $derived(data.loggedIn);
     let darkmode = $state(false);
     onMount(() => {
         darkmode = localStorage ? localStorage.getItem('darkmode') : false;
@@ -33,7 +36,11 @@
                     <SunOutline class="mr-1"/> _Hell_
                     {/if}
                 </button>
-                <Button class="cursor-pointer" onclick={() => goto('/auth/login')}>_Login_</Button>
+                {#if loggedIn}
+                    <Button class="cursor-pointer" onclick={() => goto('/dashboard')}>_Go to Dashboard_</Button>
+                {:else}
+                    <Button class="cursor-pointer" onclick={() => goto('/auth/login')}>_Login_</Button>
+                {/if}
                 <Button class="cursor-pointer" onclick={() => goto('/auth/register')}>_Register_</Button>
             </div>
         </div>
