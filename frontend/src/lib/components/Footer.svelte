@@ -11,6 +11,7 @@
         <FooterLink href="/tos">{m.footer_tos()}</FooterLink>
         <FooterLink href="/gdpr">{m.footer_gdpr()}</FooterLink>
         <FooterLink href="/about">{m.footer_about()}</FooterLink>
+        <FooterLink href="/faq">_FAQ_</FooterLink>
         <FooterLink href="/contact">{m.footer_contact()}</FooterLink>
     </FooterLinkGroup>
     <div class="flex gap-5">

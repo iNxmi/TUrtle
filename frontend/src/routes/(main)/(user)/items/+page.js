@@ -8,7 +8,7 @@ export async function load({url}){
     let deviceCategories;
     let devices;
     const categories = await request(deviceCategoriesPath);
-    checkAuthorization(categories, url.pathname);
+    /* checkAuthorization(categories, url.pathname); */
     if(categories.ok){
         const categoryData = await categories.json();
         deviceCategories = categoryData;

@@ -9,7 +9,7 @@
     let selectedReservationIndex = $state();
 
     let bookingInfo = $derived(reservations ? reservations.map((reservation) => {
-        const device = devices.find((device) =>  reservation.deviceId === device.id);
+        const device = devices.find((device) =>  reservation.itemId === device.id);
         return { 
             deviceName: device.name, 
             start: new Date(reservation.start), 

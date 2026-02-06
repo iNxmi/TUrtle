@@ -35,7 +35,7 @@
         });
 
         if (response.ok || dev) {
-            goto(page.url.searchParams.get('redirectTo') || '/user/dashboard', {invalidateAll: true,});
+            goto(page.url.searchParams.get('redirectTo') || '/dashboard', {invalidateAll: true,});
         }
     }
 </script>

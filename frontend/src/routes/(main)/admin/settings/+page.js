@@ -7,7 +7,7 @@ export async function load(){
     let roles;
     let lockers;
     let permissions;
-    const rolesResponse = await request(rolesPath);
+    const rolesResponse = await request(rolesPath+'?pageNumber=0');
 
     checkAuthorization(rolesResponse, '/admin/settings');
     if(rolesResponse.ok){
