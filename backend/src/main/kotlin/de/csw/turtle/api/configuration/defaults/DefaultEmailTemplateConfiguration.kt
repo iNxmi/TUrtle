@@ -12,7 +12,7 @@ class DefaultEmailTemplateConfiguration(
     private val service: EmailTemplateService
 ) : CommandLineRunner {
 
-    val verify = """
+    val usersVerify = """
         Welcome <span th:text="${'$'}{user.firstName}">user.firstName</span>,
         <br>
         You have successfully created your CSW account.
@@ -22,12 +22,31 @@ class DefaultEmailTemplateConfiguration(
         If you don't verify in <span th:text="${'$'}{duration.toDays()}">duration.toDays()</span> Days (<span th:text="${'$'}{user.createdAt.plusMillis(duration.toMillis())}">user.createdAt.plusMillis(duration.toMillis())</span>), your account will be deleted.
     """.trimIndent()
 
+    val roomBookingsCreated = """
+        Your room booking has successfully been created. 
+        <br>
+        ID: <span th:text="${'$'}{booking.id}">booking.id</span>.
+        <br>
+        Status: <span th:text="${'$'}{booking.status}">booking.status</span>.
+    """.trimIndent()
+
+    val roomBookingsUpdated = """
+        Your room booking has been updated. 
+        <br>
+        ID: <span th:text="${'$'}{booking.id}">booking.id</span>.
+        <br>
+        Status: <span th:text="${'$'}{booking.status}">booking.status</span>.
+    """.trimIndent()
+
     @Transactional
     override fun run(vararg args: String) {
         if (service.count() > 0)
             return
 
-        service.create("verify", "default value by dev", "CSW - Please verify your account", verify)
+        service.create("users__verify", "default value by dev", "CSW - Please verify your account", usersVerify)
+
+        service.create("room_bookings__created", "default value by dev", "CSW - Room Booking Created", roomBookingsCreated)
+        service.create("room_bookings__updated", "default value by dev", "CSW - Room Booking Updated", roomBookingsUpdated)
     }
 
 }

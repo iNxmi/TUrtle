@@ -52,7 +52,7 @@ class RoomBookingController(
         var userId = user.id
         var status = Status.REQUESTED
         if (user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
-            userId = request.userId
+            request.userId?.let{userId = it}
             request.status?.let { status = it }
         }
 

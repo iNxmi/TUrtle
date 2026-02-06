@@ -4,7 +4,7 @@ import de.csw.turtle.api.entity.RoomBookingEntity
 import java.time.Instant
 
 data class CreateRoomBookingRequest(
-    val userId: Long,
+    val userId: Long? = null,
     val title: String,
     val description: String,
     val start: Instant,

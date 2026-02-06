@@ -154,7 +154,9 @@ class DefaultSystemSettingsConfiguration(
         setDefaultGeneralTemplate(Settings.CONTENT_TEMPLATE_CONTACT, "contact")
         setDefaultGeneralTemplate(Settings.CONTENT_TEMPLATE_ABOUT, "about")
 
-        setDefaultEmailTemplate(Settings.EMAIL_TEMPLATE_VERIFY, "verify")
+        setDefaultEmailTemplate(Settings.EMAIL_TEMPLATE_USERS_VERIFY, "verify")
+        setDefaultEmailTemplate(Settings.EMAIL_TEMPLATE_ROOM_BOOKINGS_CREATED, "room_bookings__created")
+        setDefaultEmailTemplate(Settings.EMAIL_TEMPLATE_ROOM_BOOKINGS_UPDATED, "room_bookings__updated")
     }
 
 }

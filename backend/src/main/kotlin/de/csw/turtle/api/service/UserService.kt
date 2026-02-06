@@ -70,7 +70,7 @@ class UserService(
                 setVariable("expiration", entity.createdAt.plusMillis(duration.toMillis()))
             }
 
-            val templateId = systemSettingService.getTyped<Long>(Settings.EMAIL_TEMPLATE_VERIFY)
+            val templateId = systemSettingService.getTyped<Long>(Settings.EMAIL_TEMPLATE_USERS_VERIFY)
             val template = emailTemplateRepository.findById(templateId).get()
 
             val subject = thymeleafService.getRendered(template.subject, context)

@@ -1,8 +1,5 @@
 package de.csw.turtle.test
 
-import de.csw.turtle.api.entity.RoomBookingEntity
-import de.csw.turtle.api.entity.SupportTicketEntity
-import de.csw.turtle.api.entity.SupportTicketEntity.Status
 import de.csw.turtle.api.service.*
 import de.csw.turtle.api.service.locker.LockerService
 import io.github.serpro69.kfaker.Faker
@@ -14,6 +11,7 @@ import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import kotlin.math.floor
+import kotlin.random.Random
 
 @Component
 class DataSeeder(
@@ -61,10 +59,12 @@ class DataSeeder(
     @EventListener(ApplicationReadyEvent::class)
     fun seedRoomBookings() {
         val service = roomBookingService
-        while (service.count() < 12) {
+        while (service.count() < 24) {
             // minutes * hours * days * weeks * months
-            val offset = ((60 * 24 * 7 * 4 * 3) / 2 * Math.random()).toLong()
-            val start = Instant.now().plus(offset, ChronoUnit.MINUTES)
+            val timeSpan = Duration.ofDays(45)
+            val random = Random.nextFloat() * 2.0F - 1.0F
+            val offsetMinutes = (timeSpan.toMinutes() * random).toLong()
+            val start = Instant.now().plus(offsetMinutes, ChronoUnit.MINUTES)
 
             val duration = Duration.ofMinutes((Math.random() * 150 + 30).toLong())
             val end = start.plus(duration.toMinutes(), ChronoUnit.MINUTES)

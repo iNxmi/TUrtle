@@ -25,6 +25,7 @@ Port: 8080
 * local dns via PI Hole
 * make all srvice create and patch transactional
 * invert all request overrides to make them more safe, in controllers
+* implement user auth token tracking for revoking
 
 ## Docker Environment
 ```
