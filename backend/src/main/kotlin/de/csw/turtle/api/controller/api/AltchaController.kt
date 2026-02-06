@@ -3,7 +3,6 @@ package de.csw.turtle.api.controller.api
 import de.csw.turtle.api.dto.altcha.GetAltchaChallengeResponse
 import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.NetworkService
-import de.csw.turtle.api.service.SystemSettingService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

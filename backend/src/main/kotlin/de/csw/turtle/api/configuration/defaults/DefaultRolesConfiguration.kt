@@ -1,8 +1,6 @@
 package de.csw.turtle.api.configuration.defaults
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.Permission.*
-import de.csw.turtle.api.dto.create.CreateRoleRequest
 import de.csw.turtle.api.service.RoleService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration

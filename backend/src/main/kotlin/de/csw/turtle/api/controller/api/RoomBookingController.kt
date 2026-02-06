@@ -19,15 +19,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.net.URI
 
 private const val ENDPOINT = "/api/room-bookings"
@@ -46,7 +38,7 @@ class RoomBookingController(
 
     @PostMapping
     override fun create(
-        @AuthenticationPrincipal   user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
         @RequestBody request: CreateRoomBookingRequest,
 
@@ -92,7 +84,7 @@ class RoomBookingController(
 
     @GetMapping("/{variable}")
     override fun get(
-        @AuthenticationPrincipal   user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
         @PathVariable variable: Long,
 
@@ -108,7 +100,7 @@ class RoomBookingController(
 
     @GetMapping
     override fun getCollection(
-        @AuthenticationPrincipal  user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
         @RequestParam rsql: String?,
         @RequestParam pageNumber: Int?,
@@ -148,7 +140,7 @@ class RoomBookingController(
 
     @PatchMapping("/{id}")
     override fun patch(
-        @AuthenticationPrincipal   user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
         @PathVariable id: Long,
         @RequestBody request: PatchRoomBookingRequest,
@@ -208,7 +200,7 @@ class RoomBookingController(
 
     @DeleteMapping("/{id}")
     override fun delete(
-        @AuthenticationPrincipal   user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
         @PathVariable id: Long,
 

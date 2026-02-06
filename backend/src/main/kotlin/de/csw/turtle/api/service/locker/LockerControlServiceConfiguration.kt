@@ -1,9 +1,9 @@
 package de.csw.turtle.api.service.locker
 
 import de.csw.turtle.api.service.EnvironmentService
-import de.csw.turtle.api.service.ThymeleafService
 import de.csw.turtle.api.service.SSHService
 import de.csw.turtle.api.service.SystemSettingService
+import de.csw.turtle.api.service.ThymeleafService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

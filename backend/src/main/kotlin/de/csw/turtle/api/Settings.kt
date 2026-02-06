@@ -1,6 +1,6 @@
 package de.csw.turtle.api
 
-enum class Settings(val key:String) {
+enum class Settings(val key: String) {
     GENERAL_FQDN("general.fqdn"),
 
     EMOJIS_ALL("emojis.all"),

@@ -1,7 +1,6 @@
 package de.csw.turtle.api.exception
 
 import de.csw.turtle.api.dto.exception.ExceptionResponse
-import de.csw.turtle.api.dto.create.CreateExceptionRequest
 import de.csw.turtle.api.service.ExceptionService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.mapping.PropertyReferenceException

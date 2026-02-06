@@ -1,6 +1,5 @@
 package de.csw.turtle.api.configuration.defaults
 
-import de.csw.turtle.api.dto.create.CreateEmailTemplateRequest
 import de.csw.turtle.api.service.EmailTemplateService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration

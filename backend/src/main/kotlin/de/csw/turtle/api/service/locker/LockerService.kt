@@ -1,8 +1,6 @@
 package de.csw.turtle.api.service.locker
 
-import de.csw.turtle.api.entity.ItemEntity
 import de.csw.turtle.api.entity.LockerEntity
-import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.LockerRepository
 import de.csw.turtle.api.service.CRUDService
 import jakarta.transaction.Transactional

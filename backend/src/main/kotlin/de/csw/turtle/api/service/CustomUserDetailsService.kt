@@ -1,7 +1,6 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.CustomUserDetails
-import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import jakarta.transaction.Transactional
 import org.springframework.security.core.userdetails.UserDetails

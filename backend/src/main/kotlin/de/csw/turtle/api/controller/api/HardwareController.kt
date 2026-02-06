@@ -100,7 +100,7 @@ class HardwareController(
             throw HttpException.Unauthorized("User '${user.id}' not in whitelist for current Room Booking.")
     }
 
-    private fun checkLockerPermissions(user: UserEntity,lockerId: Long, request: HttpServletRequest) {
+    private fun checkLockerPermissions(user: UserEntity, lockerId: Long, request: HttpServletRequest) {
         if (user.hasPermission(Permission.MANAGE_LOCKERS))
             return
 
@@ -112,7 +112,7 @@ class HardwareController(
         if (isNowBetween(start, end))
             throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
 
-        if(itemBookingService.getCurrent(user.id, lockerId).isEmpty())
+        if (itemBookingService.getCurrent(user.id, lockerId).isEmpty())
             throw HttpException.Forbidden("No Item Bookings found for this locker and user.")
     }
 

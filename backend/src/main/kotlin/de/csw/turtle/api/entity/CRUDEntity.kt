@@ -5,7 +5,8 @@ import java.time.Instant
 
 @MappedSuperclass
 abstract class CRUDEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
     //Instant.MIN will be replaced by createdAt in prePersist()

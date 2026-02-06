@@ -5,23 +5,27 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.time.Instant
 
-interface RoomBookingRepository : CRUDRepository<RoomBookingEntity>{
-    @Query("""
+interface RoomBookingRepository : CRUDRepository<RoomBookingEntity> {
+    @Query(
+        """
         SELECT r FROM RoomBookingEntity r
         WHERE ((r.start >= :start AND r.start <= :end)
         OR    (r.end <= :end AND r.end >= :start))
         AND   (r.id != :id)
-    """)
+    """
+    )
     fun findAllOverlapping(
         @Param("start") start: Instant,
         @Param("end") end: Instant,
         @Param("id") id: Long
     ): Set<RoomBookingEntity>
 
-    @Query("""
+    @Query(
+        """
         SELECT r FROM RoomBookingEntity r
         WHERE (r.start <= :current AND r.end >= :current)
-    """)
+    """
+    )
     fun findCurrent(
         @Param("current") current: Instant
     ): RoomBookingEntity?
