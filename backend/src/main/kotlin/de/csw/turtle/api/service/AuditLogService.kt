@@ -7,4 +7,4 @@ import org.springframework.stereotype.Service
 @Service
 class AuditLogService(
     override val repository: AuditLogRepository
-) : CRUDService<AuditLogEntity>("Audit Log")
+) : CRUDService<AuditLogEntity>()

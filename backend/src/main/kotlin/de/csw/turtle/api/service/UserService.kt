@@ -16,7 +16,7 @@ class UserService(
     private val thymeleafService: ThymeleafService,
     private val emailService: EmailService,
     private val emailTemplateService: EmailTemplateService
-) : CRUDService<UserEntity>("User") {
+) : CRUDService<UserEntity>() {
 
     fun generateEmojis(): String {
         val emojis = systemSettingService.getTyped<List<String>>(Settings.EMOJIS_ALL)

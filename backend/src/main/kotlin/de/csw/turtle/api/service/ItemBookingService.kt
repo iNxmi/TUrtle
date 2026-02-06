@@ -9,7 +9,7 @@ import java.time.Instant
 class ItemBookingService(
     override val repository: ItemBookingRepository,
     private val itemService: ItemService
-) : CRUDService<ItemBookingEntity>("Item Booking") {
+) : CRUDService<ItemBookingEntity>() {
 
 //    override fun create(request: CreateItemBookingRequest): ItemBookingEntity {
 //

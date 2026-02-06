@@ -8,7 +8,7 @@ import java.time.Instant
 @Service
 class RoomBookingService(
     override val repository: RoomBookingRepository
-) : CRUDService<RoomBookingEntity>("Room Booking") {
+) : CRUDService<RoomBookingEntity>() {
 
     private val maxTitleLength = 64
     private val maxDescriptionLength = 2048

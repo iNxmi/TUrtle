@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 @Service
 class RoleService(
     override val repository: RoleRepository
-) : CRUDService<RoleEntity>("Role") {
+) : CRUDService<RoleEntity>() {
 
     fun getByName(name: String) = getByNameOrNull(name) ?: throw HttpException.NotFound(name)
     fun getByNameOrNull(name: String) = repository.findByName(name)

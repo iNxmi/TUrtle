@@ -13,16 +13,12 @@ import org.springframework.data.jpa.domain.Specification
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 
-abstract class CRUDService<Entity : CRUDEntity>(private val name: String) {
+abstract class CRUDService<Entity : CRUDEntity> {
 
     abstract val repository: CRUDRepository<Entity>
 
     @Transactional
-    open fun getByIdOrNull(id: Long): Entity? = repository.findById(id).getOrNull()
-
-    @Transactional
-    open fun getById(id: Long): Entity = getByIdOrNull(id)
-        ?: throw HttpException.NotFound("$name with id '$id' not found.")
+    open fun getById(id: Long): Entity? = repository.findById(id).getOrNull()
 
     @Transactional
     open fun getAll(

@@ -16,7 +16,7 @@ import java.time.LocalTime
 class SystemSettingService(
     override val repository: SystemSettingRepository,
     val objectMapper: ObjectMapper
-) : CRUDService<SystemSettingEntity>("System Setting") {
+) : CRUDService<SystemSettingEntity>() {
 
     final inline fun <reified T> getTyped(setting: Settings): T {
         val entity = getByKey(setting.key)

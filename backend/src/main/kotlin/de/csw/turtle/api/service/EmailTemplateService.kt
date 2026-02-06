@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 @Service
 class EmailTemplateService(
     override val repository: EmailTemplateRepository
-) : CRUDService<EmailTemplateEntity>("Email Template") {
+) : CRUDService<EmailTemplateEntity>() {
 
     fun getByNameOrNull(name: String): EmailTemplateEntity? = repository.findByName(name)
     fun getByName(name: String): EmailTemplateEntity = repository.findByName(name) ?: throw HttpException.NotFound(name)

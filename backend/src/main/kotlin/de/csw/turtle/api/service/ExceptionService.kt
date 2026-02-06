@@ -7,4 +7,4 @@ import org.springframework.stereotype.Service
 @Service
 class ExceptionService(
     override val repository: ExceptionRepository
-) : CRUDService<ExceptionEntity>("Exception")
+) : CRUDService<ExceptionEntity>()

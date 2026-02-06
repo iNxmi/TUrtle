@@ -1,22 +1,19 @@
 package de.csw.turtle.api.service
 
-import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
-import de.csw.turtle.api.dto.get.GetSupportTicketResponse
-import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
 import de.csw.turtle.api.entity.SupportTicketEntity
-import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.mapper.SupportTicketMapper
 import de.csw.turtle.api.repository.SupportTicketRepository
 import org.springframework.stereotype.Service
 
 @Service
 class SupportTicketService(
     override val repository: SupportTicketRepository
-) : CRUDService<SupportTicketEntity>("Support Ticket") {
+) : CRUDService<SupportTicketEntity>() {
 
     private val regex = ("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$").toRegex()
     private val maxSubjectLength = 64
     private val maxDescriptionLength = 2028
+
+
 
 //    override fun create(request: CreateSupportTicketRequest): SupportTicketEntity {
 //        if(request.subject.isBlank() || request.subject.length > maxSubjectLength )

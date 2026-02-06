@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 @Service
 class GeneralTemplateService(
     override val repository: GeneralTemplateRepository
-) : CRUDService<GeneralTemplateEntity>("General Template") {
+) : CRUDService<GeneralTemplateEntity>() {
 
     fun getByNameOrNull(name: String): GeneralTemplateEntity? = repository.findByName(name)
     fun getByName(name: String): GeneralTemplateEntity = repository.findByName(name) ?: throw HttpException.NotFound(name)

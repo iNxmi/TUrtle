@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service
 @Service
 class ItemCategoryService(
     override val repository: ItemCategoryRepository
-) : CRUDService<ItemCategoryEntity>(
-    "Item Category"
-) {
+) : CRUDService<ItemCategoryEntity>() {
     fun getByNameOrNull(name: String): ItemCategoryEntity? = repository.findByName(name)
     fun getByName(name: String) = repository.findByName(name) ?: throw HttpException.NotFound(name)
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 @Service
 class FAQService(
     override val repository: FAQRepository
-) : CRUDService<FAQEntity>("FAQ"){
+) : CRUDService<FAQEntity>(){
 
     private val maxNameLength = 64
     private val maxTitleLength = 64

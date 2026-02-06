@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 @Service
 class ItemService(
     override val repository: ItemRepository
-) : CRUDService<ItemEntity>("Item"){
+) : CRUDService<ItemEntity>(){
 
     private val maxNameLength = 64
     private val maxDescriptionLength = 256
