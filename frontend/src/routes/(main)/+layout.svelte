@@ -317,28 +317,28 @@
                         <DropdownItem><div class="flex items-center gap-2"><LanguageOutline /> _Language_</div></DropdownItem>
                         <Dropdown simple placement="right-start">
                             <li>
-                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="en">Englisch</RadioButton>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white! dark:bg-gray-700! hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="en">Englisch</RadioButton>
                             </li>
                             <li>
-                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="de">Deutsch</RadioButton>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white! dark:bg-gray-700! hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="de">Deutsch</RadioButton>
                             </li>
                             <li>
-                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ja">日本語</RadioButton>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white! dark:bg-gray-700! hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ja">日本語</RadioButton>
                             </li>
                             <li>
-                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ar">'_arabic'</RadioButton>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white! dark:bg-gray-700! hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ar">'_arabic'</RadioButton>
                             </li>
                             <li>
-                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ru">'_arabic'</RadioButton>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white! dark:bg-gray-700! hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ru">'_arabic'</RadioButton>
                             </li>
                             <li>
-                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="vi">'_vietnamese'</RadioButton>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white! dark:bg-gray-700! hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="vi">'_vietnamese'</RadioButton>
                             </li>
                             <li>
-                                <RadioButton class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="hu">'_hungarian'</RadioButton>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white! dark:bg-gray-700! hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="hu">'_hungarian'</RadioButton>
                             </li>
                             <li>
-                                <RadioButton on class="focus-within:ring-0 text-black bg-white hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ro">'_romanian'</RadioButton>
+                                <RadioButton class="focus-within:ring-0 text-black bg-white! dark:bg-gray-700! hover:bg-white hover:text-orange-400" name="languageGroup" checkedClass="text-csw!" bind:group={language} value="ro">'_romanian'</RadioButton>
                             </li>
                         </Dropdown>
                         <DropdownDivider />
