@@ -42,4 +42,9 @@ enum class Settings(val key: String) {
     CONTENT_TEMPLATE_ABOUT("content.template.about"),
 
     EMAIL_TEMPLATE_VERIFY("email.template.verify"),
+    EMAIL_TEMPLATE_ROOM_BOOKING_REQUESTED("email.template.room-booking.requested"),
+    EMAIL_TEMPLATE_ROOM_BOOKING_APPROVED("email.template.room-booking.approved"),
+    EMAIL_TEMPLATE_ROOM_BOOKING_CANCELLED("email.template.room-booking.cancelled"),
+    EMAIL_TEMPLATE_ROOM_BOOKING_REJECTED("email.template.room-booking.rejected"),
+    EMAIL_TEMPLATE_ROOM_BOOKING_COMPLETED("email.template.room-booking.completed")
 }

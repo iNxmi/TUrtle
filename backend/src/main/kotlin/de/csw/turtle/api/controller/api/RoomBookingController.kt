@@ -9,6 +9,7 @@ import de.csw.turtle.api.dto.create.CreateRoomBookingRequest
 import de.csw.turtle.api.dto.get.GetRoomBookingResponse
 import de.csw.turtle.api.dto.patch.PatchRoomBookingRequest
 import de.csw.turtle.api.entity.RoomBookingEntity
+import de.csw.turtle.api.entity.RoomBookingEntity.Status
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.RoomBookingService
@@ -48,9 +49,12 @@ class RoomBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        var userId = request.userId
-        if (!user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS))
-            userId = user.id
+        var userId = user.id
+        var status = Status.REQUESTED
+        if (user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
+            userId = request.userId
+            request.status?.let { status = it }
+        }
 
         if (request.title.isBlank() || request.title.length > maxTitleLength)
             throw HttpException.BadRequest("Title cannot be blank or exceed $maxTitleLength characters.")
@@ -74,7 +78,8 @@ class RoomBookingController(
             end = request.end,
             description = request.description,
             accessibility = request.accessibility,
-            whitelistIds = request.whitelist ?: setOf()
+            whitelistIds = request.whitelist,
+            status = status
         )
 
         val location = URI.create("$ENDPOINT/${entity.id}")
@@ -155,8 +160,11 @@ class RoomBookingController(
             ?: throw HttpException.NotFound()
 
         var userId: Long? = null
-        if (user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS))
+        var status: Status? = null
+        if (user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
             userId = request.userId
+            status = request.status
+        }
 
         if (request.title != null)
             if (request.title.isBlank() || request.title.length > maxTitleLength)
@@ -191,7 +199,8 @@ class RoomBookingController(
             end = request.end,
             description = request.description,
             accessibility = request.accessibility,
-            whitelistIds = request.whitelist
+            whitelistIds = request.whitelist,
+            status = status
         )
 
         val dto = GetRoomBookingResponse(updated)
@@ -210,12 +219,8 @@ class RoomBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val entity = roomBookingService.getById(id)
-            ?: throw HttpException.NotFound()
-
         if (!user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS))
-            if (entity.user != user)
-                throw HttpException.Forbidden()
+            throw HttpException.Forbidden()
 
         roomBookingService.delete(id)
         return ResponseEntity.noContent().build()

@@ -2,15 +2,19 @@ package de.csw.turtle.api.service
 
 import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.entity.RoomBookingEntity.Accessibility
+import de.csw.turtle.api.event.CreatedRoomBookingEvent
+import de.csw.turtle.api.event.PatchedRoomBookingEvent
 import de.csw.turtle.api.repository.RoomBookingRepository
 import de.csw.turtle.api.repository.UserRepository
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.time.Instant
 
 @Service
 class RoomBookingService(
     override val repository: RoomBookingRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val eventPublisher: ApplicationEventPublisher
 ) : CRUDService<RoomBookingEntity>() {
 
     fun getAllOverlapping(start: Instant, end: Instant, id: Long): Set<RoomBookingEntity> =
@@ -25,7 +29,8 @@ class RoomBookingService(
         end: Instant,
         description: String,
         accessibility: Accessibility,
-        whitelistIds: Set<Long>
+        whitelistIds: Set<Long>,
+        status: RoomBookingEntity.Status
     ): RoomBookingEntity {
         val entity = RoomBookingEntity(
             user = userRepository.findById(userId).get(),
@@ -34,10 +39,15 @@ class RoomBookingService(
             end = end,
             description = description,
             accessibility = accessibility,
-            whitelist = whitelistIds.map { userRepository.findById(it).get() }.toMutableSet()
+            whitelist = whitelistIds.map { userRepository.findById(it).get() }.toMutableSet(),
+            status = status
         )
 
-        return repository.save(entity)
+        val saved = repository.save(entity)
+
+        eventPublisher.publishEvent(CreatedRoomBookingEvent(saved))
+
+        return saved
     }
 
     fun patch(
@@ -48,7 +58,8 @@ class RoomBookingService(
         end: Instant? = null,
         description: String? = null,
         accessibility: Accessibility? = null,
-        whitelistIds: Set<Long>? = null
+        whitelistIds: Set<Long>? = null,
+        status: RoomBookingEntity.Status? = null
     ): RoomBookingEntity {
         val entity = repository.findById(id).get()
 
@@ -64,8 +75,13 @@ class RoomBookingService(
             entity.whitelist.clear()
             entity.whitelist.addAll(users)
         }
+        status?.let { entity.status = it}
 
-        return repository.save(entity)
+        val saved = repository.save(entity)
+
+        eventPublisher.publishEvent(PatchedRoomBookingEvent(saved))
+
+        return saved
     }
 
 }

@@ -31,12 +31,25 @@ class RoomBookingEntity(
         joinColumns = [JoinColumn(name = "room_booking_id")],
         inverseJoinColumns = [JoinColumn(name = "user_id")]
     )
-    val whitelist: MutableSet<UserEntity> = mutableSetOf()
+    val whitelist: MutableSet<UserEntity> = mutableSetOf(),
+
+    @Enumerated(EnumType.STRING)
+    var status: Status
 
 ) : CRUDEntity() {
 
     enum class Accessibility {
-        LOCKED, WHITELIST, UNLOCKED
+        LOCKED,
+        WHITELIST,
+        UNLOCKED
+    }
+
+    enum class Status {
+        REQUESTED,
+        APPROVED,
+        REJECTED,
+        CANCELLED,
+        COMPLETED
     }
 
 }

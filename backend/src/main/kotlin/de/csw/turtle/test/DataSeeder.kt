@@ -76,8 +76,9 @@ class DataSeeder(
                     description = "this is the very long description",
                     start = start,
                     end = end,
-                    accessibility = RoomBookingEntity.Accessibility.UNLOCKED,
-                    whitelistIds = setOf()
+                    accessibility = randomEnum(),
+                    whitelistIds = setOf(),
+                    status = randomEnum()
                 )
             } catch (_: Exception) {
             }
@@ -87,14 +88,6 @@ class DataSeeder(
     @EventListener(ApplicationReadyEvent::class)
     fun seedSupportTickets() {
         while (supportTicketService.count() < 32) {
-            val entriesUrgency = SupportTicketEntity.Urgency.entries
-            val indexUrgency = floor(Math.random() * entriesUrgency.size).toInt()
-            val urgency = entriesUrgency[indexUrgency]
-
-            val entriesCategory = SupportTicketEntity.Category.entries
-            val indexCategory = floor(Math.random() * entriesCategory.size).toInt()
-            val category = entriesCategory[indexCategory]
-
             val firstName = faker.name.firstName()
             val lastName = faker.name.lastName()
             val email = faker.internet.email("$firstName $lastName")
@@ -104,12 +97,12 @@ class DataSeeder(
 
             try {
                 supportTicketService.create(
-                    urgency = urgency,
-                    category = category,
+                    urgency = randomEnum(),
+                    category = randomEnum(),
                     email = email,
                     subject = subject,
                     description = description,
-                    status = Status.OPEN
+                    status = randomEnum()
                 )
             } catch (_: Exception) {
 
@@ -148,5 +141,8 @@ class DataSeeder(
             acquiredAt = Instant.now()
         )
     }
+
+    private inline fun <reified T : Enum<T>> randomEnum(): T = enumValues<T>().random()
+
 
 }
