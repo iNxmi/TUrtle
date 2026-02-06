@@ -99,3 +99,6 @@ export async function openDoor() {
         return true;
     }
 }
+export function between(number, min, max){
+    return min <= number && number < max
+}
