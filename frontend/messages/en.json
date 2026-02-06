@@ -30,10 +30,10 @@
   "footer_contact": "Contact",
 
   "login__title": "Login to TUrtle",
-  "login__username_or_email_label": "Username or Email",
+  "login__username_or_email_label": "Email or Username",
   "login__password_label": "Password",
   "login__forgot_password": "Forgot Password?",
-  "login__no_account": "No TUrtle account?",
+  "login__no_account": "No account? Register here.",
   "login__button": "Login",
   "login__remember_me": "Remember me ({days} Days)",
 
@@ -46,7 +46,7 @@
   "register__password_label": "Password",
   "register__i_agree_to_tos": "I agree to the TOS",
   "register__password_repeat_label": "Repeat Password",
-  "register__already_have_a_account": "Already have a TUrtle account?",
+  "register__already_have_a_account": "Already have an account? Login here.",
   "register__button": "Register",
 
   "contact__title": "Create a Support ticket",

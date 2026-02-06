@@ -1,5 +1,8 @@
 import { json } from "@sveltejs/kit";
 
 export async function GET(){
-    return json(true);
+    const payload = {
+        "trusted": true
+    }
+    return json(payload);
 }
