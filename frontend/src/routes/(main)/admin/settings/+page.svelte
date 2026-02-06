@@ -43,7 +43,7 @@
     }
 </script>
 <Tabs tabStyle="underline">
-    {#if data.permissions.includes('FRONTEND__SIDEBAR_ITEM__MANAGE_ROLES')}
+    {#if data.userPermissions.includes('MANAGE_ROLES')}
     <TabItem onclick={() => goto('?endpoint=/roles', {invalidateAll: true})} classes={{button: "cursor-pointer"}} open={currentTab === '/roles'}>
         {#snippet titleSlot()}
         <div class="flex items-center gap-2">
@@ -63,7 +63,7 @@
         </div>
     </TabItem>
     {/if}
-    {#if data.permissions.includes('FRONTEND__SIDEBAR_ITEM__HARDWARE_OVERRIDE')}
+    {#if data.userPermissions.includes('MANAGE_HARDWARE_OVERRIDE')}
     <TabItem onlick={() => goto('?endpoint=/hardwareoverrides')} classes={{button: 'cursor-pointer'}} open={currentTab === '/hardwareoverrides'}>
         {#snippet titleSlot()}
         <div class="flex items-center gap-2">
