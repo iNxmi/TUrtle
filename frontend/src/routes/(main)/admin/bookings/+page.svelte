@@ -3,7 +3,7 @@
 	import { dev } from '$app/environment';
 	import { fade } from 'svelte/transition';
 	import request from '$lib/api/api';
-	import { convertEventToBackend, convertEventToFrontend, fetchRoomBookings } from '$lib/utils';
+	import { convertEventToBackend, convertEventToFrontend, fetchRoomBookings, between } from '$lib/utils';
 	import {Label, Input, Datepicker, Button, Textarea, Toggle, MultiSelect, Timepicker,Heading, P} from 'flowbite-svelte';
 	import WhitelistDropdown from '$lib/components/WhitelistDropdown.svelte';
 	import {m} from '$lib/paraglide/messages.js';
@@ -214,7 +214,15 @@
 			whitelist: eventWhitelist
 		}
 	};
+
+	const confirm = getContext('confirm');
 	async function saveEvent(){
+		if(between(startDate.getHours(), 6, 18) || between(endDate.getHours(), 6, 18)){
+			const confirmed = await confirm('_The event is scheduled inside business hours. It has to be confirmed by CSW officials first. Do you want to continue?_');
+			if(!confirmed){
+				return;
+			}
+		}
 		if(selectedEvent.new){
 			calendar.addEvent({
 				title: eventTitle,

@@ -29,6 +29,7 @@
 
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
     import Footer from "$lib/components/Footer.svelte";
+    import ConfirmProvider from '$lib/components/ConfirmProvider.svelte';
     import {
         BookOpenSolid,
         BugSolid,
@@ -344,7 +345,9 @@
                         <DropdownItem class onclick={logOut}><span class="text-red-600">_Log out_</span></DropdownItem>
                     </Dropdown>
             </div>
-            {@render children?.()}
+            <ConfirmProvider>
+                {@render children?.()}
+            </ConfirmProvider>
         </div>
         <Footer/>
     </div>
