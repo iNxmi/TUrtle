@@ -14,7 +14,11 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.domain.Sort.Direction
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -23,10 +27,11 @@ class AuditLogController(
     private val auditLogService: AuditLogService
 ) : GetController<AuditLogEntity, Long, GetAuditLogResponse> {
 
+    @GetMapping("/{variable}")
     override fun get(
-        user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
-        variable: Long,
+        @PathVariable variable: Long,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
@@ -45,14 +50,15 @@ class AuditLogController(
         return ResponseEntity.ok(dto)
     }
 
+    @GetMapping
     override fun getCollection(
-        user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
-        rsql: String?,
-        pageNumber: Int?,
-        pageSize: Int,
-        sortProperty: String?,
-        sortDirection: Direction,
+        @RequestParam rsql: String?,
+        @RequestParam pageNumber: Int?,
+        @RequestParam pageSize: Int,
+        @RequestParam sortProperty: String?,
+        @RequestParam sortDirection: Direction,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse

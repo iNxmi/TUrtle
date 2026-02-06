@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable
 
 interface DeleteController<Entity : CRUDEntity> {
 
-    @DeleteMapping("/{id}")
     fun delete(
-        @AuthenticationPrincipal user: UserEntity?,
-        @PathVariable id: Long,
+        user: UserEntity?,
+
+        id: Long,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse

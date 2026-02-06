@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody
 
 interface CreateController<Entity : CRUDEntity, Request : CreateRequest, Response : GetResponse> {
 
-    @PostMapping
     fun create(
-        @AuthenticationPrincipal user: UserEntity?,
-        @RequestBody request: Request,
+        user: UserEntity?,
+
+        request: Request,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse

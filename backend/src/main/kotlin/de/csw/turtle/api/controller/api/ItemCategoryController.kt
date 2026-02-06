@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
@@ -33,7 +34,7 @@ class ItemCategoryController(
     DeleteController<ItemCategoryEntity> {
 
     override fun create(
-        user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
         request: CreateItemCategoryRequest,
 
@@ -59,7 +60,7 @@ class ItemCategoryController(
     }
 
     override fun get(
-        user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
         variable: Long,
 
@@ -74,7 +75,7 @@ class ItemCategoryController(
     }
 
     override fun getCollection(
-        user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
         rsql: String?,
         pageNumber: Int?,
@@ -102,7 +103,7 @@ class ItemCategoryController(
     }
 
     override fun patch(
-        user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
         id: Long,
         request: PatchItemCategoryRequest,
@@ -130,7 +131,7 @@ class ItemCategoryController(
     }
 
     override fun delete(
-        user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
         id: Long,
 

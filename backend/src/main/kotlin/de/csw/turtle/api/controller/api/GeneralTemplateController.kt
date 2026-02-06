@@ -17,11 +17,11 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.*
 import java.net.URI
 
-private const val ENDPOINT ="/api/general-templates"
+private const val ENDPOINT = "/api/general-templates"
 
 @RestController
 @RequestMapping(ENDPOINT)
@@ -32,10 +32,11 @@ class GeneralTemplateController(
     PatchController<GeneralTemplateEntity, PatchGeneralTemplateRequest, GetGeneralTemplateResponse>,
     DeleteController<GeneralTemplateEntity> {
 
+    @PostMapping
     override fun create(
-        user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
-        request: CreateGeneralTemplateRequest,
+        @RequestBody request: CreateGeneralTemplateRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
@@ -60,10 +61,11 @@ class GeneralTemplateController(
         return ResponseEntity.created(location).body(dto)
     }
 
+    @GetMapping("/{variable}")
     override fun get(
-        user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
-        variable: Long,
+        @PathVariable variable: Long,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
@@ -81,14 +83,15 @@ class GeneralTemplateController(
         return ResponseEntity.ok(dto)
     }
 
+    @GetMapping
     override fun getCollection(
-        user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
-        rsql: String?,
-        pageNumber: Int?,
-        pageSize: Int,
-        sortProperty: String?,
-        sortDirection: Sort.Direction,
+        @RequestParam rsql: String?,
+        @RequestParam pageNumber: Int?,
+        @RequestParam pageSize: Int,
+        @RequestParam sortProperty: String?,
+        @RequestParam sortDirection: Sort.Direction,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
@@ -115,11 +118,12 @@ class GeneralTemplateController(
         return ResponseEntity.ok(dto)
     }
 
+    @PatchMapping("/{id}")
     override fun patch(
-        user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
-        id: Long,
-        request: PatchGeneralTemplateRequest,
+        @PathVariable id: Long,
+        @RequestBody request: PatchGeneralTemplateRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
@@ -145,10 +149,11 @@ class GeneralTemplateController(
         return ResponseEntity.ok(dto)
     }
 
+    @DeleteMapping("/{id}")
     override fun delete(
-        user: UserEntity?,
+        @AuthenticationPrincipal user: UserEntity?,
 
-        id: Long,
+        @PathVariable id: Long,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse

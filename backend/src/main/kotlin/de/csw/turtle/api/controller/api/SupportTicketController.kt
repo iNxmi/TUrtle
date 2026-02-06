@@ -21,7 +21,15 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
@@ -42,10 +50,11 @@ class SupportTicketController(
     private val maxSubjectLength = 64
     private val maxDescriptionLength = 2028
 
+    @PostMapping
     override fun create(
-        user: UserEntity?,
+        @AuthenticationPrincipal   user: UserEntity?,
 
-        request: CreateSupportTicketRequest,
+        @RequestBody request: CreateSupportTicketRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
@@ -80,10 +89,11 @@ class SupportTicketController(
         return ResponseEntity.created(location).body(dto)
     }
 
+    @GetMapping("/{variable}")
     override fun get(
-        user: UserEntity?,
+        @AuthenticationPrincipal   user: UserEntity?,
 
-        variable: Long,
+        @PathVariable variable: Long,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
@@ -102,14 +112,15 @@ class SupportTicketController(
         return ResponseEntity.ok(dto)
     }
 
+    @GetMapping
     override fun getCollection(
-        user: UserEntity?,
+        @AuthenticationPrincipal   user: UserEntity?,
 
-        rsql: String?,
-        pageNumber: Int?,
-        pageSize: Int,
-        sortProperty: String?,
-        sortDirection: Sort.Direction,
+        @RequestParam rsql: String?,
+        @RequestParam pageNumber: Int?,
+        @RequestParam pageSize: Int,
+        @RequestParam sortProperty: String?,
+        @RequestParam sortDirection: Sort.Direction,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
@@ -141,11 +152,12 @@ class SupportTicketController(
         return ResponseEntity.ok(dto)
     }
 
+    @PatchMapping("/{id}")
     override fun patch(
-        user: UserEntity?,
+        @AuthenticationPrincipal    user: UserEntity?,
 
-        id: Long,
-        request: PatchSupportTicketRequest,
+        @PathVariable id: Long,
+        @RequestBody request: PatchSupportTicketRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
@@ -182,10 +194,11 @@ class SupportTicketController(
         return ResponseEntity.ok(dto)
     }
 
+    @DeleteMapping("/{id}")
     override fun delete(
-        user: UserEntity?,
+        @AuthenticationPrincipal   user: UserEntity?,
 
-        id: Long,
+        @PathVariable id: Long,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse

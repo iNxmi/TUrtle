@@ -8,10 +8,16 @@ abstract class CRUDEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
-    var updatedAt: Instant = Instant.now()
+    //Instant.MIN will be replaced by createdAt in prePersist()
+    var updatedAt: Instant = Instant.MIN
 
     @Column(updatable = false)
     val createdAt: Instant = Instant.now()
+
+    @PrePersist
+    fun prePersist() {
+        updatedAt = createdAt
+    }
 
     @PreUpdate
     fun preUpdate() {

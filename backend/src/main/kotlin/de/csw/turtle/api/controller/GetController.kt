@@ -7,33 +7,27 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.Sort.Direction
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestParam
 
 interface GetController<Entity : CRUDEntity, Variable : Any, Response : GetResponse> {
 
-    @GetMapping("/{variable}")
     fun get(
-        @AuthenticationPrincipal user: UserEntity?,
-        @PathVariable variable: Variable,
+        user: UserEntity?,
+        variable: Variable,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<Response>
 
-    @GetMapping
     fun getCollection(
-        @AuthenticationPrincipal user: UserEntity?,
+        user: UserEntity?,
 
-        @RequestParam rsql: String? = null,
+        rsql: String? = null,
 
-        @RequestParam pageNumber: Int? = null,
-        @RequestParam pageSize: Int = 25,
+        pageNumber: Int? = null,
+        pageSize: Int = 25,
 
-        @RequestParam sortProperty: String? = null,
-        @RequestParam sortDirection: Direction = Direction.DESC,
+        sortProperty: String? = null,
+        sortDirection: Direction = Direction.DESC,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
