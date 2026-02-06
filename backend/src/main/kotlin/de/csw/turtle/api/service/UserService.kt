@@ -78,7 +78,7 @@ class UserService(
             emailService.sendHtmlEmail(entity.email, subject, content)
         }
 
-        return entity
+        return repository.save(entity)
     }
 
     fun getUnverifiedUsers(cutoff: Instant): Set<UserEntity> = repository.findByVerifiedFalseAndCreatedAtBefore(cutoff)
