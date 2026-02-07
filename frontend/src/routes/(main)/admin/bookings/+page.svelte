@@ -19,7 +19,8 @@
 
 	let { data } = $props();
 
-	let creator = $derived(data.user);
+	let creator = $derived(selectedEvent ? [selectedEvent.extendedProps.creator]: null);
+	let currentUser = $derived(data.user);
 	let users = $derived(data.users);
 	let dropdownUsers = $derived(users.map((user) =>  ({
 		firstName: user.firstName,
@@ -66,6 +67,8 @@
 	let eventDescription = $derived(selectedEvent.extendedProps.description);
 	let eventWhitelist = $derived(selectedEvent.extendedProps.whitelist || []);
 	let useWhitelist = $derived(selectedEvent.extendedProps.enableWhitelist);
+
+	let status = $derived(selectedEvent.extendedProps.status);
 	
 	let startTime = $derived.by(() => {
 		const tempHour = selectedEvent.start.getHours() < 10  ? "0"+selectedEvent.start.getHours().toString() : selectedEvent.start.getHours().toString();
@@ -154,7 +157,7 @@
 			}
 		});
 		calendar.render();
-		calendar.getEvents().forEach((event) => event.backgroundColor(event.extendedProps.status === 'REQUESTED' ? '#FFF500': '#FF8C1E'));
+		calendar.getEvents().forEach((event) => event.backgroundColor(event.extendedProps.status === 'REQUESTED' ? '#FFF500': event.extendedProps.status === 'REJECTED' ?  '#CC0000': '#FF8C1E'));
 	});
 
 	function createEvent(e){
@@ -216,8 +219,44 @@
 	};
 
 	const confirm = getContext('confirm');
+
+	async function approveEvent(){
+			
+		calendar.getEventById(selectedEvent.id).setExtendedProp('status', 'APPROVED');
+		
+		const response = await request(roomBookingsPath+`/${selectedEvent.id}`, {
+			method: 'PATCH',
+			body : JSON.stringify(convertEventToBackend({status: 'APPROVED'})),
+			headers: {'Content-Type': 'application/json'}
+		});
+
+		successRequest = {
+			ok: response.ok
+		}
+
+		setTimeout(() => successRequest = undefined, 1500);
+
+	};
+
+	async function denyEvent(){
+		calendar.getEventById(selectedEvent.id).setExtendedProp('status', 'REJECTED');
+		
+		const response = await request(roomBookingsPath+`/${selectedEvent.id}`, {
+			method: 'PATCH',
+			body : JSON.stringify(convertEventToBackend({status: 'REJECTED'})),
+			headers: {'Content-Type': 'application/json'}
+		});
+
+		successRequest = {
+			ok: response.ok
+		}
+
+		setTimeout(() => successRequest = undefined, 1500);
+
+	};
+
 	async function saveEvent(){
-		if(between(startDate.getHours(), 6, 18) || between(endDate.getHours(), 6, 18)){
+		if(between(startDate.getHours(), 6, 18) || between(endDate.getHours(), 6, 18)){            //TODO: Fix times
 			const confirmed = await confirm('_The event is scheduled inside business hours. It has to be confirmed by CSW officials first. Do you want to continue?_');
 			if(!confirmed){
 				return;
@@ -294,29 +333,37 @@
 				{#if selectedEvent}
 				<div class="flex flex-col sm:flex-row justify-between h-10">
 					<input type="text" class="text-2xl w-9/10 h-full mr-auto dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2
-					 focus:ring-csw border-hidden outline-hidden focus:outline-hidden" bind:value={eventTitle} /> 
-					<button class="h-full w-10 inline-flex justify-end items-center" onclick={removeEvent}>
+					 focus:ring-csw border-hidden outline-hidden focus:outline-hidden" bind:value={eventTitle} disabled={creator[0] !== currentUser.id}/> 
+					<button class="h-full w-10 inline-flex justify-end items-center cursor-pointer" onclick={removeEvent}>
 						<TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
 					</button>
 				</div>
+				<Label>_Creator_
+					<WhitelistDropdown disabled={creator[0] !== currentUser.id} users={dropdownUsers} bind:value={creator} single {displayFunction} {sortFunction} {filterFunction}/>
+				</Label>
 				<Label class="space-y-2"> <span>_Start_</span>
-					<Datepicker monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
-					<Timepicker divClass="shadow-none!" bind:value={startTime}/>
+					<Datepicker disabled={creator[0] !== currentUser.id} monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
+					<Timepicker disabled={creator[0] !== currentUser.id} divClass="shadow-none!" bind:value={startTime}/>
 				</Label>
 				<Label class="space-y-2"> <span>_End_</span>
-					<Datepicker monthBtnSelected="bg-csw! hover:text-white!" bind:value={endDate}></Datepicker>
-					<Timepicker divClass="shadow-none!" bind:value={endTime}/>
+					<Datepicker disabled={creator[0] !== currentUser.id} monthBtnSelected="bg-csw! hover:text-white!" bind:value={endDate}></Datepicker>
+					<Timepicker disabled={creator[0] !== currentUser.id} divClass="shadow-none!" bind:value={endTime}/>
 				</Label>
 				<Label for="description" class="mb-0">_Description_
-					<Textarea id="description" placeholder="_Sample description_" rows={3} class="w-full" bind:value={eventDescription} />
+					<Textarea disabled={creator[0] !== currentUser.id} id="description" placeholder="_Sample description_" rows={3} class="w-full" bind:value={eventDescription} />
 				</Label>
-				<Toggle size="small" bind:checked={whitelistDisableOverride} onchange={setOpenToEveryone}>_Open to everyone_</Toggle>
-				<Toggle disabled={whitelistDisableOverride} size="small" bind:checked={useWhitelist}>_Use whitelist_</Toggle>
+				<Toggle disabled={creator[0] !== currentUser.id} size="small" bind:checked={whitelistDisableOverride} onchange={setOpenToEveryone}>_Open to everyone_</Toggle>
+				<Toggle disabled={whitelistDisableOverride || creator[0] !== currentUser.id} size="small" bind:checked={useWhitelist}>_Use whitelist_</Toggle>
 				{#if useWhitelist}
-				<WhitelistDropdown users={dropdownUsers} bind:value={eventWhitelist} {sortFunction} {displayFunction} {filterFunction}/>
+				<WhitelistDropdown disabled={creator[0] !== currentUser.id} users={dropdownUsers} bind:value={eventWhitelist} {sortFunction} {displayFunction} {filterFunction}/>
 			
 				{/if}
-				<Button onclick={saveEvent}>{m.save()}</Button>
+				{#if selectedEvent.extendedProps.status === 'REQUESTED'}
+					<Button color='green' onclick={approveEvent}>_Approve</Button>
+					<Button color='red' onclick={denyEvent}>_Deny</Button>
+				{:else}
+					<Button class="cursor-pointer" onclick={saveEvent} disabled={creator[0] !== currentUser.id}>{m.save()} </Button>
+				{/if}
 				{#if successRequest}
 					<p out:fade class={(successRequest.ok ? "text-green-600" : "text-red-500")+" text-xs"}>
 						{successRequest.ok ? "_Event successfully saved_": "An error uccured, please try again"}
