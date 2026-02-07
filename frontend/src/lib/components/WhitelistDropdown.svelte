@@ -4,7 +4,7 @@
     import { Badge, CloseButton, Checkbox, Input } from 'flowbite-svelte';
 
 
-    let { users, onchange = false, value = $bindable(), single = false, sortFunction, displayFunction, filterFunction } = $props();
+    let { users, onchange = false, value = $bindable(), single = false, sortFunction, displayFunction, filterFunction, disabled = false } = $props();
     let searchTerm = $state("");
     let clickProtected = $state(false);
     
@@ -28,7 +28,7 @@
         if(value.includes(select.value)){
             clearOption(select);
         } else if(!value.includes(select.value)){
-            value = [...value, select.value];
+            value = single ? [select.value] : [...value, select.value];
         }
         if(!equal(oldValue, value)){
             triggerChange();
@@ -59,7 +59,7 @@
     function clearOption(select){
         if(value.includes(select.value)){
             const oldValue = [...value];
-            value = value.filter((item) => item !== select.value);
+            value =  value.filter((item) => item !== select.value);
 
             if(oldValue.length !== value.length){
                 triggerChange();
@@ -85,11 +85,13 @@
 
     function toggleDropdown(e){
         e.stopPropagation();
-        clickProtected = true;
-        if(multiSelectContainer && multiSelectContainer.contains(e.target)){
-            show = !show;
-        } else {
-            show = false;
+        if(!disabled){
+            clickProtected = true;
+            if(multiSelectContainer && multiSelectContainer.contains(e.target)){
+                show = !show;
+            } else {
+                show = false;
+            }
         }
     };
 
@@ -156,8 +158,7 @@
     };
   
 </script>
-
-<select name="whitelistMembers" {value} hidden multiple={!single} {onchange}>
+<select name="whitelistMembers" {value} hidden  {onchange}>
     {#each users as user (user.value)}
         <option value={user.value}>{displayFunction(user)}</option>
     {/each}
@@ -170,9 +171,13 @@ class="relative border border-gray-300 w-full flex items-center gap-2 dark:borde
     <span class="text-gray-400"></span> 
 {/if}
     <span>
-        {#if selectUsers.length}
+        {#if single && selectUsers.length === 1}
+            <Badge dismissable={!disabled} color="gray" large={false}  params={{duration: 100}} onclose={() => clearOption(selectUsers[0])} class={["mx-0.5 px-2 py-0"]}>
+                    {displayFunction(selectUsers[0])}
+                </Badge>
+        {:else}
             {#each selectUsers as user (user.value)}
-                <Badge color="gray" large={false}  params={{duration: 100}} onclose={() => clearOption(user)} class={["mx-0.5 px-2 py-0"]}>
+                <Badge dismissable={!disabled} color="gray" large={false}  params={{duration: 100}} onclose={() => clearOption(user)} class={["mx-0.5 px-2 py-0"]}>
                     {displayFunction(user)}
                 </Badge>
             {/each}
@@ -180,7 +185,7 @@ class="relative border border-gray-300 w-full flex items-center gap-2 dark:borde
     </span>
     <div class="ms-auto flex items-center gap-2">
         {#if selectUsers.length}
-            <CloseButton size="sm" color="none" class="p-0 focus:ring-gray-400 dark:text-white" />
+            <CloseButton {disabled} size="sm" color="none" class="p-0 focus:ring-gray-400 dark:text-white" />
         {/if}
         <svg class="ms-1 h-3 w-3 cursor-pointer text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={show ? "m1 5 4-4 4 4" : "m9 1-4 4-4-4"} />
@@ -190,7 +195,7 @@ class="relative border border-gray-300 w-full flex items-center gap-2 dark:borde
     {#if show}
         
         <div onclick={(e) => {clickProtected = true; e.stopPropagation()}} role="presentation" class={`absolute z-1000 p-3 flex flex-col gap-1 max-h-64 bg-white border border-gray-300 dark:bg-gray-700 dark:border-gray-600 start-0 top-8 cursor-pointer overflow-y-scroll w-full`}>
-            <Input onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()} size="md" placeholder="_Search User_" type="text" bind:value={searchTerm}/>
+            <Input onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()} size="md" placeholder="_Search User_" type="text" bind:value={searchTerm} {disabled}/>
             {#each sortedUsers as user (user.value)}
                 {@const isSelected = selectUsers.includes(user)}
                 {@const isActive = activeItem === user}
