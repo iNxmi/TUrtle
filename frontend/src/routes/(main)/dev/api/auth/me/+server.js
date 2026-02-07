@@ -1,8 +1,11 @@
 import { json } from '@sveltejs/kit';
 export async function GET() {
 	return json({
-		role: 'ADMINISTRATOR',
-		firstName: 'Jan',
-		lastName: 'Rappe'
+		id: "129",
+		firstName: "Admin",
+		lastName: "Admin",
+		email: 'admin@admin.com',
+		studentId: "0",
+		username: "Admin"
 	});
 }
