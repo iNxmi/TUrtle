@@ -299,7 +299,6 @@
 						<TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
 					</button>
 				</div>
-				<WhitelistDropdown users={dropdownUsers}
 				<Label class="space-y-2"> <span>_Start_</span>
 					<Datepicker monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
 					<Timepicker divClass="shadow-none!" bind:value={startTime}/>
