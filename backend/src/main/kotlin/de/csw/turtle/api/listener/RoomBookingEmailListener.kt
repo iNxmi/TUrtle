@@ -22,15 +22,11 @@ class RoomBookingEmailListener(
     private val thymeleafService: ThymeleafService
 ) {
 
-    private fun send(entity: RoomBookingEntity, template: EmailTemplateEntity) {
-        val context = Context().apply {
-            setVariable("booking", entity)
-        }
-
+    private fun send(email: String, template: EmailTemplateEntity, context: Context) {
         val subject = thymeleafService.getRendered(template.subject, context)
         val content = thymeleafService.getRendered(template.content, context)
 
-        emailService.sendHtmlEmail(entity.user.email, subject, content)
+        emailService.sendHtmlEmail(email, subject, content)
     }
 
     @Async
@@ -42,19 +38,28 @@ class RoomBookingEmailListener(
         val template = emailTemplateService.getById(templateId)
             ?: throw NoSuchElementException()
 
-        send(entity, template)
+        val context = Context().apply {
+            setVariable("booking", entity)
+        }
+
+        send(entity.user.email, template, context)
     }
 
     @Async
     @EventListener
     fun sendUpdatedEmail(event: PatchedRoomBookingEvent) {
-        val entity = event.entity
-
         val templateId = systemSettingService.getTyped<Long>(Settings.EMAIL_TEMPLATE_ROOM_BOOKINGS_UPDATED)
         val template = emailTemplateService.getById(templateId)
             ?: throw NoSuchElementException()
 
-        send(entity, template)
+        val pre = event.pre
+
+        val context = Context().apply {
+            setVariable("pre", pre)
+            setVariable("post", event.post)
+        }
+
+        send(pre.user.email, template, context)
     }
 
 }

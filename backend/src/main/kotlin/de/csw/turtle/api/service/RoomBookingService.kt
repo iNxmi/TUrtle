@@ -29,7 +29,7 @@ class RoomBookingService(
         end: Instant,
         description: String,
         accessibility: Accessibility,
-        whitelistIds: Set<Long>,
+        whitelistedUserIds: Set<Long>,
         status: RoomBookingEntity.Status
     ): RoomBookingEntity {
         val entity = RoomBookingEntity(
@@ -39,7 +39,7 @@ class RoomBookingService(
             end = end,
             description = description,
             accessibility = accessibility,
-            whitelist = whitelistIds.map { userRepository.findById(it).get() }.toMutableSet(),
+            whitelistedUsers = whitelistedUserIds.map { userRepository.findById(it).get() }.toMutableSet(),
             status = status
         )
 
@@ -62,6 +62,7 @@ class RoomBookingService(
         status: RoomBookingEntity.Status? = null
     ): RoomBookingEntity {
         val entity = repository.findById(id).get()
+        val pre = entity.snapshot()
 
         userId?.let { entity.user = userRepository.findById(it).get() }
         title?.let { entity.title = it }
@@ -72,16 +73,17 @@ class RoomBookingService(
         whitelistIds?.let { ids ->
             val users = ids.map { userRepository.findById(it).get() }
 
-            entity.whitelist.clear()
-            entity.whitelist.addAll(users)
+            entity.whitelistedUsers.clear()
+            entity.whitelistedUsers.addAll(users)
         }
-        status?.let { entity.status = it}
+        status?.let { entity.status = it }
 
-        val saved = repository.save(entity)
+        val post = repository.save(entity)
 
-        eventPublisher.publishEvent(PatchedRoomBookingEvent(saved))
+        val event = PatchedRoomBookingEvent(pre = pre, post = post)
+        eventPublisher.publishEvent(event)
 
-        return saved
+        return post
     }
 
 }

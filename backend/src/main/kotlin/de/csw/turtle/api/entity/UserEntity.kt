@@ -46,7 +46,7 @@ class UserEntity(
     @OneToMany(mappedBy = "user")
     val roomBookings: MutableSet<RoomBookingEntity> = mutableSetOf(),
 
-    @ManyToMany(mappedBy = "whitelist")
+    @ManyToMany(mappedBy = "whitelistedUsers")
     val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf(),
 
     @OneToMany(mappedBy = "user")

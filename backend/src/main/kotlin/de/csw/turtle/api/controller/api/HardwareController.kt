@@ -96,7 +96,7 @@ class HardwareController(
             throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
 
         val booking = roomBookingService.getCurrent() ?: return
-        if (booking.whitelist.isNotEmpty() && !booking.whitelist.contains(user))
+        if (booking.whitelistedUsers.isNotEmpty() && !booking.whitelistedUsers.contains(user))
             throw HttpException.Unauthorized("User '${user.id}' not in whitelist for current Room Booking.")
     }
 

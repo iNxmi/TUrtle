@@ -35,9 +35,9 @@ class DefaultEmailTemplateConfiguration(
     val roomBookingsUpdated = """
         Your room booking has been updated. 
         <br>
-        ID: <span th:text="${'$'}{booking.id}">booking.id</span>
+        ID: <span th:text="${'$'}{post.id}">post.id</span>
         <br>
-        Status: <span th:text="${'$'}{booking.status}">booking.status</span>
+        Status: <span th:text="${'$'}{pre.status}">pre.status</span> -> <span th:text="${'$'}{post.status}">post.status</span>
     """.trimIndent()
 
     private fun create(name: String, title: String, content: String) =

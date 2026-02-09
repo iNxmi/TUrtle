@@ -30,11 +30,11 @@ class RoomBookingEntity(
 
     @ManyToMany
     @JoinTable(
-        name = "room_booking_whitelist",
+        name = "room_bookings_whitelisted_users",
         joinColumns = [JoinColumn(name = "room_booking_id")],
         inverseJoinColumns = [JoinColumn(name = "user_id")]
     )
-    val whitelist: MutableSet<UserEntity> = mutableSetOf(),
+    val whitelistedUsers: MutableSet<UserEntity> = mutableSetOf(),
 
     @Enumerated(EnumType.STRING)
     var status: Status,
@@ -79,7 +79,7 @@ class RoomBookingEntity(
         end = end,
         description = description,
         accessibility = accessibility,
-        whitelist = whitelist.toMutableSet(),
+        whitelistedUsers = whitelistedUsers.toMutableSet(),
         status = status,
         updatedAt = updatedAt,
         createdAt = createdAt

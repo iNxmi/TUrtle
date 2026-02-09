@@ -78,7 +78,7 @@ class RoomBookingController(
             end = request.end,
             description = request.description,
             accessibility = request.accessibility,
-            whitelistIds = request.whitelist,
+            whitelistedUserIds = request.whitelistedUserIds,
             status = status
         )
 
@@ -199,7 +199,7 @@ class RoomBookingController(
             end = request.end,
             description = request.description,
             accessibility = request.accessibility,
-            whitelistIds = request.whitelist,
+            whitelistIds = request.whitelistedUserIds,
             status = status
         )
 

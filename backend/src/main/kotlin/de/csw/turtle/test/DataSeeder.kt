@@ -77,7 +77,7 @@ class DataSeeder(
                     start = start,
                     end = end,
                     accessibility = randomEnum(),
-                    whitelistIds = setOf(),
+                    whitelistedUserIds = setOf(),
                     status = randomEnum()
                 )
             } catch (_: Exception) {

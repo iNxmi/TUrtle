@@ -3,6 +3,7 @@ package de.csw.turtle.api.service
 import de.csw.turtle.api.Settings
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.event.CreatedUserEvent
+import de.csw.turtle.api.event.PatchedUserEvent
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.EmailTemplateRepository
 import de.csw.turtle.api.repository.RoleRepository
@@ -11,8 +12,6 @@ import jakarta.transaction.Transactional
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.thymeleaf.context.Context
-import java.time.Duration
 import java.time.Instant
 
 @Service
@@ -103,6 +102,7 @@ class UserService(
         roleIds: Set<Long>? = null
     ): UserEntity {
         val entity = repository.findById(id).get()
+        val pre = entity.snapshot()
 
         username?.let { entity.username = it }
         firstName?.let { entity.firstName = it }
@@ -118,7 +118,12 @@ class UserService(
             entity.roles.addAll(roles)
         }
 
-        return repository.save(entity)
+        val post = repository.save(entity)
+
+        val event = PatchedUserEvent(pre = pre, post = post)
+        eventPublisher.publishEvent(event)
+
+        return post
     }
 
 }

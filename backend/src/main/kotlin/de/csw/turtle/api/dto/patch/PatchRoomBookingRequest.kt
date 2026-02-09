@@ -10,6 +10,6 @@ data class PatchRoomBookingRequest(
     val end: Instant? = null,
     val description: String? = null,
     val accessibility: RoomBookingEntity.Accessibility? = null,
-    val whitelist: Set<Long>? = null,
+    val whitelistedUserIds: Set<Long>? = null,
     val status: RoomBookingEntity.Status? = null
 ) : PatchRequest

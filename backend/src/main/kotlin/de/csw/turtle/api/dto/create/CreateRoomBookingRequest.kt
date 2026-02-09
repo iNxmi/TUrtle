@@ -10,6 +10,6 @@ data class CreateRoomBookingRequest(
     val start: Instant,
     val end: Instant,
     val accessibility: RoomBookingEntity.Accessibility,
-    val whitelist: Set<Long> = setOf(),
+    val whitelistedUserIds: Set<Long> = setOf(),
     val status: RoomBookingEntity.Status? = null
 ) : CreateRequest

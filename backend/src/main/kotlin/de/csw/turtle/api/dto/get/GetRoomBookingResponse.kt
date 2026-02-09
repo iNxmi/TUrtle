@@ -12,7 +12,7 @@ data class GetRoomBookingResponse(
     val end: Instant?,
     val description: String?,
     val accessibility: RoomBookingEntity.Accessibility?,
-    val whitelist: Set<Long>?,
+    val whitelistedUserIds: Set<Long>?,
     val status: RoomBookingEntity.Status?,
 
     override val updatedAt: Instant?,
@@ -28,11 +28,11 @@ data class GetRoomBookingResponse(
         end = entity.end,
         description = entity.description,
         accessibility = entity.accessibility,
-        whitelist = entity.whitelist.map { it.id }.toSortedSet(),
+        whitelistedUserIds = entity.whitelistedUsers.map { it.id }.toSortedSet(),
         status = entity.status,
 
         updatedAt = entity.updatedAt,
-        createdAt = entity.createdAt,
+        createdAt = entity.createdAt
     )
 
 }
