@@ -102,3 +102,16 @@ export async function openDoor() {
 export function between(number, min, max){
     return min <= number && number < max
 }
+export async function logOut(){
+        const response = await request('/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if(response.ok){
+            return true;
+        }
+        return false;
+
+    }
