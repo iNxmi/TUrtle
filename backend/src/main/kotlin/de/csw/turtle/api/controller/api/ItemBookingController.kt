@@ -24,7 +24,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 
-private const val ENDPOINT = "/api/device-bookings"
+private const val ENDPOINT = "/api/item-bookings"
 
 @RestController
 @RequestMapping(ENDPOINT)
