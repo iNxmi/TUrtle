@@ -2,11 +2,13 @@ package de.csw.turtle.api.service
 
 import de.csw.turtle.api.Settings
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.event.CreatedUserEvent
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.EmailTemplateRepository
 import de.csw.turtle.api.repository.RoleRepository
 import de.csw.turtle.api.repository.UserRepository
 import jakarta.transaction.Transactional
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.thymeleaf.context.Context
@@ -21,7 +23,8 @@ class UserService(
     private val thymeleafService: ThymeleafService,
     private val emailService: EmailService,
     private val roleRepository: RoleRepository,
-    private val emailTemplateRepository: EmailTemplateRepository
+    private val emailTemplateRepository: EmailTemplateRepository,
+    private val eventPublisher: ApplicationEventPublisher
 ) : CRUDService<UserEntity>() {
 
     fun generateEmojis(): String {
@@ -59,26 +62,11 @@ class UserService(
             roles = roleIds.map { roleRepository.findById(it).get() }.toMutableSet()
         )
 
-        if (!entity.verified) {
-            val context = Context().apply {
-                val fqdn = systemSettingService.getTyped<String>(Settings.GENERAL_FQDN)
-                val duration = systemSettingService.getTyped<Duration>(Settings.USER_VERIFICATION_DURATION)
+        val saved = repository.save(entity)
 
-                setVariable("url", "https://$fqdn/api/auth/verify?token=${entity.verificationToken}")
-                setVariable("user", entity)
-                setVariable("duration", duration)
-                setVariable("expiration", entity.createdAt.plusMillis(duration.toMillis()))
-            }
+        eventPublisher.publishEvent(CreatedUserEvent(saved))
 
-            val templateId = systemSettingService.getTyped<Long>(Settings.EMAIL_TEMPLATE_USERS_VERIFY)
-            val template = emailTemplateRepository.findById(templateId).get()
-
-            val subject = thymeleafService.getRendered(template.subject, context)
-            val content = thymeleafService.getRendered(template.content, context)
-            emailService.sendHtmlEmail(entity.email, subject, content)
-        }
-
-        return repository.save(entity)
+        return saved
     }
 
     fun getUnverifiedUsers(cutoff: Instant): Set<UserEntity> = repository.findByVerifiedFalseAndCreatedAtBefore(cutoff)

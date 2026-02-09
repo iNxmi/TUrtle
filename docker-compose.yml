@@ -25,6 +25,7 @@ services:
       - network
     ports:
       - "8025:8025"
+    entrypoint: ["/bin/sh", "-c", "MailHog &>/dev/null"]
 
   backend:
     build: backend

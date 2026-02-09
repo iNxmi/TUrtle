@@ -41,6 +41,7 @@ enum class Settings(val key: String) {
     CONTENT_TEMPLATE_CONTACT("content.template.contact"),
     CONTENT_TEMPLATE_ABOUT("content.template.about"),
 
+    EMAIL_TEMPLATE_USERS_CREATED("email.template.users.created"),
     EMAIL_TEMPLATE_USERS_VERIFY("email.template.users.verify"),
     EMAIL_TEMPLATE_ROOM_BOOKINGS_CREATED("email.template.room-bookings.created"),
     EMAIL_TEMPLATE_ROOM_BOOKINGS_UPDATED("email.template.room-bookings.updated")

@@ -35,7 +35,7 @@ class RoomBookingEmailListener(
 
     @Async
     @EventListener
-    fun onCreated(event: CreatedRoomBookingEvent) {
+    fun sendCreatedEmail(event: CreatedRoomBookingEvent) {
         val entity = event.entity
 
         val templateId = systemSettingService.getTyped<Long>(Settings.EMAIL_TEMPLATE_ROOM_BOOKINGS_CREATED)
@@ -47,7 +47,7 @@ class RoomBookingEmailListener(
 
     @Async
     @EventListener
-    fun onPatched(event: PatchedRoomBookingEvent) {
+    fun sendUpdatedEmail(event: PatchedRoomBookingEvent) {
         val entity = event.entity
 
         val templateId = systemSettingService.getTyped<Long>(Settings.EMAIL_TEMPLATE_ROOM_BOOKINGS_UPDATED)

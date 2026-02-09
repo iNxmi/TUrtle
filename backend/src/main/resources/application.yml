@@ -17,7 +17,8 @@ spring:
       initialize-schema: always
     properties:
       org.quartz.scheduler.instanceName: TUrtleScheduler
-      org.quartz.jobStore.isClustered: true
+      org.quartz.scheduler.instanceId: AUTO
+      org.quartz.threadPool.threadCount: 5
 
   session:
     store-type: jdbc

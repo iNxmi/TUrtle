@@ -12,41 +12,47 @@ class DefaultEmailTemplateConfiguration(
     private val service: EmailTemplateService
 ) : CommandLineRunner {
 
-    val usersVerify = """
+    val usersCreated = """
         Welcome <span th:text="${'$'}{user.firstName}">user.firstName</span>,
         <br>
         You have successfully created your CSW account.
-        <br>
+    """.trimIndent()
+
+    val usersVerify = """
         To verify your account please click <a th:href="${'$'}{url}">here</a>.
         <br>
         If you don't verify in <span th:text="${'$'}{duration.toDays()}">duration.toDays()</span> Days (<span th:text="${'$'}{user.createdAt.plusMillis(duration.toMillis())}">user.createdAt.plusMillis(duration.toMillis())</span>), your account will be deleted.
     """.trimIndent()
 
     val roomBookingsCreated = """
-        Your room booking has successfully been created. 
+        Your room booking has been created. 
         <br>
-        ID: <span th:text="${'$'}{booking.id}">booking.id</span>.
+        ID: <span th:text="${'$'}{booking.id}">booking.id</span>
         <br>
-        Status: <span th:text="${'$'}{booking.status}">booking.status</span>.
+        Status: <span th:text="${'$'}{booking.status}">booking.status</span>
     """.trimIndent()
 
     val roomBookingsUpdated = """
         Your room booking has been updated. 
         <br>
-        ID: <span th:text="${'$'}{booking.id}">booking.id</span>.
+        ID: <span th:text="${'$'}{booking.id}">booking.id</span>
         <br>
-        Status: <span th:text="${'$'}{booking.status}">booking.status</span>.
+        Status: <span th:text="${'$'}{booking.status}">booking.status</span>
     """.trimIndent()
+
+    private fun create(name: String, title: String, content: String) =
+        service.create(name, "Default value by TUrtle dev team.", title, content)
 
     @Transactional
     override fun run(vararg args: String) {
         if (service.count() > 0)
             return
 
-        service.create("users__verify", "default value by dev", "CSW - Please verify your account", usersVerify)
+        create("users__created", "CSW - Welcome to TUrtle", usersCreated)
+        create("users__verify", "CSW - Please verify your account", usersVerify)
 
-        service.create("room_bookings__created", "default value by dev", "CSW - Room Booking Created", roomBookingsCreated)
-        service.create("room_bookings__updated", "default value by dev", "CSW - Room Booking Updated", roomBookingsUpdated)
+        create("room_bookings__created", "CSW - Room Booking Created", roomBookingsCreated)
+        create("room_bookings__updated", "CSW - Room Booking Updated", roomBookingsUpdated)
     }
 
 }
