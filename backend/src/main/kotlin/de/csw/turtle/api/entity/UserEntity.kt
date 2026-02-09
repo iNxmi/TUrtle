@@ -2,11 +2,15 @@ package de.csw.turtle.api.entity
 
 import de.csw.turtle.api.Permission
 import jakarta.persistence.*
+import java.time.Instant
 import java.util.*
 
 @Entity
 @Table(name = "users")
 class UserEntity(
+
+    @Id @GeneratedValue
+    override val id: Long = 0,
 
     @Column(unique = true)
     var username: String,
@@ -39,15 +43,53 @@ class UserEntity(
     @OneToMany(mappedBy = "user")
     val auditLogs: Collection<AuditLogEntity> = emptySet(),
 
+    @OneToMany(mappedBy = "user")
+    val roomBookings: MutableSet<RoomBookingEntity> = mutableSetOf(),
+
     @ManyToMany(mappedBy = "whitelist")
     val whitelistedRoomBookings: MutableSet<RoomBookingEntity> = mutableSetOf(),
 
     @OneToMany(mappedBy = "user")
-    val itemBookings: MutableSet<ItemBookingEntity> = mutableSetOf()
+    val itemBookings: MutableSet<ItemBookingEntity> = mutableSetOf(),
 
-) : CRUDEntity() {
+    //Instant.MIN will be replaced by createdAt in prePersist()
+    override var updatedAt: Instant = Instant.MIN,
+
+    @Column(updatable = false)
+    override val createdAt: Instant = Instant.now()
+
+) : CRUDEntity {
 
     fun getAllPermissions(): Set<Permission> = roles.flatMap { it.permissions }.toSet()
     fun hasPermission(permission: Permission): Boolean = getAllPermissions().contains(permission)
+
+    @PrePersist
+    fun prePersist() {
+        updatedAt = createdAt
+    }
+
+    @PreUpdate
+    fun preUpdate() {
+        updatedAt = Instant.now()
+    }
+
+    override fun snapshot() = UserEntity(
+        id = id,
+        username = username,
+        firstName = firstName,
+        lastName = lastName,
+        email = email,
+        password = password,
+        emojis = emojis,
+        verified = verified,
+        verificationToken = verificationToken,
+        roles = roles.toMutableSet(),
+        auditLogs = auditLogs.toMutableSet(),
+        roomBookings = roomBookings.toMutableSet(),
+        whitelistedRoomBookings = whitelistedRoomBookings.toMutableSet(),
+        itemBookings = itemBookings.toMutableSet(),
+        updatedAt = updatedAt,
+        createdAt = createdAt
+    )
 
 }

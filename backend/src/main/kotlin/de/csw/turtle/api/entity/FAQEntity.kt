@@ -1,12 +1,14 @@
 package de.csw.turtle.api.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Table
+import jakarta.persistence.*
+import java.time.Instant
 
 @Entity
 @Table(name = "faq")
 class FAQEntity(
+
+    @Id @GeneratedValue
+    override val id: Long = 0,
 
     @Column(unique = true)
     var name: String,
@@ -14,7 +16,34 @@ class FAQEntity(
     var title: String,
 
     @Column(columnDefinition = "TEXT")
-    var content: String
+    var content: String,
 
-) : CRUDEntity()
+    //Instant.MIN will be replaced by createdAt in prePersist()
+    override var updatedAt: Instant = Instant.MIN,
+
+    @Column(updatable = false)
+    override val createdAt: Instant = Instant.now()
+
+) : CRUDEntity {
+
+    @PrePersist
+    fun prePersist() {
+        updatedAt = createdAt
+    }
+
+    @PreUpdate
+    fun preUpdate() {
+        updatedAt = Instant.now()
+    }
+
+    override fun snapshot() = FAQEntity(
+        id = id,
+        name = name,
+        title = title,
+        content = content,
+        updatedAt = updatedAt,
+        createdAt = createdAt
+    )
+
+}
 

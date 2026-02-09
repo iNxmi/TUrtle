@@ -7,6 +7,9 @@ import java.time.Instant
 @Table(name = "items")
 class ItemEntity(
 
+    @Id @GeneratedValue
+    override val id: Long = 0,
+
     @Column(unique = true)
     var name: String,
 
@@ -24,6 +27,36 @@ class ItemEntity(
     var acquiredAt: Instant,
 
     @OneToMany(mappedBy = "item")
-    val bookings: MutableSet<ItemBookingEntity> = mutableSetOf()
+    val bookings: MutableSet<ItemBookingEntity> = mutableSetOf(),
 
-) : CRUDEntity()
+    //Instant.MIN will be replaced by createdAt in prePersist()
+    override var updatedAt: Instant = Instant.MIN,
+
+    @Column(updatable = false)
+    override val createdAt: Instant = Instant.now()
+
+) : CRUDEntity {
+
+    @PrePersist
+    fun prePersist() {
+        updatedAt = createdAt
+    }
+
+    @PreUpdate
+    fun preUpdate() {
+        updatedAt = Instant.now()
+    }
+
+    override fun snapshot() = ItemEntity(
+        id = id,
+        name = name,
+        description = description,
+        category = category,
+        locker = locker,
+        acquiredAt = acquiredAt,
+        bookings = bookings.toMutableSet(),
+        updatedAt = updatedAt,
+        createdAt = createdAt
+    )
+
+}

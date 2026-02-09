@@ -7,6 +7,9 @@ import java.time.Instant
 @Table(name = "room_bookings")
 class RoomBookingEntity(
 
+    @Id @GeneratedValue
+    override val id: Long = 0,
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     var user: UserEntity,
@@ -34,9 +37,15 @@ class RoomBookingEntity(
     val whitelist: MutableSet<UserEntity> = mutableSetOf(),
 
     @Enumerated(EnumType.STRING)
-    var status: Status
+    var status: Status,
 
-) : CRUDEntity() {
+    //Instant.MIN will be replaced by createdAt in prePersist()
+    override var updatedAt: Instant = Instant.MIN,
+
+    @Column(updatable = false)
+    override val createdAt: Instant = Instant.now()
+
+) : CRUDEntity {
 
     enum class Accessibility {
         LOCKED,
@@ -51,5 +60,29 @@ class RoomBookingEntity(
         CANCELLED,
         COMPLETED
     }
+
+    @PrePersist
+    fun prePersist() {
+        updatedAt = createdAt
+    }
+
+    @PreUpdate
+    fun preUpdate() {
+        updatedAt = Instant.now()
+    }
+
+    override fun snapshot() = RoomBookingEntity(
+        id = id,
+        user = user,
+        title = title,
+        start = start,
+        end = end,
+        description = description,
+        accessibility = accessibility,
+        whitelist = whitelist.toMutableSet(),
+        status = status,
+        updatedAt = updatedAt,
+        createdAt = createdAt
+    )
 
 }

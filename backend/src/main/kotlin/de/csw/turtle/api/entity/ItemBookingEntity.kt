@@ -7,6 +7,9 @@ import java.time.Instant
 @Table(name = "item_bookings")
 class ItemBookingEntity(
 
+    @Id @GeneratedValue
+    override val id: Long = 0,
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     var user: UserEntity,
@@ -22,9 +25,15 @@ class ItemBookingEntity(
     var end: Instant,
 
     @Enumerated(EnumType.STRING)
-    var status: Status = Status.RESERVED
+    var status: Status = Status.RESERVED,
 
-) : CRUDEntity() {
+    //Instant.MIN will be replaced by createdAt in prePersist()
+    override var updatedAt: Instant = Instant.MIN,
+
+    @Column(updatable = false)
+    override val createdAt: Instant = Instant.now()
+
+) : CRUDEntity {
 
     enum class Status {
         RESERVED,
@@ -34,5 +43,26 @@ class ItemBookingEntity(
         ITEM_RETURNED,
         CANCELLED
     }
+
+    @PrePersist
+    fun prePersist() {
+        updatedAt = createdAt
+    }
+
+    @PreUpdate
+    fun preUpdate() {
+        updatedAt = Instant.now()
+    }
+
+    override fun snapshot() = ItemBookingEntity(
+        id = id,
+        user = user,
+        item = item,
+        start = start,
+        end = end,
+        status = status,
+        updatedAt = updatedAt,
+        createdAt = createdAt
+    )
 
 }

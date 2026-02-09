@@ -18,7 +18,11 @@ class FAQService(
         title: String,
         content: String
     ): FAQEntity {
-        val entity = FAQEntity(name, title, content)
+        val entity = FAQEntity(
+            name = name,
+            title = title,
+            content = content
+        )
         return repository.save(entity)
     }
 
