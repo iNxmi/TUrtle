@@ -10,6 +10,7 @@ data class GetItemResponse(
     val description: String?,
     val category: Long?,
     val locker: Long?,
+    val needsConfirmation: Boolean?,
     val acquiredAt: Instant?,
 
     override val updatedAt: Instant?,
@@ -23,6 +24,7 @@ data class GetItemResponse(
         description = entity.description,
         category = entity.category.id,
         locker = entity.locker.id,
+        needsConfirmation = entity.needsConfirmation,
         acquiredAt = entity.acquiredAt,
 
         updatedAt = entity.updatedAt,

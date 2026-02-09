@@ -122,6 +122,7 @@ class DataSeeder(
             description = "The Xbox 360 (we love it)",
             categoryId = itemCategoryService.getByName("Gaming").id,
             lockerId = lockerService.getByIndex(6)!!.id,
+            needsConfirmation = true,
             acquiredAt = Instant.now()
         )
 
@@ -130,6 +131,7 @@ class DataSeeder(
             description = "The PS4 (we love it not as much as the 360)",
             categoryId = itemCategoryService.getByName("Gaming").id,
             lockerId = lockerService.getByIndex(6)!!.id,
+            needsConfirmation = true,
             acquiredAt = Instant.now()
         )
 
@@ -138,6 +140,7 @@ class DataSeeder(
             description = "laptop from dell",
             categoryId = itemCategoryService.getByName("Laptop").id,
             lockerId = lockerService.getByIndex(7)!!.id,
+            needsConfirmation = false,
             acquiredAt = Instant.now()
         )
     }

@@ -48,7 +48,7 @@ class ItemCategoryController(
             throw HttpException.Forbidden()
 
         if (itemCategoryService.getByNameOrNull(request.name) != null)
-            throw HttpException.Conflict("DeviceCategory with name '${request.name}' already exists.")
+            throw HttpException.Conflict("Item category with name '${request.name}' already exists.")
 
         val entity = itemCategoryService.create(
             name = request.name
@@ -119,7 +119,7 @@ class ItemCategoryController(
 
         if (request.name != null)
             if (itemCategoryService.getByNameOrNull(request.name) != null)
-                throw HttpException.Conflict("Item Category with name '${request.name}' already exists.")
+                throw HttpException.Conflict("Item category with name '${request.name}' already exists.")
 
         val entity = itemCategoryService.patch(
             id = id,

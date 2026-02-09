@@ -9,9 +9,11 @@ import de.csw.turtle.api.dto.create.CreateItemBookingRequest
 import de.csw.turtle.api.dto.get.GetItemBookingResponse
 import de.csw.turtle.api.dto.patch.PatchItemBookingRequest
 import de.csw.turtle.api.entity.ItemBookingEntity
+import de.csw.turtle.api.entity.ItemBookingEntity.Status
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.ItemBookingService
+import de.csw.turtle.api.service.ItemService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
@@ -27,7 +29,8 @@ private const val ENDPOINT = "/api/device-bookings"
 @RestController
 @RequestMapping(ENDPOINT)
 class ItemBookingController(
-    private val itemBookingService: ItemBookingService
+    private val itemBookingService: ItemBookingService,
+    private val itemService: ItemService
 ) : CreateController<ItemBookingEntity, CreateItemBookingRequest, GetItemBookingResponse>,
     GetController<ItemBookingEntity, Long, GetItemBookingResponse>,
     PatchController<ItemBookingEntity, PatchItemBookingRequest, GetItemBookingResponse>,
@@ -45,11 +48,14 @@ class ItemBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        var status = request.status
-        var userId = request.userId
-        if (!user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS)) {
-            userId = user.id
-            status = ItemBookingEntity.Status.RESERVED
+        val item = itemService.getById(request.itemId)
+            ?: throw HttpException.NotFound()
+
+        var status = if (item.needsConfirmation) Status.REQUESTED else Status.RESERVED
+        var userId = user.id
+        if (user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS)) {
+            userId = request.userId
+            status = request.status
         }
 
         if (request.start == request.end)
@@ -153,14 +159,14 @@ class ItemBookingController(
         val entity = itemBookingService.getById(id)
             ?: throw HttpException.NotFound()
 
-        var userId = request.userId
-        var status = request.status
+        var userId: Long? = null
+        var status: Status? = null
         if (!user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS)) {
             if (entity.user != user)
                 throw HttpException.Forbidden()
 
-            userId = null
-            status = null
+            request.userId?.let { userId = it }
+            request.status?.let { status = it }
         }
 
         if (request.start != null && request.end != null) {

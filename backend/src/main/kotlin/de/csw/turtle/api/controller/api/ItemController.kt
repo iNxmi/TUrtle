@@ -64,6 +64,7 @@ class ItemController(
             description = request.description,
             categoryId = request.categoryId,
             lockerId = request.lockerId,
+            needsConfirmation = request.needsConfirmation,
             acquiredAt = request.acquiredAt
         )
 
@@ -149,6 +150,7 @@ class ItemController(
             description = request.description,
             categoryId = request.categoryId,
             lockerId = request.lockerId,
+            needsConfirmation = request.needsConfirmation,
             acquiredAt = request.acquiredAt
         )
 

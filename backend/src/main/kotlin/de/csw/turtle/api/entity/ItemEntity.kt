@@ -24,6 +24,8 @@ class ItemEntity(
     @JoinColumn(name = "locker_id")
     var locker: LockerEntity,
 
+    var needsConfirmation: Boolean,
+
     var acquiredAt: Instant,
 
     @OneToMany(mappedBy = "item")
@@ -53,6 +55,7 @@ class ItemEntity(
         description = description,
         category = category,
         locker = locker,
+        needsConfirmation = needsConfirmation,
         acquiredAt = acquiredAt,
         bookings = bookings.toMutableSet(),
         updatedAt = updatedAt,

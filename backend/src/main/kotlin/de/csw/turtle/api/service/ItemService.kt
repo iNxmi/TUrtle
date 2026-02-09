@@ -22,6 +22,7 @@ class ItemService(
         description: String,
         categoryId: Long,
         lockerId: Long,
+        needsConfirmation: Boolean,
         acquiredAt: Instant
     ): ItemEntity {
         val entity = ItemEntity(
@@ -29,6 +30,7 @@ class ItemService(
             description = description,
             category = itemCategoryRepository.findById(categoryId).get(),
             locker = lockerRepository.findById(lockerId).get(),
+            needsConfirmation = needsConfirmation,
             acquiredAt = acquiredAt
         )
 
@@ -41,6 +43,7 @@ class ItemService(
         description: String? = null,
         categoryId: Long? = null,
         lockerId: Long? = null,
+        needsConfirmation: Boolean? = null,
         acquiredAt: Instant? = null
     ): ItemEntity {
         val entity = repository.findById(id).get()
@@ -49,6 +52,7 @@ class ItemService(
         description?.let { entity.description = it }
         categoryId?.let { entity.category = itemCategoryRepository.findById(categoryId).get() }
         lockerId?.let { entity.locker = lockerRepository.findById(lockerId).get() }
+        needsConfirmation?.let { entity.needsConfirmation = it }
         acquiredAt?.let { entity.acquiredAt = it }
 
         return repository.save(entity)

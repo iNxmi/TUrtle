@@ -25,7 +25,7 @@ class ItemBookingEntity(
     var end: Instant,
 
     @Enumerated(EnumType.STRING)
-    var status: Status = Status.RESERVED,
+    var status: Status,
 
     //Instant.MIN will be replaced by createdAt in prePersist()
     override var updatedAt: Instant = Instant.MIN,
@@ -36,6 +36,7 @@ class ItemBookingEntity(
 ) : CRUDEntity {
 
     enum class Status {
+        REQUESTED,
         RESERVED,
         COLLECTION_READY,
         ITEM_COLLECTED,
