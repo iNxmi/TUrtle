@@ -1,6 +1,7 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.Settings
+import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
@@ -61,7 +62,7 @@ class JWTService(
         return expiration.isBefore(now)
     }
 
-    private fun getClaims(token: String) = Jwts.parserBuilder()
+    private fun getClaims(token: String): Claims = Jwts.parserBuilder()
         .setSigningKey(getKey())
         .build()
         .parseClaimsJws(token)

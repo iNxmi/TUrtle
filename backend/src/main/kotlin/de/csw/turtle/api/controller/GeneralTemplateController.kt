@@ -43,13 +43,14 @@ class GeneralTemplateController(
         if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        if (generalTemplateService.getByNameOrNull(request.name) != null)
+        if (generalTemplateService.getByName(request.name) != null)
             throw HttpException.Conflict("General template with name '${request.name}' already exists.")
 
         val entity = generalTemplateService.create(
             name = request.name,
             description = request.description,
-            content = request.content
+            content = request.content,
+            type = request.type
         )
 
         val location = URI.create("$ENDPOINT/${entity.id}")
@@ -131,14 +132,15 @@ class GeneralTemplateController(
             throw HttpException.Forbidden()
 
         if (request.name != null)
-            if (generalTemplateService.getByNameOrNull(request.name) != null)
+            if (generalTemplateService.getByName(request.name) != null)
                 throw HttpException.Conflict("General template with name '${request.name}' already exists.")
 
         val entity = generalTemplateService.patch(
             id = id,
             name = request.name,
             description = request.description,
-            content = request.content
+            content = request.content,
+            type = request.type
         )
 
         val dto = GetGeneralTemplateResponse(entity)

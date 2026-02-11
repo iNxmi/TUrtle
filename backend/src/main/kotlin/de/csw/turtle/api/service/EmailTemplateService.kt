@@ -1,7 +1,6 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.entity.EmailTemplateEntity
-import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.EmailTemplateRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -11,21 +10,23 @@ class EmailTemplateService(
     override val repository: EmailTemplateRepository
 ) : CRUDService<EmailTemplateEntity>() {
 
-    fun getByNameOrNull(name: String): EmailTemplateEntity? = repository.findByName(name)
-    fun getByName(name: String): EmailTemplateEntity = repository.findByName(name) ?: throw HttpException.NotFound(name)
+    fun getByName(name: String): EmailTemplateEntity? = repository.findByName(name)
+    fun getByType(type: EmailTemplateEntity.Type): EmailTemplateEntity? = repository.findByType(type)
 
     @Transactional
     fun create(
         name: String,
         description: String,
         subject: String,
-        content: String
+        content: String,
+        type: EmailTemplateEntity.Type?
     ): EmailTemplateEntity {
         val entity = EmailTemplateEntity(
             name = name,
             description = description,
             subject = subject,
-            content = content
+            content = content,
+            type = type
         )
 
         return repository.save(entity)
@@ -37,7 +38,8 @@ class EmailTemplateService(
         name: String? = null,
         description: String? = null,
         subject: String? = null,
-        content: String? = null
+        content: String? = null,
+        type: EmailTemplateEntity.Type? = null,
     ): EmailTemplateEntity {
         val entity = repository.findById(id).get()
 
@@ -45,6 +47,7 @@ class EmailTemplateService(
         description?.let { entity.description = it }
         subject?.let { entity.subject = it }
         content?.let { entity.content = it }
+        type?.let { entity.type = it }
 
         return repository.save(entity)
     }

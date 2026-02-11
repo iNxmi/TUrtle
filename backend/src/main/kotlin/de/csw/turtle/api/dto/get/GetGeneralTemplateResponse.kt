@@ -9,6 +9,7 @@ data class GetGeneralTemplateResponse(
     val name: String?,
     val description: String?,
     val content: String?,
+    val type: GeneralTemplateEntity.Type?,
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?
@@ -20,6 +21,7 @@ data class GetGeneralTemplateResponse(
         name = entity.name,
         description = entity.description,
         content = entity.content,
+        type = entity.type,
 
         updatedAt = entity.updatedAt,
         createdAt = entity.createdAt

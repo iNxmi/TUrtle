@@ -43,14 +43,15 @@ class EmailTemplateController(
         if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        if (emailTemplateService.getByNameOrNull(request.name) != null)
+        if (emailTemplateService.getByName(request.name) != null)
             throw HttpException.Conflict("Email template with name '${request.name}' already exists.")
 
         val entity = emailTemplateService.create(
             name = request.name,
             description = request.description,
             subject = request.subject,
-            content = request.content
+            content = request.content,
+            type = request.type
         )
 
         val location = URI.create("$ENDPOINT/${entity.id}")
@@ -132,7 +133,7 @@ class EmailTemplateController(
             throw HttpException.Forbidden()
 
         if (request.name != null)
-            if (emailTemplateService.getByNameOrNull(request.name) != null)
+            if (emailTemplateService.getByName(request.name) != null)
                 throw HttpException.Conflict("Email template with name '${request.name}' already exists.")
 
         val entity = emailTemplateService.patch(
@@ -140,7 +141,8 @@ class EmailTemplateController(
             name = request.name,
             description = request.description,
             subject = request.subject,
-            content = request.content
+            content = request.content,
+            type = request.type
         )
 
         val dto = GetEmailTemplateResponse(entity)

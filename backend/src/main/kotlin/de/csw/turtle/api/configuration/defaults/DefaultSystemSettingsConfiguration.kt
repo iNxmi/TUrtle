@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import de.csw.turtle.api.Settings
 import de.csw.turtle.api.entity.SystemSettingEntity.Type
 import de.csw.turtle.api.entity.SystemSettingEntity.Visibility
-import de.csw.turtle.api.service.EmailTemplateService
-import de.csw.turtle.api.service.GeneralTemplateService
 import de.csw.turtle.api.service.SystemSettingService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
@@ -19,9 +17,7 @@ import java.util.*
 @Order(2)
 @Configuration
 class DefaultSystemSettingsConfiguration(
-    private val service: SystemSettingService,
-    private val generalTemplateService: GeneralTemplateService,
-    private val emailTemplateService: EmailTemplateService,
+    private val service: SystemSettingService
 ) : CommandLineRunner {
 
     private fun setDefault(
@@ -36,24 +32,6 @@ class DefaultSystemSettingsConfiguration(
             return
 
         service.create(key, type, value.toString(), visibility)
-    }
-
-    private fun setDefaultGeneralTemplate(
-        setting: Settings,
-        name: String,
-        visibility: Visibility = Visibility.PRIVATE
-    ) {
-        val generalTemplate = generalTemplateService.getByNameOrNull(name) ?: return
-        setDefault(setting, Type.LONG, generalTemplate.id.toString(), visibility)
-    }
-
-    private fun setDefaultEmailTemplate(
-        setting: Settings,
-        name: String,
-        visibility: Visibility = Visibility.PRIVATE
-    ) {
-        val emailTemplate = emailTemplateService.getByNameOrNull(name) ?: return
-        setDefault(setting, Type.LONG, emailTemplate.id.toString(), visibility)
     }
 
     private val secureRandom = SecureRandom()
@@ -157,17 +135,6 @@ class DefaultSystemSettingsConfiguration(
         setDefault(Settings.JWT_SECRET, Type.STRING, randomBase64())
         setDefault(Settings.JWT_DURATION_ACCESS, Type.DURATION, Duration.ofMinutes(5))
         setDefault(Settings.JWT_DURATION_REFRESH, Type.DURATION, Duration.ofDays(30))
-
-        setDefaultGeneralTemplate(Settings.CONTENT_TEMPLATE_IMPRINT, "imprint")
-        setDefaultGeneralTemplate(Settings.CONTENT_TEMPLATE_GDPR, "gdpr")
-        setDefaultGeneralTemplate(Settings.CONTENT_TEMPLATE_TOS, "tos")
-        setDefaultGeneralTemplate(Settings.CONTENT_TEMPLATE_CONTACT, "contact")
-        setDefaultGeneralTemplate(Settings.CONTENT_TEMPLATE_ABOUT, "about")
-
-        setDefaultEmailTemplate(Settings.EMAIL_TEMPLATE_USERS_CREATED, "users__created")
-        setDefaultEmailTemplate(Settings.EMAIL_TEMPLATE_USERS_VERIFY, "users__verify")
-        setDefaultEmailTemplate(Settings.EMAIL_TEMPLATE_ROOM_BOOKINGS_CREATED, "room_bookings__created")
-        setDefaultEmailTemplate(Settings.EMAIL_TEMPLATE_ROOM_BOOKINGS_UPDATED, "room_bookings__updated")
     }
 
 }

@@ -1,11 +1,7 @@
 package de.csw.turtle.api.entity
 
-import de.csw.turtle.api.service.ThymeleafService
 import jakarta.persistence.*
-import org.thymeleaf.context.Context
 import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalTime
 
 @Entity
 @Table(name = "general_templates")
@@ -23,6 +19,10 @@ class GeneralTemplateEntity(
     @Column(columnDefinition = "TEXT")
     var content: String,
 
+    @Column(unique = true)
+    @Enumerated(EnumType.STRING)
+    var type: Type?,
+
     //Instant.MIN will be replaced by createdAt in prePersist()
     override var updatedAt: Instant = Instant.MIN,
 
@@ -31,14 +31,12 @@ class GeneralTemplateEntity(
 
 ) : CRUDEntity {
 
-    fun getCompiledContent(thymeleafService: ThymeleafService): String {
-        //TODO add variables to insert into template
-        val context = Context().apply {
-            setVariable("time", LocalTime.now())
-            setVariable("date", LocalDate.now())
-        }
-
-        return thymeleafService.getRendered(content, context)
+    enum class Type {
+        IMPRINT,
+        GENERAL_DATA_PROTECTION_REGULATION,
+        TERMS_OF_SERVICE,
+        ABOUT,
+        CONTACT
     }
 
     @PrePersist
@@ -56,6 +54,7 @@ class GeneralTemplateEntity(
         name = name,
         description = description,
         content = content,
+        type = type,
         updatedAt = updatedAt,
         createdAt = createdAt
     )

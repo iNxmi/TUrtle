@@ -10,6 +10,7 @@ data class GetEmailTemplateResponse(
     val description: String?,
     val subject: String?,
     val content: String?,
+    val type: EmailTemplateEntity.Type?,
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?
@@ -22,6 +23,7 @@ data class GetEmailTemplateResponse(
         description = entity.description,
         subject = entity.subject,
         content = entity.content,
+        type = entity.type,
 
         updatedAt = entity.updatedAt,
         createdAt = entity.createdAt

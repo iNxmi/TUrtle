@@ -2,6 +2,7 @@ package de.csw.turtle.api.service
 
 import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.auth.LoginUserRequest
+import de.csw.turtle.api.entity.EmailTemplateEntity
 import de.csw.turtle.api.entity.TokenEntity.Type
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
@@ -78,8 +79,7 @@ class AuthService(
 
         val updatedUser = userService.addToken(user, token)
 
-        val emailTemplateId = systemSettingService.getTyped<Long>(Settings.EMAIL_TEMPLATE_USERS_VERIFY)
-        val emailTemplate = emailTemplateService.getById(emailTemplateId)
+        val emailTemplate = emailTemplateService.getByType(EmailTemplateEntity.Type.USER_VERIFICATION)
             ?: throw HttpException.NotFound()
 
         val context = Context().apply {

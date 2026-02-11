@@ -34,16 +34,5 @@ enum class Settings(val key: String) {
 
     JWT_SECRET("jwt.secret"),
     JWT_DURATION_ACCESS("jwt.duration.access"),
-    JWT_DURATION_REFRESH("jwt.duration.refresh"),
-
-    CONTENT_TEMPLATE_IMPRINT("content.template.imprint"),
-    CONTENT_TEMPLATE_GDPR("content.template.gdpr"),
-    CONTENT_TEMPLATE_TOS("content.template.tos"),
-    CONTENT_TEMPLATE_CONTACT("content.template.contact"),
-    CONTENT_TEMPLATE_ABOUT("content.template.about"),
-
-    EMAIL_TEMPLATE_USERS_CREATED("email.template.users.created"),
-    EMAIL_TEMPLATE_USERS_VERIFY("email.template.users.verify"),
-    EMAIL_TEMPLATE_ROOM_BOOKINGS_CREATED("email.template.room-bookings.created"),
-    EMAIL_TEMPLATE_ROOM_BOOKINGS_UPDATED("email.template.room-bookings.updated")
+    JWT_DURATION_REFRESH("jwt.duration.refresh")
 }
