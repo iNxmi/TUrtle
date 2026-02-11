@@ -202,7 +202,7 @@
 					},
 					description: "", 
 					enableWhitelist: useWhitelist, 
-					whitelist: eventWhitelist,
+					whitelistedUserIds: eventWhitelist,
 					openToEveryone: whitelistDisableOverride
 				}
 			}
@@ -214,7 +214,7 @@
 			creator: 129, 
 			description: eventDescription, 
 			accessibility: useWhitelist ? "WHITELIST" : whitelistDisableOverride ? "UNLOCKED" : "LOCKED",
-			whitelist: eventWhitelist
+			whitelistedUserIds: eventWhitelist
 		}
 	};
 
@@ -269,7 +269,7 @@
 				end: newEndDate,
 				description: eventDescription,
 				enableWhitelist: useWhitelist,
-				whitelist: eventWhitelist,
+				whitelistedUserIds: eventWhitelist,
 				openToEveryone: whitelistDisableOverride
 			});
 		} else {
@@ -278,7 +278,7 @@
 			calendar.getEventById(selectedEvent.id).setEnd(newEndDate);
 			calendar.getEventById(selectedEvent.id).setExtendedProp('description', eventDescription);
 			calendar.getEventById(selectedEvent.id).setExtendedProp('enableWhitelist', useWhitelist);
-			calendar.getEventById(selectedEvent.id).setExtendedProp('whitelist', eventWhitelist);
+			calendar.getEventById(selectedEvent.id).setExtendedProp('whitelistedUserIds', eventWhitelist);
 			calendar.getEventById(selectedEvent.id).setExtendedProp('openToEveryone', whitelistDisableOverride);
 			}
 		const response = await request( selectedEvent.new ? roomBookingsPath : roomBookingsPath+`/${selectedEvent.id}`, {

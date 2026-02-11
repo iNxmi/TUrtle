@@ -14,7 +14,7 @@ export function convertEventToBackend(calendarEvent) {
         creator: calendarEvent.extendedProps.creator.id,
         description: calendarEvent.extendedProps.description,
         accessibility: calendarEvent.extendedProps.enableWhitelist ? "WHITELIST" : calendarEvent.extendedProps.openToEveryone ? "UNLOCKED" : "LOCKED",
-        whitelist: calendarEvent.extendedProps.whitelist
+        whitelistedUserIds: calendarEvent.extendedProps.whitelist
     };
 }
 
