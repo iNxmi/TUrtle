@@ -49,11 +49,26 @@ class DefaultEmailTemplateConfiguration(
         if (service.count() > 0)
             return
 
-        create("users__created", "CSW - Welcome to TUrtle", usersCreated, EmailTemplateEntity.Type.USER_CREATED)
-        create("users__verification", "CSW - Please verify your account", usersVerify, EmailTemplateEntity.Type.USER_VERIFICATION)
+        create("User Created", "CSW - Welcome to TUrtle", usersCreated, EmailTemplateEntity.Type.USER_CREATED)
+        create(
+            "User Verification",
+            "CSW - Please verify your account",
+            usersVerify,
+            EmailTemplateEntity.Type.USER_VERIFICATION
+        )
 
-        create("room_bookings__created", "CSW - Room Booking Created", roomBookingsCreated, EmailTemplateEntity.Type.ROOM_BOOKING_CREATED)
-        create("room_bookings__updated", "CSW - Room Booking Updated", roomBookingsUpdated, EmailTemplateEntity.Type.ROOM_BOOKING_UPDATED)
+        create(
+            "Room Booking Created",
+            "CSW - Room Booking Created",
+            roomBookingsCreated,
+            EmailTemplateEntity.Type.ROOM_BOOKING_CREATED
+        )
+        create(
+            "Room Booking Updated",
+            "CSW - Room Booking Updated",
+            roomBookingsUpdated,
+            EmailTemplateEntity.Type.ROOM_BOOKING_UPDATED
+        )
     }
 
 }

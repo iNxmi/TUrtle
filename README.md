@@ -26,6 +26,7 @@ Port: 8080
 * create /api/token endpoints (add /validate to check if it is valid for frontend)
 * make CREATE:/api/support-tickets verify by email like user registration
 * user registration has no email check if valid or in trusted emails check
+* add a entry in faq entity to make it active/inactive
 
 ## Docker Environment
 ```

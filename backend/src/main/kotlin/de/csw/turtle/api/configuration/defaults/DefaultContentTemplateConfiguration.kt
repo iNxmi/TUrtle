@@ -1,6 +1,6 @@
 package de.csw.turtle.api.configuration.defaults
 
-import de.csw.turtle.api.entity.ContentTemplateEntity
+import de.csw.turtle.api.entity.ContentTemplateEntity.Type
 import de.csw.turtle.api.service.ContentTemplateService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
@@ -111,16 +111,19 @@ class DefaultContentTemplateConfiguration(
 
     """.trimIndent()
 
+    private fun create(name: String, content: String, type: Type) =
+        service.create(name, "Default content provided by the contractor", content, type)
+
     @Transactional
     override fun run(vararg args: String) {
         if (service.count() > 0)
             return
 
-        service.create("imprint", "default value by ag", imprint, ContentTemplateEntity.Type.IMPRINT)
-        service.create("contact", "default value by ag", contact, ContentTemplateEntity.Type.CONTACT)
-        service.create("tos", "default value by ag", tos, ContentTemplateEntity.Type.TERMS_OF_SERVICE)
-        service.create("about", "default value by ag", about, ContentTemplateEntity.Type.ABOUT)
-        service.create("gdpr", "default value by ag", gdpr, ContentTemplateEntity.Type.GENERAL_DATA_PROTECTION_REGULATION)
+        create("Imprint", imprint, Type.IMPRINT)
+        create("Contact", contact, Type.CONTACT)
+        create("Terms of Service", tos, Type.TERMS_OF_SERVICE)
+        create("About", about, Type.ABOUT)
+        create("General Data Protection Regulation", gdpr, Type.GENERAL_DATA_PROTECTION_REGULATION)
     }
 
 }
