@@ -154,6 +154,9 @@ class AuthController(
         val user = userService.getByToken(token)
             ?: throw HttpException.NotFound()
 
+        userService.removeToken(user, token)
+        tokenService.delete(token.id)
+
         val regexes = systemSettingService.getTyped<List<String>>(Settings.USER_EMAIL_TRUSTED).map { Regex(it) }
         val isTrustedEmail = regexes.any { it.matches(user.email) }
         val newStatus = if (isTrustedEmail) UserEntity.Status.ACTIVE else UserEntity.Status.PENDING_APPROVAL
