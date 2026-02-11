@@ -20,16 +20,18 @@
     let calendar = $state();
     let localeFunction = getContext('locale');
     
-    let filteredDevices = $derived(devices.filter((device) => device.category === selectedCategory));
-    let formattedDevices = $derived(filteredDevices.map((device) =>  ({name: device.name, value: device.id, description: device.description})));
+    let filteredItems = $derived(devices.filter((device) => device.category === selectedCategory));
+    let formattedDevices = $derived(filteredItems ? filteredItems.map((device) =>  ({name: device.name, value: device.id, description: device.description})): null);
 
-    let formattedDeviceCategories = $derived(deviceCategories.map((category) => ({name: category.name, value: category.id})));
+    let formattedDeviceCategories = $derived( deviceCategories ? deviceCategories.map((category) => ({name: category.name, value: category.id})) : []);
 	
     let localeString = $derived(localeFunction());
 
     let showCreateNewReservationModal = $state(false);
 
-    let showLockerOpenModal = $state(false);
+    let showLockerOpenModal = $state(false); 
+    
+    const confirmation = getContext('confirm');
 
     $effect(() => {
 
@@ -105,22 +107,36 @@
   /* let newBooking = $state(); */
 
   async function createNewBooking(){
-    const actualSelectedDevice = filteredDevices.find((device) => device.id === selectedDevice);
+    const actualSelectedDevice = filteredItems.find((device) => device.id === selectedDevice);
+    const needsConfirmation = actualSelectedDevice.needsConfirmation;
+
+    if(needsConfirmation){
+       
+
+        const success = await confirmation('_This item is a high value item. Therefore you need to sign a borrowing contract before this item can be borrowed. If you have interest in signing a contract, click the button below');
+
+        if(!success){
+            return;
+        }
+    }
     const newBooking = {
-            deviceId: selectedDevice,
-            start: instantBooking ? new Date(Date.now()) : bookingRange.from,
+            itemId: selectedDevice,
+            start: instantBooking && !needsConfirmation ? new Date(Date.now()) : bookingRange.from,
             end: bookingRange.to,
             userId: data.user.id,
-            status: instantBooking ? 'COLLECTION_READY' : 'RESERVED'
+            status: needsConfirmation ? 'REQUESTED' : instantBooking ? 'PENDING_COLLECTION' : 'RESERVED'
         }
-        if(!instantBooking){
+        if(!instantBooking || needsConfirmation){
             newBooking.start.setHours(parseInt(bookingStartTime.substring(0,2)));
             newBooking.start.setMinutes(parseInt(bookingStartTime.substring(3)));
         }
         newBooking.end.setHours(parseInt(bookingEndTime.substring(0,2)));
         newBooking.end.setMinutes(parseInt(bookingEndTime.substring(3)));
 
-     calendar.addEvent(newBooking);
+     if(!needsConfirmation){
+        calendar.addEvent(newBooking);
+     }
+        
 
     const response = await request(deviceBookingsPath, {
         method: 'POST',
