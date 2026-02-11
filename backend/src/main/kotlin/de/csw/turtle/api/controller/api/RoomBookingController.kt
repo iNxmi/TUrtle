@@ -96,6 +96,9 @@ class RoomBookingController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<GetRoomBookingResponse> {
+        if(user == null)
+            throw HttpException.Unauthorized()
+
         val entity = roomBookingService.getById(variable)
             ?: throw HttpException.NotFound()
 
@@ -116,29 +119,22 @@ class RoomBookingController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
-        if (user == null)
+        if(user == null)
             throw HttpException.Unauthorized()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
         } ?: Sort.unsorted()
 
-        val specification: Specification<RoomBookingEntity> =
-            if (user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
-                Specification.unrestricted()
-            } else Specification { root, _, builder ->
-                builder.equal(root.get<UserEntity>("user"), user)
-            }
-
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = roomBookingService.getPage(rsql = rsql, pageable = pageable, specification = specification)
+            val page = roomBookingService.getPage(rsql = rsql, pageable = pageable)
             val dto = page.map { GetRoomBookingResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection =
-            roomBookingService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
+            roomBookingService.getAll(rsql = rsql, sort = sort).toMutableSet()
         val dto = collection.map { GetRoomBookingResponse(it) }
         return ResponseEntity.ok(dto)
     }

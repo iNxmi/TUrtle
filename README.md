@@ -26,6 +26,9 @@ Port: 8080
 * make all srvice create and patch transactional
 * invert all request overrides to make them more safe, in controllers
 * implement user auth token tracking for revoking
+* /api/auth/reset-password
+* create /api/token endpoints (add /validate to check if it is valid for frontend)
+* 
 
 ## Docker Environment
 ```
