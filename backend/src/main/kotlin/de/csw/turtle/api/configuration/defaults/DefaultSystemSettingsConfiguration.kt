@@ -47,49 +47,19 @@ class DefaultSystemSettingsConfiguration(
     }
 
     private val emojis = setOf(
-        "😈",
-        "😃",
-        "🎩",
-        "👽",
-        "💩",
-        "❤️",
-        "💎",
-        "👂",
-        "👍",
-        "🐋",
-        "🐶",
-        "🐸",
-        "❄",
-        "🎉",
-        "💿",
-        "🍉",
-        "☎",
-        "🎥",
-        "✂",
-        "⚽",
-        "🚀",
-        "💄",
-        "🌂",
-        "🍄",
-        "🍀",
-        "🚗",
-        "🍕",
-        "🍔",
-        "🍨",
-        "💣",
-        "🐧",
-        "💼",
-        "🌍",
-        "🐝",
-        "🏠",
-        "⏰"
+        "😈", "😃", "🎩", "👽", "💩", "❤️",
+        "💎", "👂", "👍", "🐋", "🐶", "🐸",
+        "❄", "🎉", "💿", "🍉", "☎", "🎥",
+        "✂", "⚽", "🚀", "💄", "🌂", "🍄",
+        "🍀", "🚗", "🍕", "🍔", "🍨", "💣",
+        "🐧", "💼", "🌍", "🐝", "🏠", "⏰"
     )
 
     @Transactional
     override fun run(vararg args: String) {
         val objectMapper = ObjectMapper()
-        setDefault(Settings.GENERAL_FQDN, Type.STRING, "csw.tu-darmstadt.de", Visibility.PUBLIC)
 
+        setDefault(Settings.GENERAL_FQDN, Type.STRING, "csw.tu-darmstadt.de", Visibility.PUBLIC)
 
         setDefault(Settings.EMOJIS_ALL, Type.STRING_LIST, objectMapper.writeValueAsString(emojis), Visibility.PUBLIC)
         setDefault(Settings.EMOJIS_SIZE, Type.INT, 5, Visibility.PUBLIC)

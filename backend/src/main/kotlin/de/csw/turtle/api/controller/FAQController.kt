@@ -78,10 +78,9 @@ class FAQController(
         val entity = faqService.getById(variable)
             ?: throw HttpException.NotFound()
 
-        if (!entity.enabled) {
+        if (!entity.enabled)
             if (user == null || !user.hasPermission(Permission.MANAGE_FAQ))
                 throw HttpException.Unauthorized()
-        }
 
         val dto = GetFAQResponse(entity)
         return ResponseEntity.ok(dto)
