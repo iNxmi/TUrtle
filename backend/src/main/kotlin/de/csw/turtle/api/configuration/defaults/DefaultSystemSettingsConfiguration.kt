@@ -112,11 +112,19 @@ class DefaultSystemSettingsConfiguration(
         val objectMapper = ObjectMapper()
         setDefault(Settings.GENERAL_FQDN, Type.STRING, "csw.tu-darmstadt.de", Visibility.PUBLIC)
 
+
         setDefault(Settings.EMOJIS_ALL, Type.STRING_LIST, objectMapper.writeValueAsString(emojis), Visibility.PUBLIC)
         setDefault(Settings.EMOJIS_SIZE, Type.INT, 5, Visibility.PUBLIC)
         setDefault(Settings.EMOJIS_MAX_RETRIES, Type.INT, 64)
 
         setDefault(Settings.USER_VERIFICATION_DURATION, Type.DURATION, Duration.ofDays(2))
+        // Regex
+        setDefault(
+            Settings.USER_EMAIL_TRUSTED,
+            Type.STRING_LIST,
+            objectMapper.writeValueAsString(setOf(".*@stud\\.tu-darmstadt\\.de", ".*@tu-darmstadt\\.de")),
+            Visibility.PUBLIC
+        )
 
         setDefault(Settings.ALTCHA_SECRET, Type.STRING, randomBase64())
         setDefault(Settings.ALTCHA_MAX_NUMBER, Type.LONG, 100_000L)
@@ -130,6 +138,7 @@ class DefaultSystemSettingsConfiguration(
         setDefault(Settings.DOOR_OPEN_DURATION, Type.DURATION, Duration.ofSeconds(5), Visibility.PUBLIC)
         setDefault(Settings.DOOR_SCHEDULE_START, Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
         setDefault(Settings.DOOR_SCHEDULE_END, Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
+        //thymeleaf simple template
         setDefault(Settings.DOOR_SSH_COMMAND, Type.STRING, "~/doorOpen.sh [[\${duration.toSeconds()}]]")
         setDefault(Settings.DOOR_SSH_HOSTNAME, Type.STRING, "192.168.0.107")
         setDefault(Settings.DOOR_SSH_PORT, Type.INT, 22)
@@ -138,6 +147,7 @@ class DefaultSystemSettingsConfiguration(
 
         setDefault(Settings.LOCKER_SCHEDULE_START, Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
         setDefault(Settings.LOCKER_SCHEDULE_END, Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
+        //thymeleaf simple template
         setDefault(Settings.LOCKER_SSH_COMMAND, Type.STRING, "~/cabinet[[\${index}]]Open.sh")
         setDefault(Settings.LOCKER_SSH_HOSTNAME, Type.STRING, "192.168.0.107")
         setDefault(Settings.LOCKER_SSH_PORT, Type.INT, 22)

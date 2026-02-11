@@ -1,5 +1,7 @@
 package de.csw.turtle.api.dto.patch
 
+import de.csw.turtle.api.entity.UserEntity
+
 data class PatchUserRequest(
     val username: String? = null,
     val firstName: String? = null,
@@ -8,5 +10,5 @@ data class PatchUserRequest(
     val emojis: String? = null,
     val roleIds: Set<Long>? = null,
     val password: String? = null,
-    val verified: Boolean? = null
+    val status: UserEntity.Status? = null
 ) : PatchRequest

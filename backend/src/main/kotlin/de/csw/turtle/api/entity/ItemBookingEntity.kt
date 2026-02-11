@@ -24,6 +24,10 @@ class ItemBookingEntity(
     @Column(name = "end_time")
     var end: Instant,
 
+    var collectedAt: Instant? = null,
+
+    var returnedAt: Instant? = null,
+
     @Enumerated(EnumType.STRING)
     var status: Status,
 
@@ -37,13 +41,23 @@ class ItemBookingEntity(
 
     enum class Status {
         REQUESTED,
-        RESERVED,
-        COLLECTION_READY,
-        ITEM_COLLECTED,
-        RESERVATION_ENDED,
-        ITEM_RETURNED,
-        CANCELLED
+        APPROVED,
+        REJECTED,
+        CANCELLED,
+        PENDING_COLLECTION,
+        COLLECTED,
+        PENDING_RETURN,
+        RETURNED,
+        COMPLETED
     }
+
+//    enum class Status {
+//        REQUESTED,
+//        APPROVED,
+//        REJECTED,
+//        CANCELLED,
+//        COMPLETED
+//    }
 
     @PrePersist
     fun prePersist() {
@@ -62,6 +76,8 @@ class ItemBookingEntity(
         start = start,
         end = end,
         status = status,
+        collectedAt = collectedAt,
+        returnedAt = returnedAt,
         updatedAt = updatedAt,
         createdAt = createdAt
     )

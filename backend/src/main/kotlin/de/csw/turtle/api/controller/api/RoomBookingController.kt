@@ -52,7 +52,7 @@ class RoomBookingController(
         var userId = user.id
         var status = Status.REQUESTED
         if (user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
-            request.userId?.let{userId = it}
+            request.userId?.let { userId = it }
             request.status?.let { status = it }
         }
 
@@ -78,7 +78,7 @@ class RoomBookingController(
             end = request.end,
             description = request.description,
             accessibility = request.accessibility,
-            whitelistedUserIds = request.whitelistedUserIds,
+            whitelistedUserIds = request.whitelistedUserIds ?: setOf(),
             status = status
         )
 

@@ -65,4 +65,7 @@ abstract class CRUDService<Entity : CRUDEntity> {
     @Transactional
     open fun count() = repository.count()
 
+    @Transactional
+    open fun existsById(id: Long): Boolean = repository.existsById(id)
+
 }

@@ -7,6 +7,8 @@ data class CreateItemBookingRequest(
     val start: Instant,
     val end: Instant,
     val itemId: Long,
-    val userId: Long,
-    val status: ItemBookingEntity.Status = ItemBookingEntity.Status.RESERVED
+    val userId: Long? = null,
+    val collectedAt: Instant? = null,
+    val returnedAt: Instant? = null,
+    val status: ItemBookingEntity.Status? = null
 ) : CreateRequest

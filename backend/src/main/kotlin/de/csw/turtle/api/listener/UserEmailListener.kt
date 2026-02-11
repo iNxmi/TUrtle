@@ -1,6 +1,7 @@
 package de.csw.turtle.api.listener
 
 import de.csw.turtle.api.Settings
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.event.CreatedUserEvent
 import de.csw.turtle.api.service.EmailService
 import de.csw.turtle.api.service.EmailTemplateService
@@ -42,26 +43,25 @@ class UserEmailListener(
     @EventListener
     fun sendVerificationEmail(event: CreatedUserEvent) {
         val entity = event.entity
-        if (entity.verified)
-            return
+        if (entity.status == Status.PENDING_VERIFICATION) {
+            val context = Context().apply {
+                val fqdn = systemSettingService.getTyped<String>(Settings.GENERAL_FQDN)
+                val duration = systemSettingService.getTyped<Duration>(Settings.USER_VERIFICATION_DURATION)
 
-        val context = Context().apply {
-            val fqdn = systemSettingService.getTyped<String>(Settings.GENERAL_FQDN)
-            val duration = systemSettingService.getTyped<Duration>(Settings.USER_VERIFICATION_DURATION)
+                setVariable("user", entity)
+                setVariable("url", "https://$fqdn/api/auth/verify?token=${entity.verificationToken}")
+                setVariable("duration", duration)
+                setVariable("expiration", entity.createdAt.plusMillis(duration.toMillis()))
+            }
 
-            setVariable("user", entity)
-            setVariable("url", "https://$fqdn/api/auth/verify?token=${entity.verificationToken}")
-            setVariable("duration", duration)
-            setVariable("expiration", entity.createdAt.plusMillis(duration.toMillis()))
+            val templateId = systemSettingService.getTyped<Long>(Settings.EMAIL_TEMPLATE_USERS_VERIFY)
+            val template = emailTemplateService.getById(templateId)
+                ?: throw NoSuchElementException()
+
+            val subject = thymeleafService.getRendered(template.subject, context)
+            val content = thymeleafService.getRendered(template.content, context)
+            emailService.sendHtmlEmail(entity.email, subject, content)
         }
-
-        val templateId = systemSettingService.getTyped<Long>(Settings.EMAIL_TEMPLATE_USERS_VERIFY)
-        val template = emailTemplateService.getById(templateId)
-            ?: throw NoSuchElementException()
-
-        val subject = thymeleafService.getRendered(template.subject, context)
-        val content = thymeleafService.getRendered(template.content, context)
-        emailService.sendHtmlEmail(entity.email, subject, content)
     }
 
 }

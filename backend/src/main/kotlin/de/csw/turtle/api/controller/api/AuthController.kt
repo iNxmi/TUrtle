@@ -2,7 +2,9 @@ package de.csw.turtle.api.controller.api
 
 import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.auth.LoginUserRequest
+import de.csw.turtle.api.dto.auth.ResetUserPasswordRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
+import de.csw.turtle.api.entity.TokenEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.*
@@ -13,7 +15,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.time.Duration
-import java.time.Instant
 
 private const val COOKIE_NAME_ACCESS_TOKEN = "access_token"
 private const val COOKIE_NAME_REFRESH_TOKEN = "refresh_token"
@@ -25,7 +26,8 @@ class AuthController(
     private val systemSettingService: SystemSettingService,
     private val userService: UserService,
     private val altchaService: AltchaService,
-    private val networkService: NetworkService
+    private val networkService: NetworkService,
+    private val tokenService: TokenService
 ) {
 
     //todo replace cookie generation by more robust method
@@ -70,22 +72,6 @@ class AuthController(
             throw HttpException.Unauthorized()
 
         val dto = GetUserResponse(user)
-        return ResponseEntity.ok(dto)
-    }
-
-    @GetMapping("/verify")
-    fun verify(
-        @RequestParam token: String
-    ): ResponseEntity<GetUserResponse> {
-        val user = userService.getByVerificationToken(token)
-
-        val duration = systemSettingService.getTyped<Duration>(Settings.USER_VERIFICATION_DURATION)
-        val expiryDate = user.createdAt.plusMillis(duration.toMillis())
-        if (expiryDate.isBefore(Instant.now()))
-            throw HttpException.Gone("Token expired.")
-
-        val entity = userService.patch(id = user.id, verified = true)
-        val dto = GetUserResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -136,6 +122,38 @@ class AuthController(
         deleteCookie(COOKIE_NAME_REFRESH_TOKEN, response)
 
         return ResponseEntity.noContent().build()
+    }
+
+    @GetMapping("/verify")
+    fun verify(
+        @RequestParam uuid: String
+    ): ResponseEntity<GetUserResponse> {
+        val token = tokenService.getByUuid(uuid)
+            ?: throw HttpException.NotFound("No token with uuid '$uuid'.")
+
+        if (token.type != TokenEntity.Type.VERIFICATION)
+            throw HttpException.BadRequest("Invalid token type.")
+
+        if (token.isExpired())
+            throw HttpException.Unauthorized("Token expired.")
+
+        val user = userService.getByVerificationToken(token)
+            ?: throw HttpException.NotFound()
+
+        val regexes = systemSettingService.getTyped<List<String>>(Settings.USER_EMAIL_TRUSTED).map { Regex(it) }
+        val isTrustedEmail = regexes.any { it.matches(user.email) }
+        val newStatus = if (isTrustedEmail) UserEntity.Status.ACTIVE else UserEntity.Status.PENDING_CONFIRMATION
+
+        val entity = userService.patch(id = user.id, status = newStatus)
+        val dto = GetUserResponse(entity)
+        return ResponseEntity.ok(dto)
+    }
+
+    @PostMapping("/reset-password")
+    fun reset(
+        @RequestBody request: ResetUserPasswordRequest
+    ) {
+
     }
 
 }

@@ -3,7 +3,6 @@ package de.csw.turtle.api.entity
 import de.csw.turtle.api.Permission
 import jakarta.persistence.*
 import java.time.Instant
-import java.util.*
 
 @Entity
 @Table(name = "users")
@@ -27,10 +26,13 @@ class UserEntity(
     @Column(unique = true)
     var emojis: String,
 
-    var verified: Boolean = false,
+    var status: Status,
 
-    @Column(unique = true)
-    val verificationToken: String = UUID.randomUUID().toString(),
+    @OneToOne
+    val verificationToken: TokenEntity? = null,
+
+    @OneToOne
+    val resetPasswordToken: TokenEntity? = null,
 
     @ManyToMany
     @JoinTable(
@@ -60,6 +62,16 @@ class UserEntity(
 
 ) : CRUDEntity {
 
+    enum class Status {
+        PENDING_VERIFICATION,
+        PENDING_CONFIRMATION,
+        ACTIVE,
+        SUSPENDED,
+        ARCHIVED,
+        DELETED,
+        REJECTED
+    }
+
     fun getAllPermissions(): Set<Permission> = roles.flatMap { it.permissions }.toSet()
     fun hasPermission(permission: Permission): Boolean = getAllPermissions().contains(permission)
 
@@ -81,7 +93,7 @@ class UserEntity(
         email = email,
         password = password,
         emojis = emojis,
-        verified = verified,
+        status = status,
         verificationToken = verificationToken,
         roles = roles.toMutableSet(),
         auditLogs = auditLogs.toMutableSet(),

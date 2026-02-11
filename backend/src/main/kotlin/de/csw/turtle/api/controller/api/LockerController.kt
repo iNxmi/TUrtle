@@ -51,7 +51,7 @@ class LockerController(
             name = request.name,
             index = request.index,
             isSoftwareUnlockable = request.isSoftwareUnlockable,
-            locked = request.locked
+            locked = request.locked ?: false
         )
 
         val location = URI.create("$ENDPOINT/${entity.id}")

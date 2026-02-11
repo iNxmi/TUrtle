@@ -48,7 +48,7 @@ class DataSeeder(
                     emojis = userService.generateEmojis(),
                     password = username,
                     roleIds = setOf(role.id),
-                    verified = true
+                    status = randomEnum()
                 )
             } catch (_: Exception) {
             }

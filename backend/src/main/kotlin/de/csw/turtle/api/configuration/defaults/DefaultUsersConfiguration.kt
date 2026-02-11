@@ -1,5 +1,6 @@
 package de.csw.turtle.api.configuration.defaults
 
+import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.service.RoleService
 import de.csw.turtle.api.service.UserService
 import org.springframework.boot.CommandLineRunner
@@ -30,7 +31,7 @@ class DefaultUsersConfiguration(
             emojis = "🍉🍉🍉🍉🍉",
             password = "student",
             roleIds = setOf(studentRole.id),
-            verified = true
+            status = UserEntity.Status.ACTIVE
         )
 
         val professorRole = roleService.getByName("Professor")
@@ -42,7 +43,7 @@ class DefaultUsersConfiguration(
             emojis = "🌍🌍🌍🌍🌍",
             password = "professor",
             roleIds = setOf(professorRole.id),
-            verified = true
+            status = UserEntity.Status.ACTIVE
         )
 
         val administratorRole = roleService.getByName("Administrator")
@@ -54,7 +55,7 @@ class DefaultUsersConfiguration(
             emojis = "💩💩💩💩💩",
             password = "admin",
             roleIds = setOf(administratorRole.id),
-            verified = true
+            status = UserEntity.Status.ACTIVE
         )
     }
 

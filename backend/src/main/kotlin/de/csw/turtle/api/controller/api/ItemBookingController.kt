@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.net.URI
+import java.time.Instant
 
 private const val ENDPOINT = "/api/item-bookings"
 
@@ -51,27 +52,24 @@ class ItemBookingController(
         val item = itemService.getById(request.itemId)
             ?: throw HttpException.NotFound()
 
-        var status = if (item.needsConfirmation) Status.REQUESTED else Status.RESERVED
+        var status = if (item.needsConfirmation) Status.REQUESTED else Status.APPROVED
         var userId = user.id
+        var collectedAt: Instant? = null
+        var returnedAt: Instant? = null
         if (user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS)) {
-            userId = request.userId
-            status = request.status
+            request.userId?.let { userId = it }
+            request.status?.let { status = it }
+            request.collectedAt?.let { collectedAt = it }
+            request.returnedAt?.let { returnedAt = it }
         }
-
-        if (request.start == request.end)
-            throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
-
-        if (request.start.isAfter(request.end))
-            throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${request.end}'.")
-
-        if (itemBookingService.getAllOverlapping(request.start, request.end, request.itemId, -1).isNotEmpty())
-            throw HttpException.Conflict("Item with ID '${request.itemId}' is already booked between '${request.start}' and '${request.end}'")
 
         val entity = itemBookingService.create(
             userId = userId,
             itemId = request.itemId,
             start = request.start,
             end = request.end,
+            collectedAt = collectedAt,
+            returnedAt = returnedAt,
             status = status
         )
 

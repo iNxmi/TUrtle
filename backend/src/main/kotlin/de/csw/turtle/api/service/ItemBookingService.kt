@@ -1,6 +1,7 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.entity.ItemBookingEntity
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.ItemBookingRepository
 import de.csw.turtle.api.repository.ItemRepository
 import de.csw.turtle.api.repository.UserRepository
@@ -25,13 +26,26 @@ class ItemBookingService(
         itemId: Long,
         start: Instant,
         end: Instant,
+        collectedAt: Instant?,
+        returnedAt: Instant?,
         status: ItemBookingEntity.Status
     ): ItemBookingEntity {
+        if (start == end)
+            throw HttpException.BadRequest("Start '${start}' cannot be the same as end '${end}'.")
+
+        if (start.isAfter(end))
+            throw HttpException.BadRequest("Start '${start}' cannot be after end '${end}'.")
+
+        if (getAllOverlapping(start, end, itemId, -1).isNotEmpty())
+            throw HttpException.Conflict("Item with ID '${itemId}' is already booked between '${start}' and '${end}'")
+
         val entity = ItemBookingEntity(
             user = userRepository.findById(userId).get(),
             item = itemRepository.findById(itemId).get(),
             start = start,
             end = end,
+            collectedAt = collectedAt,
+            returnedAt = returnedAt,
             status = status
         )
 
@@ -44,6 +58,8 @@ class ItemBookingService(
         itemId: Long? = null,
         start: Instant? = null,
         end: Instant? = null,
+        collectedAt: Instant? = null,
+        returnedAt: Instant? = null,
         status: ItemBookingEntity.Status? = null,
     ): ItemBookingEntity {
         val entity = repository.findById(id).get()
@@ -52,6 +68,8 @@ class ItemBookingService(
         itemId?.let { entity.item = itemRepository.findById(it).get() }
         start?.let { entity.start = it }
         end?.let { entity.end = it }
+        collectedAt?.let { entity.collectedAt = it }
+        returnedAt?.let { entity.returnedAt = it }
         status?.let { entity.status = it }
 
         return repository.save(entity)

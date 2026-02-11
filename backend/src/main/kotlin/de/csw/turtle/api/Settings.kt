@@ -8,6 +8,7 @@ enum class Settings(val key: String) {
     EMOJIS_MAX_RETRIES("emojis.max-retries"),
 
     USER_VERIFICATION_DURATION("user.verification.duration"),
+    USER_EMAIL_TRUSTED("user.email.trusted"),
 
     ALTCHA_SECRET("altcha.secret"),
     ALTCHA_MAX_NUMBER("altcha.max-number"),

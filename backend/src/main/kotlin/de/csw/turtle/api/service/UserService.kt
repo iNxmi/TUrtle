@@ -1,11 +1,11 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.Settings
+import de.csw.turtle.api.entity.TokenEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.event.CreatedUserEvent
 import de.csw.turtle.api.event.PatchedUserEvent
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.repository.EmailTemplateRepository
 import de.csw.turtle.api.repository.RoleRepository
 import de.csw.turtle.api.repository.UserRepository
 import jakarta.transaction.Transactional
@@ -19,10 +19,7 @@ class UserService(
     override val repository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val systemSettingService: SystemSettingService,
-    private val thymeleafService: ThymeleafService,
-    private val emailService: EmailService,
     private val roleRepository: RoleRepository,
-    private val emailTemplateRepository: EmailTemplateRepository,
     private val eventPublisher: ApplicationEventPublisher
 ) : CRUDService<UserEntity>() {
 
@@ -37,7 +34,7 @@ class UserService(
                 return selected
         }
 
-        throw HttpException.InternalServerError("Could not generate emojis. Contact system administrator. (Most likely too many users in DB).")
+        throw HttpException.InternalServerError("Could not generate unique emojis. Contact system administrator. (Most likely too many users in DB).")
     }
 
     fun create(
@@ -47,7 +44,7 @@ class UserService(
         email: String,
         emojis: String,
         password: String,
-        verified: Boolean,
+        status: UserEntity.Status,
         roleIds: Set<Long>
     ): UserEntity {
         val entity = UserEntity(
@@ -57,7 +54,7 @@ class UserService(
             email = email,
             emojis = emojis,
             password = passwordEncoder.encode(password),
-            verified = verified,
+            status = status,
             roles = roleIds.map { roleRepository.findById(it).get() }.toMutableSet()
         )
 
@@ -68,26 +65,29 @@ class UserService(
         return saved
     }
 
-    fun getUnverifiedUsers(cutoff: Instant): Set<UserEntity> = repository.findByVerifiedFalseAndCreatedAtBefore(cutoff)
+    fun getByStatusEqualsAndCreatedAtBefore(status: UserEntity.Status, cutoff: Instant): Set<UserEntity> = repository.findByStatusEqualsAndCreatedAtBefore(status, cutoff)
 
-    fun getByVerificationTokenOrNull(token: String): UserEntity? = repository.findByVerificationToken(token)
-    fun getByVerificationToken(token: String): UserEntity =
-        getByVerificationTokenOrNull(token) ?: throw HttpException.NotFound(token)
+    fun getByVerificationToken(token: TokenEntity): UserEntity? = repository.findByVerificationToken(token)
+
+    fun getByResetPasswordTokenOrNull(token: TokenEntity): UserEntity? = repository.findByResetPasswordToken(token)
+    fun getByResetPasswordToken(token: TokenEntity): UserEntity = getByResetPasswordTokenOrNull(token)
+        ?: throw HttpException.NotFound()
 
     fun getByUsernameOrNull(username: String): UserEntity? = repository.findByUsername(username)
-    fun getByUsername(username: String): UserEntity =
-        getByUsernameOrNull(username) ?: throw HttpException.NotFound(username)
+    fun getByUsername(username: String): UserEntity = getByUsernameOrNull(username)
+        ?: throw HttpException.NotFound(username)
 
     fun getByEmailOrNull(email: String): UserEntity? = repository.findByEmail(email)
-    fun getByEmail(email: String): UserEntity =
-        getByEmailOrNull(email) ?: throw HttpException.NotFound(email)
+    fun getByEmail(email: String): UserEntity = getByEmailOrNull(email)
+        ?: throw HttpException.NotFound(email)
 
     fun getByEmojisOrNull(emojis: String): UserEntity? = repository.findByEmojis(emojis)
-    fun getByEmojis(emojis: String): UserEntity = getByEmojisOrNull(emojis) ?: throw HttpException.NotFound(emojis)
+    fun getByEmojis(emojis: String): UserEntity = getByEmojisOrNull(emojis)
+        ?: throw HttpException.NotFound(emojis)
 
     fun getByEmailOrUsernameOrNull(value: String): UserEntity? = repository.findByEmailOrUsername(value, value)
-    fun getByEmailOrUsername(value: String): UserEntity =
-        getByEmailOrUsernameOrNull(value) ?: throw HttpException.NotFound(value)
+    fun getByEmailOrUsername(value: String): UserEntity = getByEmailOrUsernameOrNull(value)
+        ?: throw HttpException.NotFound(value)
 
     @Transactional
     fun patch(
@@ -98,7 +98,7 @@ class UserService(
         email: String? = null,
         emojis: String? = null,
         password: String? = null,
-        verified: Boolean? = null,
+        status: UserEntity.Status? = null,
         roleIds: Set<Long>? = null
     ): UserEntity {
         val entity = repository.findById(id).get()
@@ -110,7 +110,7 @@ class UserService(
         email?.let { entity.email = it }
         emojis?.let { entity.emojis = it }
         password?.let { entity.password = passwordEncoder.encode(it) }
-        verified?.let { entity.verified = it }
+        status?.let { entity.status = it }
         roleIds?.let { ids ->
             val roles = ids.map { roleRepository.findById(it).get() }
 

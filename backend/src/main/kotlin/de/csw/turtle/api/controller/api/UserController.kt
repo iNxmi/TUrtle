@@ -9,6 +9,7 @@ import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.NetworkService
@@ -52,8 +53,13 @@ class UserController(
             throw HttpException.Forbidden()
 
         var emojis = userService.generateEmojis()
-        if (user != null)
-            emojis = request.emojis
+        var status = Status.PENDING_VERIFICATION
+        var roleIds = setOf<Long>()
+        if (user != null) {
+            request.emojis?.let { emojis = it }
+            request.status?.let { status = it }
+            request.roleIds?.let { roleIds = it }
+        }
 
         if (userService.getByUsernameOrNull(request.username) != null)
             throw HttpException.Conflict("Username '${request.username}' already exists")
@@ -68,8 +74,8 @@ class UserController(
             email = request.email,
             emojis = emojis,
             password = request.password,
-            verified = request.verified,
-            roleIds = request.roleIds
+            status = status,
+            roleIds = roleIds
         )
 
         val location = URI.create("$ENDPOINT/${entity.id}")
@@ -157,13 +163,13 @@ class UserController(
 
         var username: String? = null
         var roleIds: Set<Long>? = null
-        var verified: Boolean? = null
+        var status: Status? = null
         var emojis: String? = null
         if (user.hasPermission(Permission.MANAGE_USERS)) {
-            username = request.username
-            roleIds = request.roleIds
-            verified = request.verified
-            emojis = request.emojis
+            request.username?.let { username = it }
+            request.roleIds?.let { roleIds = it }
+            request.status?.let { status = it }
+            request.emojis?.let { emojis = it }
         }
 
         val entity = userService.patch(
@@ -174,7 +180,7 @@ class UserController(
             email = request.email,
             emojis = emojis,
             password = request.password,
-            verified = verified,
+            status = status,
             roleIds = roleIds
         )
 

@@ -12,7 +12,7 @@ data class GetUserResponse(
     val email: String?,
     val emojis: String,
     val roleIds: Set<Long>?,
-    val verified: Boolean?,
+    val status: UserEntity.Status?,
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?
@@ -27,7 +27,7 @@ data class GetUserResponse(
         email = user.email,
         emojis = user.emojis,
         roleIds = user.roles.map { it.id }.toSortedSet(),
-        verified = user.verified,
+        status = user.status,
 
         updatedAt = user.updatedAt,
         createdAt = user.createdAt
