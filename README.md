@@ -18,7 +18,7 @@ Port: 8080
 * email sending; noreply@mail.de (verification email, confirmation email(booking, returning, deadline reminder), support confirmation email, password/pin reset email)
 * statistics
 * distinguish prof/student role
-* document this: rsql, system settings, templates with thymeleaf
+* document this: rsql, system settings, templates with thymeleaf, regex in some system settings
 * `*@stud.tu-darmstadt.de` -> ok
 * `*@tu-darmstadt.de` -> ok
 * `*@andere.email` -> request
@@ -28,7 +28,8 @@ Port: 8080
 * implement user auth token tracking for revoking
 * /api/auth/reset-password
 * create /api/token endpoints (add /validate to check if it is valid for frontend)
-* 
+* make CREATE:/api/support-tickets verify by email like user registration
+* user registration has no email check if valid or in trusted emails check
 
 ## Docker Environment
 ```
