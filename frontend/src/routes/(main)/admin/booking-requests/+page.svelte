@@ -4,8 +4,9 @@
 	import { fade } from 'svelte/transition';
 	import request from '$lib/api/api';
 	import { convertEventToBackend, convertEventToFrontend, fetchRoomBookings, between } from '$lib/utils';
-	import {Label, Input, Datepicker, Button, Textarea, Toggle, MultiSelect, Timepicker,Heading, P} from 'flowbite-svelte';
+	import {Label, Input, Datepicker, Button, Textarea, Toggle, MultiSelect, Timepicker,Heading, P, Tabs, TabItem} from 'flowbite-svelte';
 	import WhitelistDropdown from '$lib/components/WhitelistDropdown.svelte';
+	import TableView from '$lib/components/TableView.svelte';
 	import {m} from '$lib/paraglide/messages.js';
 
 	import {TrashBinSolid} from 'flowbite-svelte-icons';
@@ -16,25 +17,27 @@
 	import listPlugin from '@fullcalendar/list';
 	import interactionPlugin from '@fullcalendar/interaction';
 	import {roomBookingsPath} from '$lib/backend';
+	import { page } from '$app/state';
 
 	let { data } = $props();
 
-	let creator = $derived(selectedEvent ? [selectedEvent.extendedProps.creator]: null);
+	let creator = $derived(selectedEvent ? [selectedEvent.extendedProps.creator]: data.user.id);
 	let currentUser = $derived(data.user);
 	let users = $derived(data.users);
 	let dropdownUsers = $derived(users.map((user) =>  ({
 		firstName: user.firstName,
 		lastName: user.lastName,
-		selected: selectedEvent.extendedProps.whitelist.includes(user.id),
+		selected: selectedEvent.extendedProps.whitelistedUserIds.includes(user.id),
 		value: user.id
 	})));
 
 	let successRequest = $state(false);
-	let calendar;
+	let calendar = $state();
 	let eventCard;
 
 	let whitelistDisableOverride = $derived(selectedEvent.extendedProps.openToEveryone);
 
+	let currentTab = $state(page.url.searchParams.get("tab" )|| '/room-bookings');
 	let clientX;
 	let clientY;
 	const participants = [
@@ -98,8 +101,11 @@
 		return tempEndDate;
 	}); 
 
-	onMount(() => {
-		let calendarEl = document.getElementById('calendar');
+	let calendarEl = $state();
+	$effect(() => {
+		if(currentTab === '/room-bookings'){
+	/* function initCalendar(){ */
+		 calendarEl = document.getElementById('calendar');
 		calendar = new Calendar(calendarEl, {
 			plugins: [timeGridPlugin, listPlugin, interactionPlugin],
 			locale: 'de',
@@ -108,7 +114,7 @@
 			events: async function(info, successCallback, failureCallback) {
 				const fetchedData = await fetchRoomBookings(info);
 				if(fetchedData){
-					const events = fetchedData.map(event => (convertEventToFrontend(event, creator)));
+					const events = fetchedData.map(event => (convertEventToFrontend(event, currentUser)));
 					successCallback(events);
 				} else {
 					failureCallback("Error");
@@ -133,7 +139,7 @@
 			},
 			eventClick: function (info) {
 				info.jsEvent.preventDefault();
-				if(info.event.extendedProps.isAuthor){
+				if(info.event.extendedProps.isAuthor || user.roleIds.includes(3)){
 					selectedEvent = info.event;
 					clientX = info.jsEvent.clientX;
 					clientY = info.jsEvent.clientY + window.scrollY;
@@ -156,9 +162,22 @@
 				right: 'timeGridWeek,listWeek'
 			}
 		});
-		calendar.render();
-		calendar.getEvents().forEach((event) => event.backgroundColor(event.extendedProps.status === 'REQUESTED' ? '#FFF500': event.extendedProps.status === 'REJECTED' ?  '#CC0000': '#FF8C1E'));
-	});
+	}
+		/* calendar.render();
+		calendar.getEvents().forEach((event) => event.backgroundColor(event.extendedProps.status === 'REQUESTED' ? '#FFF500': event.extendedProps.status === 'REJECTED' ?  '#CC0000': '#FF8C1E')); */
+	}
+);
+
+$effect( () => {
+	if(calendar && currentTab === '/room-bookings'){
+	 calendar.render();
+
+	 setTimeout(() => {
+		calendar.getEvents().forEach((event) => event.setProp('color', event.extendedProps.status === 'REQUESTED' ? '#7600ff': event.extendedProps.status === 'REJECTED' ?  'red': 'oklch(75% 0.183 55.934)'));
+	}, 300);
+	
+	}
+})
 
 	function createEvent(e){
 		e.stopPropagation();
@@ -171,11 +190,11 @@
 			end:  endDate,
 			new: true,
 			extendedProps: {
-				creator: 1,
+				creator: currentUser.id,
 				description: "",
 				enableWhitelist: false,
 				openToEveryone: false,
-				whitelist: []
+				whitelistedUserIds: []
 			}
 		};
 
@@ -223,6 +242,7 @@
 	async function approveEvent(){
 			
 		calendar.getEventById(selectedEvent.id).setExtendedProp('status', 'APPROVED');
+		calendar.getEventById(selectedEvent.id).setProp('color', 'oklch(75% 0.183 55.934)');
 		
 		const response = await request(roomBookingsPath+`/${selectedEvent.id}`, {
 			method: 'PATCH',
@@ -240,6 +260,7 @@
 
 	async function denyEvent(){
 		calendar.getEventById(selectedEvent.id).setExtendedProp('status', 'REJECTED');
+		calendar.getEventById(selectedEvent.id).setProp('color', 'red');
 		
 		const response = await request(roomBookingsPath+`/${selectedEvent.id}`, {
 			method: 'PATCH',
@@ -256,7 +277,7 @@
 	};
 
 	async function saveEvent(){
-		if(between(startDate.getHours(), 6, 18) || between(endDate.getHours(), 6, 18)){            //TODO: Fix times
+		if(between(newStartDate.getHours(), 6, 18) || between(newEndDate.getHours(), 6, 18)){            //TODO: Fix times
 			const confirmed = await confirm('_The event is scheduled inside business hours. It has to be confirmed by CSW officials first. Do you want to continue?_');
 			if(!confirmed){
 				return;
@@ -326,56 +347,72 @@
 			}
 		}
 	});
+	const itembookingsHeaders = [
+        {id: "id", display: "_ID_"},
+        {id: "start", display: "_Start Date_"},
+        {id: "end", display: "_End Date_"},
+        {id: "deviceId", display: "_Device_"},
+        {id: "userId", display:"_User Name_"},
+        {id: "status", display: "_Status_"},
+        {id: "createdAt", display: "_created at_"}
+    ]
 </script>
-<div class="flex flex-col xl:flex-row  gap-2">
-	<div class="grow" id="calendar"></div>
-		<div bind:this={eventCard} class=" bg-white border rounded-lg w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-row xl:flex-col mt-17 p-5 gap-5">
-				{#if selectedEvent}
-				<div class="flex flex-col sm:flex-row justify-between h-10">
-					<input type="text" class="text-2xl w-9/10 h-full mr-auto dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2
-					 focus:ring-csw border-hidden outline-hidden focus:outline-hidden" bind:value={eventTitle} disabled={creator[0] !== currentUser.id}/> 
-					<button class="h-full w-10 inline-flex justify-end items-center cursor-pointer" onclick={removeEvent}>
-						<TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
-					</button>
+<Tabs tabStyle="underline">
+	<TabItem onclick={() => setTimeout(() => initCalendar(), 10)} title="_Room Bookings_" open={currentTab === '/room-bookings'}>
+		<div class="flex flex-col xl:flex-row  gap-2">
+			<div bind:this={calendarEl} class="grow" id="calendar"></div>
+				<div bind:this={eventCard} class=" bg-white border rounded-lg w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-row xl:flex-col mt-17 p-5 gap-5">
+						{#if selectedEvent}
+						<div class="flex flex-col sm:flex-row justify-between h-10">
+							<input type="text" class="text-2xl w-9/10 h-full mr-auto dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2
+							 focus:ring-csw border-hidden outline-hidden focus:outline-hidden" bind:value={eventTitle} disabled={creator[0] !== currentUser.id}/> 
+							<button class="h-full w-10 inline-flex justify-end items-center cursor-pointer" onclick={removeEvent}>
+								<TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
+							</button>
+						</div>
+						<Label>_Creator_
+							<WhitelistDropdown disabled={creator[0] !== currentUser.id} users={dropdownUsers} bind:value={creator} single {displayFunction} {sortFunction} {filterFunction}/>
+						</Label>
+						<Label class="space-y-2"> <span>_Start_</span>
+							<Datepicker disabled={creator[0] !== currentUser.id} monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
+							<Timepicker disabled={creator[0] !== currentUser.id} divClass="shadow-none!" bind:value={startTime}/>
+						</Label>
+						<Label class="space-y-2"> <span>_End_</span>
+							<Datepicker disabled={creator[0] !== currentUser.id} monthBtnSelected="bg-csw! hover:text-white!" bind:value={endDate}></Datepicker>
+							<Timepicker disabled={creator[0] !== currentUser.id} divClass="shadow-none!" bind:value={endTime}/>
+						</Label>
+						<Label for="description" class="mb-0">_Description_
+							<Textarea disabled={creator[0] !== currentUser.id} id="description" placeholder="_Sample description_" rows={3} class="w-full" bind:value={eventDescription} />
+						</Label>
+						<Toggle disabled={creator[0] !== currentUser.id} size="small" bind:checked={whitelistDisableOverride} onchange={setOpenToEveryone}>_Open to everyone_</Toggle>
+						<Toggle disabled={whitelistDisableOverride || creator[0] !== currentUser.id} size="small" bind:checked={useWhitelist}>_Use whitelist_</Toggle>
+						{#if useWhitelist}
+						<WhitelistDropdown disabled={creator[0] !== currentUser.id} users={dropdownUsers} bind:value={eventWhitelist} {sortFunction} {displayFunction} {filterFunction}/>
+					
+						{/if}
+						{#if selectedEvent.extendedProps.status === 'REQUESTED'}
+							<Button color='green' onclick={approveEvent}>_Approve</Button>
+							<Button color='red' onclick={denyEvent}>_Deny</Button>
+						{:else}
+							<Button class="cursor-pointer" onclick={saveEvent} disabled={creator[0] !== currentUser.id}>{m.save()} </Button>
+						{/if}
+						{#if successRequest}
+							<p out:fade class={(successRequest.ok ? "text-green-600" : "text-red-500")+" text-xs"}>
+								{successRequest.ok ? "_Event successfully saved_": "An error uccured, please try again"}
+							</p>
+						{/if}
+						{:else}
+						<div class="flex flex-col h-full justify-center items-center">
+							<Heading tag="h4" class="text-gray-500! dark:text-gray-400!">{m.admin_bookings__select_event()}</Heading>
+							<P class="text-gray-400 dark:text-gray-500! mb-2.5">{m.or()}</P>
+							<Button onclick={createEvent}>{m.admin_bookings__create_new_event()}</Button>
+						</div>
+						{/if}
 				</div>
-				<Label>_Creator_
-					<WhitelistDropdown disabled={creator[0] !== currentUser.id} users={dropdownUsers} bind:value={creator} single {displayFunction} {sortFunction} {filterFunction}/>
-				</Label>
-				<Label class="space-y-2"> <span>_Start_</span>
-					<Datepicker disabled={creator[0] !== currentUser.id} monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
-					<Timepicker disabled={creator[0] !== currentUser.id} divClass="shadow-none!" bind:value={startTime}/>
-				</Label>
-				<Label class="space-y-2"> <span>_End_</span>
-					<Datepicker disabled={creator[0] !== currentUser.id} monthBtnSelected="bg-csw! hover:text-white!" bind:value={endDate}></Datepicker>
-					<Timepicker disabled={creator[0] !== currentUser.id} divClass="shadow-none!" bind:value={endTime}/>
-				</Label>
-				<Label for="description" class="mb-0">_Description_
-					<Textarea disabled={creator[0] !== currentUser.id} id="description" placeholder="_Sample description_" rows={3} class="w-full" bind:value={eventDescription} />
-				</Label>
-				<Toggle disabled={creator[0] !== currentUser.id} size="small" bind:checked={whitelistDisableOverride} onchange={setOpenToEveryone}>_Open to everyone_</Toggle>
-				<Toggle disabled={whitelistDisableOverride || creator[0] !== currentUser.id} size="small" bind:checked={useWhitelist}>_Use whitelist_</Toggle>
-				{#if useWhitelist}
-				<WhitelistDropdown disabled={creator[0] !== currentUser.id} users={dropdownUsers} bind:value={eventWhitelist} {sortFunction} {displayFunction} {filterFunction}/>
-			
-				{/if}
-				{#if selectedEvent.extendedProps.status === 'REQUESTED'}
-					<Button color='green' onclick={approveEvent}>_Approve</Button>
-					<Button color='red' onclick={denyEvent}>_Deny</Button>
-				{:else}
-					<Button class="cursor-pointer" onclick={saveEvent} disabled={creator[0] !== currentUser.id}>{m.save()} </Button>
-				{/if}
-				{#if successRequest}
-					<p out:fade class={(successRequest.ok ? "text-green-600" : "text-red-500")+" text-xs"}>
-						{successRequest.ok ? "_Event successfully saved_": "An error uccured, please try again"}
-					</p>
-				{/if}
-				{:else}
-				<div class="flex flex-col h-full justify-center items-center">
-					<Heading tag="h4" class="text-gray-500! dark:text-gray-400!">{m.admin_bookings__select_event()}</Heading>
-					<P class="text-gray-400 dark:text-gray-500! mb-2.5">{m.or()}</P>
-					<Button onclick={createEvent}>{m.admin_bookings__create_new_event()}</Button>
-				</div>
-				{/if}
 		</div>
-</div>
+	</TabItem>
+	<TabItem title='_Item Booking_'>
+		<TableView headers={itembookingsHeaders} contentPage={data.page} />
+	</TabItem>
+</Tabs>
 <svelte:window on:click={onPageClick} />
