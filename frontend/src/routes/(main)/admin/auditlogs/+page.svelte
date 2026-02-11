@@ -9,7 +9,7 @@
 
     const {data} = $props();
     
-    let currentTab = $state(page.url.searchParams.get("endpoint" || '/auditlogs'));
+    let currentTab = $state(page.url.searchParams.get("endpoint" )|| '/auditlogs');
 
     const headers = [
         {id: "id", display: m.admin_auditlogs__id_label()},
