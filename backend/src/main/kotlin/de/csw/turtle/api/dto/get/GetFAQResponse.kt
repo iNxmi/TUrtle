@@ -9,6 +9,7 @@ class GetFAQResponse(
     val name: String?,
     val title: String?,
     val content: String?,
+    val enabled: Boolean?,
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?
@@ -20,6 +21,7 @@ class GetFAQResponse(
         name = entity.name,
         title = entity.title,
         content = entity.content,
+        enabled = entity.enabled,
 
         updatedAt = entity.updatedAt,
         createdAt = entity.createdAt

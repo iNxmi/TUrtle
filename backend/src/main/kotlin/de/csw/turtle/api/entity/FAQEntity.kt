@@ -18,6 +18,8 @@ class FAQEntity(
     @Column(columnDefinition = "TEXT")
     var content: String,
 
+    var enabled: Boolean,
+
     //Instant.MIN will be replaced by createdAt in prePersist()
     override var updatedAt: Instant = Instant.MIN,
 
@@ -41,6 +43,7 @@ class FAQEntity(
         name = name,
         title = title,
         content = content,
+        enabled = enabled,
         updatedAt = updatedAt,
         createdAt = createdAt
     )

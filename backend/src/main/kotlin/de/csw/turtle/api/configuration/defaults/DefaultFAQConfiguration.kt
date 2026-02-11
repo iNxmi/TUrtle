@@ -21,7 +21,8 @@ class DefaultFAQConfiguration(
             content = """
                 > Ab Februar 2025 haben wir unser altes Buchungssystem "TorTUga" durch das neue "TUrtle" ersetzt. In TUrtle ist es Euch möglich eigenständig außerhalb von Sprechstunden einen Account zu erstellen. Wichtig ist nur, dass Ihr eine TU-ID besitzt. 
                 > Zur Account-Erstellung müsst Ihr diesem Link folgen: {url}
-            """.trimIndent()
+            """.trimIndent(),
+            enabled = true
         )
 
         service.create(
@@ -31,7 +32,8 @@ class DefaultFAQConfiguration(
                 > Erstmal im Account registiert, können einfache Geräte oder Zubehör ganz leicht eigenständig vor Ort ausgeliehen werden.
                 > Handelt es sich bei dem Gerät um ein besonderes z.B. Gaming Laptop oder iPad ist ein Leihvertrag notwendig. 
                 > Das heißt Ihr müsstet in die Sprechstunde kommen und ein Admin leitet Euch durch den Ausleihprozess.
-            """.trimIndent()
+            """.trimIndent(),
+            enabled = true
         )
 
         service.create(
@@ -40,7 +42,8 @@ class DefaultFAQConfiguration(
             content = """
                 > Eine vollständige Liste über die auszuleihbare Geräte findet Ihr wenn Ihr Euch im TUrtle-Portal anmeldet. 
                 > Neben PCs mit MaxQDA stehen z.B. Beamer oder iPads zur Verfügung.
-            """.trimIndent()
+            """.trimIndent(),
+            enabled = true
         )
 
         service.create(
@@ -49,7 +52,8 @@ class DefaultFAQConfiguration(
             content = """
                 > Jeder Dozierende oder Angestellte der TU, damit auch SHKs (mit CSW-Account) darf den Raum in den Randzeiten (vor 10:00 und nach 16:00) eigenständig buchen. 
                 > Wenn es sich um eine Anfrage innerhalb unserer Hauptzeit handelt (10:00 - 16:00) kann eine Anfrage gestellt werden, diese muss jedoch erst durch die Admins genehmigt werden.
-            """.trimIndent()
+            """.trimIndent(),
+            enabled = true
         )
     }
 

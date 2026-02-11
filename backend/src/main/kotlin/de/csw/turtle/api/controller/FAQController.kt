@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -59,7 +60,7 @@ class FAQController(
         if (request.content.isBlank())
             throw HttpException.BadRequest("Content is required.")
 
-        val entity = faqService.create(request.name, request.title, request.content)
+        val entity = faqService.create(request.name, request.title, request.content, request.enabled)
         val location = URI.create("$ENDPOINT/${entity.id}")
         val dto = GetFAQResponse(entity)
         return ResponseEntity.created(location).body(dto)
@@ -76,6 +77,11 @@ class FAQController(
     ): ResponseEntity<GetFAQResponse> {
         val entity = faqService.getById(variable)
             ?: throw HttpException.NotFound()
+
+        if (!entity.enabled) {
+            if (user == null || !user.hasPermission(Permission.MANAGE_FAQ))
+                throw HttpException.Unauthorized()
+        }
 
         val dto = GetFAQResponse(entity)
         return ResponseEntity.ok(dto)
@@ -94,18 +100,24 @@ class FAQController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
+        val specification = if (user == null || !user.hasPermission(Permission.MANAGE_FAQ)) {
+            Specification { root, _, builder ->
+                builder.equal(root.get<Boolean>("enabled"), true)
+            }
+        } else Specification.unrestricted<FAQEntity>()
+
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
         } ?: Sort.unsorted()
 
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = faqService.getPage(rsql = rsql, pageable = pageable)
+            val page = faqService.getPage(rsql = rsql, pageable = pageable, specification = specification)
             val dto = page.map { GetFAQResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
-        val collection = faqService.getAll(rsql = rsql, sort = sort).toMutableSet()
+        val collection = faqService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
         val dto = collection.map { GetFAQResponse(it) }
         return ResponseEntity.ok(dto)
     }
@@ -146,7 +158,8 @@ class FAQController(
             id = id,
             name = request.name,
             title = request.title,
-            content = request.content
+            content = request.content,
+            enabled = request.enabled
         )
 
         val dto = GetFAQResponse(entity)

@@ -16,12 +16,14 @@ class FAQService(
     fun create(
         name: String,
         title: String,
-        content: String
+        content: String,
+        enabled: Boolean
     ): FAQEntity {
         val entity = FAQEntity(
             name = name,
             title = title,
-            content = content
+            content = content,
+            enabled = enabled
         )
         return repository.save(entity)
     }
@@ -30,13 +32,15 @@ class FAQService(
         id: Long,
         name: String? = null,
         title: String? = null,
-        content: String? = null
+        content: String? = null,
+        enabled: Boolean? = null
     ): FAQEntity {
         val entity = repository.findById(id).get()
 
         name?.let { entity.name = it }
         title?.let { entity.title = it }
         content?.let { entity.content = it }
+        enabled?.let { entity.enabled = it }
 
         return repository.save(entity)
     }
