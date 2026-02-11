@@ -92,10 +92,7 @@ class AuthService(
             setVariable("expiration", updatedUser.createdAt.plusMillis(duration.toMillis()))
         }
 
-        val subject = thymeleafService.getRendered(emailTemplate.subject, context)
-        val content = thymeleafService.getRendered(emailTemplate.content, context)
-
-        emailService.sendHtmlEmail(updatedUser.email, subject, content)
+        emailService.send(updatedUser.email, emailTemplate, context)
     }
 
 }

@@ -14,14 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+//TODO change from /api/debug to /debug (no proxy external access)
+
 @RestController
 @RequestMapping("/api/debug")
 class DebugController(
     private val emailService: EmailService,
-    private val doorControlService: DoorControlService,
-    private val lockerService: LockerService,
-    private val lockerControlService: LockerControlService,
-    private val altchaService: AltchaService,
     private val networkService: NetworkService
 ) {
 

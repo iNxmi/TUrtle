@@ -22,13 +22,6 @@ class RoomBookingEmailListener(
     private val thymeleafService: ThymeleafService
 ) {
 
-    private fun send(email: String, template: EmailTemplateEntity, context: Context) {
-        val subject = thymeleafService.getRendered(template.subject, context)
-        val content = thymeleafService.getRendered(template.content, context)
-
-        emailService.sendHtmlEmail(email, subject, content)
-    }
-
     @Async
     @EventListener
     fun sendCreatedEmail(event: CreatedRoomBookingEvent) {
@@ -42,7 +35,7 @@ class RoomBookingEmailListener(
             setVariable("booking", entity)
         }
 
-        send(entity.user.email, template, context)
+        emailService.send(entity.user.email, template, context)
     }
 
     @Async
@@ -59,7 +52,7 @@ class RoomBookingEmailListener(
             setVariable("post", event.post)
         }
 
-        send(pre.user.email, template, context)
+        emailService.send(pre.user.email, template, context)
     }
 
 }
