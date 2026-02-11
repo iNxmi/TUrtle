@@ -10,7 +10,7 @@ export class EventDatabase {
 			id: this.id.toString(),
 			...event
 		});
-		this.is += 1;
+		this.id += 1;
 	}
 
 	getEvents() {
