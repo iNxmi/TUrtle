@@ -1,8 +1,8 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.entity.GeneralTemplateEntity.Type
+import de.csw.turtle.api.entity.ContentTemplateEntity.Type
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.service.GeneralTemplateService
+import de.csw.turtle.api.service.ContentTemplateService
 import de.csw.turtle.api.service.ThymeleafService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -13,12 +13,12 @@ import org.thymeleaf.context.Context
 @RestController
 @RequestMapping("/api/content")
 class ContentController(
-    private val generalTemplateService: GeneralTemplateService,
+    private val contentTemplateService: ContentTemplateService,
     private val thymeleafService: ThymeleafService
 ) {
 
     private fun getResponse(type: Type): ResponseEntity<String> {
-        val template = generalTemplateService.getByType(type)
+        val template = contentTemplateService.getByType(type)
             ?: throw HttpException.NotFound()
 
         val context = Context()

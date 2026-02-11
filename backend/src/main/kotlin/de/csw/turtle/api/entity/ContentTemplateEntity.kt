@@ -4,8 +4,8 @@ import jakarta.persistence.*
 import java.time.Instant
 
 @Entity
-@Table(name = "general_templates")
-class GeneralTemplateEntity(
+@Table(name = "content_templates")
+class ContentTemplateEntity(
 
     @Id @GeneratedValue
     override val id: Long = 0,
@@ -49,7 +49,7 @@ class GeneralTemplateEntity(
         updatedAt = Instant.now()
     }
 
-    override fun snapshot() = GeneralTemplateEntity(
+    override fun snapshot() = ContentTemplateEntity(
         id = id,
         name = name,
         description = description,

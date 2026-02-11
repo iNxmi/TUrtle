@@ -1,21 +1,21 @@
 package de.csw.turtle.api.dto.get
 
-import de.csw.turtle.api.entity.GeneralTemplateEntity
+import de.csw.turtle.api.entity.ContentTemplateEntity
 import java.time.Instant
 
-data class GetGeneralTemplateResponse(
+data class GetContentTemplateResponse(
     override val id: Long?,
 
     val name: String?,
     val description: String?,
     val content: String?,
-    val type: GeneralTemplateEntity.Type?,
+    val type: ContentTemplateEntity.Type?,
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?
 ) : GetResponse {
 
-    constructor(entity: GeneralTemplateEntity) : this(
+    constructor(entity: ContentTemplateEntity) : this(
         id = entity.id,
 
         name = entity.name,

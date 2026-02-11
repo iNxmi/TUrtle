@@ -1,13 +1,13 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.dto.create.CreateGeneralTemplateRequest
-import de.csw.turtle.api.dto.get.GetGeneralTemplateResponse
-import de.csw.turtle.api.dto.patch.PatchGeneralTemplateRequest
-import de.csw.turtle.api.entity.GeneralTemplateEntity
+import de.csw.turtle.api.dto.create.CreateContentTemplateRequest
+import de.csw.turtle.api.dto.get.GetContentTemplateResponse
+import de.csw.turtle.api.dto.patch.PatchContentTemplateRequest
+import de.csw.turtle.api.entity.ContentTemplateEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.service.GeneralTemplateService
+import de.csw.turtle.api.service.ContentTemplateService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
@@ -17,36 +17,36 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 
-private const val ENDPOINT = "/api/general-templates"
+private const val ENDPOINT = "/api/content-templates"
 
 @RestController
 @RequestMapping(ENDPOINT)
-class GeneralTemplateController(
-    private val generalTemplateService: GeneralTemplateService
-) : CreateController<GeneralTemplateEntity, CreateGeneralTemplateRequest, GetGeneralTemplateResponse>,
-    GetController<GeneralTemplateEntity, Long, GetGeneralTemplateResponse>,
-    PatchController<GeneralTemplateEntity, PatchGeneralTemplateRequest, GetGeneralTemplateResponse>,
-    DeleteController<GeneralTemplateEntity> {
+class ContentTemplateController(
+    private val contentTemplateService: ContentTemplateService
+) : CreateController<ContentTemplateEntity, CreateContentTemplateRequest, GetContentTemplateResponse>,
+    GetController<ContentTemplateEntity, Long, GetContentTemplateResponse>,
+    PatchController<ContentTemplateEntity, PatchContentTemplateRequest, GetContentTemplateResponse>,
+    DeleteController<ContentTemplateEntity> {
 
     @PostMapping
     override fun create(
         @AuthenticationPrincipal user: UserEntity?,
 
-        @RequestBody request: CreateGeneralTemplateRequest,
+        @RequestBody request: CreateContentTemplateRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetGeneralTemplateResponse> {
+    ): ResponseEntity<GetContentTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        if (generalTemplateService.getByName(request.name) != null)
+        if (contentTemplateService.getByName(request.name) != null)
             throw HttpException.Conflict("General template with name '${request.name}' already exists.")
 
-        val entity = generalTemplateService.create(
+        val entity = contentTemplateService.create(
             name = request.name,
             description = request.description,
             content = request.content,
@@ -54,7 +54,7 @@ class GeneralTemplateController(
         )
 
         val location = URI.create("$ENDPOINT/${entity.id}")
-        val dto = GetGeneralTemplateResponse(entity)
+        val dto = GetContentTemplateResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -66,17 +66,17 @@ class GeneralTemplateController(
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetGeneralTemplateResponse> {
+    ): ResponseEntity<GetContentTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = generalTemplateService.getById(variable)
+        val entity = contentTemplateService.getById(variable)
             ?: throw HttpException.NotFound()
 
-        val dto = GetGeneralTemplateResponse(entity)
+        val dto = GetContentTemplateResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -105,13 +105,13 @@ class GeneralTemplateController(
 
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = generalTemplateService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { GetGeneralTemplateResponse(it) }
+            val page = contentTemplateService.getPage(rsql = rsql, pageable = pageable)
+            val dto = page.map { GetContentTemplateResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
-        val collection = generalTemplateService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { GetGeneralTemplateResponse(it) }
+        val collection = contentTemplateService.getAll(rsql = rsql, sort = sort).toMutableSet()
+        val dto = collection.map { GetContentTemplateResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -120,11 +120,11 @@ class GeneralTemplateController(
         @AuthenticationPrincipal user: UserEntity?,
 
         @PathVariable id: Long,
-        @RequestBody request: PatchGeneralTemplateRequest,
+        @RequestBody request: PatchContentTemplateRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetGeneralTemplateResponse> {
+    ): ResponseEntity<GetContentTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
@@ -132,10 +132,10 @@ class GeneralTemplateController(
             throw HttpException.Forbidden()
 
         if (request.name != null)
-            if (generalTemplateService.getByName(request.name) != null)
+            if (contentTemplateService.getByName(request.name) != null)
                 throw HttpException.Conflict("General template with name '${request.name}' already exists.")
 
-        val entity = generalTemplateService.patch(
+        val entity = contentTemplateService.patch(
             id = id,
             name = request.name,
             description = request.description,
@@ -143,7 +143,7 @@ class GeneralTemplateController(
             type = request.type
         )
 
-        val dto = GetGeneralTemplateResponse(entity)
+        val dto = GetContentTemplateResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -162,7 +162,7 @@ class GeneralTemplateController(
         if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        generalTemplateService.delete(id)
+        contentTemplateService.delete(id)
         return ResponseEntity.noContent().build()
     }
 

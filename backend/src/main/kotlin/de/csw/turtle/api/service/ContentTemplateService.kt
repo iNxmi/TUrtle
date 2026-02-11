@@ -1,24 +1,24 @@
 package de.csw.turtle.api.service
 
-import de.csw.turtle.api.entity.GeneralTemplateEntity
-import de.csw.turtle.api.repository.GeneralTemplateRepository
+import de.csw.turtle.api.entity.ContentTemplateEntity
+import de.csw.turtle.api.repository.ContentTemplateRepository
 import org.springframework.stereotype.Service
 
 @Service
-class GeneralTemplateService(
-    override val repository: GeneralTemplateRepository
-) : CRUDService<GeneralTemplateEntity>() {
+class ContentTemplateService(
+    override val repository: ContentTemplateRepository
+) : CRUDService<ContentTemplateEntity>() {
 
-    fun getByName(name: String): GeneralTemplateEntity? = repository.findByName(name)
-    fun getByType(type: GeneralTemplateEntity.Type): GeneralTemplateEntity? = repository.findByType(type)
+    fun getByName(name: String): ContentTemplateEntity? = repository.findByName(name)
+    fun getByType(type: ContentTemplateEntity.Type): ContentTemplateEntity? = repository.findByType(type)
 
     fun create(
         name: String,
         description: String,
         content: String,
-        type: GeneralTemplateEntity.Type?
-    ): GeneralTemplateEntity {
-        val entity = GeneralTemplateEntity(
+        type: ContentTemplateEntity.Type?
+    ): ContentTemplateEntity {
+        val entity = ContentTemplateEntity(
             name = name,
             description = description,
             content = content,
@@ -33,8 +33,8 @@ class GeneralTemplateService(
         name: String? = null,
         description: String? = null,
         content: String? = null,
-        type: GeneralTemplateEntity.Type? = null,
-    ): GeneralTemplateEntity {
+        type: ContentTemplateEntity.Type? = null,
+    ): ContentTemplateEntity {
         val entity = repository.findById(id).get()
 
         name?.let { entity.name = it }

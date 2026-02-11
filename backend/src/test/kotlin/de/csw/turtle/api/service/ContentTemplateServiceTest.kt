@@ -1,11 +1,11 @@
 package de.csw.turtle.api.service
 
-import de.csw.turtle.api.dto.create.CreateGeneralTemplateRequest
-import de.csw.turtle.api.dto.patch.PatchGeneralTemplateRequest
-import de.csw.turtle.api.entity.GeneralTemplateEntity
+import de.csw.turtle.api.dto.create.CreateContentTemplateRequest
+import de.csw.turtle.api.dto.patch.PatchContentTemplateRequest
+import de.csw.turtle.api.entity.ContentTemplateEntity
 import de.csw.turtle.api.exception.NotFoundException
 import de.csw.turtle.api.mapper.TemplateMapper
-import de.csw.turtle.api.repository.GeneralTemplateRepository
+import de.csw.turtle.api.repository.ContentTemplateRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -24,24 +24,24 @@ import org.springframework.data.jpa.domain.Specification
 
 
 @ExtendWith(MockKExtension::class)
-class GeneralTemplateServiceTest {
+class ContentTemplateServiceTest {
 
     @MockK
-    lateinit var repository: GeneralTemplateRepository
+    lateinit var repository: ContentTemplateRepository
 
     @MockK
     lateinit var mapper: TemplateMapper
 
     @InjectMockKs
-    lateinit var generalTemplateService: GeneralTemplateService
+    lateinit var contentTemplateService: ContentTemplateService
 
     @Test
     fun getByName_found_returnsEntity() {
         val request = "test"
-        val entity = GeneralTemplateEntity(request, "description", "content")
+        val entity = ContentTemplateEntity(request, "description", "content")
         every { repository.findByName(request) } returns entity
 
-        val result = generalTemplateService.getByName(request)
+        val result = contentTemplateService.getByName(request)
 
         assertEquals(request, result.name)
         verify(exactly = 1) { repository.findByName(request) }
@@ -54,63 +54,63 @@ class GeneralTemplateServiceTest {
 
     @Test
     fun getAll_withoutRsql_delegatesToRepositoryWithNullSpec() {
-        val list = listOf(GeneralTemplateEntity(name = "name", description = "description", content = "content"))
+        val list = listOf(ContentTemplateEntity(name = "name", description = "description", content = "content"))
         val sort = Sort.by(Sort.Order.asc("name"))
-        every { repository.findAll(null as Specification<GeneralTemplateEntity>?, sort) } returns list
+        every { repository.findAll(null as Specification<ContentTemplateEntity>?, sort) } returns list
 
-        val result = generalTemplateService.getAll(sort = sort, rsql = null)
+        val result = contentTemplateService.getAll(sort = sort, rsql = null)
 
         assertEquals(list, result)
-        verify(exactly = 1) { repository.findAll(null as Specification<GeneralTemplateEntity>?, sort) }
+        verify(exactly = 1) { repository.findAll(null as Specification<ContentTemplateEntity>?, sort) }
     }
 
     @Test
     fun getAll_withRsql_delegatesToRepositoryWithSpec() {
-        val list = listOf(GeneralTemplateEntity(name = "name", description = "description", content = "content"))
-        every { repository.findAll(any<Specification<GeneralTemplateEntity>>(), any<Sort>()) } returns list
+        val list = listOf(ContentTemplateEntity(name = "name", description = "description", content = "content"))
+        every { repository.findAll(any<Specification<ContentTemplateEntity>>(), any<Sort>()) } returns list
 
-        val result = generalTemplateService.getAll(sort = Sort.unsorted(), rsql = "name=='a'")
+        val result = contentTemplateService.getAll(sort = Sort.unsorted(), rsql = "name=='a'")
 
         assertEquals(1, result.size)
-        verify(exactly = 1) { repository.findAll(any<Specification<GeneralTemplateEntity>>(), any<Sort>()) }
+        verify(exactly = 1) { repository.findAll(any<Specification<ContentTemplateEntity>>(), any<Sort>()) }
     }
 
     @Test
     fun getPage_withoutRsql_delegatesToRepositoryWithNullSpec() {
         val pageable: Pageable = PageRequest.of(0, 10)
-        val list = listOf(GeneralTemplateEntity(name = "name", description = "description", content = "content"))
+        val list = listOf(ContentTemplateEntity(name = "name", description = "description", content = "content"))
         val page = PageImpl(list, pageable, list.size.toLong())
-        every { repository.findAll(null as Specification<GeneralTemplateEntity>?, pageable) } returns page
+        every { repository.findAll(null as Specification<ContentTemplateEntity>?, pageable) } returns page
 
-        val result = generalTemplateService.getPage(pageable = pageable, rsql = null)
+        val result = contentTemplateService.getPage(pageable = pageable, rsql = null)
 
         assertEquals(1, result.totalElements)
-        verify(exactly = 1) { repository.findAll(null as Specification<GeneralTemplateEntity>?, pageable) }
+        verify(exactly = 1) { repository.findAll(null as Specification<ContentTemplateEntity>?, pageable) }
     }
 
     @Test
     fun getPage_withRsql_delegatesToRepositoryWithSpec() {
         val pageable: Pageable = PageRequest.of(0, 10)
-        val list = listOf(GeneralTemplateEntity(name = "name", description = "description", content = "content"))
+        val list = listOf(ContentTemplateEntity(name = "name", description = "description", content = "content"))
         val page = PageImpl(list, pageable, list.size.toLong())
-        every { repository.findAll(any<Specification<GeneralTemplateEntity>>(), pageable) } returns page
+        every { repository.findAll(any<Specification<ContentTemplateEntity>>(), pageable) } returns page
 
-        val result = generalTemplateService.getPage(pageable = pageable, rsql = "name=='b'")
+        val result = contentTemplateService.getPage(pageable = pageable, rsql = "name=='b'")
 
         assertEquals(1, result.content.size)
-        verify(exactly = 1) { repository.findAll(any<Specification<GeneralTemplateEntity>>(), pageable) }
+        verify(exactly = 1) { repository.findAll(any<Specification<ContentTemplateEntity>>(), pageable) }
     }
 
     @Test
     fun create_callsMapperAndSaves_returnsSavedEntity() {
-        val request = CreateGeneralTemplateRequest(name = "name", description = "description", content = "content")
-        val mapped = GeneralTemplateEntity(name = "name", description = "description", content = "content")
-        val saved = GeneralTemplateEntity(name = "name", description = "description", content = "content")
+        val request = CreateContentTemplateRequest(name = "name", description = "description", content = "content")
+        val mapped = ContentTemplateEntity(name = "name", description = "description", content = "content")
+        val saved = ContentTemplateEntity(name = "name", description = "description", content = "content")
 
         every { mapper.create(request) } returns mapped
         every { repository.save(mapped) } returns saved
 
-        val result = generalTemplateService.create(request)
+        val result = contentTemplateService.create(request)
 
         assertEquals(saved, result)
         verify(exactly = 1) { mapper.create(request) }
@@ -120,10 +120,10 @@ class GeneralTemplateServiceTest {
     @Test
     fun getOrNull_whenPresent_returnsEntity() {
         val id = 67L
-        val entity = GeneralTemplateEntity(name = "name", description = "description", content = "content")
+        val entity = ContentTemplateEntity(name = "name", description = "description", content = "content")
         every { repository.findById(id) } returns Optional.of(entity)
 
-        val result = generalTemplateService.getOrNull(id)
+        val result = contentTemplateService.getOrNull(id)
 
         assertSame(entity, result)
         verify(exactly = 1) { repository.findById(id) }
@@ -134,7 +134,7 @@ class GeneralTemplateServiceTest {
         val id = 67L
         every { repository.findById(id) } returns Optional.empty()
 
-        val result = generalTemplateService.getOrNull(id)
+        val result = contentTemplateService.getOrNull(id)
 
         assertNull(result)
         verify(exactly = 1) { repository.findById(id) }
@@ -143,10 +143,10 @@ class GeneralTemplateServiceTest {
     @Test
     fun get_whenPresent_returnsEntity() {
         val id = 67L
-        val entity = GeneralTemplateEntity(name = "name", description = "description", content = "content")
+        val entity = ContentTemplateEntity(name = "name", description = "description", content = "content")
         every { repository.findById(id) } returns Optional.of(entity)
 
-        val result = generalTemplateService.get(id)
+        val result = contentTemplateService.get(id)
 
         assertSame(entity, result)
         verify(exactly = 1) { repository.findById(id) }
@@ -157,22 +157,22 @@ class GeneralTemplateServiceTest {
         val id = 67L
         every { repository.findById(id) } returns Optional.empty()
 
-        assertThrows<NotFoundException> { generalTemplateService.get(id) }
+        assertThrows<NotFoundException> { contentTemplateService.get(id) }
         verify(exactly = 1) { repository.findById(id) }
     }
 
     @Test
     fun patch_updatesEntityAndSaves() {
         val id = 67L
-        val existingEntity = GeneralTemplateEntity("old_name", "old_description", "old_content")
-        val request = PatchGeneralTemplateRequest(name = "new_name", description = null, content = "new_content")
-        val updated = GeneralTemplateEntity("new_name", "old_description", "new_content")
+        val existingEntity = ContentTemplateEntity("old_name", "old_description", "old_content")
+        val request = PatchContentTemplateRequest(name = "new_name", description = null, content = "new_content")
+        val updated = ContentTemplateEntity("new_name", "old_description", "new_content")
 
         every { repository.findById(id) } returns Optional.of(existingEntity)
         every { mapper.patch(existingEntity, request) } returns updated
         every { repository.save(updated) } returns updated
 
-        val result = generalTemplateService.patch(id, request)
+        val result = contentTemplateService.patch(id, request)
 
         assertEquals("new_name", result.name)
         assertEquals("old_description", result.description)
@@ -185,11 +185,11 @@ class GeneralTemplateServiceTest {
     @Test
     fun delete_deletesExistingEntity() {
         val id = 67L
-        val existingEntity = GeneralTemplateEntity("name", "description", "content")
+        val existingEntity = ContentTemplateEntity("name", "description", "content")
         every { repository.findById(id) } returns Optional.of(existingEntity)
         every { repository.delete(existingEntity) } returns Unit
 
-        generalTemplateService.delete(id)
+        contentTemplateService.delete(id)
 
         verify(exactly = 1) { repository.findById(id) }
         verify(exactly = 1) { repository.delete(existingEntity) }
@@ -200,7 +200,7 @@ class GeneralTemplateServiceTest {
         val amount = 67L
         every { repository.count() } returns amount
 
-        val result = generalTemplateService.count()
+        val result = contentTemplateService.count()
 
         assertEquals(amount, result)
         verify(exactly = 1) { repository.count() }
