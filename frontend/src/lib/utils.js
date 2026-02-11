@@ -11,7 +11,7 @@ export function convertEventToBackend(calendarEvent) {
         title: calendarEvent.title,
         start: calendarEvent.start,
         end: calendarEvent.end,
-        creator: calendarEvent.extendedProps.creator.id,
+        userId: calendarEvent.extendedProps.creator.id,
         description: calendarEvent.extendedProps.description,
         accessibility: calendarEvent.extendedProps.enableWhitelist ? "WHITELIST" : calendarEvent.extendedProps.openToEveryone ? "UNLOCKED" : "LOCKED",
         whitelistedUserIds: calendarEvent.extendedProps.whitelist
@@ -31,11 +31,13 @@ export function convertEventToFrontend(backendEvent, creator) {
             ...(backendEvent.accessibility === "WHITELIST" ? {enableWhitelist: true, openForEveryone: false} :
                 backendEvent.accessibility === "UNLOCKED" ? {openToEveryone: true, enableWhitelist: false} :
                     {enableWhitelist: false, openForEveryone: false}),
-            ...(creator.id === backendEvent.creator || creator.roles.includes(4) ? {
+            ...(creator.id === backendEvent.userId || creator.roleIds.includes(3) ? {
                 editable: true,
                 color: '#FF6A00',
                 isAuthor: true
             } : {editable: false, color: '#89ABE4', isAuthor: false}),
+            creator: backendEvent.userId,
+            userId: undefined,
             accessibility: undefined
         };
     } else {
