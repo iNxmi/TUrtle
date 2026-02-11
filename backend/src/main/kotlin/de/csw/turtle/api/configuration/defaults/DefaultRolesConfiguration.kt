@@ -15,7 +15,9 @@ class DefaultRolesConfiguration(
 
     private val student = setOf<Permission>()
 
-    private val professor = setOf<Permission>()
+    private val professor = setOf(
+        Permission.REQUEST_ROOM_BOOKINGS
+    )
 
     private val administrator = Permission.entries.toSet()
 

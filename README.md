@@ -14,19 +14,14 @@ This is the backend, based on Spring Boot in Kotlin.
 Port: 8080
 
 **TODO:**
-* make ip not spoofable
 * email sending; noreply@mail.de (verification email, confirmation email(booking, returning, deadline reminder), support confirmation email, password/pin reset email)
-* statistics
-* distinguish prof/student role
+* statistics (sql query entity)
 * document this: rsql, system settings, templates with thymeleaf, regex in some system settings
-* `*@stud.tu-darmstadt.de` -> ok
-* `*@tu-darmstadt.de` -> ok
-* `*@andere.email` -> request
-* local dns via PI Hole
-* make all srvice create and patch transactional
+* local dns server via dnsmasq docker container
+* make all service create and patch transactional
 * invert all request overrides to make them more safe, in controllers
 * implement user auth token tracking for revoking
-* 
+* sollen *@tu-darmstadt.de direkt die prof rolle erhalten? (nicht *@stud.tu-darmstadt.de)
 * /api/auth/reset-password
 * create /api/token endpoints (add /validate to check if it is valid for frontend)
 * make CREATE:/api/support-tickets verify by email like user registration

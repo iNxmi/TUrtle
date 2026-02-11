@@ -44,6 +44,9 @@ class RoomBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
+        if (!user.hasPermission(Permission.REQUEST_ROOM_BOOKINGS) && user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS))
+            throw HttpException.Forbidden()
+
         var userId = user.id
         var status = Status.REQUESTED
         if (user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS)) {
@@ -91,7 +94,7 @@ class RoomBookingController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<GetRoomBookingResponse> {
-        if(user == null)
+        if (user == null)
             throw HttpException.Unauthorized()
 
         val entity = roomBookingService.getById(variable)
@@ -114,7 +117,7 @@ class RoomBookingController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
-        if(user == null)
+        if (user == null)
             throw HttpException.Unauthorized()
 
         val sort = sortProperty?.let {
