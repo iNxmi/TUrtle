@@ -53,7 +53,7 @@ class UserService(
             lastName = lastName,
             email = email,
             emojis = emojis,
-            password = passwordEncoder.encode(password),
+            passwordHash = passwordEncoder.encode(password),
             status = status,
             roles = roleIds.map { roleRepository.findById(it).get() }.toMutableSet()
         )
@@ -67,11 +67,7 @@ class UserService(
 
     fun getByStatusEqualsAndCreatedAtBefore(status: UserEntity.Status, cutoff: Instant): Set<UserEntity> = repository.findByStatusEqualsAndCreatedAtBefore(status, cutoff)
 
-    fun getByVerificationToken(token: TokenEntity): UserEntity? = repository.findByVerificationToken(token)
-
-    fun getByResetPasswordTokenOrNull(token: TokenEntity): UserEntity? = repository.findByResetPasswordToken(token)
-    fun getByResetPasswordToken(token: TokenEntity): UserEntity = getByResetPasswordTokenOrNull(token)
-        ?: throw HttpException.NotFound()
+    fun getByToken(token: TokenEntity): UserEntity? = repository.findByTokensContains(token)
 
     fun getByUsernameOrNull(username: String): UserEntity? = repository.findByUsername(username)
     fun getByUsername(username: String): UserEntity = getByUsernameOrNull(username)
@@ -88,6 +84,18 @@ class UserService(
     fun getByEmailOrUsernameOrNull(value: String): UserEntity? = repository.findByEmailOrUsername(value, value)
     fun getByEmailOrUsername(value: String): UserEntity = getByEmailOrUsernameOrNull(value)
         ?: throw HttpException.NotFound(value)
+
+    @Transactional
+    fun addToken(user: UserEntity, token: TokenEntity): UserEntity {
+        user.tokens.add(token)
+        return repository.save(user)
+    }
+
+    @Transactional
+    fun removeToken(user: UserEntity, token: TokenEntity): UserEntity {
+        user.tokens.remove(token)
+        return repository.save(user)
+    }
 
     @Transactional
     fun patch(
@@ -109,7 +117,7 @@ class UserService(
         lastName?.let { entity.lastName = it }
         email?.let { entity.email = it }
         emojis?.let { entity.emojis = it }
-        password?.let { entity.password = passwordEncoder.encode(it) }
+        password?.let { entity.passwordHash = passwordEncoder.encode(it) }
         status?.let { entity.status = it }
         roleIds?.let { ids ->
             val roles = ids.map { roleRepository.findById(it).get() }

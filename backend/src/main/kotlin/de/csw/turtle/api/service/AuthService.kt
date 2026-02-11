@@ -1,16 +1,26 @@
 package de.csw.turtle.api.service
 
+import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.auth.LoginUserRequest
+import de.csw.turtle.api.entity.TokenEntity.Type
+import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.thymeleaf.context.Context
+import java.time.Duration
 
 @Service
 class AuthService(
     private val userService: UserService,
     private val jwtService: JWTService,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val tokenService: TokenService,
+    private val systemSettingService: SystemSettingService,
+    private val emailTemplateService: EmailTemplateService,
+    private val thymeleafService: ThymeleafService,
+    private val emailService: EmailService
 ) {
 
     data class TokenPair(
@@ -22,21 +32,10 @@ class AuthService(
     fun login(
         request: LoginUserRequest
     ): TokenPair {
-//        try {
-//            val credentials = UsernamePasswordAuthenticationToken.unauthenticated(
-//                request.emailOrUsername,
-//                request.password
-//            )
-//
-//            authenticationManager.authenticate(credentials)
-//        } catch (_: org.springframework.security.authentication.BadCredentialsException) {
-//            throw HttpException.Unauthorized("Invalid username or password.")
-//        }
-
         val user = userService.getByEmailOrUsernameOrNull(request.emailOrUsername)
             ?: throw HttpException.Unauthorized("Invalid username or password.")
 
-        if (!passwordEncoder.matches(request.password, user.password))
+        if (!passwordEncoder.matches(request.password, user.passwordHash))
             throw HttpException.Unauthorized("Invalid username or password.")
 
         val accessToken = jwtService.generate(user.id, JWTService.Type.ACCESS)
@@ -63,6 +62,40 @@ class AuthService(
         val refreshToken = jwtService.generate(data.subject, JWTService.Type.REFRESH)
 
         return TokenPair(accessToken, refreshToken)
+    }
+
+    @Transactional
+    fun requestVerification(user: UserEntity) {
+        if (user.status != UserEntity.Status.PENDING_VERIFICATION)
+            return
+
+        val duration = systemSettingService.getTyped<Duration>(Settings.USER_VERIFICATION_DURATION)
+
+        val token = tokenService.create(
+            type = Type.VERIFICATION,
+            duration = duration
+        )
+
+        val updatedUser = userService.addToken(user, token)
+
+        val emailTemplateId = systemSettingService.getTyped<Long>(Settings.EMAIL_TEMPLATE_USERS_VERIFY)
+        val emailTemplate = emailTemplateService.getById(emailTemplateId)
+            ?: throw HttpException.NotFound()
+
+        val context = Context().apply {
+            val fqdn = systemSettingService.getTyped<String>(Settings.GENERAL_FQDN)
+            val duration = systemSettingService.getTyped<Duration>(Settings.USER_VERIFICATION_DURATION)
+
+            setVariable("user", updatedUser)
+            setVariable("url", "https://$fqdn/api/auth/verify?token=${token.uuid}")
+            setVariable("duration", duration)
+            setVariable("expiration", updatedUser.createdAt.plusMillis(duration.toMillis()))
+        }
+
+        val subject = thymeleafService.getRendered(emailTemplate.subject, context)
+        val content = thymeleafService.getRendered(emailTemplate.content, context)
+
+        emailService.sendHtmlEmail(updatedUser.email, subject, content)
     }
 
 }

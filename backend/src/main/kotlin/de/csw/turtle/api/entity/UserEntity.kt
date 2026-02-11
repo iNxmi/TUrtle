@@ -21,18 +21,21 @@ class UserEntity(
     @Column(unique = true)
     var email: String,
 
-    var password: String,
+    var passwordHash: String,
 
     @Column(unique = true)
     var emojis: String,
 
+    @Enumerated(EnumType.STRING)
     var status: Status,
 
-    @OneToOne
-    val verificationToken: TokenEntity? = null,
-
-    @OneToOne
-    val resetPasswordToken: TokenEntity? = null,
+    @OneToMany
+    @JoinTable(
+        name = "user_tokens",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "token_id")]
+    )
+    val tokens: MutableSet<TokenEntity> = mutableSetOf(),
 
     @ManyToMany
     @JoinTable(
@@ -64,7 +67,7 @@ class UserEntity(
 
     enum class Status {
         PENDING_VERIFICATION,
-        PENDING_CONFIRMATION,
+        PENDING_APPROVAL,
         ACTIVE,
         SUSPENDED,
         ARCHIVED,
@@ -91,10 +94,10 @@ class UserEntity(
         firstName = firstName,
         lastName = lastName,
         email = email,
-        password = password,
+        passwordHash = passwordHash,
         emojis = emojis,
         status = status,
-        verificationToken = verificationToken,
+        tokens = tokens.toMutableSet(),
         roles = roles.toMutableSet(),
         auditLogs = auditLogs.toMutableSet(),
         roomBookings = roomBookings.toMutableSet(),

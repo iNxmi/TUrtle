@@ -3,6 +3,7 @@ package de.csw.turtle.api.controller
 import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.auth.LoginUserRequest
 import de.csw.turtle.api.dto.auth.ResetUserPasswordRequest
+import de.csw.turtle.api.dto.auth.VerificationRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.entity.TokenEntity
 import de.csw.turtle.api.entity.UserEntity
@@ -82,8 +83,9 @@ class AuthController(
         response: HttpServletResponse
     ): ResponseEntity<Void> {
         val ipAddress = networkService.getClientIp(httpRequest)
-        if (request.altchaToken == null || !altchaService.isValid(ipAddress, request.altchaToken))
-            throw HttpException.Forbidden("Invalid captcha token.")
+        if (!altchaService.isTrusted(ipAddress))
+            if (request.altchaToken == null || !altchaService.isValid(request.altchaToken))
+                throw HttpException.Forbidden("Invalid captcha token.")
 
         val tokens = authService.login(request)
 
@@ -124,6 +126,18 @@ class AuthController(
         return ResponseEntity.noContent().build()
     }
 
+    @PostMapping("/request-verification")
+    fun requestVerification(
+        @RequestBody request: VerificationRequest
+    ): ResponseEntity<Void> {
+        val user = userService.getByEmailOrNull(request.email)
+
+        if (user != null)
+            authService.requestVerification(user)
+
+        return ResponseEntity.ok().build()
+    }
+
     @GetMapping("/verify")
     fun verify(
         @RequestParam uuid: String
@@ -137,12 +151,12 @@ class AuthController(
         if (token.isExpired())
             throw HttpException.Unauthorized("Token expired.")
 
-        val user = userService.getByVerificationToken(token)
+        val user = userService.getByToken(token)
             ?: throw HttpException.NotFound()
 
         val regexes = systemSettingService.getTyped<List<String>>(Settings.USER_EMAIL_TRUSTED).map { Regex(it) }
         val isTrustedEmail = regexes.any { it.matches(user.email) }
-        val newStatus = if (isTrustedEmail) UserEntity.Status.ACTIVE else UserEntity.Status.PENDING_CONFIRMATION
+        val newStatus = if (isTrustedEmail) UserEntity.Status.ACTIVE else UserEntity.Status.PENDING_APPROVAL
 
         val entity = userService.patch(id = user.id, status = newStatus)
         val dto = GetUserResponse(entity)

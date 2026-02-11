@@ -20,7 +20,7 @@ class CustomUserDetailsService(
         return CustomUserDetails(
             userId = user.id,
             username = user.username,
-            password = user.password,
+            password = user.passwordHash,
             authorities = user.roles.flatMap { it.authorities() }.toSet()
         )
     }

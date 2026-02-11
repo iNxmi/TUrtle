@@ -32,16 +32,11 @@ class AltchaService(
         return trustedIps.contains(ipAddress)
     }
 
-    fun isValid(ipAddress: String, token: String): Boolean {
-        if (isTrusted(ipAddress))
-            return true
-
-        try {
-            val secret = getSecret()
-            return Altcha.verifySolution(token, secret, true)
-        } catch (exception: Exception) {
-            throw HttpException.BadRequest("Invalid token. ${exception.message}")
-        }
+    fun isValid(token: String): Boolean = try {
+        val secret = getSecret()
+        Altcha.verifySolution(token, secret, true)
+    } catch (exception: Exception) {
+        throw HttpException.BadRequest("Invalid token. ${exception.message}")
     }
 
 }
