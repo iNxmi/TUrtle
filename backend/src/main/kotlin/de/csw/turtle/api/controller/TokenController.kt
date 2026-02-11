@@ -12,11 +12,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/token")
@@ -34,11 +30,11 @@ class TokenController(
         httpResponse: HttpServletResponse
     ): ResponseEntity<GetTokenResponse> {
         val id = variable.toLongOrNull()
-        if(id != null){
+        if (id != null) {
             if (user == null)
                 throw HttpException.Unauthorized()
 
-            if(!user.hasPermission(Permission.MANAGE_TOKENS))
+            if (!user.hasPermission(Permission.MANAGE_TOKENS))
                 throw HttpException.Forbidden()
         }
 
@@ -65,10 +61,10 @@ class TokenController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
-        if(user == null)
+        if (user == null)
             throw HttpException.Unauthorized()
 
-        if(!user.hasPermission(Permission.MANAGE_TOKENS))
+        if (!user.hasPermission(Permission.MANAGE_TOKENS))
             throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {

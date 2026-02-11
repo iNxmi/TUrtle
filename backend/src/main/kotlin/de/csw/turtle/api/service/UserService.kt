@@ -65,7 +65,8 @@ class UserService(
         return saved
     }
 
-    fun getByStatusEqualsAndCreatedAtBefore(status: UserEntity.Status, cutoff: Instant): Set<UserEntity> = repository.findByStatusEqualsAndCreatedAtBefore(status, cutoff)
+    fun getByStatusEqualsAndCreatedAtBefore(status: UserEntity.Status, cutoff: Instant): Set<UserEntity> =
+        repository.findByStatusEqualsAndCreatedAtBefore(status, cutoff)
 
     fun getByToken(token: TokenEntity): UserEntity? = repository.findByTokensContains(token)
 

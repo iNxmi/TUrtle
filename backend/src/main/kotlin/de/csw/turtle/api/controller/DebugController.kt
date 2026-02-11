@@ -1,12 +1,8 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.exception.DebugException
-import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.EmailService
 import de.csw.turtle.api.service.NetworkService
-import de.csw.turtle.api.service.door.DoorControlService
-import de.csw.turtle.api.service.locker.LockerControlService
-import de.csw.turtle.api.service.locker.LockerService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

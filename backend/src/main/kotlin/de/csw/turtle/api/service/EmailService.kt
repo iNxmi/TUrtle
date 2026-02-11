@@ -1,14 +1,11 @@
 package de.csw.turtle.api.service
 
-import de.csw.turtle.api.Settings
 import de.csw.turtle.api.entity.EmailTemplateEntity
-import de.csw.turtle.api.exception.HttpException
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 import org.thymeleaf.context.Context
-import java.time.Duration
 
 private const val FROM = "noreply@csw.du-darmstadt.de"
 

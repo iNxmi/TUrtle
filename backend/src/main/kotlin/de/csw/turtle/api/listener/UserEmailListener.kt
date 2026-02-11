@@ -4,7 +4,6 @@ import de.csw.turtle.api.entity.EmailTemplateEntity.Type
 import de.csw.turtle.api.event.CreatedUserEvent
 import de.csw.turtle.api.service.EmailService
 import de.csw.turtle.api.service.EmailTemplateService
-import de.csw.turtle.api.service.SystemSettingService
 import de.csw.turtle.api.service.ThymeleafService
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
