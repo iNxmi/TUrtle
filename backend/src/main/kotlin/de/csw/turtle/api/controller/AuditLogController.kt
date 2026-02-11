@@ -1,7 +1,6 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.controller.GetController
 import de.csw.turtle.api.dto.get.GetAuditLogResponse
 import de.csw.turtle.api.entity.AuditLogEntity
 import de.csw.turtle.api.entity.UserEntity

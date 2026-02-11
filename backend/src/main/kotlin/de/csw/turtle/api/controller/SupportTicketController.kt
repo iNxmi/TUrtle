@@ -1,10 +1,6 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.controller.CreateController
-import de.csw.turtle.api.controller.DeleteController
-import de.csw.turtle.api.controller.GetController
-import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.get.GetSupportTicketResponse
 import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest

@@ -1,17 +1,13 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.controller.CreateController
-import de.csw.turtle.api.controller.DeleteController
-import de.csw.turtle.api.controller.GetController
-import de.csw.turtle.api.controller.PatchController
-import de.csw.turtle.api.dto.create.CreateLockerRequest
-import de.csw.turtle.api.dto.get.GetLockerResponse
-import de.csw.turtle.api.dto.patch.PatchLockerRequest
-import de.csw.turtle.api.entity.LockerEntity
+import de.csw.turtle.api.dto.create.CreateEmailTemplateRequest
+import de.csw.turtle.api.dto.get.GetEmailTemplateResponse
+import de.csw.turtle.api.dto.patch.PatchEmailTemplateRequest
+import de.csw.turtle.api.entity.EmailTemplateEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.service.locker.LockerService
+import de.csw.turtle.api.service.EmailTemplateService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
@@ -21,41 +17,44 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 
-private const val ENDPOINT = "/api/lockers"
+private const val ENDPOINT = "/api/email-templates"
 
 @RestController
 @RequestMapping(ENDPOINT)
-class LockerController(
-    private val lockerService: LockerService
-) : CreateController<LockerEntity, CreateLockerRequest, GetLockerResponse>,
-    GetController<LockerEntity, Long, GetLockerResponse>,
-    PatchController<LockerEntity, PatchLockerRequest, GetLockerResponse>,
-    DeleteController<LockerEntity> {
+class EmailTemplateController(
+    private val emailTemplateService: EmailTemplateService
+) : CreateController<EmailTemplateEntity, CreateEmailTemplateRequest, GetEmailTemplateResponse>,
+    GetController<EmailTemplateEntity, Long, GetEmailTemplateResponse>,
+    PatchController<EmailTemplateEntity, PatchEmailTemplateRequest, GetEmailTemplateResponse>,
+    DeleteController<EmailTemplateEntity> {
 
     @PostMapping
     override fun create(
         @AuthenticationPrincipal user: UserEntity?,
 
-        @RequestBody request: CreateLockerRequest,
+        @RequestBody request: CreateEmailTemplateRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetLockerResponse> {
+    ): ResponseEntity<GetEmailTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_LOCKERS))
+        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = lockerService.create(
+        if (emailTemplateService.getByNameOrNull(request.name) != null)
+            throw HttpException.Conflict("Email template with name '${request.name}' already exists.")
+
+        val entity = emailTemplateService.create(
             name = request.name,
-            index = request.index,
-            isSoftwareUnlockable = request.isSoftwareUnlockable,
-            locked = request.locked ?: false
+            description = request.description,
+            subject = request.subject,
+            content = request.content
         )
 
         val location = URI.create("$ENDPOINT/${entity.id}")
-        val dto = GetLockerResponse(entity)
+        val dto = GetEmailTemplateResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -67,11 +66,17 @@ class LockerController(
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetLockerResponse> {
-        val entity = lockerService.getById(variable)
+    ): ResponseEntity<GetEmailTemplateResponse> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
+            throw HttpException.Forbidden()
+
+        val entity = emailTemplateService.getById(variable)
             ?: throw HttpException.NotFound()
 
-        val dto = GetLockerResponse(entity)
+        val dto = GetEmailTemplateResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -88,19 +93,25 @@ class LockerController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
+            throw HttpException.Forbidden()
+
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
         } ?: Sort.unsorted()
 
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = lockerService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { GetLockerResponse(it) }
+            val page = emailTemplateService.getPage(rsql = rsql, pageable = pageable)
+            val dto = page.map { GetEmailTemplateResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
-        val collection = lockerService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { GetLockerResponse(it) }
+        val collection = emailTemplateService.getAll(rsql = rsql, sort = sort).toMutableSet()
+        val dto = collection.map { GetEmailTemplateResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -109,26 +120,30 @@ class LockerController(
         @AuthenticationPrincipal user: UserEntity?,
 
         @PathVariable id: Long,
-        @RequestBody request: PatchLockerRequest,
+        @RequestBody request: PatchEmailTemplateRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetLockerResponse> {
+    ): ResponseEntity<GetEmailTemplateResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_LOCKERS))
+        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        val entity = lockerService.patch(
+        if (request.name != null)
+            if (emailTemplateService.getByNameOrNull(request.name) != null)
+                throw HttpException.Conflict("Email template with name '${request.name}' already exists.")
+
+        val entity = emailTemplateService.patch(
             id = id,
             name = request.name,
-            index = request.index,
-            isSoftwareUnlockable = request.isSoftwareUnlockable,
-            locked = request.locked
+            description = request.description,
+            subject = request.subject,
+            content = request.content
         )
 
-        val dto = GetLockerResponse(entity)
+        val dto = GetEmailTemplateResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -144,10 +159,10 @@ class LockerController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_LOCKERS))
+        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        lockerService.delete(id)
+        emailTemplateService.delete(id)
         return ResponseEntity.noContent().build()
     }
 

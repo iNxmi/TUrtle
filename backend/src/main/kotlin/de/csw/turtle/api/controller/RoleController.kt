@@ -1,64 +1,59 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.controller.CreateController
-import de.csw.turtle.api.controller.DeleteController
-import de.csw.turtle.api.controller.GetController
-import de.csw.turtle.api.controller.PatchController
-import de.csw.turtle.api.dto.create.CreateEmailTemplateRequest
-import de.csw.turtle.api.dto.get.GetEmailTemplateResponse
-import de.csw.turtle.api.dto.patch.PatchEmailTemplateRequest
-import de.csw.turtle.api.entity.EmailTemplateEntity
+import de.csw.turtle.api.dto.create.CreateRoleRequest
+import de.csw.turtle.api.dto.get.GetRoleResponse
+import de.csw.turtle.api.dto.patch.PatchRoleRequest
+import de.csw.turtle.api.entity.RoleEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.service.EmailTemplateService
+import de.csw.turtle.api.service.RoleService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 
-private const val ENDPOINT = "/api/email-templates"
+private const val ENDPOINT = "/api/roles"
 
 @RestController
 @RequestMapping(ENDPOINT)
-class EmailTemplateController(
-    private val emailTemplateService: EmailTemplateService
-) : CreateController<EmailTemplateEntity, CreateEmailTemplateRequest, GetEmailTemplateResponse>,
-    GetController<EmailTemplateEntity, Long, GetEmailTemplateResponse>,
-    PatchController<EmailTemplateEntity, PatchEmailTemplateRequest, GetEmailTemplateResponse>,
-    DeleteController<EmailTemplateEntity> {
+class RoleController(
+    private val roleService: RoleService
+) : CreateController<RoleEntity, CreateRoleRequest, GetRoleResponse>,
+    GetController<RoleEntity, Long, GetRoleResponse>,
+    PatchController<RoleEntity, PatchRoleRequest, GetRoleResponse>,
+    DeleteController<RoleEntity> {
 
     @PostMapping
     override fun create(
         @AuthenticationPrincipal user: UserEntity?,
 
-        @RequestBody request: CreateEmailTemplateRequest,
+        @RequestBody request: CreateRoleRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetEmailTemplateResponse> {
+    ): ResponseEntity<GetRoleResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
+        if (!user.hasPermission(Permission.MANAGE_ROLES))
             throw HttpException.Forbidden()
 
-        if (emailTemplateService.getByNameOrNull(request.name) != null)
-            throw HttpException.Conflict("Email template with name '${request.name}' already exists.")
+        if (roleService.getByNameOrNull(request.name) != null)
+            throw HttpException.Conflict("Role with name '${request.name}' already exists.")
 
-        val entity = emailTemplateService.create(
+        val entity = roleService.create(
             name = request.name,
-            description = request.description,
-            subject = request.subject,
-            content = request.content
+            permissions = request.permissions
         )
 
         val location = URI.create("$ENDPOINT/${entity.id}")
-        val dto = GetEmailTemplateResponse(entity)
+        val dto = GetRoleResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -70,17 +65,17 @@ class EmailTemplateController(
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetEmailTemplateResponse> {
+    ): ResponseEntity<GetRoleResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
-            throw HttpException.Forbidden()
-
-        val entity = emailTemplateService.getById(variable)
+        val entity = roleService.getById(variable)
             ?: throw HttpException.NotFound()
 
-        val dto = GetEmailTemplateResponse(entity)
+        if (!user.roles.contains(entity))
+            throw HttpException.Forbidden()
+
+        val dto = GetRoleResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -100,22 +95,25 @@ class EmailTemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
-            throw HttpException.Forbidden()
-
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
         } ?: Sort.unsorted()
 
+        val specification: Specification<RoleEntity> = if (user.hasPermission(Permission.MANAGE_ROLES)) {
+            Specification.unrestricted()
+        } else Specification { root, _, builder ->
+            builder.isMember(user, root.get<Set<UserEntity>>("users"))
+        }
+
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = emailTemplateService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { GetEmailTemplateResponse(it) }
+            val page = roleService.getPage(rsql = rsql, pageable = pageable, specification = specification)
+            val dto = page.map { GetRoleResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
-        val collection = emailTemplateService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { GetEmailTemplateResponse(it) }
+        val collection = roleService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
+        val dto = collection.map { GetRoleResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -124,30 +122,28 @@ class EmailTemplateController(
         @AuthenticationPrincipal user: UserEntity?,
 
         @PathVariable id: Long,
-        @RequestBody request: PatchEmailTemplateRequest,
+        @RequestBody request: PatchRoleRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetEmailTemplateResponse> {
+    ): ResponseEntity<GetRoleResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
+        if (!user.hasPermission(Permission.MANAGE_ROLES))
             throw HttpException.Forbidden()
 
         if (request.name != null)
-            if (emailTemplateService.getByNameOrNull(request.name) != null)
-                throw HttpException.Conflict("Email template with name '${request.name}' already exists.")
+            if (roleService.getByNameOrNull(request.name) != null)
+                throw HttpException.Conflict("Role with name '${request.name}' already exists.")
 
-        val entity = emailTemplateService.patch(
+        val entity = roleService.patch(
             id = id,
             name = request.name,
-            description = request.description,
-            subject = request.subject,
-            content = request.content
+            permissions = request.permissions
         )
 
-        val dto = GetEmailTemplateResponse(entity)
+        val dto = GetRoleResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -163,10 +159,10 @@ class EmailTemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
+        if (!user.hasPermission(Permission.MANAGE_ROLES))
             throw HttpException.Forbidden()
 
-        emailTemplateService.delete(id)
+        roleService.delete(id)
         return ResponseEntity.noContent().build()
     }
 

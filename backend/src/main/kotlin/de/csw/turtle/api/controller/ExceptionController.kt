@@ -1,8 +1,6 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.controller.DeleteController
-import de.csw.turtle.api.controller.GetController
 import de.csw.turtle.api.dto.get.GetExceptionResponse
 import de.csw.turtle.api.entity.ExceptionEntity
 import de.csw.turtle.api.entity.UserEntity

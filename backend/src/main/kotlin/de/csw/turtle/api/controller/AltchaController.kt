@@ -1,4 +1,4 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.dto.altcha.GetAltchaChallengeResponse
 import de.csw.turtle.api.service.AltchaService

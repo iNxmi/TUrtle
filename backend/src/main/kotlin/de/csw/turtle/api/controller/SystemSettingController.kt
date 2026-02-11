@@ -1,8 +1,6 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.controller.GetController
-import de.csw.turtle.api.controller.PatchController
 import de.csw.turtle.api.dto.get.GetSystemSettingResponse
 import de.csw.turtle.api.dto.patch.PatchSystemSettingRequest
 import de.csw.turtle.api.entity.SystemSettingEntity

@@ -1,17 +1,13 @@
-package de.csw.turtle.api.controller.api
+package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.controller.CreateController
-import de.csw.turtle.api.controller.DeleteController
-import de.csw.turtle.api.controller.GetController
-import de.csw.turtle.api.controller.PatchController
-import de.csw.turtle.api.dto.create.CreateItemRequest
-import de.csw.turtle.api.dto.get.GetItemResponse
-import de.csw.turtle.api.dto.patch.PatchItemRequest
-import de.csw.turtle.api.entity.ItemEntity
+import de.csw.turtle.api.dto.create.CreateFAQRequest
+import de.csw.turtle.api.dto.get.GetFAQResponse
+import de.csw.turtle.api.dto.patch.PatchFAQRequest
+import de.csw.turtle.api.entity.FAQEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.service.ItemService
+import de.csw.turtle.api.service.FAQService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
@@ -21,55 +17,51 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 
-private const val ENDPOINT = "/api/items"
+private const val ENDPOINT = "/api/faq"
 
 @RestController
 @RequestMapping(ENDPOINT)
-class ItemController(
-    private val itemService: ItemService
-) : CreateController<ItemEntity, CreateItemRequest, GetItemResponse>,
-    GetController<ItemEntity, Long, GetItemResponse>,
-    PatchController<ItemEntity, PatchItemRequest, GetItemResponse>,
-    DeleteController<ItemEntity> {
+class FAQController(
+    private val faqService: FAQService
+) : CreateController<FAQEntity, CreateFAQRequest, GetFAQResponse>,
+    GetController<FAQEntity, Long, GetFAQResponse>,
+    PatchController<FAQEntity, PatchFAQRequest, GetFAQResponse>,
+    DeleteController<FAQEntity> {
 
+    //TODO replace by system setting
     private val maxNameLength = 64
-    private val maxDescriptionLength = 256
+    private val maxTitleLength = 64
 
     @PostMapping
     override fun create(
         @AuthenticationPrincipal user: UserEntity?,
 
-        @RequestBody request: CreateItemRequest,
+        @RequestBody request: CreateFAQRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetItemResponse> {
+    ): ResponseEntity<GetFAQResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ITEMS))
+        if (!user.hasPermission(Permission.MANAGE_FAQ))
             throw HttpException.Forbidden()
 
         if (request.name.isBlank() || request.name.length > maxNameLength)
-            throw HttpException.BadRequest("Name cannot be blank and cannot exceed $maxNameLength characters.")
+            throw HttpException.BadRequest("Name is required and cannot exceed $maxNameLength characters.")
 
-        if (itemService.getByNameOrNull(request.name) != null)
+        if (faqService.getByName(request.name) != null)
             throw HttpException.Conflict("Name '${request.name}' already exists.")
 
-        if (request.description.length > maxDescriptionLength)
-            throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
+        if (request.title.isBlank() || request.title.length > maxTitleLength)
+            throw HttpException.BadRequest("Title is required and cannot exceed $maxTitleLength characters.")
 
-        val entity = itemService.create(
-            name = request.name,
-            description = request.description,
-            categoryId = request.categoryId,
-            lockerId = request.lockerId,
-            needsConfirmation = request.needsConfirmation,
-            acquiredAt = request.acquiredAt
-        )
+        if (request.content.isBlank())
+            throw HttpException.BadRequest("Content is required.")
 
+        val entity = faqService.create(request.name, request.title, request.content)
         val location = URI.create("$ENDPOINT/${entity.id}")
-        val dto = GetItemResponse(entity)
+        val dto = GetFAQResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -81,11 +73,11 @@ class ItemController(
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetItemResponse> {
-        val entity = itemService.getById(variable)
+    ): ResponseEntity<GetFAQResponse> {
+        val entity = faqService.getById(variable)
             ?: throw HttpException.NotFound()
 
-        val dto = GetItemResponse(entity)
+        val dto = GetFAQResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -108,13 +100,13 @@ class ItemController(
 
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = itemService.getPage(rsql = rsql, pageable = pageable)
-            val dto = page.map { GetItemResponse(it) }
+            val page = faqService.getPage(rsql = rsql, pageable = pageable)
+            val dto = page.map { GetFAQResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
-        val collection = itemService.getAll(rsql = rsql, sort = sort).toMutableSet()
-        val dto = collection.map { GetItemResponse(it) }
+        val collection = faqService.getAll(rsql = rsql, sort = sort).toMutableSet()
+        val dto = collection.map { GetFAQResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -123,38 +115,41 @@ class ItemController(
         @AuthenticationPrincipal user: UserEntity?,
 
         @PathVariable id: Long,
-        @RequestBody request: PatchItemRequest,
+        @RequestBody request: PatchFAQRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetItemResponse> {
+    ): ResponseEntity<GetFAQResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ITEMS))
+        if (!user.hasPermission(Permission.MANAGE_FAQ))
             throw HttpException.Forbidden()
 
-        if (request.name != null)
+        if (request.name != null) {
             if (request.name.isBlank() || request.name.length > maxNameLength)
-                throw HttpException.BadRequest("Name cannot be blank and cannot exceed $maxNameLength characters.")
-            else if (itemService.getByNameOrNull(request.name) != null)
+                throw HttpException.BadRequest("Name is required and cannot exceed $maxNameLength characters.")
+
+            if (faqService.getByName(request.name) != null)
                 throw HttpException.Conflict("Name '${request.name}' already exists.")
+        }
 
-        if (request.description != null)
-            if (request.description.length > maxDescriptionLength)
-                throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
+        if (request.title != null)
+            if (request.title.isBlank() || request.title.length > maxTitleLength)
+                throw HttpException.BadRequest("Title is required and cannot exceed $maxTitleLength characters.")
 
-        val entity = itemService.patch(
+        if (request.content != null)
+            if (request.content.isBlank())
+                throw HttpException.BadRequest("Content is required.")
+
+        val entity = faqService.patch(
             id = id,
             name = request.name,
-            description = request.description,
-            categoryId = request.categoryId,
-            lockerId = request.lockerId,
-            needsConfirmation = request.needsConfirmation,
-            acquiredAt = request.acquiredAt
+            title = request.title,
+            content = request.content
         )
 
-        val dto = GetItemResponse(entity)
+        val dto = GetFAQResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -170,10 +165,10 @@ class ItemController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ITEMS))
+        if (!user.hasPermission(Permission.MANAGE_FAQ))
             throw HttpException.Forbidden()
 
-        itemService.delete(id)
+        faqService.delete(id)
         return ResponseEntity.noContent().build()
     }
 
