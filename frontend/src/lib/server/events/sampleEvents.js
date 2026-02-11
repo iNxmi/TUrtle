@@ -101,7 +101,8 @@ export const seedEvents = (db) => {
 			creator: '1',
 			description: 'Test Description',
 			enableWhitelist: false,
-			whitelist: []
+			whitelist: [],
+			status: 'REQUESTED'
 		}
 	},
 	{
