@@ -18,7 +18,7 @@ export async function load({params}){
             user = undefined;
         }
 
-        const deviceResponse = await request(devicesPath+`/${deviceBooking.deviceId}`);
+        const deviceResponse = await request(devicesPath+`/${deviceBooking.itemId}`);
 
         if(deviceResponse.ok){
             device = await deviceResponse.json();
