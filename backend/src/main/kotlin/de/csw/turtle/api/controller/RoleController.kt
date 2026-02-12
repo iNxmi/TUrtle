@@ -72,8 +72,9 @@ class RoleController(
         val entity = roleService.getById(variable)
             ?: throw HttpException.NotFound()
 
-        if (!user.roles.contains(entity))
-            throw HttpException.Forbidden()
+        if (!user.hasPermission(Permission.MANAGE_ROLES))
+            if (!user.roles.contains(entity))
+                throw HttpException.Forbidden()
 
         val dto = GetRoleResponse(entity)
         return ResponseEntity.ok(dto)
