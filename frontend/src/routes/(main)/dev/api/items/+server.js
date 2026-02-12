@@ -1,23 +1,17 @@
 import {json} from '@sveltejs/kit';
-export async function GET(){
+import { itemDatabase } from '$lib/server/DatabaseInitializer';
+export async function GET({url}){
 
-    const devices  = [{  
-        name:"iPad", category: "1", id: "0", locker: "3"
-    },{  
-        name:"Dell Laptop", category: "0", id: "1", locker: "5"
-    },{  
-        name:"Asus Laptop", category: "0", id: "2", locker: "6"
-    },{  
-        name:"Samsung Tab A", category: "1", id: "3", locker: "4"
-    },{  
-        name:"Acer Laptop", category: "0", id: "4", locker: "5"
-    },
-    ];
+    const devices  = itemDatabase.getItems();
 
-    return json({content: devices, page: {
-        size: 20,
-        number: 0,
-        totalElements: 4,
-        totalPages: 1
-    }});
+    if(url.searchParams.pageNumber){
+        return json({content: devices, page: {
+            size: 20,
+            number: 0,
+            totalElements: 4,
+            totalPages: 1
+        }});
+    } else {
+        return json(devices);
+    }
 }

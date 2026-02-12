@@ -1,30 +1,30 @@
-export class EventDatabase {
+export class ItemDatabase {
 	constructor(db) {
 		this.db = db;
-		this.collection = 'events';
+		this.collection = 'Items';
 		this.id = 0;
 	}
 
-	createEvent(event) {
+	createItem(item) {
 		this.db.create(this.collection, {
 			id: this.id.toString(),
-			...event
+			...item
 		});
 		this.id += 1;
 	}
 
-	getEvents() {
+	getItems() {
 		return this.db.read(this.collection);
 	}
 
-	getEventById(id) {
+	getItemById(id) {
 		return this.db.read(this.collection, id);
 	}
 
-	deleteEventById(id) {
+	deleteItemById(id) {
 		this.db.delete(this.collection, id);
 	}
-	updateEventByID(id, event) {
-		this.db.update(this.collection, id, event);
+	updateItemByID(id, Item) {
+		this.db.update(this.collection, id, Item);
 	}
 }

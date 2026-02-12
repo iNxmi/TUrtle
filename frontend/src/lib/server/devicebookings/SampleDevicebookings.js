@@ -28,17 +28,17 @@ export const seedDevicebookings = (db) => {
             itemId: "2",
             userId: "2",
             locker: "4",
-            status: "item_RETURNED",
+            status: "RESERVED",
             createdAt: new Date(Date.now())
         },
          {
-            name: "Beamer",
+            name: "Samsung Tab A",
             start: "2026-01-03T06:00Z",
             end: "2026-01-05T06:00Z",
             itemId: "3",
             userId: "3",
             locker: "7",
-            status: "item_RETURNED",
+            status: "ITEM_RETURNED",
             createdAt: new Date(Date.now())
         }
     ];

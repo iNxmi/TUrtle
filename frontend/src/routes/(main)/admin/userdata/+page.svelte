@@ -21,7 +21,7 @@
         {id: "createdAt", display: m.admin_users__created_at_label()},
     ];
 
-    const devicebookingsHeaders = [
+    const itembookingsHeaders = [
         {id: "id", display: "_ID_"},
         {id: "start", display: "_Start Date_"},
         {id: "end", display: "_End Date_"},
@@ -51,7 +51,7 @@
             <Heading tag="h2" class="text-center mb-4">_Device Booking Management_</Heading>
             <TableView 
             endpoint="/admin/item-bookings"
-            headers={devicebookingsHeaders}
+            headers={itembookingsHeaders}
             contentPage={data.page}
             hideAdd={true}/>
         </TabItem>

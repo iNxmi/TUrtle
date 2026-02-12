@@ -164,7 +164,7 @@
     }, {
         permission: "MANAGE_ROOM_BOOKINGS",
         label: m.sidebar_admin_manage_bookings(),
-        href: '/admin/bookings',
+        href: '/admin/booking-requests',
         icon: CalendarEditSolid
     }, {
         permission: ['MANAGE_ITEMS', 'MANAGE_ITEM_CATEGORIES'],
