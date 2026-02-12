@@ -23,7 +23,7 @@
 
 	let creator = $derived(selectedEvent ? [selectedEvent.extendedProps.creator]: data.user.id);
 	let currentUser = $derived(data.user);
-	let users = $derived(data.users);
+	let users = $derived(data.page[1]);
 	let dropdownUsers = $derived(users.map((user) =>  ({
 		firstName: user.firstName,
 		lastName: user.lastName,
@@ -351,7 +351,7 @@ $effect( () => {
         {id: "id", display: "_ID_"},
         {id: "start", display: "_Start Date_"},
         {id: "end", display: "_End Date_"},
-        {id: "deviceId", display: "_Device_"},
+        {id: "itemId", display: "_Device_"},
         {id: "userId", display:"_User Name_"},
         {id: "status", display: "_Status_"},
         {id: "createdAt", display: "_created at_"}
@@ -412,7 +412,7 @@ $effect( () => {
 		</div>
 	</TabItem>
 	<TabItem title='_Item Booking_'>
-		<TableView headers={itembookingsHeaders} contentPage={data.page} />
+		<TableView headers={itembookingsHeaders} contentPage={data.page[0]} endpoint="/admin/item-bookings"/>
 	</TabItem>
 </Tabs>
 <svelte:window on:click={onPageClick} />
