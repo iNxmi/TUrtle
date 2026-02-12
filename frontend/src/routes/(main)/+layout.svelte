@@ -1,27 +1,15 @@
 <script>
     import {page} from '$app/state';
     import {setContext} from 'svelte';
-
-    let {data, children} = $props();  
-    let permissions = $derived(data.userPermissions);
-    let user = $derived(data.user);
-
     import {
+        Button,
         Heading,
         Hr,
-        Select,
         Sidebar,
         SidebarButton,
         SidebarDropdownItem,
         SidebarDropdownWrapper,
-        Span,
-        Toggle,
-        Dropdown,
-        DropdownItem,
-        DropdownDivider,
-        Avatar,
-        Radio,
-        RadioButton
+        Span
     } from 'flowbite-svelte';
 
     import {m} from '$lib/paraglide/messages.js';
@@ -33,26 +21,26 @@
     import ProfileDropdown from '$lib/components/ProfileDropdown.svelte';
     import {
         BookOpenSolid,
-        BugSolid,
         CalendarEditSolid,
         CalendarMonthSolid,
         DesktopPcSolid,
         HomeSolid,
-        PaperClipOutline,
-        NewspaperSolid,
-        UserHeadsetSolid,
-        UserSettingsSolid,
-        UsersGroupSolid,
-        UserSolid,
         LockSolid,
+        MoonOutline,
+        NewspaperSolid,
+        PaperClipOutline,
         QuestionCircleSolid,
         SunOutline,
-        MoonOutline,
-        LanguageOutline,
-        CheckOutline
+        UserHeadsetSolid,
+        UsersGroupSolid,
+        InfoCircleSolid,
     } from 'flowbite-svelte-icons';
-	import request from '$lib/api/api';
-	import { goto } from '$app/navigation';
+    import request from '$lib/api/api';
+    import {goto} from '$app/navigation';
+
+    let {data, children} = $props();
+    let permissions = $derived(data.permissions);
+    let user = $derived(data.user);
 
     const languages = [
         {value: 'en', name: 'English'},
@@ -70,7 +58,7 @@
     setContext('locale', () => language);
 
     $effect(() => {
-        if(language){
+        if (language) {
             setLocale(language);
         }
     })
@@ -84,75 +72,61 @@
     let activeUrl = $derived(page.url.pathname);
 
     let darkmode = $state(localStorage.getItem('darkmode') || false);
+
     /* onMount(() => {
         if (localStorage.getItem('darkmode')) darkmode = true;
     }); */
 
     function toggleDarkMode() {
         darkmode = !darkmode;
-        localStorage.setItem('darkmode', darkmode? "true": "");
+        localStorage.setItem('darkmode', darkmode ? "true" : "");
         document.documentElement.classList.remove(darkmode ? 'light' : 'dark');
         document.documentElement.classList.add(darkmode ? 'dark' : 'light');
-        
+
         /* document.documentElement.data */
     }
 
-   async function logOut(){
+    async function logOut() {
         const response = await request('/auth/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-        if(response.ok){
-            goto('/',{invalidateAll: true});
-        }
 
+        if (response.ok)
+            goto('/', {invalidateAll: true});
     }
 
     let innerWidth = $state();
     let isOpen = $derived(!innerWidth || innerWidth >= 768);
 
     const itemsPublic = [{
-        permission: "VIEW__SIDEBAR_ITEM__HOME",
-        label: m.sidebar_public_home(),
-        href: '/',
-        icon: HomeSolid
+        label: "_about_",
+        href: '/about',
+        icon: InfoCircleSolid
     }, {
-        permission: "VIEW__SIDEBAR_ITEM__LOGIN",
-        label: m.sidebar_public_login(),
-        href: '/auth/login',
-        icon: UserSolid
-    }, {
-        permission: "VIEW__SIDEBAR_ITEM__REGISTER",
-        label: m.sidebar_public_register(),
-        href: '/auth/register',
-        icon: UserSolid
-    }, {
-        permission: "VIEW__SIDEBAR_ITEM__FAQ",
         label: m.sidebar_public_faq(),
         href: '/faq',
         icon: QuestionCircleSolid
+    }, {
+        label: "_contact_",
+        href: '/contact',
+        icon: UserHeadsetSolid
     }];
+
     const itemsUser = [{
-        permission: "VIEW__SIDEBAR_ITEM__DASHBOARD",
-        label: m.sidebar_user_dashboard(),
-        href: '/dashboard',
-        icon: NewspaperSolid
-    }, /* {
-        permission: "VIEW__SIDEBAR_ITEM__PROFILE",
-        label: m.sidebar_user_profile(),
-        href: '/user/profile',
-        icon: UserSolid
-    }, */ {
-        permission: "VIEW__SIDEBAR_ITEM__BOOK_DEVICE",
-        label: m.sidebar_user_reservations(),
-        href: '/items',
+        label: "_home_",
+        href: '/home',
+        icon: HomeSolid
+    }, {
+        label: "_item-bookings_",
+        href: '/item-bookings',
         icon: DesktopPcSolid
     }, {
-        permission: "VIEW__SIDEBAR_ITEM__BOOK_ROOM",
-        label: m.sidebar_user_bookings(),
-        href: '/room',
+        permission: "REQUEST_ROOM_BOOKINGS",
+        label: "_room-bookings_",
+        href: '/room-bookings',
         icon: CalendarMonthSolid
     }];
 
@@ -177,11 +151,6 @@
         label: m.sidebar_admin_manage_support_tickets(),
         href: '/admin/support',
         icon: UserHeadsetSolid
-    }, {
-        permission: "VIEW__SIDEBAR_ITEM__MANAGE_NEWS",
-        label: m.sidebar_admin_manage_news(),
-        href: '/admin/news',
-        icon: NewspaperSolid
     }, /* {
         permission: "VIEW__SIDEBAR_ITEM__HARDWARE_OVERRIDE",
         label: "_Hardware Override_",
@@ -206,7 +175,7 @@
 
 </script>
 
-<SidebarButton onclick={() => isOpen = !isOpen} class="mb-2" />
+<SidebarButton onclick={() => isOpen = !isOpen} class="mb-2"/>
 <div class="flex">
     <Sidebar
             {activeUrl}
@@ -225,7 +194,7 @@
 
             <Hr class="m-0 p-0"/>
 
-            {#if user !== {} }
+            {#if user !== null }
                 <Heading tag="h5" class="text-center">
 					<Span class="text-csw!">
 						{`${user.firstName} ${user.lastName}`}
@@ -235,26 +204,22 @@
                 <Hr class="m-0 p-0"/>
             {/if}
 
-           <!--  {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__PUBLIC")} 
-                <SidebarDropdownWrapper
-                        class="list-none"
-                        classes={{ span: 'font-bold text-text', ul: 'py-0' }}
-                        isOpen={true}
-                        label={m.sidebar_category_public()}
-                >
-                     {#each itemsPublic as item}
-                        {#if permissions.includes(item.permission)}
-                            <SidebarDropdownItem spanClass="text-text ms-3" label={m.sidebar_public_home()} href="/">
-                                {#snippet icon()}
-                                    <HomeSolid class="text-csw h-5 w-5"/>
-                                {/snippet}
-                            </SidebarDropdownItem>
-                        {/if}
-                    {/each}
-                </SidebarDropdownWrapper> -->
-           <!--  {/if} -->
+            <SidebarDropdownWrapper
+                    class="list-none"
+                    classes={{ span: 'font-bold text-text', ul: 'py-0' }}
+                    isOpen={true}
+                    label={m.sidebar_category_public()}
+            >
+                {#each itemsPublic as item}
+                    <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
+                        {#snippet icon()}
+                            <item.icon class="text-csw h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                {/each}
+            </SidebarDropdownWrapper>
 
-            <!-- {#if permissions.includes("VIEW__SIDEBAR_CATEGORY__USER")} -->
+            {#if user !== null}
                 <SidebarDropdownWrapper
                         class="list-none"
                         classes={{ span: 'font-bold text-text', ul: 'py-0' }}
@@ -262,28 +227,7 @@
                         label={m.sidebar_category_user()}
                 >
                     {#each itemsUser as item}
-                        <!-- {#if permissions.includes(item.permission)} -->
-                            <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
-                                {#snippet icon()}
-                                    <item.icon class="text-csw h-5 w-5"/>
-                                {/snippet}
-                            </SidebarDropdownItem>
-                       <!--  {/if} -->
-                    {/each}
-                </SidebarDropdownWrapper>
-           <!--  {/if} -->
-
-            {#if permissions}
-                <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold text-text", ul: 'py-0' }} isOpen={true}
-                                        label={m.sidebar_category_admin()}>
-                    {#each itemsAdmin as item}
-                        {#if Array.isArray(item.permission) && item.permission.every((permission) => permissions.includes(permission))}
-                            <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
-                                {#snippet icon()}
-                                    <item.icon class="text-csw h-5 w-5"/>
-                                {/snippet}
-                            </SidebarDropdownItem>
-                        {:else if permissions.includes(item.permission)}
+                        {#if !item.permission || permissions.includes(item.permission)}
                             <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
                                 {#snippet icon()}
                                     <item.icon class="text-csw h-5 w-5"/>
@@ -292,6 +236,28 @@
                         {/if}
                     {/each}
                 </SidebarDropdownWrapper>
+
+                {#if permissions}
+                    <SidebarDropdownWrapper class="list-none" classes={{ span: "font-bold text-text", ul: 'py-0' }}
+                                            isOpen={true}
+                                            label={"_manage_"}>
+                        {#each itemsAdmin as item}
+                            {#if Array.isArray(item.permission) && item.permission.every((permission) => permissions.includes(permission))}
+                                <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
+                                    {#snippet icon()}
+                                        <item.icon class="text-csw h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarDropdownItem>
+                            {:else if permissions.includes(item.permission)}
+                                <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
+                                    {#snippet icon()}
+                                        <item.icon class="text-csw h-5 w-5"/>
+                                    {/snippet}
+                                </SidebarDropdownItem>
+                            {/if}
+                        {/each}
+                    </SidebarDropdownWrapper>
+                {/if}
             {/if}
         </div>
     </Sidebar>
@@ -299,14 +265,22 @@
     <div class="min-h-svh justify-between flex flex-col w-full bg-background">
         <div class="m-5">
             <div class="flex justify-end items-center gap-2 mb-1">
-                <button onclick={toggleDarkMode} class="cursor-pointer inline-flex items-center justify-center text-md dark:text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md px-3 h-8">
+                <button onclick={toggleDarkMode}
+                        class="cursor-pointer inline-flex items-center justify-center text-md dark:text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md px-3 h-8">
                     {#if darkmode}
-                    <MoonOutline class="text-white mr-1" /> _Dunkel_
+                        <MoonOutline class="text-white mr-1"/>
                     {:else}
-                    <SunOutline class="mr-1"/> _Hell_
+                        <SunOutline class="mr-1"/>
                     {/if}
                 </button>
-                <ProfileDropdown {language} {user} />
+                {#if user !== null}
+                    <ProfileDropdown {language} {user}/>
+                {:else}
+                    <div class="flex gap-10">
+                        <Button onclick={()=>goto("/auth/login")}>Login</Button>
+                        <Button onclick={()=>goto("/auth/register")}>Register</Button>
+                    </div>
+                {/if}
             </div>
             <ConfirmProvider>
                 {@render children?.()}
@@ -316,4 +290,4 @@
     </div>
 </div>
 
-<svelte:window bind:innerWidth={innerWidth} />
+<svelte:window bind:innerWidth={innerWidth}/>

@@ -1,27 +1,23 @@
 import request from "$lib/api/api.js";
 /* import { checkAuthorization } from "$lib/utils"; */
-import { permissionsPath, authPath} from '$lib/backend'
+import {authPath, permissionsPath} from '$lib/backend'
 
 export const prerender = false;
 export const ssr = false;
 
 export async function load({url}) {
-
-    let user = {} 
-    let userPermissions = []
-    if(url.pathname.startsWith('/auth/')){
-        return {userPermissions, user};
+    let payload = {
+        user: null,
+        permissions: []
     }
+
     const permissionsResponse = await request(permissionsPath);
+    if (permissionsResponse.ok)
+        payload.permissions = await permissionsResponse.json();
 
-   
-    if (permissionsResponse.status === 200){
-        userPermissions = await permissionsResponse.json();
-    }   
-    const profileResponse = await request(authPath+'/me');
+    const meResponse = await request(authPath + '/me');
+    if (meResponse.ok)
+        payload.user = await meResponse.json();
 
-    if (profileResponse.status === 200)
-        user = await profileResponse.json();
-
-    return {userPermissions, user};
+    return payload;
 }

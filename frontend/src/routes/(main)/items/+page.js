@@ -1,6 +1,6 @@
 import request from "$lib/api/api.js";
-import { checkAuthorization } from "$lib/utils";
-import {deviceCategoriesPath, deviceBookingsPath, devicesPath} from '$lib/backend';
+import { checkAuthorization } from "$lib/utils.js";
+import {deviceCategoriesPath, deviceBookingsPath, devicesPath} from '$lib/backend.js';
 /* import { json } from "@sveltejs/kit";
  */
 export async function load({url}){
