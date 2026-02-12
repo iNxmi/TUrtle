@@ -53,7 +53,8 @@ export function create(
              
             const response = await request(`${endpoint}`);
             checkAuthorization(response, url.pathname);
-            page.push({content: await response.json()});
+            const endpointData = await response.json();
+            page.push(endpointData);
         }
        
         if(page.length === 1) {
