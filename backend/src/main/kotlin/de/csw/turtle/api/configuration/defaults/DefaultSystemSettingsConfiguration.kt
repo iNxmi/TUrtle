@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import de.csw.turtle.api.Settings
 import de.csw.turtle.api.entity.SystemSettingEntity.Type
 import de.csw.turtle.api.entity.SystemSettingEntity.Visibility
+import de.csw.turtle.api.entity.SystemSettingEntity.Visibility.PUBLIC
 import de.csw.turtle.api.service.SystemSettingService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
@@ -59,10 +60,10 @@ class DefaultSystemSettingsConfiguration(
     override fun run(vararg args: String) {
         val objectMapper = ObjectMapper()
 
-        setDefault(Settings.GENERAL_FQDN, Type.STRING, "csw.tu-darmstadt.de", Visibility.PUBLIC)
+        setDefault(Settings.GENERAL_FQDN, Type.STRING, "csw.tu-darmstadt.de", PUBLIC)
 
-        setDefault(Settings.EMOJIS_ALL, Type.STRING_LIST, objectMapper.writeValueAsString(emojis), Visibility.PUBLIC)
-        setDefault(Settings.EMOJIS_SIZE, Type.INT, 5, Visibility.PUBLIC)
+        setDefault(Settings.EMOJIS_ALL, Type.STRING_LIST, objectMapper.writeValueAsString(emojis), PUBLIC)
+        setDefault(Settings.EMOJIS_SIZE, Type.INT, 5, PUBLIC)
         setDefault(Settings.EMOJIS_MAX_RETRIES, Type.INT, 64)
 
         setDefault(Settings.USER_VERIFICATION_DURATION, Type.DURATION, Duration.ofDays(2))
@@ -71,7 +72,7 @@ class DefaultSystemSettingsConfiguration(
             Settings.USER_EMAIL_TRUSTED,
             Type.STRING_LIST,
             objectMapper.writeValueAsString(setOf(".*@stud\\.tu-darmstadt\\.de", ".*@tu-darmstadt\\.de")),
-            Visibility.PUBLIC
+            PUBLIC
         )
 
         setDefault(Settings.ALTCHA_SECRET, Type.STRING, randomBase64())
@@ -83,9 +84,9 @@ class DefaultSystemSettingsConfiguration(
             objectMapper.writeValueAsString(setOf("192.168.0.22", "172.18.0.1", "172.18.0.7"))
         )
 
-        setDefault(Settings.DOOR_OPEN_DURATION, Type.DURATION, Duration.ofSeconds(5), Visibility.PUBLIC)
-        setDefault(Settings.DOOR_SCHEDULE_START, Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
-        setDefault(Settings.DOOR_SCHEDULE_END, Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
+        setDefault(Settings.DOOR_OPEN_DURATION, Type.DURATION, Duration.ofSeconds(5), PUBLIC)
+        setDefault(Settings.DOOR_SCHEDULE_START, Type.TIME, LocalTime.of(6, 0), PUBLIC)
+        setDefault(Settings.DOOR_SCHEDULE_END, Type.TIME, LocalTime.of(22, 0), PUBLIC)
         //thymeleaf simple template
         setDefault(Settings.DOOR_SSH_COMMAND, Type.STRING, "~/doorOpen.sh [[\${duration.toSeconds()}]]")
         setDefault(Settings.DOOR_SSH_HOSTNAME, Type.STRING, "192.168.0.107")
@@ -93,8 +94,8 @@ class DefaultSystemSettingsConfiguration(
         setDefault(Settings.DOOR_SSH_USERNAME, Type.STRING, "")
         setDefault(Settings.DOOR_SSH_PASSWORD, Type.STRING, "")
 
-        setDefault(Settings.LOCKER_SCHEDULE_START, Type.TIME, LocalTime.of(6, 0), Visibility.PUBLIC)
-        setDefault(Settings.LOCKER_SCHEDULE_END, Type.TIME, LocalTime.of(22, 0), Visibility.PUBLIC)
+        setDefault(Settings.LOCKER_SCHEDULE_START, Type.TIME, LocalTime.of(6, 0), PUBLIC)
+        setDefault(Settings.LOCKER_SCHEDULE_END, Type.TIME, LocalTime.of(22, 0), PUBLIC)
         //thymeleaf simple template
         setDefault(Settings.LOCKER_SSH_COMMAND, Type.STRING, "~/cabinet[[\${index}]]Open.sh")
         setDefault(Settings.LOCKER_SSH_HOSTNAME, Type.STRING, "192.168.0.107")
@@ -105,6 +106,10 @@ class DefaultSystemSettingsConfiguration(
         setDefault(Settings.JWT_SECRET, Type.STRING, randomBase64())
         setDefault(Settings.JWT_DURATION_ACCESS, Type.DURATION, Duration.ofMinutes(5))
         setDefault(Settings.JWT_DURATION_REFRESH, Type.DURATION, Duration.ofDays(30))
+
+        setDefault(Settings.URL_X, Type.STRING, "https://twitter.com/CSW_TUDarmstadt", PUBLIC)
+        setDefault(Settings.URL_INSTAGRAM, Type.STRING, "https://www.instagram.com/csw_tudarmstadt/", PUBLIC)
+        setDefault(Settings.URL_GITHUB, Type.STRING, "https://github.com/CSWTeam/TUrtle", PUBLIC)
     }
 
 }

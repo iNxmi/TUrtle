@@ -34,5 +34,9 @@ enum class Settings(val key: String) {
 
     JWT_SECRET("jwt.secret"),
     JWT_DURATION_ACCESS("jwt.duration.access"),
-    JWT_DURATION_REFRESH("jwt.duration.refresh")
+    JWT_DURATION_REFRESH("jwt.duration.refresh"),
+
+    URL_X("url.x"),
+    URL_INSTAGRAM("url.instagram"),
+    URL_GITHUB("url.github")
 }

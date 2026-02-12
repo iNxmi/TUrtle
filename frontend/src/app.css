@@ -34,7 +34,10 @@
     --color-secondary-700: var(--color-orange-400);
     --color-secondary-800: var(--color-csw);
     --color-secondary-900: var(--color-csw);
-    --color-background: var(--color-white); /*#eefff1;*/
+
+    --color-background: var(--color-white);
+    --color-background-secondary: var(--color-gray-100);
+
     --color-primary: #98dc9e;
     --color-secondary: #dcffdb;
     --color-secondary-dark: var(--color-green-700);
@@ -76,6 +79,7 @@
     --color-secondary-900: var(--color-csw);
 
     --color-background: var(--color-gray-900); /*#eefff1;*/
+    --color-background-secondary: var(--color-gray-800); /*#eefff1;*/
     --color-primary: #236729;
     --color-secondary: #012400;
     --color-secondary-dark: var(--color-green-700);
@@ -87,7 +91,6 @@
 
     --color-text: var(--color-gray-200);
     --color-muted: var(--color-gray-500);
-
 }
 
 @font-face {

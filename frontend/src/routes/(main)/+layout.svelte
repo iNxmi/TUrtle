@@ -297,7 +297,7 @@
     </Sidebar>
 
     <div class="min-h-svh justify-between flex flex-col w-full bg-background">
-        <div class="mx-10 my-3 mb-2">
+        <div class="m-5">
             <div class="flex justify-end items-center gap-2 mb-1">
                 <button onclick={toggleDarkMode} class="cursor-pointer inline-flex items-center justify-center text-md dark:text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md px-3 h-8">
                     {#if darkmode}
