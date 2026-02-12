@@ -14,7 +14,7 @@
     import { deviceBookingsPath } from "$lib/backend";
     let { data } = $props();
     
-    let reservations = $derived(data.reservations.content);
+    let reservations = $derived(data.reservations);
     let deviceCategories = $derived(data.deviceCategories);
     let devices = $derived(data.devices);
     let calendar = $state();

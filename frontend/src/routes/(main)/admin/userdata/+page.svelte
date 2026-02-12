@@ -25,7 +25,7 @@
         {id: "id", display: "_ID_"},
         {id: "start", display: "_Start Date_"},
         {id: "end", display: "_End Date_"},
-        {id: "deviceId", display: "_Device_"},
+        {id: "itemId", display: "_Device_"},
         {id: "userId", display:"_User Name_"},
         {id: "status", display: "_Status_"},
         {id: "createdAt", display: "_created at_"}

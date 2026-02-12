@@ -1,12 +1,13 @@
 import request from "$lib/api/api";
 import { checkAuthorization } from "$lib/utils";
-import { rolesPath, lockersPath, permissionsPath} from '$lib/backend'
+import { rolesPath, lockersPath, permissionsPath, systemSettingsPath} from '$lib/backend'
 
 export async function load(){
 
     let roles;
     let lockers;
     let permissions;
+    let systemSettings;
     const rolesResponse = await request(rolesPath+'?pageNumber=0');
 
     checkAuthorization(rolesResponse, '/admin/settings');
@@ -25,5 +26,13 @@ export async function load(){
 
     if(permissionsResponse.ok)
         permissions = await permissionsResponse.json();
-    return {page:roles, lockers, allPermissions: permissions};
+    
+    const systemSettingsResponse = await request(systemSettingsPath);
+
+    if(systemSettingsResponse.ok){
+        systemSettings = await systemSettingsResponse.json();
+    }
+    return {page:roles, lockers, allPermissions: permissions, systemSettings};
+
+    
 }

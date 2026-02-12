@@ -168,6 +168,25 @@
     cursor: pointer;
 }
 
+.dark .pending-booking {
+    background: repeating-linear-gradient(
+            45deg,
+            var(--color-gray-700),
+            var(--color-gray-700) 40px,
+            var(--color-gray-800) 40px,
+            var(--color-gray-800) 80px
+        );
+}
+.pending-booking {
+        background: repeating-linear-gradient(
+            45deg,
+            var(--color-gray-50),
+            var(--color-gray-50) 40px,
+            var(--color-gray-100) 40px,
+            var(--color-gray-100) 80px
+        );
+    } 
+
 .dark .fc {
     --fc-border-color: theme(--color-gray-700);
 }
