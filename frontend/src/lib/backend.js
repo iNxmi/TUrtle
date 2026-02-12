@@ -1,5 +1,5 @@
 export const usersPath = '/users';
-export const templatesPath = '/general-templates';
+export const templatesPath = '/content-templates';
 export const emailTempletesPath = '/email-templates';
 export const supportTicketsPath = '/support-tickets';
 export const roomBookingsPath = '/room-bookings';
