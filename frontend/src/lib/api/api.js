@@ -7,9 +7,7 @@ export default async function request(url, options) {
     const endpoint = `/${prefix}${url}`;
 
     const response = await fetch(endpoint, options);
-
-    //TODO implement proper fix for not being logged in (optional parameter like planned)
-    if (response.status !== 401 || url === '/auth/me' || url === "/permissions")
+    if (response.status !== 401)
         return response
 
     const refreshResponse = await fetch(`/${prefix}${jwtRefreshPath}`, {
@@ -17,7 +15,8 @@ export default async function request(url, options) {
         headers: {'Content-Type': 'application/json'}
     });
 
-    if (refreshResponse.status === 401)
+    //TODO implement proper fix for not being logged in (optional parameter like planned)
+    if (refreshResponse.status === 401 && url !== '/auth/me' && url !== "/permissions")
         redirect(307, '/auth/login');
 
     return await fetch(endpoint, options);

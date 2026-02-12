@@ -27,7 +27,6 @@
         HomeSolid,
         LockSolid,
         MoonOutline,
-        NewspaperSolid,
         PaperClipOutline,
         QuestionCircleSolid,
         SunOutline,
