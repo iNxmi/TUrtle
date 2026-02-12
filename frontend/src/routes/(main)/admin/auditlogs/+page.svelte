@@ -6,6 +6,7 @@
 	import { page } from '$app/state';
 	import { goto, invalidateAll } from '$app/navigation';
 	import { BugSolid, BookOpenSolid } from 'flowbite-svelte-icons';
+    import { auditLogsPath, exceptionsPath } from '$lib/backend.js';
 
     const {data} = $props();
     
@@ -22,7 +23,7 @@
 </script>
 
 <Tabs tabStyle="underline">
-    <TabItem onclick={() => goto('?endpoint=/auditlogs', {invalidateAll: true})} classes={{button:"cursor-pointer"}} open={currentTab === '/auditlogs'}>
+    <TabItem onclick={() => goto(`?endpoint=${auditLogsPath}`, {invalidateAll: true})} classes={{button:"cursor-pointer"}} open={currentTab === '/auditlogs'}>
         {#snippet titleSlot()}
         <div class="flex items-center gap-2">
             <BookOpenSolid size="md"/>
@@ -40,7 +41,7 @@
         </div>
 
     </TabItem>
-    <TabItem onclick={() => goto('?endpoint=/exceptions', {invalidateAll: true})} classes={{button:"cursor-pointer"}} open={currentTab === '/exceptions'}>
+    <TabItem onclick={() => goto(`?endpoint=${exceptionsPath}`, {invalidateAll: true})} classes={{button:"cursor-pointer"}} open={currentTab === '/exceptions'}>
         {#snippet titleSlot()}
             <div class="flex items-center gap-2">
                 <BugSolid size="md"/>

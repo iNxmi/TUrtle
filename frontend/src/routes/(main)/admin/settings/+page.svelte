@@ -5,7 +5,8 @@
 	import { goto } from '$app/navigation';
     import { m } from '$lib/paraglide/messages.js';
     import TableView from '$lib/components/TableView.svelte';
-     import {openLocker, openDoor} from '$lib/utils';
+    import {openLocker, openDoor} from '$lib/utils';
+    import { rolesPath, hardwarePath, lockersPath } from '$lib/backend.js';
 
     import NewRoleModal from '$lib/components/NewRoleModal.svelte';
 
@@ -13,7 +14,7 @@
 
     let allPermissions = $derived(data.allPermissions);
 
-    let currentTab = $state(page.url.searchParams.get('endpoint') || '/roles');
+    let currentTab = $state(page.url.searchParams.get('endpoint') || rolesPath);
 
     let showNewRoleModal = $state(false);
 
@@ -28,7 +29,7 @@
             locked: locker.locked !== true
         }
 
-        await request(`/lockers/${locker.id}`, {
+        await request(`${lockersPath}/${locker.id}`, {
             method: "PATCH",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)
@@ -44,7 +45,7 @@
 </script>
 <Tabs tabStyle="underline">
     {#if data.userPermissions.includes('MANAGE_ROLES')}
-    <TabItem onclick={() => goto('?endpoint=/roles', {invalidateAll: true})} classes={{button: "cursor-pointer"}} open={currentTab === '/roles'}>
+    <TabItem onclick={() => goto(`?endpoint=${rolesPath}`, {invalidateAll: true})} classes={{button: "cursor-pointer"}} open={currentTab === rolesPath}>
         {#snippet titleSlot()}
         <div class="flex items-center gap-2">
             <LockOutline size="md"/>
@@ -64,7 +65,7 @@
     </TabItem>
     {/if}
     {#if data.userPermissions.includes('MANAGE_DOOR') || data.userPermissions.includes('MANAGE_LOCKERS')}
-    <TabItem onlick={() => goto('?endpoint=/hardwareoverrides')} classes={{button: 'cursor-pointer'}} open={currentTab === '/hardwareoverrides'}>
+    <TabItem onlick={() => goto(`?endpoint=${hardwarePath}`)} classes={{button: 'cursor-pointer'}} open={currentTab === '/hardwareoverrides'}>
         {#snippet titleSlot()}
         <div class="flex items-center gap-2">
             <OpenDoorOutline size="md"/>
