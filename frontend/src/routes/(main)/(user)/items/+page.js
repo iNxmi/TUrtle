@@ -23,7 +23,7 @@ export async function load({url}){
 
     const now = new Date(Date.now());
     now.setDate(now.getDate() + 14);
-    const reservationResponse = await request(deviceBookingsPath+`?rsql=end<${now.toISOString()},status!='ITEM_RETURNED'`); //TODO
+    const reservationResponse = await request(deviceBookingsPath+`?rsql=end<${now.toISOString()},status!=RETURNED`); //TODO
     if(reservationResponse.ok){
         const reservationData = await reservationResponse.json();
         return {deviceCategories, devices, reservations: reservationData};
