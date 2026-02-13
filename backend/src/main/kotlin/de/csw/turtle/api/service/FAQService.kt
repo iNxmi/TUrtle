@@ -28,6 +28,7 @@ class FAQService(
         return repository.save(entity)
     }
 
+    @Transactional
     fun patch(
         id: Long,
         name: String? = null,

@@ -3,6 +3,7 @@ package de.csw.turtle.api.service
 import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.entity.SupportTicketEntity.*
 import de.csw.turtle.api.repository.SupportTicketRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -10,7 +11,7 @@ class SupportTicketService(
     override val repository: SupportTicketRepository
 ) : CRUDService<SupportTicketEntity>() {
 
-
+    @Transactional
     fun create(
         urgency: Urgency,
         category: Category,
@@ -31,6 +32,7 @@ class SupportTicketService(
         return repository.save(entity)
     }
 
+    @Transactional
     fun patch(
         id: Long,
         urgency: Urgency? = null,

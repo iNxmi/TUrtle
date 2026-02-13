@@ -3,6 +3,7 @@ package de.csw.turtle.api.service
 import de.csw.turtle.api.entity.ContentTemplateEntity
 import de.csw.turtle.api.entity.ContentTemplateEntity.Type
 import de.csw.turtle.api.repository.ContentTemplateRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -14,6 +15,7 @@ class ContentTemplateService(
     fun getByName(name: String): ContentTemplateEntity? = repository.findByName(name)
     fun getByType(type: Type): ContentTemplateEntity? = repository.findByType(type)
 
+    @Transactional
     fun create(
         name: String,
         description: String,
@@ -30,6 +32,7 @@ class ContentTemplateService(
         return repository.save(entity)
     }
 
+    @Transactional
     fun patch(
         id: Long,
         name: String? = null,

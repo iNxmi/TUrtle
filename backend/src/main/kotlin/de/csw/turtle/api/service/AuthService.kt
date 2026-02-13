@@ -20,7 +20,6 @@ class AuthService(
     private val tokenService: TokenService,
     private val systemSettingService: SystemSettingService,
     private val emailTemplateService: EmailTemplateService,
-    private val thymeleafService: ThymeleafService,
     private val emailService: EmailService
 ) {
 

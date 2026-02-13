@@ -6,6 +6,7 @@ import de.csw.turtle.api.Settings
 import de.csw.turtle.api.entity.SystemSettingEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.SystemSettingRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
@@ -60,6 +61,7 @@ class SystemSettingService(
         throw HttpException.BadRequest("Error parsing system setting with key '$key' -> ${exception.message}")
     }
 
+    @Transactional
     fun create(
         key: String,
         type: SystemSettingEntity.Type,
@@ -79,6 +81,7 @@ class SystemSettingService(
         return repository.save(entity)
     }
 
+    @Transactional
     fun patch(
         id: Long,
         key: String? = null,

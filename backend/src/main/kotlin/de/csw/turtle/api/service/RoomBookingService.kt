@@ -6,6 +6,7 @@ import de.csw.turtle.api.event.CreatedRoomBookingEvent
 import de.csw.turtle.api.event.PatchedRoomBookingEvent
 import de.csw.turtle.api.repository.RoomBookingRepository
 import de.csw.turtle.api.repository.UserRepository
+import jakarta.transaction.Transactional
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -22,6 +23,7 @@ class RoomBookingService(
 
     fun getCurrent(): RoomBookingEntity? = repository.findCurrent(Instant.now())
 
+    @Transactional
     fun create(
         userId: Long,
         title: String,
@@ -50,6 +52,7 @@ class RoomBookingService(
         return saved
     }
 
+    @Transactional
     fun patch(
         id: Long,
         userId: Long? = null,

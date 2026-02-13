@@ -5,6 +5,7 @@ import de.csw.turtle.api.entity.RoleEntity
 import de.csw.turtle.api.entity.RoleEntity.Type
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.RoleRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,6 +18,7 @@ class RoleService(
     fun getByName(name: String) = getByNameOrNull(name) ?: throw HttpException.NotFound(name)
     fun getByNameOrNull(name: String) = repository.findByName(name)
 
+    @Transactional
     fun create(
         name: String,
         permissions: Set<Permission>,
@@ -31,6 +33,7 @@ class RoleService(
         return repository.save(entity)
     }
 
+    @Transactional
     fun patch(
         id: Long,
         name: String? = null,

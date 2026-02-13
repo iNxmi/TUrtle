@@ -2,6 +2,7 @@ package de.csw.turtle.api.service
 
 import de.csw.turtle.api.Settings
 import de.csw.turtle.api.exception.HttpException
+import jakarta.transaction.Transactional
 import org.altcha.altcha.Altcha
 import org.springframework.stereotype.Service
 import java.time.Duration
@@ -13,6 +14,7 @@ class AltchaService(
 
     private fun getSecret() = systemSettingService.getTyped<String>(Settings.ALTCHA_SECRET)
 
+    @Transactional
     fun create(): Altcha.Challenge {
         val secret = getSecret()
         val maxNumber = systemSettingService.getTyped<Long>(Settings.ALTCHA_MAX_NUMBER)
@@ -27,6 +29,7 @@ class AltchaService(
         return Altcha.createChallenge(options)
     }
 
+    @Transactional
     fun isTrusted(ipAddress: String): Boolean {
         val trustedIps = systemSettingService.getTyped<List<String>>(Settings.ALTCHA_TRUSTED_IPS)
         return trustedIps.contains(ipAddress)

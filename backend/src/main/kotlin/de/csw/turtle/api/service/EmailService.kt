@@ -1,6 +1,7 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.entity.EmailTemplateEntity
+import jakarta.transaction.Transactional
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
@@ -36,6 +37,7 @@ class EmailService(
         mailSender.send(message)
     }
 
+    @Transactional
     fun send(to: String, template: EmailTemplateEntity, context: Context) {
         val subject = thymeleafService.getRendered(template.subject, context)
         val content = thymeleafService.getRendered(template.content, context)

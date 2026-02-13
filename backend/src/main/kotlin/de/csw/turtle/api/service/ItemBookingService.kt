@@ -5,6 +5,7 @@ import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.ItemBookingRepository
 import de.csw.turtle.api.repository.ItemRepository
 import de.csw.turtle.api.repository.UserRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -21,6 +22,7 @@ class ItemBookingService(
     fun getCurrent(userId: Long, lockerId: Long): Set<ItemBookingEntity> =
         repository.findCurrent(Instant.now(), userId, lockerId)
 
+    @Transactional
     fun create(
         userId: Long,
         itemId: Long,
@@ -52,6 +54,7 @@ class ItemBookingService(
         return repository.save(entity)
     }
 
+    @Transactional
     fun patch(
         id: Long,
         userId: Long? = null,

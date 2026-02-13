@@ -4,6 +4,7 @@ import de.csw.turtle.api.entity.ItemEntity
 import de.csw.turtle.api.repository.ItemCategoryRepository
 import de.csw.turtle.api.repository.ItemRepository
 import de.csw.turtle.api.repository.LockerRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -17,6 +18,7 @@ class ItemService(
 
     fun getByNameOrNull(name: String): ItemEntity? = repository.findByName(name)
 
+    @Transactional
     fun create(
         name: String,
         description: String,
@@ -37,6 +39,7 @@ class ItemService(
         return repository.save(entity)
     }
 
+    @Transactional
     fun patch(
         id: Long,
         name: String? = null,

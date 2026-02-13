@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
@@ -24,6 +25,7 @@ class JWTService(
         return Keys.hmacShaKeyFor(bytes)
     }
 
+    @Transactional
     fun generate(userId: Long, type: Type): String {
         val duration = systemSettingService.getTyped<Duration>(type.setting)
 

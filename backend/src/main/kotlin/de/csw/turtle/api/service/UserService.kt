@@ -23,6 +23,7 @@ class UserService(
     private val eventPublisher: ApplicationEventPublisher
 ) : CRUDService<UserEntity>() {
 
+    @Transactional
     fun generateEmojis(): String {
         val emojis = systemSettingService.getTyped<List<String>>(Settings.EMOJIS_ALL)
         val maxRetries = systemSettingService.getTyped<Int>(Settings.EMOJIS_MAX_RETRIES)
@@ -37,6 +38,7 @@ class UserService(
         throw HttpException.InternalServerError("Could not generate unique emojis. Contact system administrator. (Most likely too many users in DB).")
     }
 
+    @Transactional
     fun create(
         username: String,
         firstName: String,
