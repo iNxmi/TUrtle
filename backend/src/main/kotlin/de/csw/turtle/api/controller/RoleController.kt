@@ -49,7 +49,8 @@ class RoleController(
 
         val entity = roleService.create(
             name = request.name,
-            permissions = request.permissions
+            permissions = request.permissions,
+            type = request.type
         )
 
         val location = URI.create("$ENDPOINT/${entity.id}")
@@ -141,7 +142,8 @@ class RoleController(
         val entity = roleService.patch(
             id = id,
             name = request.name,
-            permissions = request.permissions
+            permissions = request.permissions,
+            type = request.type
         )
 
         val dto = GetRoleResponse(entity)

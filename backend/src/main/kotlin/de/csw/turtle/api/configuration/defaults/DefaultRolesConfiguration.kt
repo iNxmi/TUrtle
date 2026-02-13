@@ -1,6 +1,8 @@
 package de.csw.turtle.api.configuration.defaults
 
 import de.csw.turtle.api.Permission
+import de.csw.turtle.api.entity.RoleEntity
+import de.csw.turtle.api.entity.RoleEntity.Type
 import de.csw.turtle.api.service.RoleService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
@@ -21,14 +23,18 @@ class DefaultRolesConfiguration(
 
     private val administrator = Permission.entries.toSet()
 
-    @Transactional
-    override fun run(vararg args: String) {
-        if (service.count() > 0)
+    private fun create(name:String, permissions: Set<Permission>, type: Type) {
+        if(service.existsByType(type))
             return
 
-        service.create(name = "Student", permissions = student)
-        service.create(name = "Professor", permissions = professor)
-        service.create(name = "Administrator", permissions = administrator)
+        service.create(name, permissions, type)
+    }
+
+    @Transactional
+    override fun run(vararg args: String) {
+        create(name = "Student", permissions = student, type= Type.STUDENT)
+        create(name = "Professor", permissions = professor, type = Type.PROFESSOR)
+        create(name = "Administrator", permissions = administrator, type= Type.ADMINISTRATOR)
     }
 
 }

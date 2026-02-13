@@ -111,14 +111,15 @@ class DefaultContentTemplateConfiguration(
 
     """.trimIndent()
 
-    private fun create(name: String, content: String, type: Type) =
+    private fun create(name: String, content: String, type: Type) {
+        if (service.existsByType(type))
+            return
+
         service.create(name, "Default content provided by the contractor", content, type)
+    }
 
     @Transactional
     override fun run(vararg args: String) {
-        if (service.count() > 0)
-            return
-
         create("Imprint", imprint, Type.IMPRINT)
         create("Contact", contact, Type.CONTACT)
         create("Terms of Service", tos, Type.TERMS_OF_SERVICE)

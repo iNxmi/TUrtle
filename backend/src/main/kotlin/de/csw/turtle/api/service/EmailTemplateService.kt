@@ -1,6 +1,7 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.entity.EmailTemplateEntity
+import de.csw.turtle.api.entity.EmailTemplateEntity.Type
 import de.csw.turtle.api.repository.EmailTemplateRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -10,8 +11,9 @@ class EmailTemplateService(
     override val repository: EmailTemplateRepository
 ) : CRUDService<EmailTemplateEntity>() {
 
+    fun existsByType(type: Type): Boolean = repository.existsByType(type)
     fun getByName(name: String): EmailTemplateEntity? = repository.findByName(name)
-    fun getByType(type: EmailTemplateEntity.Type): EmailTemplateEntity? = repository.findByType(type)
+    fun getByType(type: Type): EmailTemplateEntity? = repository.findByType(type)
 
     @Transactional
     fun create(
@@ -19,7 +21,7 @@ class EmailTemplateService(
         description: String,
         subject: String,
         content: String,
-        type: EmailTemplateEntity.Type?
+        type: Type?
     ): EmailTemplateEntity {
         val entity = EmailTemplateEntity(
             name = name,
@@ -39,7 +41,7 @@ class EmailTemplateService(
         description: String? = null,
         subject: String? = null,
         content: String? = null,
-        type: EmailTemplateEntity.Type? = null,
+        type: Type? = null,
     ): EmailTemplateEntity {
         val entity = repository.findById(id).get()
 

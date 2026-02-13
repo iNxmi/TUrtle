@@ -15,7 +15,6 @@ class RoleEntity(
     @Column(unique = true)
     var name: String,
 
-
     @ElementCollection
     @Enumerated(EnumType.STRING)
     @CollectionTable(
@@ -23,6 +22,10 @@ class RoleEntity(
         joinColumns = [JoinColumn(name = "role_id")],
     )
     val permissions: MutableSet<Permission>,
+
+    @Column(unique = true)
+    @Enumerated(EnumType.STRING)
+    var type: Type?,
 
     @ManyToMany(mappedBy = "roles")
     val users: MutableSet<UserEntity> = mutableSetOf(),
@@ -34,6 +37,12 @@ class RoleEntity(
     override val createdAt: Instant = Instant.now()
 
 ) : CRUDEntity {
+
+    enum class Type {
+        STUDENT,
+        PROFESSOR,
+        ADMINISTRATOR
+    }
 
     fun authorities() = permissions.map { SimpleGrantedAuthority(it.name) }
 
@@ -51,6 +60,7 @@ class RoleEntity(
         id = id,
         name = name,
         permissions = permissions.toMutableSet(),
+        type = type,
         users = users.toMutableSet(),
         updatedAt = updatedAt,
         createdAt = createdAt

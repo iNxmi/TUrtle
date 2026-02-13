@@ -15,8 +15,8 @@ class DefaultLockersConfiguration(
         if (service.count() > 0)
             return
 
-        service.create(name = "Locker Nr. 6", index = 6, isSoftwareUnlockable = true, false)
-        service.create(name = "Locker Nr. 7", index = 7, isSoftwareUnlockable = true, false)
+        service.create(name = "Locker Nr. 6", index = 6, isSoftwareUnlockable = true, locked = false)
+        service.create(name = "Locker Nr. 7", index = 7, isSoftwareUnlockable = true, locked = false)
     }
 
 }

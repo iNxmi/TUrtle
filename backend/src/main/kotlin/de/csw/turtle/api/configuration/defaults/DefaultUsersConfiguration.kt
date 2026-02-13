@@ -1,5 +1,6 @@
 package de.csw.turtle.api.configuration.defaults
 
+import de.csw.turtle.api.entity.RoleEntity.Type
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.service.RoleService
 import de.csw.turtle.api.service.UserService
@@ -22,7 +23,7 @@ class DefaultUsersConfiguration(
         if (userService.count() > 0)
             return
 
-        val studentRole = roleService.getByName("Student")
+        val studentRole = roleService.getByType(Type.STUDENT) ?: throw IllegalStateException()
         userService.create(
             username = "student",
             firstName = "Student",
@@ -34,7 +35,7 @@ class DefaultUsersConfiguration(
             status = UserEntity.Status.ACTIVE
         )
 
-        val professorRole = roleService.getByName("Professor")
+        val professorRole = roleService.getByType(Type.PROFESSOR) ?: throw IllegalStateException()
         userService.create(
             username = "professor",
             firstName = "Professor",
@@ -46,7 +47,7 @@ class DefaultUsersConfiguration(
             status = UserEntity.Status.ACTIVE
         )
 
-        val administratorRole = roleService.getByName("Administrator")
+        val administratorRole = roleService.getByType(Type.ADMINISTRATOR) ?: throw IllegalStateException()
         userService.create(
             username = "admin",
             firstName = "Admin",

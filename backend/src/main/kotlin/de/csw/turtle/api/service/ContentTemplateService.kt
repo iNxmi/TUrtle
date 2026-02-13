@@ -1,6 +1,7 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.entity.ContentTemplateEntity
+import de.csw.turtle.api.entity.ContentTemplateEntity.Type
 import de.csw.turtle.api.repository.ContentTemplateRepository
 import org.springframework.stereotype.Service
 
@@ -9,14 +10,15 @@ class ContentTemplateService(
     override val repository: ContentTemplateRepository
 ) : CRUDService<ContentTemplateEntity>() {
 
+    fun existsByType(type: Type): Boolean = repository.existsByType(type)
     fun getByName(name: String): ContentTemplateEntity? = repository.findByName(name)
-    fun getByType(type: ContentTemplateEntity.Type): ContentTemplateEntity? = repository.findByType(type)
+    fun getByType(type: Type): ContentTemplateEntity? = repository.findByType(type)
 
     fun create(
         name: String,
         description: String,
         content: String,
-        type: ContentTemplateEntity.Type?
+        type: Type?
     ): ContentTemplateEntity {
         val entity = ContentTemplateEntity(
             name = name,
@@ -33,7 +35,7 @@ class ContentTemplateService(
         name: String? = null,
         description: String? = null,
         content: String? = null,
-        type: ContentTemplateEntity.Type? = null,
+        type: Type? = null,
     ): ContentTemplateEntity {
         val entity = repository.findById(id).get()
 
