@@ -162,11 +162,13 @@ class UserController(
         var roleIds: Set<Long>? = null
         var status: Status? = null
         var emojis: String? = null
+        var email: String? = null
         if (user.hasPermission(Permission.MANAGE_USERS)) {
             request.username?.let { username = it }
             request.roleIds?.let { roleIds = it }
             request.status?.let { status = it }
             request.emojis?.let { emojis = it }
+            request.email?.let { email = it }
         }
 
         val entity = userService.patch(
@@ -174,7 +176,7 @@ class UserController(
             username = username,
             firstName = request.firstName,
             lastName = request.lastName,
-            email = request.email,
+            email = email,
             emojis = emojis,
             password = request.password,
             status = status,
