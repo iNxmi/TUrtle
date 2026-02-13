@@ -8,5 +8,7 @@ data class PatchItemBookingRequest(
     val end: Instant? = null,
     val itemId: Long? = null,
     val userId: Long? = null,
-    val status: ItemBookingEntity.Status? = null
+    val status: ItemBookingEntity.Status? = null,
+    val collectedAt: Instant? = null,
+    val returnedAt: Instant? = null
 ) : PatchRequest

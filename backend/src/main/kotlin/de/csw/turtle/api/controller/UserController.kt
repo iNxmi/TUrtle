@@ -4,11 +4,13 @@ import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
+import de.csw.turtle.api.entity.RoleEntity.Type
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.AltchaService
 import de.csw.turtle.api.service.NetworkService
+import de.csw.turtle.api.service.RoleService
 import de.csw.turtle.api.service.UserService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -26,7 +28,8 @@ private const val ENDPOINT = "/api/users"
 class UserController(
     private val userService: UserService,
     private val altchaService: AltchaService,
-    private val networkService: NetworkService
+    private val networkService: NetworkService,
+    private val roleService: RoleService
 ) : CreateController<UserEntity, CreateUserRequest, GetUserResponse>,
     GetController<UserEntity, String, GetUserResponse>,
     PatchController<UserEntity, PatchUserRequest, GetUserResponse>,
@@ -49,9 +52,12 @@ class UserController(
         } else if (!user.hasPermission(Permission.MANAGE_USERS))
             throw HttpException.Forbidden()
 
+        val role = roleService.getByType(Type.STUDENT)
+            ?: throw HttpException.InternalServerError()
+
         var emojis = userService.generateEmojis()
         var status = Status.PENDING_VERIFICATION
-        var roleIds = setOf<Long>()
+        var roleIds = setOf(role.id)
         if (user != null) {
             request.emojis?.let { emojis = it }
             request.status?.let { status = it }

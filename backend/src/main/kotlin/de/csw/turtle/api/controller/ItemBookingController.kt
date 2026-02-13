@@ -155,12 +155,16 @@ class ItemBookingController(
 
         var userId: Long? = null
         var status: Status? = null
+        var collectedAt: Instant? = null
+        var returnedAt: Instant? = null
         if (!user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS)) {
             if (entity.user != user)
                 throw HttpException.Forbidden()
 
             request.userId?.let { userId = it }
             request.status?.let { status = it }
+            request.collectedAt?.let { collectedAt = it }
+            request.returnedAt?.let { returnedAt = it }
         }
 
         if (request.start != null && request.end != null) {
@@ -190,6 +194,8 @@ class ItemBookingController(
             itemId = request.itemId,
             start = request.start,
             end = request.end,
+            collectedAt = collectedAt,
+            returnedAt = returnedAt,
             status = status
         )
 
