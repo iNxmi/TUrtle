@@ -2,6 +2,7 @@ package de.csw.turtle.api.service
 
 import de.csw.turtle.api.entity.TokenEntity
 import de.csw.turtle.api.repository.TokenRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.util.*
@@ -13,6 +14,7 @@ class TokenService(
 
     fun getByUuid(uuid: String): TokenEntity? = repository.findByUuid(uuid)
 
+    @Transactional
     fun create(
         type: TokenEntity.Type,
         duration: Duration

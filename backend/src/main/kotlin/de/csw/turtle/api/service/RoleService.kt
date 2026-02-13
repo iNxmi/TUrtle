@@ -24,6 +24,9 @@ class RoleService(
         permissions: Set<Permission>,
         type: Type?
     ): RoleEntity {
+        if (repository.findByName(name) != null)
+            throw HttpException.Conflict("Role with name '${name}' already exists.")
+
         val entity = RoleEntity(
             name = name,
             permissions = permissions.toMutableSet(),
@@ -41,6 +44,10 @@ class RoleService(
         type: Type? = null
     ): RoleEntity {
         val entity = repository.findById(id).get()
+
+        if (name != null)
+            if (repository.findByName(name) != null)
+                throw HttpException.Conflict("Role with name '${name}' already exists.")
 
         name?.let { entity.name = it }
         permissions?.let {

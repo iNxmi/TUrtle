@@ -4,6 +4,7 @@ import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.entity.RoomBookingEntity.Accessibility
 import de.csw.turtle.api.event.CreatedRoomBookingEvent
 import de.csw.turtle.api.event.PatchedRoomBookingEvent
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.RoomBookingRepository
 import de.csw.turtle.api.repository.UserRepository
 import jakarta.transaction.Transactional
@@ -23,6 +24,9 @@ class RoomBookingService(
 
     fun getCurrent(): RoomBookingEntity? = repository.findCurrent(Instant.now())
 
+    private val maxTitleLength = 64
+    private val maxDescriptionLength = 2048
+
     @Transactional
     fun create(
         userId: Long,
@@ -34,6 +38,29 @@ class RoomBookingService(
         whitelistedUserIds: Set<Long>,
         status: RoomBookingEntity.Status
     ): RoomBookingEntity {
+
+        if (title.isBlank() || title.length > maxTitleLength)
+            throw HttpException.BadRequest("Title cannot be blank or exceed $maxTitleLength characters.")
+
+        if (description.length > maxDescriptionLength)
+            throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
+
+        if (start == end)
+            throw HttpException.BadRequest("Start '${start}' cannot be the same as end '${end}'.")
+
+        if (start.isAfter(end))
+            throw HttpException.BadRequest("Start '${start}' cannot be after end '${end}'.")
+
+        if (repository.findAllOverlapping(start, end, -1).isNotEmpty())
+            throw HttpException.Conflict("Room is already booked from '${start}' to '${end}'.")
+
+        //TODO userId is valid
+        //TODO title not empty, <= 64
+        //TODO start >= now
+        //TODO end > start
+        //TODO description not blank, <= 2048
+        //TODO whitelisted user ids check if valid users
+
         val entity = RoomBookingEntity(
             user = userRepository.findById(userId).get(),
             title = title,
@@ -65,6 +92,32 @@ class RoomBookingService(
         status: RoomBookingEntity.Status? = null
     ): RoomBookingEntity {
         val entity = repository.findById(id).get()
+
+        if (title != null)
+            if (title.isBlank() || title.length > maxTitleLength)
+                throw HttpException.BadRequest("Title cannot be blank or exceed $maxTitleLength characters.")
+
+        if (description != null)
+            if (description.length > maxDescriptionLength)
+                throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
+
+        if (start != null && end != null) {
+            if (start.isAfter(end))
+                throw HttpException.BadRequest("Start '${start}' cannot be after end '${end}'.")
+
+            if (start == end)
+                throw HttpException.BadRequest("Start '${start}' cannot be the same as end '${end}'.")
+
+            if (repository.findAllOverlapping(start, end, id).isNotEmpty())
+                throw HttpException.Conflict("Room is already booked from start '${start}' to end '${end}'.")
+        }
+
+        if (start != null && end == null && start.isAfter(entity.end))
+            throw HttpException.BadRequest("Start '${start}' cannot be after end '${entity.end}'.")
+
+        if (start == null && end != null && end.isBefore(entity.start))
+            throw HttpException.BadRequest("End '${end}' cannot be before '${entity.start}'.")
+
         val pre = entity.snapshot()
 
         userId?.let { entity.user = userRepository.findById(it).get() }

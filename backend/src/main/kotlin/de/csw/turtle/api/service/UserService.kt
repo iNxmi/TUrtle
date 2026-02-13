@@ -49,6 +49,22 @@ class UserService(
         status: UserEntity.Status,
         roleIds: Set<Long>
     ): UserEntity {
+        if (username.isBlank())
+            throw HttpException.BadRequest("Username cannot be blank.")
+
+        //TODO firstName != empty
+        //TODO lastName != empty
+        //TODO email != empty
+
+        if (repository.existsByUsername(username))
+            throw HttpException.Conflict("Username '${username}' already exists.")
+
+        //TODO email is valid (regex)
+        //TODO email is unique
+        //TODO emojis is unique
+        //TODO password is min. 10 long, min. 1 number included, min. 1 symbol included, min. 1 upper and min. 1 lower case (maybe via regex)
+        //TODO role ids really point to roles
+
         val entity = UserEntity(
             username = username,
             firstName = firstName,

@@ -64,12 +64,6 @@ class UserController(
             request.roleIds?.let { roleIds = it }
         }
 
-        if (userService.getByUsernameOrNull(request.username) != null)
-            throw HttpException.Conflict("Username '${request.username}' already exists")
-
-        if (request.username.isBlank())
-            throw HttpException.BadRequest("Username cannot be blank.")
-
         val entity = userService.create(
             username = request.username,
             firstName = request.firstName,

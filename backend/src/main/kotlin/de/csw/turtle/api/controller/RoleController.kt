@@ -44,9 +44,6 @@ class RoleController(
         if (!user.hasPermission(Permission.MANAGE_ROLES))
             throw HttpException.Forbidden()
 
-        if (roleService.getByNameOrNull(request.name) != null)
-            throw HttpException.Conflict("Role with name '${request.name}' already exists.")
-
         val entity = roleService.create(
             name = request.name,
             permissions = request.permissions,
@@ -134,10 +131,6 @@ class RoleController(
 
         if (!user.hasPermission(Permission.MANAGE_ROLES))
             throw HttpException.Forbidden()
-
-        if (request.name != null)
-            if (roleService.getByNameOrNull(request.name) != null)
-                throw HttpException.Conflict("Role with name '${request.name}' already exists.")
 
         val entity = roleService.patch(
             id = id,

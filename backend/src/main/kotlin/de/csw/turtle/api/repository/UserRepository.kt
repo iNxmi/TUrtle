@@ -12,5 +12,6 @@ interface UserRepository : CRUDRepository<UserEntity> {
     fun findByEmojis(emojis: String): UserEntity?
     fun findByStatusEqualsAndCreatedAtBefore(status: UserEntity.Status, cutoff: Instant): Set<UserEntity>
     fun findByTokensContains(token: TokenEntity): UserEntity?
+    fun existsByUsername(username: String): Boolean
 
 }
