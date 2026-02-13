@@ -1,6 +1,5 @@
 package de.csw.turtle.api.dto.patch
 
-import de.csw.turtle.api.entity.EmailTemplateEntity
 import de.csw.turtle.api.entity.EmailTemplateEntity.Type
 
 class PatchEmailTemplateRequest(

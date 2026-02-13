@@ -12,8 +12,8 @@ class RoleService(
     override val repository: RoleRepository
 ) : CRUDService<RoleEntity>() {
 
-    fun existsByType(type: Type) : Boolean = repository.existsByType(type)
-    fun getByType(type: Type) : RoleEntity? = repository.findByType(type)
+    fun existsByType(type: Type): Boolean = repository.existsByType(type)
+    fun getByType(type: Type): RoleEntity? = repository.findByType(type)
     fun getByName(name: String) = getByNameOrNull(name) ?: throw HttpException.NotFound(name)
     fun getByNameOrNull(name: String) = repository.findByName(name)
 

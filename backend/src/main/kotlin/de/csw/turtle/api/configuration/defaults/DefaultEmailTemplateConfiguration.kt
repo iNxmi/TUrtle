@@ -1,6 +1,5 @@
 package de.csw.turtle.api.configuration.defaults
 
-import de.csw.turtle.api.entity.EmailTemplateEntity
 import de.csw.turtle.api.entity.EmailTemplateEntity.Type
 import de.csw.turtle.api.service.EmailTemplateService
 import org.springframework.boot.CommandLineRunner
@@ -42,8 +41,8 @@ class DefaultEmailTemplateConfiguration(
         Status: <span th:text="${'$'}{pre.status}">pre.status</span> -> <span th:text="${'$'}{post.status}">post.status</span>
     """.trimIndent()
 
-    private fun create(name: String, title: String, content: String, type: Type)  {
-        if(service.existsByType(type))
+    private fun create(name: String, title: String, content: String, type: Type) {
+        if (service.existsByType(type))
             return
 
         service.create(name, "Default value by TUrtle dev team.", title, content, type)
