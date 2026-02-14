@@ -6,6 +6,7 @@ import io.github.serpro69.kfaker.Faker
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
 import org.springframework.core.annotation.Order
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import java.time.Duration
 import java.time.Instant
@@ -39,13 +40,18 @@ class DataSeeder(
             val index = floor(Math.random() * (roles.size - 1)).toInt() + 1
             val role = roles[index]
 
+            val bCrypt = BCryptPasswordEncoder()
+
+            val legacy = Math.random() in 0.0f..0.1f
+            val emojis = userService.generateEmojis()
+
             try {
                 userService.create(
                     username = username,
-                    firstName = firstName,
+                    firstName = if (legacy) emojis else firstName,
                     lastName = lastName,
                     email = email,
-                    emojis = userService.generateEmojis(),
+                    emojis = if (legacy) bCrypt.encode(emojis) else emojis,
                     password = username,
                     roleIds = setOf(role.id),
                     status = randomEnum()

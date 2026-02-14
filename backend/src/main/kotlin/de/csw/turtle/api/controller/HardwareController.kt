@@ -34,7 +34,8 @@ class HardwareController(
         @RequestBody request: OpenDoorEmojisRequest,
         httpRequest: HttpServletRequest
     ): ResponseEntity<String> {
-        val user = userService.getByEmojisOrNull(request.emojis)
+        val user = userService.getByEmojis(request.emojis)
+            ?: userService.getByEmojisLegacyFix(request.emojis)
 
         if (user == null) {
             if (!networkService.isLocalNetwork(httpRequest))

@@ -2,6 +2,8 @@ package de.csw.turtle.api.repository
 
 import de.csw.turtle.api.entity.TokenEntity
 import de.csw.turtle.api.entity.UserEntity
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 import java.time.Instant
 
 interface UserRepository : CRUDRepository<UserEntity> {
@@ -13,5 +15,7 @@ interface UserRepository : CRUDRepository<UserEntity> {
     fun findByStatusEqualsAndCreatedAtBefore(status: UserEntity.Status, cutoff: Instant): Set<UserEntity>
     fun findByTokensContains(token: TokenEntity): UserEntity?
     fun existsByUsername(username: String): Boolean
+
+    fun findByEmojisStartsWith(prefix: String): Set<UserEntity>
 
 }
