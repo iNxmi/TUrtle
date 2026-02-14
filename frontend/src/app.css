@@ -89,7 +89,7 @@
     --color-accent: #00c20d;
     --color-csw: #FF6A00;
 
-    --color-text: var(--color-gray-200);
+    --color-text: var(--color-gray-300);
     --color-muted: var(--color-gray-500);
 }
 
@@ -193,7 +193,6 @@
 
 .dark .fc-timegrid-event-harness-inset .fc-timegrid-event, .fc-timegrid-event.fc-event-mirror, .fc-timegrid-more-link {
     box-shadow: none;
-
 }
 
 .fc .fc-timegrid-slot-minor {
