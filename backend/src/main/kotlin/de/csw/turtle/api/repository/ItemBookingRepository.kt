@@ -12,14 +12,14 @@ interface ItemBookingRepository : CRUDRepository<ItemBookingEntity> {
         SELECT r FROM ItemBookingEntity r
         WHERE ((r.start >= :start AND r.start <= :end)
         OR    (r.end <= :end AND r.end >= :start))
-        AND   (r.item = :item)
+        AND   (r.item.id = :itemId)
         AND   (r.id != :id)
     """
     )
     fun findAllOverlapping(
         @Param("start") start: Instant,
         @Param("end") end: Instant,
-        @Param("item") item: ItemEntity,
+        @Param("item") itemId: Long,
         @Param("id") id: Long
     ): Set<ItemBookingEntity>
 

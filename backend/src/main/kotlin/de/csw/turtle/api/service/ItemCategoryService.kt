@@ -17,6 +17,14 @@ class ItemCategoryService(
     fun create(
         name: String
     ): ItemCategoryEntity {
+
+        //TODO name not blank
+        //TODO name <= 64
+        //TODO name not already in use
+
+        if (repository.findByName(name) != null)
+            throw HttpException.Conflict("Item category with name '$name' already exists.")
+
         val entity = ItemCategoryEntity(name = name)
         return repository.save(entity)
     }
@@ -26,6 +34,10 @@ class ItemCategoryService(
         id: Long,
         name: String? = null
     ): ItemCategoryEntity {
+        if (name != null)
+            if (repository.findByName(name) != null)
+                throw HttpException.Conflict("Item category with name '$name' already exists.")
+
         val entity = repository.findById(id).get()
 
         name?.let { entity.name = it }

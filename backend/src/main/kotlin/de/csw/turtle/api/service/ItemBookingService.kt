@@ -16,8 +16,8 @@ class ItemBookingService(
     private val itemRepository: ItemRepository
 ) : CRUDService<ItemBookingEntity>() {
 
-    fun getAllOverlapping(start: Instant, end: Instant, item: Long, id: Long): Set<ItemBookingEntity> =
-        repository.findAllOverlapping(start, end, itemRepository.findById(item).get(), id)
+    fun getAllOverlapping(start: Instant, end: Instant, itemId: Long, id: Long): Set<ItemBookingEntity> =
+        repository.findAllOverlapping(start, end, itemId, id)
 
     fun getCurrent(userId: Long, lockerId: Long): Set<ItemBookingEntity> =
         repository.findCurrent(Instant.now(), userId, lockerId)
@@ -40,6 +40,9 @@ class ItemBookingService(
 
         if (getAllOverlapping(start, end, itemId, -1).isNotEmpty())
             throw HttpException.Conflict("Item with ID '${itemId}' is already booked between '${start}' and '${end}'")
+
+        //TODO user exists
+        //TODO item exists
 
         val entity = ItemBookingEntity(
             user = userRepository.findById(userId).get(),
@@ -67,6 +70,27 @@ class ItemBookingService(
     ): ItemBookingEntity {
         val entity = repository.findById(id).get()
 
+        if (start != null && end != null) {
+            if (start.isAfter(end))
+                throw HttpException.BadRequest("Start '${start}' cannot be after end '${end}'.")
+
+            if (start == end)
+                throw HttpException.BadRequest("Start '${start}' cannot be the same as end '${end}'.")
+
+            if (itemId != null)
+                if (repository.findAllOverlapping(start, end, itemId, id).isNotEmpty())
+                    throw HttpException.Conflict("Item with ID '${itemId}' is already booked between '${start}' and '${end}'")
+
+            if (repository.findAllOverlapping(start, end, entity.item.id, id).isNotEmpty())
+                throw HttpException.Conflict("Item with ID '${entity.item.id}' is already booked between '${start}' and '${end}'")
+        }
+
+        if (start != null && end == null && start.isAfter(entity.end))
+            throw HttpException.BadRequest("Start '${start}' cannot be after end '${entity.end}'.")
+
+        if (start == null && end != null && end.isBefore(entity.start))
+            throw HttpException.BadRequest("End '${end}' cannot be before '${entity.start}'.")
+        
         userId?.let { entity.user = userRepository.findById(it).get() }
         itemId?.let { entity.item = itemRepository.findById(it).get() }
         start?.let { entity.start = it }

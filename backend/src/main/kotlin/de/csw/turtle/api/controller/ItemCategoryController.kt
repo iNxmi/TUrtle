@@ -43,9 +43,6 @@ class ItemCategoryController(
         if (!user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
             throw HttpException.Forbidden()
 
-        if (itemCategoryService.getByNameOrNull(request.name) != null)
-            throw HttpException.Conflict("Item category with name '${request.name}' already exists.")
-
         val entity = itemCategoryService.create(
             name = request.name
         )
@@ -115,10 +112,6 @@ class ItemCategoryController(
 
         if (!user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
             throw HttpException.Forbidden()
-
-        if (request.name != null)
-            if (itemCategoryService.getByNameOrNull(request.name) != null)
-                throw HttpException.Conflict("Item category with name '${request.name}' already exists.")
 
         val entity = itemCategoryService.patch(
             id = id,

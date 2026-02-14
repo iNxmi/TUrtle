@@ -28,9 +28,6 @@ class ItemController(
     PatchController<ItemEntity, PatchItemRequest, GetItemResponse>,
     DeleteController<ItemEntity> {
 
-    private val maxNameLength = 64
-    private val maxDescriptionLength = 256
-
     @PostMapping
     override fun create(
         @AuthenticationPrincipal user: UserEntity?,
@@ -45,15 +42,6 @@ class ItemController(
 
         if (!user.hasPermission(Permission.MANAGE_ITEMS))
             throw HttpException.Forbidden()
-
-        if (request.name.isBlank() || request.name.length > maxNameLength)
-            throw HttpException.BadRequest("Name cannot be blank and cannot exceed $maxNameLength characters.")
-
-        if (itemService.getByNameOrNull(request.name) != null)
-            throw HttpException.Conflict("Name '${request.name}' already exists.")
-
-        if (request.description.length > maxDescriptionLength)
-            throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
 
         val entity = itemService.create(
             name = request.name,
@@ -129,16 +117,6 @@ class ItemController(
 
         if (!user.hasPermission(Permission.MANAGE_ITEMS))
             throw HttpException.Forbidden()
-
-        if (request.name != null)
-            if (request.name.isBlank() || request.name.length > maxNameLength)
-                throw HttpException.BadRequest("Name cannot be blank and cannot exceed $maxNameLength characters.")
-            else if (itemService.getByNameOrNull(request.name) != null)
-                throw HttpException.Conflict("Name '${request.name}' already exists.")
-
-        if (request.description != null)
-            if (request.description.length > maxDescriptionLength)
-                throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
 
         val entity = itemService.patch(
             id = id,

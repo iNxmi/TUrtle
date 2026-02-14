@@ -2,6 +2,7 @@ package de.csw.turtle.api.service
 
 import de.csw.turtle.api.entity.ContentTemplateEntity
 import de.csw.turtle.api.entity.ContentTemplateEntity.Type
+import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.ContentTemplateRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -22,6 +23,9 @@ class ContentTemplateService(
         content: String,
         type: Type?
     ): ContentTemplateEntity {
+        if (repository.findByName(name) != null)
+            throw HttpException.Conflict("General template with name '$name' already exists.")
+
         val entity = ContentTemplateEntity(
             name = name,
             description = description,
@@ -41,6 +45,10 @@ class ContentTemplateService(
         type: Type? = null,
     ): ContentTemplateEntity {
         val entity = repository.findById(id).get()
+
+        if (name != null)
+            if (repository.findByName(name) != null)
+                throw HttpException.Conflict("General template with name '$name' already exists.")
 
         name?.let { entity.name = it }
         description?.let { entity.description = it }

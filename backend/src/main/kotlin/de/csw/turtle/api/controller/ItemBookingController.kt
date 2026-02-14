@@ -57,6 +57,9 @@ class ItemBookingController(
             request.status?.let { status = it }
             request.collectedAt?.let { collectedAt = it }
             request.returnedAt?.let { returnedAt = it }
+        } else {
+            //TODO start >= now
+            //TODO start < end
         }
 
         val entity = itemBookingService.create(
@@ -154,46 +157,36 @@ class ItemBookingController(
             ?: throw HttpException.NotFound()
 
         var userId: Long? = null
+        var itemId: Long? = null
         var status: Status? = null
+        var start: Instant? = null
+        var end: Instant? = null
         var collectedAt: Instant? = null
         var returnedAt: Instant? = null
-        if (!user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS)) {
+        if (user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS)) {
+            request.userId?.let { userId = it }
+            request.itemId?.let { itemId = it }
+            request.status?.let { status = it }
+            request.start?.let { start = it }
+            request.end?.let { end = it }
+            request.collectedAt?.let { collectedAt = it }
+            request.returnedAt?.let { returnedAt = it }
+        } else {
             if (entity.user != user)
                 throw HttpException.Forbidden()
 
-            request.userId?.let { userId = it }
-            request.status?.let { status = it }
-            request.collectedAt?.let { collectedAt = it }
-            request.returnedAt?.let { returnedAt = it }
+            //TODO if(now > start) {
+            //  request.start?.let { start = it }
+            //  request.end?.let { end = it }
+            //}
         }
-
-        if (request.start != null && request.end != null) {
-            if (request.start.isAfter(request.end))
-                throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${request.end}'.")
-
-            if (request.start == request.end)
-                throw HttpException.BadRequest("Start '${request.start}' cannot be the same as end '${request.end}'.")
-
-            if (request.itemId != null)
-                if (itemBookingService.getAllOverlapping(request.start, request.end, request.itemId, id).isNotEmpty())
-                    throw HttpException.Conflict("Item with ID '${request.itemId}' is already booked between '${request.start}' and '${request.end}'")
-
-            if (itemBookingService.getAllOverlapping(request.start, request.end, entity.item.id, id).isNotEmpty())
-                throw HttpException.Conflict("Item with ID '${entity.item.id}' is already booked between '${request.start}' and '${request.end}'")
-        }
-
-        if (request.start != null && request.end == null && request.start.isAfter(entity.end))
-            throw HttpException.BadRequest("Start '${request.start}' cannot be after end '${entity.end}'.")
-
-        if (request.start == null && request.end != null && request.end.isBefore(entity.start))
-            throw HttpException.BadRequest("End '${request.end}' cannot be before '${entity.start}'.")
 
         val updated = itemBookingService.patch(
             id = id,
             userId = userId,
-            itemId = request.itemId,
-            start = request.start,
-            end = request.end,
+            itemId = itemId,
+            start = start,
+            end = end,
             collectedAt = collectedAt,
             returnedAt = returnedAt,
             status = status

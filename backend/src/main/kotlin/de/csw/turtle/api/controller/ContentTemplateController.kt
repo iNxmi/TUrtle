@@ -43,9 +43,6 @@ class ContentTemplateController(
         if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
-        if (contentTemplateService.getByName(request.name) != null)
-            throw HttpException.Conflict("General template with name '${request.name}' already exists.")
-
         val entity = contentTemplateService.create(
             name = request.name,
             description = request.description,
@@ -130,10 +127,6 @@ class ContentTemplateController(
 
         if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
-
-        if (request.name != null)
-            if (contentTemplateService.getByName(request.name) != null)
-                throw HttpException.Conflict("General template with name '${request.name}' already exists.")
 
         val entity = contentTemplateService.patch(
             id = id,

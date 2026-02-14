@@ -29,10 +29,6 @@ class FAQController(
     PatchController<FAQEntity, PatchFAQRequest, GetFAQResponse>,
     DeleteController<FAQEntity> {
 
-    //TODO replace by system setting
-    private val maxNameLength = 64
-    private val maxTitleLength = 64
-
     @PostMapping
     override fun create(
         @AuthenticationPrincipal user: UserEntity?,
@@ -48,19 +44,13 @@ class FAQController(
         if (!user.hasPermission(Permission.MANAGE_FAQ))
             throw HttpException.Forbidden()
 
-        if (request.name.isBlank() || request.name.length > maxNameLength)
-            throw HttpException.BadRequest("Name is required and cannot exceed $maxNameLength characters.")
+        val entity = faqService.create(
+            name = request.name,
+            title = request.title,
+            content = request.content,
+            enabled = request.enabled
+        )
 
-        if (faqService.getByName(request.name) != null)
-            throw HttpException.Conflict("Name '${request.name}' already exists.")
-
-        if (request.title.isBlank() || request.title.length > maxTitleLength)
-            throw HttpException.BadRequest("Title is required and cannot exceed $maxTitleLength characters.")
-
-        if (request.content.isBlank())
-            throw HttpException.BadRequest("Content is required.")
-
-        val entity = faqService.create(request.name, request.title, request.content, request.enabled)
         val location = URI.create("$ENDPOINT/${entity.id}")
         val dto = GetFAQResponse(entity)
         return ResponseEntity.created(location).body(dto)
@@ -136,22 +126,6 @@ class FAQController(
 
         if (!user.hasPermission(Permission.MANAGE_FAQ))
             throw HttpException.Forbidden()
-
-        if (request.name != null) {
-            if (request.name.isBlank() || request.name.length > maxNameLength)
-                throw HttpException.BadRequest("Name is required and cannot exceed $maxNameLength characters.")
-
-            if (faqService.getByName(request.name) != null)
-                throw HttpException.Conflict("Name '${request.name}' already exists.")
-        }
-
-        if (request.title != null)
-            if (request.title.isBlank() || request.title.length > maxTitleLength)
-                throw HttpException.BadRequest("Title is required and cannot exceed $maxTitleLength characters.")
-
-        if (request.content != null)
-            if (request.content.isBlank())
-                throw HttpException.BadRequest("Content is required.")
 
         val entity = faqService.patch(
             id = id,
