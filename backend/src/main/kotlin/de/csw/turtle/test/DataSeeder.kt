@@ -53,7 +53,7 @@ class DataSeeder(
                     firstName = if (legacy) emojis else firstName,
                     lastName = lastName,
                     email = email,
-                    emojis = if (legacy) "{bcrypt}${bCrypt.encode(emojis)}" else emojis,
+                    emojis = if (legacy) bCrypt.encode(emojis) else emojis,
                     password = username,
                     roleIds = setOf(role.id),
                     status = randomEnum()

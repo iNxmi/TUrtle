@@ -98,7 +98,7 @@ class UserService(
 
     fun getByEmojis(emojis: String): UserEntity? = repository.findByEmojis(emojis)
     fun getByEmojisLegacyFix(emojis: String): UserEntity? {
-        val all = repository.findByEmojisStartsWith("{bcrypt}")
+        val all = repository.findByEmojisStartsWith("$")
         val user = all.firstOrNull { passwordEncoder.matches(emojis, it.emojis) }
             ?: return null
 

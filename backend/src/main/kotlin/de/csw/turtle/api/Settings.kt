@@ -38,5 +38,7 @@ enum class Settings(val key: String) {
 
     URL_X("url.x"),
     URL_INSTAGRAM("url.instagram"),
-    URL_GITHUB("url.github")
+    URL_GITHUB("url.github"),
+
+    SECURITY_BCRYPT_STRENGTH("security.bcrypt.strength")
 }
