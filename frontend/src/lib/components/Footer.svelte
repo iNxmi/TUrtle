@@ -12,7 +12,6 @@
         <A class="text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white" href="/tos">{m.footer_tos()}</A>
         <A class="text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white" href="/gdpr">{m.footer_gdpr()}</A>
         <A class="text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white" href="/about">{m.footer_about()}</A>
-        <A class="text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white" href="/faq">_FAQ_</A>
         <A class="text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white" href="/contact">{m.footer_contact()}</A>
     </div>
 

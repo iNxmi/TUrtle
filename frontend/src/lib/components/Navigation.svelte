@@ -4,6 +4,8 @@
     import {goto} from '$app/navigation';
     import {page} from '$app/state';
     import request from '$lib/api/api';
+    import {setContext} from 'svelte';
+    import {setLocale} from '$lib/paraglide/runtime.js';
     import {
         Button,
         ButtonGroup,
@@ -137,7 +139,18 @@
     if (user !== null)
         visibleManageItems = manageItems.filter(item => !item.permission || permissions.includes(item.permission));
 
-    let language = $state("en");
+    let language = $state(localStorage.getItem("PARAGLIDE_LOCALE") || "en");
+    setContext('locale', () => language);
+    $effect(() => {
+        if (language)
+            setLocale(language);
+    })
+
+    function updateLanguage(event) {
+        event.preventDefault();
+        setLocale(language);
+    }
+
     const languages = [
         {value: "en", name: "English"},
         {value: "de", name: "Deutsch"},
@@ -247,6 +260,8 @@
             </SidebarDropdownWrapper>
         {/if}
 
+        <Hr class="m-0 p-0"/>
+
         <SidebarGroup>
             <div class="flex flex-col gap-2">
                 <ButtonGroup>
@@ -263,7 +278,7 @@
                     </Button>
                 </ButtonGroup>
 
-                <Select items={languages} bind:value={language}/>
+                <Select items={languages} bind:value={language} onchange={updateLanguage}/>
 
                 {#if user === null}
                     <ButtonGroup>
