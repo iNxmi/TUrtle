@@ -32,7 +32,7 @@
         LockOpenOutline,
         LockSolid,
         MoonOutline,
-        OpenDoorOutline,
+        ArrowRightToBracketOutline,
         PaperClipOutline,
         QuestionCircleSolid,
         SunOutline,
@@ -41,68 +41,83 @@
     } from 'flowbite-svelte-icons';
 
     const publicItems = [{
-        label: "_about_",
-        href: '/about',
+        label: m.navigation_public_home(),
+        href: '/home',
         icon: InfoCircleSolid
     }, {
-        label: m.sidebar_public_faq(),
+        label: m.navigation_public_faq(),
         href: '/faq',
         icon: QuestionCircleSolid
     }, {
-        label: "_contact_",
+        label: m.navigation_public_contact(),
         href: '/contact',
         icon: UserHeadsetSolid
     }];
 
     const userItems = [{
-        label: "_home_",
-        href: '/home',
+        label: m.navigation_user_dashboard(),
+        href: '/user/dashboard',
         icon: HomeSolid
     }, {
-        label: "_item-bookings_",
-        href: '/item-bookings',
+        label: m.navigation_user_item_bookings(),
+        href: '/user/item-bookings',
         icon: DesktopPcSolid
     }, {
         permission: "REQUEST_ROOM_BOOKINGS",
-        label: "_room-bookings_",
-        href: '/room-bookings',
+        label: m.navigation_user_room_bookings(),
+        href: '/user/room-bookings',
         icon: CalendarMonthSolid
     }];
 
-    const managerItems = [{
-        permission: ["MANAGE_USERS", "MANAGE_ITEM_BOOKINGS"],
-        label: m.sidebar_admin_manage_user_entities(),
-        href: '/admin/userdata',
+    const manageItems = [{
+        permission: "MANAGE_USERS",
+        label: m.navigation_manage_users(),
+        href: '/manage/users',
         icon: UsersGroupSolid
     }, {
         permission: "MANAGE_ROOM_BOOKINGS",
-        label: m.sidebar_admin_manage_bookings(),
-        href: '/admin/booking-requests',
+        label: m.navigation_manage_room_bookings(),
+        href: '/manage/room-bookings',
         icon: CalendarEditSolid
     }, {
-        permission: ['MANAGE_ITEMS', 'MANAGE_ITEM_CATEGORIES'],
-        label: '_Manage Devices',
-        href: '/admin/items',
+        permission: "MANAGE_ITEMS",
+        label: m.navigation_manage_items(),
+        href: '/manage/items',
+        icon: DesktopPcSolid
+    }, {
+        permission: "MANAGE_ITEM_CATEGORIES",
+        label: m.navigation_manage_item_categories(),
+        href: '/manage/item-categories',
+        icon: DesktopPcSolid
+    }, {
+        permission: "MANAGE_ITEM_BOOKINGS",
+        label: m.navigation_manage_item_bookings(),
+        href: '/manage/item-bookings',
         icon: DesktopPcSolid
     }, {
         permission: "MANAGE_SUPPORT_TICKETS",
-        label: m.sidebar_admin_manage_support_tickets(),
-        href: '/admin/support',
+        label: m.navigation_manage_support_tickets(),
+        href: '/manage/support-tickets',
         icon: UserHeadsetSolid
     }, {
         permission: "MANAGE_AUDIT_LOGS",
-        label: m.sidebar_admin_auditlogs(),
-        href: '/admin/auditlogs',
+        label: m.navigation_manage_audit_logs(),
+        href: '/manage/audit-logs',
         icon: BookOpenSolid
     }, {
         permission: "MANAGE_SYSTEM_SETTINGS",
-        label: m.sidebar_admin_settings(),
-        href: '/admin/settings',
+        label: m.navigation_manage_system_settings(),
+        href: '/manage/system-settings',
         icon: LockSolid
     }, {
         permission: "MANAGE_GENERAL_TEMPLATES",
-        label: "_manage_templates_",
-        href: '/admin/templates',
+        label: m.navigation_manage_content_templates(),
+        href: '/manage/content-templates',
+        icon: PaperClipOutline
+    }, {
+        permission: "MANAGE_EMAIL_TEMPLATES",
+        label: m.navigation_manage_email_templates(),
+        href: '/manage/email-templates',
         icon: PaperClipOutline
     }];
 
@@ -161,7 +176,7 @@
                 class="list-none"
                 classes={{ span: 'font-bold text-text', ul: 'py-0' }}
                 isOpen={true}
-                label={m.sidebar_category_public()}
+                label={m.navigation_category_public()}
         >
             {#each publicItems as item}
                 <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
@@ -177,7 +192,7 @@
                     class="list-none"
                     classes={{ span: 'font-bold text-text', ul: 'py-0' }}
                     isOpen={true}
-                    label={m.sidebar_category_user()}
+                    label={m.navigation_category_user()}
             >
                 {#each userItems as item}
                     {#if !item.permission || permissions.includes(item.permission)}
@@ -194,8 +209,8 @@
                 <SidebarDropdownWrapper class="list-none"
                                         classes={{ span: "font-bold text-text", ul: 'py-0' }}
                                         isOpen={true}
-                                        label={"_manage_"}>
-                    {#each managerItems as item}
+                                        label={m.navigation_category_manage()}>
+                    {#each manageItems as item}
                         {#if Array.isArray(item.permission) && item.permission.every((permission) => permissions.includes(permission))}
                             <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
                                 {#snippet icon()}
@@ -234,15 +249,15 @@
 
                 {#if user === null}
                     <ButtonGroup>
-                        <Button class="w-1/2" onclick={() => goto("/auth/login")}>Login</Button>
-                        <Button class="w-1/2" onclick={() => goto("/auth/register")}>Register</Button>
+                        <Button class="w-1/2" onclick={() => goto("/auth/login")}>{m.navigation_auth_login()}</Button>
+                        <Button class="w-1/2" onclick={() => goto("/auth/register")}>{m.navigation_auth_register()}</Button>
                     </ButtonGroup>
                 {:else}
                     <ButtonGroup>
                         <Button class="w-full" onclick={signOut}>
                             <div class="flex gap-2">
-                                <OpenDoorOutline/>
-                                <Span>_Sign out_</Span>
+                                <ArrowRightToBracketOutline/>
+                                <Span>{m.navigation_auth_logout()}</Span>
                             </div>
                         </Button>
                     </ButtonGroup>
