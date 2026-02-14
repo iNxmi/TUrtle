@@ -10,7 +10,6 @@ import de.csw.turtle.api.repository.RoleRepository
 import de.csw.turtle.api.repository.UserRepository
 import jakarta.transaction.Transactional
 import org.springframework.context.ApplicationEventPublisher
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -99,9 +98,8 @@ class UserService(
 
     fun getByEmojis(emojis: String): UserEntity? = repository.findByEmojis(emojis)
     fun getByEmojisLegacyFix(emojis: String): UserEntity? {
-        val all = repository.findByEmojisStartsWith("$")
-        val bCrypt = BCryptPasswordEncoder()
-        val user = all.firstOrNull { bCrypt.matches(emojis, it.emojis) }
+        val all = repository.findByEmojisStartsWith("{bcrypt}")
+        val user = all.firstOrNull { passwordEncoder.matches(emojis, it.emojis) }
             ?: return null
 
         user.emojis = emojis
