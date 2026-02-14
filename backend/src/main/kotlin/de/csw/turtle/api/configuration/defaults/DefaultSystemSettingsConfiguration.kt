@@ -113,8 +113,8 @@ class DefaultSystemSettingsConfiguration(
         //TODO make service method and add benchmark button in system settings ui
         setDefault(Settings.SECURITY_BCRYPT_STRENGTH, Type.INT) {
             val password = "4EoW<,w]4J'_z.$*h[9;#@(<q%<%Qn5%s"
-            var strength = 10
-            for (i in 10..100) {
+            var strength = 12
+            for (i in strength..100) {
                 println("i=$i")
                 val bCrypt = BCryptPasswordEncoder(i)
 
@@ -130,7 +130,7 @@ class DefaultSystemSettingsConfiguration(
                     throw IllegalStateException("somehow bcrypt stopped working")
                 val endMsMatches = System.currentTimeMillis()
                 val durationMatches = endMsMatches - startMsMatches
-                println("durationMatches$durationMatches")
+                println("durationMatches=$durationMatches")
 
                 val durationMs = durationEncode + durationMatches
                 println("durationMs=$durationMs")
