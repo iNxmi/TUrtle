@@ -66,7 +66,15 @@
         label: m.navigation_user_room_bookings(),
         href: '/user/room-bookings',
         icon: CalendarMonthSolid
+    }, {
+        label: m.navigation_user_profile(),
+        href: '/user/profile',
+        icon: HomeSolid
     }];
+
+    let visibleUserItems = $state([]);
+    if (user !== null)
+        visibleUserItems = userItems.filter(item => !item.permission || permissions.includes(item.permission));
 
     const manageItems = [{
         permission: "MANAGE_USERS",
@@ -118,7 +126,16 @@
         label: m.navigation_manage_email_templates(),
         href: '/manage/email-templates',
         icon: PaperClipOutline
+    }, {
+        permission: "MANAGE_LOCKERS",
+        label: m.navigation_manage_lockers(),
+        href: '/manage/lockers',
+        icon: PaperClipOutline
     }];
+
+    let visibleManageItems = $state([]);
+    if (user !== null)
+        visibleManageItems = manageItems.filter(item => !item.permission || permissions.includes(item.permission));
 
     let language = $state("en");
     const languages = [
@@ -148,7 +165,7 @@
         const response = await request("/auth/logout", {method: "POST"});
 
         if (response.ok)
-            goto('/', {invalidateAll: true});
+            await goto('/', {invalidateAll: true});
     }
 </script>
 
@@ -198,46 +215,36 @@
             {/each}
         </SidebarDropdownWrapper>
 
-        {#if user !== null}
+        {#if visibleUserItems.length > 0}
             <SidebarDropdownWrapper
                     class="list-none"
                     classes={{ span: 'font-bold text-text', ul: 'py-0' }}
                     isOpen={true}
                     label={m.navigation_category_user()}
             >
-                {#each userItems as item}
-                    {#if !item.permission || permissions.includes(item.permission)}
-                        <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
-                            {#snippet icon()}
-                                <item.icon class="text-csw h-5 w-5"/>
-                            {/snippet}
-                        </SidebarDropdownItem>
-                    {/if}
+                {#each visibleUserItems as item}
+                    <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
+                        {#snippet icon()}
+                            <item.icon class="text-csw h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
                 {/each}
             </SidebarDropdownWrapper>
+        {/if}
 
-            {#if permissions}
-                <SidebarDropdownWrapper class="list-none"
-                                        classes={{ span: "font-bold text-text", ul: 'py-0' }}
-                                        isOpen={true}
-                                        label={m.navigation_category_manage()}>
-                    {#each manageItems as item}
-                        {#if Array.isArray(item.permission) && item.permission.every((permission) => permissions.includes(permission))}
-                            <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
-                                {#snippet icon()}
-                                    <item.icon class="text-csw h-5 w-5"/>
-                                {/snippet}
-                            </SidebarDropdownItem>
-                        {:else if permissions.includes(item.permission)}
-                            <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
-                                {#snippet icon()}
-                                    <item.icon class="text-csw h-5 w-5"/>
-                                {/snippet}
-                            </SidebarDropdownItem>
-                        {/if}
-                    {/each}
-                </SidebarDropdownWrapper>
-            {/if}
+        {#if visibleManageItems.length > 0}
+            <SidebarDropdownWrapper class="list-none"
+                                    classes={{ span: "font-bold text-text", ul: 'py-0' }}
+                                    isOpen={true}
+                                    label={m.navigation_category_manage()}>
+                {#each visibleManageItems as item}
+                    <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
+                        {#snippet icon()}
+                            <item.icon class="text-csw h-5 w-5"/>
+                        {/snippet}
+                    </SidebarDropdownItem>
+                {/each}
+            </SidebarDropdownWrapper>
         {/if}
 
         <SidebarGroup>
@@ -260,9 +267,12 @@
 
                 {#if user === null}
                     <ButtonGroup>
-                        <Button class="w-1/2" onclick={() => goto("/auth/login")}>{m.navigation_auth_login()}</Button>
-                        <Button class="w-1/2"
-                                onclick={() => goto("/auth/register")}>{m.navigation_auth_register()}</Button>
+                        <Button class="w-1/2" onclick={() => goto("/auth/login")}>
+                            {m.navigation_auth_login()}
+                        </Button>
+                        <Button class="w-1/2" onclick={() => goto("/auth/register")}>
+                            {m.navigation_auth_register()}
+                        </Button>
                     </ButtonGroup>
                 {:else}
                     <ButtonGroup>
