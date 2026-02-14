@@ -110,6 +110,7 @@ class DefaultSystemSettingsConfiguration(
         setDefault(Settings.URL_INSTAGRAM, Type.STRING, PUBLIC) { "https://www.instagram.com/csw_tudarmstadt/" }
         setDefault(Settings.URL_GITHUB, Type.STRING, PUBLIC) { "https://github.com/CSWTeam/TUrtle" }
 
+        //TODO make service method and add benchmark button in system settings ui
         setDefault(Settings.SECURITY_BCRYPT_STRENGTH, Type.INT) {
             val password = "4EoW<,w]4J'_z.$*h[9;#@(<q%<%Qn5%s"
             var strength = 10
