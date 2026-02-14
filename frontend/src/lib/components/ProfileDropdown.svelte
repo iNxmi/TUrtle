@@ -11,9 +11,9 @@
 
         if (result)
             goto('/', {invalidateAll: true});
-
     }
 </script>
+
 <button size="xl"
         class="sizes cursor-pointer inline-flex items-center justify-center ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none border border-gray-300 border-input bg-transparent hover:bg-gray-50 px-3 relative h-10 w-10 rounded-full">
     <span class="relative flex shrink-0 overflow-hidden rounded-full h-9 w-9">

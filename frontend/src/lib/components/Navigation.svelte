@@ -4,15 +4,12 @@
     import {goto} from '$app/navigation';
     import {page} from '$app/state';
     import request from '$lib/api/api';
-
-    const {user, permissions} = $props()
-    let innerWidth = $state();
-
     import {
         Button,
         ButtonGroup,
         Heading,
         Hr,
+        Select,
         Sidebar,
         SidebarButton,
         SidebarDropdownItem,
@@ -22,17 +19,16 @@
     } from 'flowbite-svelte';
 
     import {
+        ArrowRightToBracketOutline,
         BookOpenSolid,
         CalendarEditSolid,
         CalendarMonthSolid,
         DesktopPcSolid,
-        GlobeOutline,
         HomeSolid,
         InfoCircleSolid,
         LockOpenOutline,
         LockSolid,
         MoonOutline,
-        ArrowRightToBracketOutline,
         PaperClipOutline,
         QuestionCircleSolid,
         SunOutline,
@@ -40,9 +36,12 @@
         UsersGroupSolid
     } from 'flowbite-svelte-icons';
 
+    const {user, permissions} = $props()
+    let innerWidth = $state();
+
     const publicItems = [{
         label: m.navigation_public_home(),
-        href: '/home',
+        href: '/',
         icon: InfoCircleSolid
     }, {
         label: m.navigation_public_faq(),
@@ -120,6 +119,18 @@
         href: '/manage/email-templates',
         icon: PaperClipOutline
     }];
+
+    let language = $state("en");
+    const languages = [
+        {value: "en", name: "English"},
+        {value: "de", name: "Deutsch"},
+        {value: "ja", name: "日本語"},
+        {value: "ar", name: "عربي"},
+        {value: "ru", name: "Русский"},
+        {value: "vi", name: "Tiếng Việt"},
+        {value: "hu", name: "Magyar"},
+        {value: "ro", name: "Română"}
+    ];
 
     let darkmode = $state(localStorage.getItem('darkmode') || false);
 
@@ -232,25 +243,26 @@
         <SidebarGroup>
             <div class="flex flex-col gap-2">
                 <ButtonGroup>
-                    <Button color="alternative" class="w-1/3" onclick={toggleDarkMode}>
+                    <Button color="alternative" class="w-1/2" onclick={toggleDarkMode}>
                         {#if darkmode}
                             <MoonOutline/>
                         {:else}
                             <SunOutline/>
                         {/if}
                     </Button>
-                    <Button color="alternative" class="w-1/3">
-                        <GlobeOutline/>
-                    </Button>
-                    <Button color="alternative" class="w-1/3">
+
+                    <Button color="alternative" class="w-1/2">
                         <LockOpenOutline/>
                     </Button>
                 </ButtonGroup>
 
+                <Select items={languages} bind:value={language}/>
+
                 {#if user === null}
                     <ButtonGroup>
                         <Button class="w-1/2" onclick={() => goto("/auth/login")}>{m.navigation_auth_login()}</Button>
-                        <Button class="w-1/2" onclick={() => goto("/auth/register")}>{m.navigation_auth_register()}</Button>
+                        <Button class="w-1/2"
+                                onclick={() => goto("/auth/register")}>{m.navigation_auth_register()}</Button>
                     </ButtonGroup>
                 {:else}
                     <ButtonGroup>
