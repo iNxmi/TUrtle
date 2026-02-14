@@ -20,6 +20,9 @@ class LockerService(
         isSoftwareUnlockable: Boolean,
         locked: Boolean
     ): LockerEntity {
+        //TODO name unique
+        //TODO name <= 64
+
         val entity = LockerEntity(
             name = name,
             index = index,
