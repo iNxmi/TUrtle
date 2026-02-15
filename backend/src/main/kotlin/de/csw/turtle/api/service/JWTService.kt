@@ -34,10 +34,10 @@ class JWTService(
         val expiration = Date(millis + duration.toMillis())
 
         val token = Jwts.builder()
-            .setSubject(userId.toString())
+            .subject(userId.toString())
             .claim(CLAIM_TYPE_NAME, type.name)
-            .setIssuedAt(issuedAt)
-            .setExpiration(expiration)
+            .issuedAt(issuedAt)
+            .expiration(expiration)
             .signWith(getKey())
             .compact()
 
@@ -66,11 +66,11 @@ class JWTService(
         return data.expiration.isBefore(now)
     }
 
-    private fun getClaims(token: String): Claims = Jwts.parserBuilder()
-        .setSigningKey(getKey())
+    private fun getClaims(token: String): Claims = Jwts.parser()
+        .verifyWith(getKey())
         .build()
-        .parseClaimsJws(token)
-        .body
+        .parseSignedClaims(token)
+        .payload
 
     enum class Type(val key: Key) {
         ACCESS(Key.JWT_DURATION_ACCESS),

@@ -71,7 +71,7 @@ class UserService(
             lastName = lastName,
             email = email,
             emojis = emojis,
-            passwordHash = passwordEncoder.encode(password),
+            passwordHash = passwordEncoder.encode(password)!!,
             status = status,
             roles = roleIds.map { roleRepository.findById(it).get() }.toMutableSet()
         )
@@ -144,7 +144,7 @@ class UserService(
         lastName?.let { entity.lastName = it }
         email?.let { entity.email = it }
         emojis?.let { entity.emojis = it }
-        password?.let { entity.passwordHash = passwordEncoder.encode(it) }
+        password?.let { entity.passwordHash = passwordEncoder.encode(it)!! }
         status?.let { entity.status = it }
         roleIds?.let { ids ->
             val roles = ids.map { roleRepository.findById(it).get() }

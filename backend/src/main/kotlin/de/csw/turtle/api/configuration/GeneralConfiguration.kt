@@ -1,5 +1,6 @@
 package de.csw.turtle.api.configuration
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import de.csw.turtle.api.DynamicPasswordEncoder
 import de.csw.turtle.api.service.ConfigurationService
 import org.springframework.context.annotation.Bean
@@ -17,6 +18,9 @@ class GeneralConfiguration {
     @Bean
     fun passwordEncoder(configurationService: ConfigurationService): PasswordEncoder =
         DynamicPasswordEncoder(configurationService)
+
+    @Bean
+    fun objectMapper(): ObjectMapper = ObjectMapper()
 
     @Bean
     fun authenticationManager(authConfig: AuthenticationConfiguration): AuthenticationManager =

@@ -3,7 +3,7 @@ package de.csw.turtle.api.exception
 import de.csw.turtle.api.dto.exception.ExceptionResponse
 import de.csw.turtle.api.service.ExceptionService
 import jakarta.servlet.http.HttpServletRequest
-import org.springframework.data.mapping.PropertyReferenceException
+import org.springframework.data.core.PropertyReferenceException
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.HttpRequestMethodNotSupportedException
@@ -17,7 +17,7 @@ import java.io.PrintWriter
 import java.io.StringWriter
 
 @RestControllerAdvice
-class GlobalControllerExceptionHandler(
+class ControllerExceptionHandler(
     private val exceptionService: ExceptionService,
 ) {
 

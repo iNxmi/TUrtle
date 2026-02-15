@@ -33,7 +33,7 @@ class DebugController(
     @GetMapping("/headers")
     fun headers(
         request: HttpServletRequest
-    ): ResponseEntity<Any?> {
+    ): ResponseEntity<Any> {
         val headers = request.headerNames.asSequence().associateWith { request.getHeaders(it).asSequence().toList() }
         return ResponseEntity.ok(headers)
     }
@@ -41,7 +41,7 @@ class DebugController(
     @GetMapping("/cookies")
     fun cookies(
         request: HttpServletRequest
-    ): ResponseEntity<Any?> {
+    ): ResponseEntity<Any> {
         val cookies = request.cookies
         return ResponseEntity.ok(cookies)
     }

@@ -19,7 +19,7 @@ class DefaultUsers(
     //TODO implement randomized password and randomized emojis
 
     @Transactional
-    override fun run(vararg args: String?) {
+    override fun run(vararg args: String) {
         if (userService.count() > 0)
             return
 
