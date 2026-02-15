@@ -12,9 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 class GeneralConfiguration {
 
-//    @Bean
-//    fun passwordEncoder(): PasswordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
-
     @Bean
     fun passwordEncoder(configurationService: ConfigurationService): PasswordEncoder =
         DynamicPasswordEncoder(configurationService)

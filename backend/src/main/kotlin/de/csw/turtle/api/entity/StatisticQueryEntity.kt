@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.time.Instant
 
 @Entity
-class StatisticQuery(
+class StatisticQueryEntity(
 
     @Id @GeneratedValue
     override val id: Long = 0,
@@ -24,7 +24,7 @@ class StatisticQuery(
 
 ) : CRUDEntity {
 
-    override fun snapshot() = StatisticQuery(
+    override fun snapshot() = StatisticQueryEntity(
         id = id,
         name = name,
         description = description,

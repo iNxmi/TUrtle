@@ -1,8 +1,10 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.exception.DebugException
+import de.csw.turtle.api.repository.RawSqlRepository
 import de.csw.turtle.api.service.EmailService
 import de.csw.turtle.api.service.NetworkService
+import de.csw.turtle.api.service.StatisticQueryService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/debug")
 class DebugController(
     private val emailService: EmailService,
-    private val networkService: NetworkService
+    private val networkService: NetworkService,
+    private val statisticQueryService: StatisticQueryService,
+    private val rawSqlRepository: RawSqlRepository
 ) {
 
     @GetMapping("/network")
@@ -60,6 +64,14 @@ class DebugController(
         emailService.sendSimpleEmail(to, subject, text)
 
         return ResponseEntity.noContent().build()
+    }
+
+    @GetMapping("/sql")
+    fun sql(
+        @RequestParam query: String
+    ): ResponseEntity<Any> {
+        val result = rawSqlRepository.executeReadOnlyQuery(query)
+        return ResponseEntity.ok(result)
     }
 
 }
