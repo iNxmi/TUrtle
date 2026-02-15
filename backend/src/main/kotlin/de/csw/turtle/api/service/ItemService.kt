@@ -82,7 +82,7 @@ class ItemService(
         if (description != null)
             if (description.length > maxDescriptionLength)
                 throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
-        
+
         name?.let { entity.name = it }
         description?.let { entity.description = it }
         categoryId?.let { entity.category = itemCategoryRepository.findById(categoryId).get() }

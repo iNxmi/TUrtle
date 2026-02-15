@@ -132,7 +132,7 @@ class RoomBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        val entity = roomBookingService.getById(id)
+        roomBookingService.getById(id)
             ?: throw HttpException.NotFound()
 
         var userId: Long? = null

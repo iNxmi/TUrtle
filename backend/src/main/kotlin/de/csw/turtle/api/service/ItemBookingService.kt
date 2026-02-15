@@ -90,7 +90,7 @@ class ItemBookingService(
 
         if (start == null && end != null && end.isBefore(entity.start))
             throw HttpException.BadRequest("End '${end}' cannot be before '${entity.start}'.")
-        
+
         userId?.let { entity.user = userRepository.findById(it).get() }
         itemId?.let { entity.item = itemRepository.findById(it).get() }
         start?.let { entity.start = it }

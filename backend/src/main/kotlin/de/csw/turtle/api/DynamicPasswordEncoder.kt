@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 
 class DynamicPasswordEncoder(
     private val systemSettingService: SystemSettingService
-): PasswordEncoder {
+) : PasswordEncoder {
 
     override fun encode(rawPassword: CharSequence): String? {
         val strength = systemSettingService.getTyped<Int>(Settings.SECURITY_BCRYPT_STRENGTH)
@@ -15,6 +15,7 @@ class DynamicPasswordEncoder(
     }
 
     private val matcher = BCryptPasswordEncoder()
-    override fun matches(rawPassword: CharSequence, encodedPassword: String) = matcher.matches(rawPassword, encodedPassword)
+    override fun matches(rawPassword: CharSequence, encodedPassword: String) =
+        matcher.matches(rawPassword, encodedPassword)
 
 }

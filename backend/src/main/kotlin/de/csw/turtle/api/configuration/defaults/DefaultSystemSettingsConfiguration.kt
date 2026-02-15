@@ -114,6 +114,7 @@ class DefaultSystemSettingsConfiguration(
         //TODO make service method and add benchmark button in system settings ui
 
         val bCryptStrengthRange = (12..64)
+        val maxDuration = Duration.ofSeconds(1)
         setDefault(Settings.SECURITY_BCRYPT_STRENGTH, Type.INT) {
             val password = "4EoW<,w]4J'_z.$*h[9;#@(<q%<%Qn5%s"
 
@@ -141,7 +142,7 @@ class DefaultSystemSettingsConfiguration(
                 val averageDurationMs = durationMs / 2
                 println("averageDurationMs=$averageDurationMs")
 
-                averageDurationMs > 1000
+                averageDurationMs > maxDuration.toMillis()
             }
 
             max(bCryptStrengthRange.first, strength - 1)

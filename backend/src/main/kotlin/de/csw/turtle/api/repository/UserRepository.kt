@@ -2,8 +2,6 @@ package de.csw.turtle.api.repository
 
 import de.csw.turtle.api.entity.TokenEntity
 import de.csw.turtle.api.entity.UserEntity
-import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.query.Param
 import java.time.Instant
 
 interface UserRepository : CRUDRepository<UserEntity> {

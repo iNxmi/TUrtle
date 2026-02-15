@@ -1,7 +1,6 @@
 package de.csw.turtle.api.repository
 
 import de.csw.turtle.api.entity.ItemBookingEntity
-import de.csw.turtle.api.entity.ItemEntity
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.time.Instant

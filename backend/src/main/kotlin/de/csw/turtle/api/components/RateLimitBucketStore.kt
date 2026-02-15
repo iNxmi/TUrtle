@@ -13,9 +13,11 @@ class RateLimitBucketStore {
         data class Ip(val ip: String) : RateLimitKey()
     }
 
+    private val duration = Duration.ofMinutes(30)
+    private val maxSize = 200_000L
     private val cache = Caffeine.newBuilder()
-        .expireAfterAccess(Duration.ofMinutes(30))
-        .maximumSize(200_000)
+        .expireAfterAccess(duration)
+        .maximumSize(maxSize)
         .build<RateLimitKey, Bucket>()
 
     fun getUserBucket(userId: Long, supplier: () -> Bucket): Bucket =
