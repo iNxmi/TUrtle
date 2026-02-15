@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Order(3)
 @Configuration
-class DefaultUsersConfiguration(
+class DefaultUsers(
     private val userService: UserService,
     private val roleService: RoleService,
 ) : CommandLineRunner {

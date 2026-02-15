@@ -1,21 +1,22 @@
 package de.csw.turtle.api.dto.get
 
-import de.csw.turtle.api.entity.SystemSettingEntity
+import de.csw.turtle.api.entity.ConfigurationEntity
+import de.csw.turtle.api.entity.ConfigurationEntity.*
 import java.time.Instant
 
-class GetSystemSettingResponse(
+class GetConfigurationResponse(
     override val id: Long?,
 
-    val key: String?,
-    val type: SystemSettingEntity.Type?,
+    val key: Key?,
+    val type: Type?,
     val value: String?,
-    val visibility: SystemSettingEntity.Visibility?,
+    val visibility: Visibility?,
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?
 ) : GetResponse {
 
-    constructor(entity: SystemSettingEntity) : this(
+    constructor(entity: ConfigurationEntity) : this(
         id = entity.id,
 
         key = entity.key,

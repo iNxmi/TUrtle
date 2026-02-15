@@ -1,10 +1,9 @@
 package de.csw.turtle.api.controller
 
-import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.auth.LoginUserRequest
-import de.csw.turtle.api.dto.auth.ResetUserPasswordRequest
 import de.csw.turtle.api.dto.auth.VerificationRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
+import de.csw.turtle.api.entity.ConfigurationEntity.Key
 import de.csw.turtle.api.entity.TokenEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
@@ -24,7 +23,7 @@ private const val COOKIE_NAME_REFRESH_TOKEN = "refresh_token"
 @RequestMapping("/api/auth")
 class AuthController(
     private val authService: AuthService,
-    private val systemSettingService: SystemSettingService,
+    private val configurationService: ConfigurationService,
     private val userService: UserService,
     private val altchaService: AltchaService,
     private val networkService: NetworkService,
@@ -63,7 +62,7 @@ class AuthController(
         response.addHeader("Set-Cookie", header)
     }
 
-    private fun getDuration(type: Type) = systemSettingService.getTyped<Duration>(type.setting)
+    private fun getDuration(type: Type) = configurationService.getTyped<Duration>(type.key)
 
     @GetMapping("/me")
     fun verify(
@@ -157,7 +156,7 @@ class AuthController(
         userService.removeToken(user, token)
         tokenService.delete(token.id)
 
-        val regexes = systemSettingService.getTyped<List<String>>(Settings.USER_EMAIL_TRUSTED).map { Regex(it) }
+        val regexes = configurationService.getTyped<List<String>>(Key.USER_EMAIL_TRUSTED).map { Regex(it) }
         val isTrustedEmail = regexes.any { it.matches(user.email) }
         val newStatus = if (isTrustedEmail) UserEntity.Status.ACTIVE else UserEntity.Status.PENDING_APPROVAL
 
@@ -166,11 +165,11 @@ class AuthController(
         return ResponseEntity.ok(dto)
     }
 
-    @PostMapping("/reset-password")
-    fun reset(
-        @RequestBody request: ResetUserPasswordRequest
-    ) {
-
-    }
+//    @PostMapping("/reset-password")
+//    fun reset(
+//        @RequestBody request: ResetUserPasswordRequest
+//    ) {
+//
+//    }
 
 }

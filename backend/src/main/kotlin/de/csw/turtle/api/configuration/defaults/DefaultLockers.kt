@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.Transactional
 
 @Configuration
-class DefaultLockersConfiguration(
+class DefaultLockers(
     private val service: LockerService
 ) : CommandLineRunner {
 

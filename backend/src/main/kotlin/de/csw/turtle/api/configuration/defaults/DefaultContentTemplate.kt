@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Order(1)
 @Configuration
-class DefaultContentTemplateConfiguration(
+class DefaultContentTemplate(
     private val service: ContentTemplateService
 ) : CommandLineRunner {
 

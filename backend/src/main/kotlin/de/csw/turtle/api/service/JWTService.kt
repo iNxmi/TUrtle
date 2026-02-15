@@ -1,6 +1,6 @@
 package de.csw.turtle.api.service
 
-import de.csw.turtle.api.Settings
+import de.csw.turtle.api.entity.ConfigurationEntity.Key
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
@@ -16,18 +16,18 @@ private const val CLAIM_TYPE_NAME = "type"
 
 @Service
 class JWTService(
-    private val systemSettingService: SystemSettingService
+    private val configurationService: ConfigurationService
 ) {
 
     private fun getKey(): SecretKey {
-        val secret = systemSettingService.getTyped<String>(Settings.JWT_SECRET)
+        val secret = configurationService.getTyped<String>(Key.JWT_SECRET)
         val bytes = Decoders.BASE64.decode(secret)
         return Keys.hmacShaKeyFor(bytes)
     }
 
     @Transactional
     fun generate(userId: Long, type: Type): String {
-        val duration = systemSettingService.getTyped<Duration>(type.setting)
+        val duration = configurationService.getTyped<Duration>(type.key)
 
         val millis = System.currentTimeMillis()
         val issuedAt = Date(millis)
@@ -72,9 +72,9 @@ class JWTService(
         .parseClaimsJws(token)
         .body
 
-    enum class Type(val setting: Settings) {
-        ACCESS(Settings.JWT_DURATION_ACCESS),
-        REFRESH(Settings.JWT_DURATION_REFRESH);
+    enum class Type(val key: Key) {
+        ACCESS(Key.JWT_DURATION_ACCESS),
+        REFRESH(Key.JWT_DURATION_REFRESH);
     }
 
     data class Data(

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.Transactional
 
 @Configuration
-class DefaultItemCategoriesConfiguration(
+class DefaultItemCategories(
     private val service: ItemCategoryService
 ) : CommandLineRunner {
 

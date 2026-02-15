@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Order(1)
 @Configuration
-class DefaultEmailTemplateConfiguration(
+class DefaultEmailTemplate(
     private val service: EmailTemplateService
 ) : CommandLineRunner {
 

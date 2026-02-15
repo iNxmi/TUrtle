@@ -1,8 +1,8 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.hardware.OpenDoorEmojisRequest
+import de.csw.turtle.api.entity.ConfigurationEntity.Key
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.*
@@ -24,7 +24,7 @@ class HardwareController(
     private val lockerControlService: LockerControlService,
     private val userService: UserService,
     private val networkService: NetworkService,
-    private val systemSettingService: SystemSettingService,
+    private val configurationService: ConfigurationService,
     private val itemBookingService: ItemBookingService,
     private val roomBookingService: RoomBookingService
 ) {
@@ -46,7 +46,7 @@ class HardwareController(
 
         checkDoorPermissions(user, httpRequest)
 
-        val duration = systemSettingService.getTyped<Duration>(Settings.DOOR_OPEN_DURATION)
+        val duration = configurationService.getTyped<Duration>(Key.DOOR_OPEN_DURATION)
         val response = doorControlService.trigger(duration)
         return ResponseEntity.ok(response)
     }
@@ -61,7 +61,7 @@ class HardwareController(
 
         checkDoorPermissions(user, request)
 
-        val duration = systemSettingService.getTyped<Duration>(Settings.DOOR_OPEN_DURATION)
+        val duration = configurationService.getTyped<Duration>(Key.DOOR_OPEN_DURATION)
         val response = doorControlService.trigger(duration)
         return ResponseEntity.ok(response)
     }
@@ -91,8 +91,8 @@ class HardwareController(
         if (!networkService.isLocalNetwork(request))
             throw HttpException.Forbidden("External network.")
 
-        val start = systemSettingService.getTyped<LocalTime>(Settings.DOOR_SCHEDULE_START)
-        val end = systemSettingService.getTyped<LocalTime>(Settings.DOOR_SCHEDULE_END)
+        val start = configurationService.getTyped<LocalTime>(Key.DOOR_SCHEDULE_START)
+        val end = configurationService.getTyped<LocalTime>(Key.DOOR_SCHEDULE_END)
         if (isNowBetween(start, end))
             throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
 
@@ -108,8 +108,8 @@ class HardwareController(
         if (!networkService.isLocalNetwork(request))
             throw HttpException.Forbidden("External network.")
 
-        val start = systemSettingService.getTyped<LocalTime>(Settings.LOCKER_SCHEDULE_START)
-        val end = systemSettingService.getTyped<LocalTime>(Settings.LOCKER_SCHEDULE_END)
+        val start = configurationService.getTyped<LocalTime>(Key.LOCKER_SCHEDULE_START)
+        val end = configurationService.getTyped<LocalTime>(Key.LOCKER_SCHEDULE_END)
         if (isNowBetween(start, end))
             throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
 

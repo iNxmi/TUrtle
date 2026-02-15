@@ -4,14 +4,14 @@ import jakarta.persistence.*
 import java.time.Instant
 
 @Entity
-@Table(name = "system_settings")
-class SystemSettingEntity(
+@Table(name = "configuration")
+class ConfigurationEntity(
 
     @Id @GeneratedValue
     override val id: Long = 0,
 
     @Column(unique = true)
-    var key: String,
+    var key: Key,
 
     @Enumerated(EnumType.STRING)
     var type: Type,
@@ -28,6 +28,49 @@ class SystemSettingEntity(
     override val createdAt: Instant = Instant.now()
 
 ) : CRUDEntity {
+
+    enum class Key {
+        GENERAL_FQDN,
+
+        EMOJIS_ALL,
+        EMOJIS_SIZE,
+        EMOJIS_MAX_RETRIES,
+
+        USER_VERIFICATION_DURATION,
+        USER_EMAIL_TRUSTED,
+
+        ALTCHA_SECRET,
+        ALTCHA_MAX_NUMBER,
+        ALTCHA_DURATION,
+        ALTCHA_TRUSTED_IPS,
+
+        DOOR_OPEN_DURATION,
+        DOOR_SCHEDULE_START,
+        DOOR_SCHEDULE_END,
+        DOOR_SSH_COMMAND,
+        DOOR_SSH_HOSTNAME,
+        DOOR_SSH_PORT,
+        DOOR_SSH_USERNAME,
+        DOOR_SSH_PASSWORD,
+
+        LOCKER_SCHEDULE_START,
+        LOCKER_SCHEDULE_END,
+        LOCKER_SSH_COMMAND,
+        LOCKER_SSH_HOSTNAME,
+        LOCKER_SSH_PORT,
+        LOCKER_SSH_USERNAME,
+        LOCKER_SSH_PASSWORD,
+
+        JWT_SECRET,
+        JWT_DURATION_ACCESS,
+        JWT_DURATION_REFRESH,
+
+        URL_X,
+        URL_INSTAGRAM,
+        URL_GITHUB,
+
+        SECURITY_BCRYPT_STRENGTH
+    }
 
     enum class Type {
         BOOLEAN,
@@ -58,7 +101,7 @@ class SystemSettingEntity(
         updatedAt = Instant.now()
     }
 
-    override fun snapshot() = SystemSettingEntity(
+    override fun snapshot() = ConfigurationEntity(
         id = id,
         key = key,
         type = type,

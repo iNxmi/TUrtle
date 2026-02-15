@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Order(1)
 @Configuration
-class DefaultRolesConfiguration(
+class DefaultRoles(
     private val service: RoleService
 ) : CommandLineRunner {
 

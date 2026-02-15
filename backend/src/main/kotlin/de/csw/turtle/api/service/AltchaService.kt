@@ -1,6 +1,6 @@
 package de.csw.turtle.api.service
 
-import de.csw.turtle.api.Settings
+import de.csw.turtle.api.entity.ConfigurationEntity.Key
 import de.csw.turtle.api.exception.HttpException
 import jakarta.transaction.Transactional
 import org.altcha.altcha.Altcha
@@ -9,16 +9,16 @@ import java.time.Duration
 
 @Service
 class AltchaService(
-    private val systemSettingService: SystemSettingService
+    private val configurationService: ConfigurationService
 ) {
 
-    private fun getSecret() = systemSettingService.getTyped<String>(Settings.ALTCHA_SECRET)
+    private fun getSecret() = configurationService.getTyped<String>(Key.ALTCHA_SECRET)
 
     @Transactional
     fun create(): Altcha.Challenge {
         val secret = getSecret()
-        val maxNumber = systemSettingService.getTyped<Long>(Settings.ALTCHA_MAX_NUMBER)
-        val duration = systemSettingService.getTyped<Duration>(Settings.ALTCHA_DURATION)
+        val maxNumber = configurationService.getTyped<Long>(Key.ALTCHA_MAX_NUMBER)
+        val duration = configurationService.getTyped<Duration>(Key.ALTCHA_DURATION)
 
         val options = Altcha.ChallengeOptions()
             .setHmacKey(secret)
@@ -31,7 +31,7 @@ class AltchaService(
 
     @Transactional
     fun isTrusted(ipAddress: String): Boolean {
-        val trustedIps = systemSettingService.getTyped<List<String>>(Settings.ALTCHA_TRUSTED_IPS)
+        val trustedIps = configurationService.getTyped<List<String>>(Key.ALTCHA_TRUSTED_IPS)
         return trustedIps.contains(ipAddress)
     }
 

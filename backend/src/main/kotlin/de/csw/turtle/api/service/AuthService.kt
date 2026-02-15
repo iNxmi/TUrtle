@@ -1,8 +1,8 @@
 package de.csw.turtle.api.service
 
-import de.csw.turtle.api.Settings
 import de.csw.turtle.api.dto.auth.LoginUserRequest
 import de.csw.turtle.api.entity.EmailTemplateEntity
+import de.csw.turtle.api.entity.ConfigurationEntity.Key
 import de.csw.turtle.api.entity.TokenEntity.Type
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
@@ -18,7 +18,7 @@ class AuthService(
     private val jwtService: JWTService,
     private val passwordEncoder: PasswordEncoder,
     private val tokenService: TokenService,
-    private val systemSettingService: SystemSettingService,
+    private val configurationService: ConfigurationService,
     private val emailTemplateService: EmailTemplateService,
     private val emailService: EmailService
 ) {
@@ -71,7 +71,7 @@ class AuthService(
         if (user.status != UserEntity.Status.PENDING_VERIFICATION)
             return
 
-        val duration = systemSettingService.getTyped<Duration>(Settings.USER_VERIFICATION_DURATION)
+        val duration = configurationService.getTyped<Duration>(Key.USER_VERIFICATION_DURATION)
 
         val token = tokenService.create(
             type = Type.VERIFICATION,
@@ -84,11 +84,11 @@ class AuthService(
             ?: throw HttpException.NotFound()
 
         val context = Context().apply {
-            val fqdn = systemSettingService.getTyped<String>(Settings.GENERAL_FQDN)
-            val duration = systemSettingService.getTyped<Duration>(Settings.USER_VERIFICATION_DURATION)
+            val fqdn = configurationService.getTyped<String>(Key.GENERAL_FQDN)
+            val duration = configurationService.getTyped<Duration>(Key.USER_VERIFICATION_DURATION)
 
             setVariable("user", updatedUser)
-            setVariable("url", "https://$fqdn/api/auth/verify?token=${token.uuid}")
+            setVariable("url", "https://$fqdn/api/auth/verify?uuid=${token.uuid}")
             setVariable("duration", duration)
             setVariable("expiration", updatedUser.createdAt.plusMillis(duration.toMillis()))
         }

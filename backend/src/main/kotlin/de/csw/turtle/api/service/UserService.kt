@@ -1,6 +1,6 @@
 package de.csw.turtle.api.service
 
-import de.csw.turtle.api.Settings
+import de.csw.turtle.api.entity.ConfigurationEntity.Key
 import de.csw.turtle.api.entity.TokenEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.event.CreatedUserEvent
@@ -18,16 +18,16 @@ import java.time.Instant
 class UserService(
     override val repository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val systemSettingService: SystemSettingService,
+    private val configurationService: ConfigurationService,
     private val roleRepository: RoleRepository,
     private val eventPublisher: ApplicationEventPublisher
 ) : CRUDService<UserEntity>() {
 
     @Transactional
     fun generateEmojis(): String {
-        val emojis = systemSettingService.getTyped<List<String>>(Settings.EMOJIS_ALL)
-        val maxRetries = systemSettingService.getTyped<Int>(Settings.EMOJIS_MAX_RETRIES)
-        val size = systemSettingService.getTyped<Int>(Settings.EMOJIS_SIZE)
+        val emojis = configurationService.getTyped<List<String>>(Key.EMOJIS_ALL)
+        val maxRetries = configurationService.getTyped<Int>(Key.EMOJIS_MAX_RETRIES)
+        val size = configurationService.getTyped<Int>(Key.EMOJIS_SIZE)
 
         repeat(maxRetries) {
             val selected = emojis.shuffled().take(size).joinToString("")

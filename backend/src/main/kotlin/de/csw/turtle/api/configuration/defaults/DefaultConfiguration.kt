@@ -1,11 +1,9 @@
 package de.csw.turtle.api.configuration.defaults
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import de.csw.turtle.api.Settings
-import de.csw.turtle.api.entity.SystemSettingEntity.Type
-import de.csw.turtle.api.entity.SystemSettingEntity.Visibility
-import de.csw.turtle.api.entity.SystemSettingEntity.Visibility.PUBLIC
-import de.csw.turtle.api.service.SystemSettingService
+import de.csw.turtle.api.entity.ConfigurationEntity.*
+import de.csw.turtle.api.entity.ConfigurationEntity.Visibility.PUBLIC
+import de.csw.turtle.api.service.ConfigurationService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
@@ -19,19 +17,17 @@ import kotlin.math.max
 
 @Order(2)
 @Configuration
-class DefaultSystemSettingsConfiguration(
-    private val service: SystemSettingService
+class DefaultConfiguration(
+    private val service: ConfigurationService
 ) : CommandLineRunner {
 
     private fun setDefault(
-        setting: Settings,
+        key: Key,
         type: Type,
         visibility: Visibility = Visibility.PRIVATE,
         value: () -> Any
     ) {
-        val key = setting.key
-
-        if (service.getByKeyOrNull(key) != null)
+        if (service.getByKey(key) != null)
             return
 
         service.create(key, type, value.invoke().toString(), visibility)
@@ -53,9 +49,9 @@ class DefaultSystemSettingsConfiguration(
     override fun run(vararg args: String) {
         val objectMapper = ObjectMapper()
 
-        setDefault(Settings.GENERAL_FQDN, Type.STRING, PUBLIC) { "csw.tu-darmstadt.de" }
+        setDefault(Key.GENERAL_FQDN, Type.STRING, PUBLIC) { "csw.tu-darmstadt.de" }
 
-        setDefault(Settings.EMOJIS_ALL, Type.STRING_LIST, PUBLIC) {
+        setDefault(Key.EMOJIS_ALL, Type.STRING_LIST, PUBLIC) {
             val set = setOf(
                 "😈", "😃", "🎩", "👽", "💩", "❤️",
                 "💎", "👂", "👍", "🐋", "🐶", "🐸",
@@ -66,56 +62,56 @@ class DefaultSystemSettingsConfiguration(
             )
             objectMapper.writeValueAsString(set)
         }
-        setDefault(Settings.EMOJIS_SIZE, Type.INT, PUBLIC) { 5 }
-        setDefault(Settings.EMOJIS_MAX_RETRIES, Type.INT) { 64 }
+        setDefault(Key.EMOJIS_SIZE, Type.INT, PUBLIC) { 5 }
+        setDefault(Key.EMOJIS_MAX_RETRIES, Type.INT) { 64 }
 
-        setDefault(Settings.USER_VERIFICATION_DURATION, Type.DURATION) { Duration.ofDays(2) }
+        setDefault(Key.USER_VERIFICATION_DURATION, Type.DURATION) { Duration.ofDays(2) }
         // Regex
-        setDefault(Settings.USER_EMAIL_TRUSTED, Type.STRING_LIST, PUBLIC) {
+        setDefault(Key.USER_EMAIL_TRUSTED, Type.STRING_LIST, PUBLIC) {
             val set = setOf(".*@stud\\.tu-darmstadt\\.de", ".*@tu-darmstadt\\.de")
             objectMapper.writeValueAsString(set)
         }
 
-        setDefault(Settings.ALTCHA_SECRET, Type.STRING) { randomBase64() }
-        setDefault(Settings.ALTCHA_MAX_NUMBER, Type.LONG) { 100_000L }
-        setDefault(Settings.ALTCHA_DURATION, Type.DURATION) { Duration.ofMinutes(3) }
-        setDefault(Settings.ALTCHA_TRUSTED_IPS, Type.STRING_LIST) {
+        setDefault(Key.ALTCHA_SECRET, Type.STRING) { randomBase64() }
+        setDefault(Key.ALTCHA_MAX_NUMBER, Type.LONG) { 100_000L }
+        setDefault(Key.ALTCHA_DURATION, Type.DURATION) { Duration.ofMinutes(3) }
+        setDefault(Key.ALTCHA_TRUSTED_IPS, Type.STRING_LIST) {
             val set = setOf("192.168.0.22", "172.18.0.1", "172.18.0.7")
             objectMapper.writeValueAsString(set)
         }
 
-        setDefault(Settings.DOOR_OPEN_DURATION, Type.DURATION, PUBLIC) { Duration.ofSeconds(5) }
-        setDefault(Settings.DOOR_SCHEDULE_START, Type.TIME, PUBLIC) { LocalTime.of(6, 0) }
-        setDefault(Settings.DOOR_SCHEDULE_END, Type.TIME, PUBLIC) { LocalTime.of(22, 0) }
+        setDefault(Key.DOOR_OPEN_DURATION, Type.DURATION, PUBLIC) { Duration.ofSeconds(5) }
+        setDefault(Key.DOOR_SCHEDULE_START, Type.TIME, PUBLIC) { LocalTime.of(6, 0) }
+        setDefault(Key.DOOR_SCHEDULE_END, Type.TIME, PUBLIC) { LocalTime.of(22, 0) }
         //thymeleaf simple template
-        setDefault(Settings.DOOR_SSH_COMMAND, Type.STRING) { "~/doorOpen.sh [[\${duration.toSeconds()}]]" }
-        setDefault(Settings.DOOR_SSH_HOSTNAME, Type.STRING) { "192.168.0.107" }
-        setDefault(Settings.DOOR_SSH_PORT, Type.INT) { 22 }
-        setDefault(Settings.DOOR_SSH_USERNAME, Type.STRING) { "" }
-        setDefault(Settings.DOOR_SSH_PASSWORD, Type.STRING) { "" }
+        setDefault(Key.DOOR_SSH_COMMAND, Type.STRING) { "~/doorOpen.sh [[\${duration.toSeconds()}]]" }
+        setDefault(Key.DOOR_SSH_HOSTNAME, Type.STRING) { "192.168.0.107" }
+        setDefault(Key.DOOR_SSH_PORT, Type.INT) { 22 }
+        setDefault(Key.DOOR_SSH_USERNAME, Type.STRING) { "" }
+        setDefault(Key.DOOR_SSH_PASSWORD, Type.STRING) { "" }
 
-        setDefault(Settings.LOCKER_SCHEDULE_START, Type.TIME, PUBLIC) { LocalTime.of(6, 0) }
-        setDefault(Settings.LOCKER_SCHEDULE_END, Type.TIME, PUBLIC) { LocalTime.of(22, 0) }
+        setDefault(Key.LOCKER_SCHEDULE_START, Type.TIME, PUBLIC) { LocalTime.of(6, 0) }
+        setDefault(Key.LOCKER_SCHEDULE_END, Type.TIME, PUBLIC) { LocalTime.of(22, 0) }
         //thymeleaf simple template
-        setDefault(Settings.LOCKER_SSH_COMMAND, Type.STRING) { "~/cabinet[[\${index}]]Open.sh" }
-        setDefault(Settings.LOCKER_SSH_HOSTNAME, Type.STRING) { "192.168.0.107" }
-        setDefault(Settings.LOCKER_SSH_PORT, Type.INT) { 22 }
-        setDefault(Settings.LOCKER_SSH_USERNAME, Type.STRING) { "" }
-        setDefault(Settings.LOCKER_SSH_PASSWORD, Type.STRING) { "" }
+        setDefault(Key.LOCKER_SSH_COMMAND, Type.STRING) { "~/cabinet[[\${index}]]Open.sh" }
+        setDefault(Key.LOCKER_SSH_HOSTNAME, Type.STRING) { "192.168.0.107" }
+        setDefault(Key.LOCKER_SSH_PORT, Type.INT) { 22 }
+        setDefault(Key.LOCKER_SSH_USERNAME, Type.STRING) { "" }
+        setDefault(Key.LOCKER_SSH_PASSWORD, Type.STRING) { "" }
 
-        setDefault(Settings.JWT_SECRET, Type.STRING) { randomBase64() }
-        setDefault(Settings.JWT_DURATION_ACCESS, Type.DURATION) { Duration.ofMinutes(5) }
-        setDefault(Settings.JWT_DURATION_REFRESH, Type.DURATION) { Duration.ofDays(30) }
+        setDefault(Key.JWT_SECRET, Type.STRING) { randomBase64() }
+        setDefault(Key.JWT_DURATION_ACCESS, Type.DURATION) { Duration.ofMinutes(5) }
+        setDefault(Key.JWT_DURATION_REFRESH, Type.DURATION) { Duration.ofDays(30) }
 
-        setDefault(Settings.URL_X, Type.STRING, PUBLIC) { "https://twitter.com/CSW_TUDarmstadt" }
-        setDefault(Settings.URL_INSTAGRAM, Type.STRING, PUBLIC) { "https://www.instagram.com/csw_tudarmstadt/" }
-        setDefault(Settings.URL_GITHUB, Type.STRING, PUBLIC) { "https://github.com/CSWTeam/TUrtle" }
+        setDefault(Key.URL_X, Type.STRING, PUBLIC) { "https://twitter.com/CSW_TUDarmstadt" }
+        setDefault(Key.URL_INSTAGRAM, Type.STRING, PUBLIC) { "https://www.instagram.com/csw_tudarmstadt/" }
+        setDefault(Key.URL_GITHUB, Type.STRING, PUBLIC) { "https://github.com/CSWTeam/TUrtle" }
 
         //TODO make service method and add benchmark button in system settings ui
 
         val bCryptStrengthRange = (12..64)
         val maxDuration = Duration.ofSeconds(1)
-        setDefault(Settings.SECURITY_BCRYPT_STRENGTH, Type.INT) {
+        setDefault(Key.SECURITY_BCRYPT_STRENGTH, Type.INT) {
             val password = "4EoW<,w]4J'_z.$*h[9;#@(<q%<%Qn5%s"
 
             val strength = bCryptStrengthRange.first { i ->

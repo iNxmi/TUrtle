@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.Transactional
 
 @Configuration
-class DefaultFAQConfiguration(
+class DefaultFAQ(
     private val service: FAQService
 ) : CommandLineRunner {
 
