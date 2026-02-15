@@ -52,6 +52,8 @@ class AuthService(
             throw HttpException.Unauthorized("Expired refresh token.")
 
         val data = jwtService.getData(refreshToken)
+            ?: throw HttpException.Unauthorized("Invalid refresh token.")
+
         if (data.type != JWTService.Type.REFRESH)
             throw HttpException.Unauthorized("Invalid refresh token.")
 

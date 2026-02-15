@@ -15,6 +15,7 @@ import java.security.SecureRandom
 import java.time.Duration
 import java.time.LocalTime
 import java.util.*
+import kotlin.math.max
 
 @Order(2)
 @Configuration
@@ -111,10 +112,12 @@ class DefaultSystemSettingsConfiguration(
         setDefault(Settings.URL_GITHUB, Type.STRING, PUBLIC) { "https://github.com/CSWTeam/TUrtle" }
 
         //TODO make service method and add benchmark button in system settings ui
+
+        val bCryptStrengthRange = (12..64)
         setDefault(Settings.SECURITY_BCRYPT_STRENGTH, Type.INT) {
             val password = "4EoW<,w]4J'_z.$*h[9;#@(<q%<%Qn5%s"
-            var strength = 12
-            for (i in strength..100) {
+
+            val strength = bCryptStrengthRange.first { i ->
                 println("i=$i")
                 val bCrypt = BCryptPasswordEncoder(i)
 
@@ -138,15 +141,10 @@ class DefaultSystemSettingsConfiguration(
                 val averageDurationMs = durationMs / 2
                 println("averageDurationMs=$averageDurationMs")
 
-                if (averageDurationMs >= 1000) {
-                    strength = i
-                    break
-                }
-                println("")
+                averageDurationMs > 1000
             }
-            println("strength=$strength")
 
-            strength
+            max(bCryptStrengthRange.first, strength - 1)
         }
     }
 

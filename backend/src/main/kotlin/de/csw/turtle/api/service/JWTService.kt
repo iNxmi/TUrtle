@@ -44,7 +44,7 @@ class JWTService(
         return token
     }
 
-    fun getData(token: String): Data {
+    fun getData(token: String): Data? = try {
         val claims = getClaims(token)
 
         val subject = claims.subject.toLong()
@@ -55,13 +55,15 @@ class JWTService(
         val issuedAt = claims.issuedAt.toInstant()
         val expiration = claims.expiration.toInstant()
 
-        return Data(subject, type, issuedAt, expiration)
+        Data(subject, type, issuedAt, expiration)
+    } catch (_: Exception) {
+        null
     }
 
     fun isExpired(token: String): Boolean {
-        val expiration = getData(token).expiration
+        val data = getData(token) ?: return true
         val now = Instant.now()
-        return expiration.isBefore(now)
+        return data.expiration.isBefore(now)
     }
 
     private fun getClaims(token: String): Claims = Jwts.parserBuilder()

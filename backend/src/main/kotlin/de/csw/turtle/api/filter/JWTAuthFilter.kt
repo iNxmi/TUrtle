@@ -40,7 +40,7 @@ class JWTAuthFilter(
         if (token != null) {
             try {
                 val data = jwtService.getData(token)
-                if (data.type == JWTService.Type.ACCESS) {
+                if (data != null && data.type == JWTService.Type.ACCESS) {
                     val user = userService.getById(data.subject)
                         ?: TODO("implement exception")
 
