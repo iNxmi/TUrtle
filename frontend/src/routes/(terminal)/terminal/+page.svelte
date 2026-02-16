@@ -3,8 +3,8 @@
     import {Button, Modal} from "flowbite-svelte";
     import request from "$lib/api/api.js";
 
-    let emojis = $state(["😈", "😃", "🎩", "👽", "💩", "❤️", "💎", "👂", "👍", "🐋", "🐶", "🐸", "❄", "🎉", "💿",
-        "🍉", "☎", "🎥", "✂", "⚽", "🚀", "💄", "🌂", "🍄", "🍀", "🚗", "🍕", "🍔", "🍨", "💣", "🐧", "💼", "🌍", "🐝", "🏠", "⏰"]);
+    let {data} = $props();
+    let emojis = $derived(data.emojis);
 
     let password = $state(["", "", "", "", ""]);
     let password_index = 0;
@@ -29,7 +29,7 @@
     function addEmoji(emoji) {
         password[password_index] = emoji;
         password_index += 1;
-        if(password_index < 5){
+        if (password_index < 5) {
             password[password_index] = emoji;
             password_index += 1;
         }
@@ -38,7 +38,6 @@
         }
     }
 
-    //richtige Backend logik noch implementieren
     async function submitInput() {
         const payload = {
             emojis: getPassword()
@@ -56,18 +55,19 @@
     }
 
     const backspace = () => {
-        if (password_index >= 1) {
+        if (password_index >= 1)
             password_index -= 1;
-        }
+
         password[password_index] = "";
     }
     const getPassword = () => {
         let pwd = "";
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 5; i++)
             pwd += password[i];
-        }
+
         return pwd;
     }
+
     const shuffle = () => {
         let arr = emojis;
         for (let i = 0; i < arr.length; i++) {
@@ -88,17 +88,19 @@
         <div class="flex flex-col items-center">
             <TUrtleLogo path="/terminal"/>
         </div>
-        <div>
-            <div class="flex flex-col w-full aspect-square rounded-xl bg-[#FF6A00] justify-center items-center">
-                <p>QR-Code (?)</p>
+
+        <div class="flex flex-col gap-3">
+            <div class="flex flex-col w-full aspect-square rounded-xl bg-csw justify-center items-center">
+                <p>QR - Code (?)</p>
             </div>
-            <div class="self-center w-full mt-3 mb-3 bg-white text-gray-900 select-none">
-                <Button onclick={() => (defaultModal = true)}>Problem melden</Button>
-                <Modal title="Problem Melden" form bind:open={defaultModal} theme="light">
+            <div class="bg-white text-gray-900 select-none">
+                <Button color="red" class="w-full" onclick={() => (defaultModal = true)}>_Problem melden_</Button>
+                <Modal title="_Problem Melden_" form bind:open={defaultModal}>
                 </Modal>
             </div>
         </div>
     </div>
+
     <div class="container h-screen flex justify-center items-center">
         <div class="login-box bg-neutral-100 rounded-xl shadow-xl border-1 border-neutral-300 w-[70vw] max-w-[40rem] h-[95vh] flex flex-col justify-around items-center p-10">
             <div class="input-row rounded-xl w-full bg-[white] flex justify-between p-[0.5rem] mb-[2rem]">

@@ -30,7 +30,7 @@
     }
 
     let {data} = $props();
-    // user is already in data prop because it is defined in +layout.js so no need to create a +page.js to load it again :)
+    // user is already in data prop because it is defined in +layout.js so no need to create a +server.js to load it again :)
    let user = $derived(data.user);
 </script>
 
