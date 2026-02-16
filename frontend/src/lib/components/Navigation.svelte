@@ -1,11 +1,11 @@
 <script>
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
-    import {m} from '$lib/paraglide/messages.js';
-    import {goto} from '$app/navigation';
-    import {page} from '$app/state';
-    import request from '$lib/api/api';
-    import {setContext} from 'svelte';
-    import {setLocale} from '$lib/paraglide/runtime.js';
+    import {m} from "$lib/paraglide/messages.js";
+    import {goto} from "$app/navigation";
+    import {page} from "$app/state";
+    import request from "$lib/api/api";
+    import {setContext} from "svelte";
+    import {setLocale} from "$lib/paraglide/runtime.js";
     import {
         Button,
         ButtonGroup,
@@ -18,7 +18,7 @@
         SidebarDropdownWrapper,
         SidebarGroup,
         Span
-    } from 'flowbite-svelte';
+    } from "flowbite-svelte";
 
     import {
         AdjustmentsVerticalSolid,
@@ -37,122 +37,130 @@
         SunOutline,
         UserHeadsetSolid,
         UsersGroupSolid,
-        UserSolid
-    } from 'flowbite-svelte-icons';
+        UserSolid,
+        UserCircleOutline,
+        GlobeOutline,
+        TerminalOutline
+    } from "flowbite-svelte-icons";
 
     const {user, permissions} = $props()
-    let innerWidth = $state();
 
     const publicItems = [{
         label: m.navigation_public_home(),
-        href: '/',
+        href: "/",
         icon: HomeSolid
     }, {
         label: m.navigation_public_faq(),
-        href: '/faq',
+        href: "/faq",
         icon: QuestionCircleSolid
     }, {
         label: m.navigation_public_contact(),
-        href: '/contact',
+        href: "/contact",
         icon: UserHeadsetSolid
     }];
 
     const userItems = [{
         label: m.navigation_user_dashboard(),
-        href: '/user/dashboard',
+        href: "/user/dashboard",
         icon: ChartOutline
     }, {
         label: m.navigation_user_item_bookings(),
-        href: '/user/item-bookings',
+        href: "/user/item-bookings",
         icon: CalendarEditSolid
     }, {
         permission: "REQUEST_ROOM_BOOKINGS",
         label: m.navigation_user_room_bookings(),
-        href: '/user/room-bookings',
+        href: "/user/room-bookings",
         icon: CalendarEditSolid
     }, {
         label: m.navigation_user_profile(),
-        href: '/user/profile',
+        href: "/user/profile",
         icon: UserSolid
-    }];
-
-    let visibleUserItems = $state([]);
-    if (user !== null)
-        visibleUserItems = userItems.filter(item => !item.permission || permissions.includes(item.permission));
+    }].filter(item => !item.permission || permissions.includes(item.permission));
 
     const manageItems = [{
         permission: "MANAGE_USERS",
         label: m.navigation_manage_users(),
-        href: '/manage/users',
+        href: "/manage/users",
         icon: UsersGroupSolid
     }, {
         permission: "MANAGE_ROLES",
         label: m.navigation_manage_roles(),
-        href: '/manage/roles',
+        href: "/manage/roles",
         icon: UsersGroupSolid
     }, {
         permission: "MANAGE_ITEMS",
         label: m.navigation_manage_items(),
-        href: '/manage/items',
+        href: "/manage/items",
         icon: ClipboardSolid
     }, {
         permission: "MANAGE_ITEM_CATEGORIES",
         label: m.navigation_manage_item_categories(),
-        href: '/manage/item-categories',
+        href: "/manage/item-categories",
         icon: ClipboardSolid
     }, {
         permission: "MANAGE_ROOM_BOOKINGS",
         label: m.navigation_manage_room_bookings(),
-        href: '/manage/room-bookings',
+        href: "/manage/room-bookings",
         icon: CalendarEditSolid
     }, {
         permission: "MANAGE_ITEM_BOOKINGS",
         label: m.navigation_manage_item_bookings(),
-        href: '/manage/item-bookings',
+        href: "/manage/item-bookings",
         icon: CalendarEditSolid
     }, {
         permission: "MANAGE_AUDIT_LOGS",
         label: m.navigation_manage_audit_logs(),
-        href: '/manage/audit-logs',
+        href: "/manage/audit-logs",
         icon: BookOpenSolid
     }, {
         permission: "MANAGE_GENERAL_TEMPLATES",
         label: m.navigation_manage_content_templates(),
-        href: '/manage/content-templates',
+        href: "/manage/content-templates",
         icon: FilePasteSolid
     }, {
         permission: "MANAGE_EMAIL_TEMPLATES",
         label: m.navigation_manage_email_templates(),
-        href: '/manage/email-templates',
+        href: "/manage/email-templates",
         icon: FilePasteSolid
     }, {
         permission: "MANAGE_LOCKERS",
         label: m.navigation_manage_lockers(),
-        href: '/manage/lockers',
+        href: "/manage/lockers",
         icon: PaperClipOutline
     }, {
         permission: "MANAGE_SUPPORT_TICKETS",
         label: m.navigation_manage_support_tickets(),
-        href: '/manage/support-tickets',
+        href: "/manage/support-tickets",
         icon: UserHeadsetSolid
     }, {
         permission: "MANAGE_EXCEPTIONS",
         label: m.navigation_manage_exceptions(),
-        href: '/manage/exceptions',
+        href: "/manage/exceptions",
         icon: BugSolid
     }, {
         permission: "MANAGE_SYSTEM_SETTINGS",
         label: m.navigation_manage_system_settings(),
-        href: '/manage/system-settings',
+        href: "/manage/system-settings",
         icon: AdjustmentsVerticalSolid
-    }];
+    }].filter(item => !item.permission || permissions.includes(item.permission));
 
-    let visibleManageItems = $state([]);
-    if (user !== null)
-        visibleManageItems = manageItems.filter(item => !item.permission || permissions.includes(item.permission));
+    let categories = [{
+        icon: GlobeOutline,
+        label: m.navigation_category_public(),
+        items: publicItems
+    }, {
+        icon: UserCircleOutline,
+        label: m.navigation_category_user(),
+        items: userItems
+    }, {
+        icon: TerminalOutline,
+        label: m.navigation_category_manage(),
+        items: manageItems
+    }].filter(category => category.items.length > 0);
 
     let language = $state(localStorage.getItem("PARAGLIDE_LOCALE") || "en");
-    setContext('locale', () => language);
+    setContext("locale", () => language);
     $effect(() => {
         if (language)
             setLocale(language);
@@ -174,23 +182,24 @@
         {value: "ro", name: "Română"}
     ];
 
-    let darkmode = $state(localStorage.getItem('darkmode') || false);
+    let darkmode = $state(localStorage.getItem("darkmode") || false);
 
     function toggleDarkMode() {
         darkmode = !darkmode;
-        localStorage.setItem('darkmode', darkmode ? "true" : "");
-        document.documentElement.classList.remove(darkmode ? 'light' : 'dark');
-        document.documentElement.classList.add(darkmode ? 'dark' : 'light');
+        localStorage.setItem("darkmode", darkmode ? "true" : "");
+        document.documentElement.classList.remove(darkmode ? "light" : "dark");
+        document.documentElement.classList.add(darkmode ? "dark" : "light");
     }
 
     let activeUrl = $derived(page.url.pathname);
+    let innerWidth = $state();
     let isOpen = $derived(!innerWidth || innerWidth >= 768);
 
     async function signOut() {
         const response = await request("/auth/logout", {method: "POST"});
 
         if (response.ok)
-            await goto('/', {invalidateAll: true});
+            await goto("/", {invalidateAll: true});
     }
 </script>
 
@@ -225,43 +234,17 @@
             <Hr class="m-0 p-0"/>
         {/if}
 
-        <SidebarDropdownWrapper
-                class="list-none"
-                classes={{ span: 'font-bold text-text', ul: 'py-0' }}
-                isOpen={true}
-                label={m.navigation_category_public()}
-        >
-            {#each publicItems as item}
-                <SidebarDropdownItem href={item.href}>
-                    {#snippet icon()}
-                        <item.icon class="text-csw"/>
-                    {/snippet}
-                    {#snippet subtext()}
-                        <div class="w-full flex">
-                            <span class="text-text grow">{item.label}</span>
-
-                            {#if item.ping === true}
-                                <div class="shrink flex flex-col justify-center">
-                                    <div class="flex">
-                                        <span class="absolute bg-csw h-3 w-3 rounded-full animate-ping opacity-75"></span>
-                                        <span class="relative bg-csw h-3 w-3 rounded-full"></span>
-                                    </div>
-                                </div>
-                            {/if}
-                        </div>
-                    {/snippet}
-                </SidebarDropdownItem>
-            {/each}
-        </SidebarDropdownWrapper>
-
-        {#if visibleUserItems.length > 0}
+        {#each categories as category}
             <SidebarDropdownWrapper
                     class="list-none"
-                    classes={{ span: 'font-bold text-text', ul: 'py-0' }}
+                    classes={{ span: "font-bold text-text" }}
                     isOpen={true}
-                    label={m.navigation_category_user()}
+                    label={category.label}
             >
-                {#each visibleUserItems as item}
+                {#snippet icon()}
+                    <category.icon class="text-text"/>
+                {/snippet}
+                {#each category.items as item}
                     <SidebarDropdownItem href={item.href}>
                         {#snippet icon()}
                             <item.icon class="text-csw"/>
@@ -283,36 +266,7 @@
                     </SidebarDropdownItem>
                 {/each}
             </SidebarDropdownWrapper>
-        {/if}
-
-        {#if visibleManageItems.length > 0}
-            <SidebarDropdownWrapper class="list-none"
-                                    classes={{ span: "font-bold text-text", ul: 'py-0' }}
-                                    isOpen={true}
-                                    label={m.navigation_category_manage()}>
-                {#each visibleManageItems as item}
-                    <SidebarDropdownItem href={item.href}>
-                        {#snippet icon()}
-                            <item.icon class="text-csw"/>
-                        {/snippet}
-                        {#snippet subtext()}
-                            <div class="w-full flex">
-                                <span class="text-text grow">{item.label}</span>
-
-                                {#if item.ping === true}
-                                    <div class="shrink flex flex-col justify-center">
-                                        <div class="flex">
-                                            <span class="absolute bg-csw h-3 w-3 rounded-full animate-ping opacity-75"></span>
-                                            <span class="relative bg-csw h-3 w-3 rounded-full"></span>
-                                        </div>
-                                    </div>
-                                {/if}
-                            </div>
-                        {/snippet}
-                    </SidebarDropdownItem>
-                {/each}
-            </SidebarDropdownWrapper>
-        {/if}
+        {/each}
 
         <Hr class="m-0 p-0"/>
 

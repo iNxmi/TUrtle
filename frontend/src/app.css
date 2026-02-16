@@ -102,6 +102,13 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Standart Galactic Alphabed Unpixelated';
+    src: url('/fonts/standard-galactic-alphabet-unpixelated.otf.woff2') format('woff2');
+    font-style: normal;
+    font-display: swap;
+}
+
 .prose /* .dark */ {
     a{
         color: var(--color-text);
