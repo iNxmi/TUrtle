@@ -255,7 +255,7 @@
         <Hr class="m-0 p-0"/>
     {/if}
 
-    <div class="flex flex-col gap-2 overflow-y-auto">
+    <div class="flex flex-col gap-2 overflow-y-auto overflow-x-clip">
         {#each categories as category}
             <SidebarDropdownWrapper
                     class="list-none"
@@ -277,7 +277,7 @@
 
                                 {#if item.ping === true}
                                     <div class="shrink flex flex-col justify-center">
-                                        <div class="flex">
+                                        <div class="flex relative">
                                             <span class="absolute bg-csw h-3 w-3 rounded-full animate-ping opacity-75"></span>
                                             <span class="relative bg-csw h-3 w-3 rounded-full"></span>
                                         </div>

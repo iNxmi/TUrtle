@@ -80,7 +80,6 @@
                 </ButtonGroup>
             {/if}
             <div class="flex flex-row gap-2 justify-end">
-
                 {#if !hideReload}
                     <Button class="hover:cursor-pointer" onclick={() => onReload()} disabled={disableReload}>
                         <RefreshOutline/>
