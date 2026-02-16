@@ -11,11 +11,13 @@
 <div class="flex">
     <Navigation user={user} permissions={permissions}/>
 
-    <div class="min-h-svh justify-between flex flex-col w-full bg-background overflow-y-auto min-h-svh max-h-svh">
-        <div class="m-5">
-            <ConfirmProvider>
-                {@render children?.()}
-            </ConfirmProvider>
+    <div class="min-h-svh justify-between flex flex-col w-full bg-background min-h-svh max-h-svh overflow-y-auto">
+        <div class="min-h-svh max-h-svh">
+            <div class="m-5">
+                <ConfirmProvider>
+                    {@render children?.()}
+                </ConfirmProvider>
+            </div>
         </div>
 
         <Footer/>
