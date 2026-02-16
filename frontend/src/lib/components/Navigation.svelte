@@ -194,7 +194,7 @@
         {value: "ro", name: "Română"},
         {value: "fr", name: "Français"},
         {value: "es", name: "Español"}
-    ];
+    ].sort((a, b) => a.value.localeCompare(b.value));
 
     let darkmode = $state(localStorage.getItem("darkmode") || false);
 
