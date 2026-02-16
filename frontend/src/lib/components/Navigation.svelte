@@ -9,9 +9,10 @@
     import {
         Button,
         ButtonGroup,
+        Dropdown,
+        DropdownItem,
         Heading,
         Hr,
-        Select,
         Sidebar,
         SidebarButton,
         SidebarDropdownItem,
@@ -19,6 +20,8 @@
         SidebarGroup,
         Span
     } from "flowbite-svelte";
+
+    import {Arab, De, Hu, Jp, Ro, Ru, Us, Vi} from "svelte-flag-icons";
 
     import {
         AdjustmentsVerticalSolid,
@@ -29,18 +32,19 @@
         ChartOutline,
         ClipboardSolid,
         FilePasteSolid,
+        GlobeOutline,
         HomeSolid,
-        LockOpenSolid,
+        LanguageOutline,
+        LockOpenOutline,
         MoonOutline,
         PaperClipOutline,
         QuestionCircleSolid,
         SunOutline,
+        TerminalOutline,
+        UserCircleOutline,
         UserHeadsetSolid,
         UsersGroupSolid,
-        UserSolid,
-        UserCircleOutline,
-        GlobeOutline,
-        TerminalOutline
+        UserSolid
     } from "flowbite-svelte-icons";
 
     const {user, permissions} = $props()
@@ -166,9 +170,15 @@
             setLocale(language);
     })
 
-    function updateLanguage(event) {
-        event.preventDefault();
-        setLocale(language);
+    const languageIcons = {
+        "en": Us,
+        "de": De,
+        "ja": Jp,
+        "ar": Arab,
+        "ru": Ru,
+        "vi": Vi,
+        "hu": Hu,
+        "ro": Ro,
     }
 
     const languages = [
@@ -272,34 +282,49 @@
 
         <SidebarGroup>
             <div class="flex flex-col gap-2">
-                <ButtonGroup>
-                    <Button color="alternative" class="w-1/2" onclick={toggleDarkMode}>
-                        {#if darkmode}
-                            <MoonOutline/>
-                        {:else}
-                            <SunOutline/>
-                        {/if}
-                    </Button>
+                <div class="flex flex-col">
+                    <ButtonGroup>
+                        <Button name="button_toggle_theme" color="alternative" class="w-1/3" onclick={toggleDarkMode}>
+                            {#if darkmode}
+                                <MoonOutline/>
+                            {:else}
+                                <SunOutline/>
+                            {/if}
+                        </Button>
 
-                    <Button color="alternative" class="w-1/2">
-                        <LockOpenSolid/>
-                    </Button>
-                </ButtonGroup>
+                        <Button name="button_change_language" color="alternative" class="w-1/3">
+                            <!--                            <svelte:component this={languageIcons[language]}/>-->
+                            <LanguageOutline/>
+                        </Button>
+                        <Dropdown class="h-64 overflow-y-auto" simple>
+                            {#each languages as language}
+                                <DropdownItem class="w-full" onclick={() => setLocale(language.value)}>
+                                    <div class="flex gap-2 items-center">
+                                        <svelte:component this={languageIcons[language.value]} class="m-0 p-0"/>
+                                        <span class="text-center">{language.name}</span>
+                                    </div>
+                                </DropdownItem>
+                            {/each}
+                        </Dropdown>
 
-                <Select items={languages} bind:value={language} onchange={updateLanguage}/>
+                        <Button name="button_open_door" color="alternative" class="w-1/3">
+                            <LockOpenOutline/>
+                        </Button>
+                    </ButtonGroup>
+                </div>
 
                 {#if user === null}
                     <ButtonGroup>
-                        <Button class="w-1/2" onclick={() => goto("/auth/login")}>
+                        <Button name="button_login" class="w-1/2" onclick={() => goto("/auth/login")}>
                             {m.navigation_auth_login()}
                         </Button>
-                        <Button class="w-1/2" onclick={() => goto("/auth/register")}>
+                        <Button name="button_register" class="w-1/2" onclick={() => goto("/auth/register")}>
                             {m.navigation_auth_register()}
                         </Button>
                     </ButtonGroup>
                 {:else}
                     <ButtonGroup>
-                        <Button class="w-full" onclick={signOut}>
+                        <Button name="button_logout" class="w-full" onclick={signOut}>
                             <div class="flex gap-2">
                                 <ArrowRightToBracketOutline/>
                                 <Span>{m.navigation_auth_logout()}</Span>
