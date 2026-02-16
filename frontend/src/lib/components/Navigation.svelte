@@ -21,7 +21,7 @@
         Span
     } from "flowbite-svelte";
 
-    import {Arab, De, Hu, Jp, Ro, Ru, Us, Vi} from "svelte-flag-icons";
+    import {Arab, De, Es, Fr, Hu, Jp, Ro, Ru, Us, Vi} from "svelte-flag-icons";
 
     import {
         AdjustmentsVerticalSolid,
@@ -179,6 +179,8 @@
         "vi": Vi,
         "hu": Hu,
         "ro": Ro,
+        "fr": Fr,
+        "es": Es,
     }
 
     const languages = [
@@ -189,7 +191,9 @@
         {value: "ru", name: "Русский"},
         {value: "vi", name: "Tiếng Việt"},
         {value: "hu", name: "Magyar"},
-        {value: "ro", name: "Română"}
+        {value: "ro", name: "Română"},
+        {value: "fr", name: "Français"},
+        {value: "es", name: "Español"}
     ];
 
     let darkmode = $state(localStorage.getItem("darkmode") || false);
