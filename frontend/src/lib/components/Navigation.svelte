@@ -21,21 +21,23 @@
     } from 'flowbite-svelte';
 
     import {
+        AdjustmentsVerticalSolid,
         ArrowRightToBracketOutline,
         BookOpenSolid,
+        BugSolid,
         CalendarEditSolid,
-        CalendarMonthSolid,
-        DesktopPcSolid,
+        ChartOutline,
+        ClipboardSolid,
+        FilePasteSolid,
         HomeSolid,
-        InfoCircleSolid,
-        LockOpenOutline,
-        LockSolid,
+        LockOpenSolid,
         MoonOutline,
         PaperClipOutline,
         QuestionCircleSolid,
         SunOutline,
         UserHeadsetSolid,
-        UsersGroupSolid
+        UsersGroupSolid,
+        UserSolid
     } from 'flowbite-svelte-icons';
 
     const {user, permissions} = $props()
@@ -44,7 +46,7 @@
     const publicItems = [{
         label: m.navigation_public_home(),
         href: '/',
-        icon: InfoCircleSolid
+        icon: HomeSolid
     }, {
         label: m.navigation_public_faq(),
         href: '/faq',
@@ -58,20 +60,20 @@
     const userItems = [{
         label: m.navigation_user_dashboard(),
         href: '/user/dashboard',
-        icon: HomeSolid
+        icon: ChartOutline
     }, {
         label: m.navigation_user_item_bookings(),
         href: '/user/item-bookings',
-        icon: DesktopPcSolid
+        icon: CalendarEditSolid
     }, {
         permission: "REQUEST_ROOM_BOOKINGS",
         label: m.navigation_user_room_bookings(),
         href: '/user/room-bookings',
-        icon: CalendarMonthSolid
+        icon: CalendarEditSolid
     }, {
         label: m.navigation_user_profile(),
         href: '/user/profile',
-        icon: HomeSolid
+        icon: UserSolid
     }];
 
     let visibleUserItems = $state([]);
@@ -84,55 +86,65 @@
         href: '/manage/users',
         icon: UsersGroupSolid
     }, {
+        permission: "MANAGE_ROLES",
+        label: m.navigation_manage_roles(),
+        href: '/manage/roles',
+        icon: UsersGroupSolid
+    }, {
+        permission: "MANAGE_ITEMS",
+        label: m.navigation_manage_items(),
+        href: '/manage/items',
+        icon: ClipboardSolid
+    }, {
+        permission: "MANAGE_ITEM_CATEGORIES",
+        label: m.navigation_manage_item_categories(),
+        href: '/manage/item-categories',
+        icon: ClipboardSolid
+    }, {
         permission: "MANAGE_ROOM_BOOKINGS",
         label: m.navigation_manage_room_bookings(),
         href: '/manage/room-bookings',
         icon: CalendarEditSolid
     }, {
-        permission: "MANAGE_ITEMS",
-        label: m.navigation_manage_items(),
-        href: '/manage/items',
-        icon: DesktopPcSolid
-    }, {
-        permission: "MANAGE_ITEM_CATEGORIES",
-        label: m.navigation_manage_item_categories(),
-        href: '/manage/item-categories',
-        icon: DesktopPcSolid
-    }, {
         permission: "MANAGE_ITEM_BOOKINGS",
         label: m.navigation_manage_item_bookings(),
         href: '/manage/item-bookings',
-        icon: DesktopPcSolid
-    }, {
-        permission: "MANAGE_SUPPORT_TICKETS",
-        label: m.navigation_manage_support_tickets(),
-        href: '/manage/support-tickets',
-        icon: UserHeadsetSolid
+        icon: CalendarEditSolid
     }, {
         permission: "MANAGE_AUDIT_LOGS",
         label: m.navigation_manage_audit_logs(),
         href: '/manage/audit-logs',
         icon: BookOpenSolid
     }, {
-        permission: "MANAGE_SYSTEM_SETTINGS",
-        label: m.navigation_manage_system_settings(),
-        href: '/manage/system-settings',
-        icon: LockSolid
-    }, {
         permission: "MANAGE_GENERAL_TEMPLATES",
         label: m.navigation_manage_content_templates(),
         href: '/manage/content-templates',
-        icon: PaperClipOutline
+        icon: FilePasteSolid
     }, {
         permission: "MANAGE_EMAIL_TEMPLATES",
         label: m.navigation_manage_email_templates(),
         href: '/manage/email-templates',
-        icon: PaperClipOutline
+        icon: FilePasteSolid
     }, {
         permission: "MANAGE_LOCKERS",
         label: m.navigation_manage_lockers(),
         href: '/manage/lockers',
         icon: PaperClipOutline
+    }, {
+        permission: "MANAGE_SUPPORT_TICKETS",
+        label: m.navigation_manage_support_tickets(),
+        href: '/manage/support-tickets',
+        icon: UserHeadsetSolid
+    }, {
+        permission: "MANAGE_EXCEPTIONS",
+        label: m.navigation_manage_exceptions(),
+        href: '/manage/exceptions',
+        icon: BugSolid
+    }, {
+        permission: "MANAGE_SYSTEM_SETTINGS",
+        label: m.navigation_manage_system_settings(),
+        href: '/manage/system-settings',
+        icon: AdjustmentsVerticalSolid
     }];
 
     let visibleManageItems = $state([]);
@@ -220,9 +232,23 @@
                 label={m.navigation_category_public()}
         >
             {#each publicItems as item}
-                <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
+                <SidebarDropdownItem href={item.href}>
                     {#snippet icon()}
-                        <item.icon class="text-csw h-5 w-5"/>
+                        <item.icon class="text-csw"/>
+                    {/snippet}
+                    {#snippet subtext()}
+                        <div class="w-full flex">
+                            <span class="text-text grow">{item.label}</span>
+
+                            {#if item.ping === true}
+                                <div class="shrink flex flex-col justify-center">
+                                    <div class="flex">
+                                        <span class="absolute bg-csw h-3 w-3 rounded-full animate-ping opacity-75"></span>
+                                        <span class="relative bg-csw h-3 w-3 rounded-full"></span>
+                                    </div>
+                                </div>
+                            {/if}
+                        </div>
                     {/snippet}
                 </SidebarDropdownItem>
             {/each}
@@ -236,9 +262,23 @@
                     label={m.navigation_category_user()}
             >
                 {#each visibleUserItems as item}
-                    <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
+                    <SidebarDropdownItem href={item.href}>
                         {#snippet icon()}
-                            <item.icon class="text-csw h-5 w-5"/>
+                            <item.icon class="text-csw"/>
+                        {/snippet}
+                        {#snippet subtext()}
+                            <div class="w-full flex">
+                                <span class="text-text grow">{item.label}</span>
+
+                                {#if item.ping === true}
+                                    <div class="shrink flex flex-col justify-center">
+                                        <div class="flex">
+                                            <span class="absolute bg-csw h-3 w-3 rounded-full animate-ping opacity-75"></span>
+                                            <span class="relative bg-csw h-3 w-3 rounded-full"></span>
+                                        </div>
+                                    </div>
+                                {/if}
+                            </div>
                         {/snippet}
                     </SidebarDropdownItem>
                 {/each}
@@ -251,9 +291,23 @@
                                     isOpen={true}
                                     label={m.navigation_category_manage()}>
                 {#each visibleManageItems as item}
-                    <SidebarDropdownItem spanClass="text-text ms-3" label={item.label} href={item.href}>
+                    <SidebarDropdownItem href={item.href}>
                         {#snippet icon()}
-                            <item.icon class="text-csw h-5 w-5"/>
+                            <item.icon class="text-csw"/>
+                        {/snippet}
+                        {#snippet subtext()}
+                            <div class="w-full flex">
+                                <span class="text-text grow">{item.label}</span>
+
+                                {#if item.ping === true}
+                                    <div class="shrink flex flex-col justify-center">
+                                        <div class="flex">
+                                            <span class="absolute bg-csw h-3 w-3 rounded-full animate-ping opacity-75"></span>
+                                            <span class="relative bg-csw h-3 w-3 rounded-full"></span>
+                                        </div>
+                                    </div>
+                                {/if}
+                            </div>
                         {/snippet}
                     </SidebarDropdownItem>
                 {/each}
@@ -274,7 +328,7 @@
                     </Button>
 
                     <Button color="alternative" class="w-1/2">
-                        <LockOpenOutline/>
+                        <LockOpenSolid/>
                     </Button>
                 </ButtonGroup>
 
