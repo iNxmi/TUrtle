@@ -25,6 +25,7 @@
 
     import {
         AdjustmentsVerticalSolid,
+        ArrowLeftToBracketOutline,
         ArrowRightToBracketOutline,
         BookOpenSolid,
         BugSolid,
@@ -41,6 +42,7 @@
         QuestionCircleSolid,
         SunOutline,
         TerminalOutline,
+        UserAddOutline,
         UserCircleOutline,
         UserHeadsetSolid,
         UsersGroupSolid,
@@ -80,7 +82,7 @@
         label: m.navigation_user_profile(),
         href: "/user/profile",
         icon: UserSolid
-    }].filter(item => !item.permission || permissions.includes(item.permission));
+    }].filter(item => user != null && (!item.permission || permissions.includes(item.permission)));
 
     const manageItems = [{
         permission: "MANAGE_USERS",
@@ -126,6 +128,11 @@
         permission: "MANAGE_EMAIL_TEMPLATES",
         label: m.navigation_manage_email_templates(),
         href: "/manage/email-templates",
+        icon: FilePasteSolid
+    }, {
+        permission: "MANAGE_FAQ",
+        label: m.navigation_manage_faq(),
+        href: "/manage/faq",
         icon: FilePasteSolid
     }, {
         permission: "MANAGE_LOCKERS",
@@ -227,27 +234,28 @@
         backdrop={false}
         closeSidebar={() => isOpen = false}
         position="static"
-        class="min-w-64 min-h-svh"
+        class="min-w-64 min-h-svh max-h-svh"
+        divClass="flex flex-col gap-2 h-full"
 >
-    <div class="flex flex-col gap-2">
-        <div class="flex flex-col items-center">
-            <TUrtleLogo path="/"/>
-        </div>
+    <div class="flex flex-col items-center justify-between">
+        <TUrtleLogo path="/"/>
+    </div>
 
-        <Hr class="m-0 p-0"/>
+    <Hr class="m-0 p-0"/>
 
-        {#if user !== null}
-            <SidebarGroup>
-                <Heading tag="h5" class="text-center">
+    {#if user !== null}
+        <SidebarGroup>
+            <Heading tag="h5" class="text-center">
                         <Span class="text-csw">
                             {`${user.firstName} ${user.lastName}`}
                         </Span>
-                </Heading>
-            </SidebarGroup>
+            </Heading>
+        </SidebarGroup>
 
-            <Hr class="m-0 p-0"/>
-        {/if}
+        <Hr class="m-0 p-0"/>
+    {/if}
 
+    <div class="flex flex-col gap-2 overflow-y-auto">
         {#each categories as category}
             <SidebarDropdownWrapper
                     class="list-none"
@@ -281,62 +289,66 @@
                 {/each}
             </SidebarDropdownWrapper>
         {/each}
-
-        <Hr class="m-0 p-0"/>
-
-        <SidebarGroup>
-            <div class="flex flex-col gap-2">
-                <div class="flex flex-col">
-                    <ButtonGroup>
-                        <Button name="button_toggle_theme" color="alternative" class="w-1/3" onclick={toggleDarkMode}>
-                            {#if darkmode}
-                                <MoonOutline/>
-                            {:else}
-                                <SunOutline/>
-                            {/if}
-                        </Button>
-
-                        <Button name="button_change_language" color="alternative" class="w-1/3">
-                            <!--                            <svelte:component this={languageIcons[language]}/>-->
-                            <LanguageOutline/>
-                        </Button>
-                        <Dropdown class="h-64 overflow-y-auto" simple>
-                            {#each languages as language}
-                                <DropdownItem class="w-full" onclick={() => setLocale(language.value)}>
-                                    <div class="flex gap-2 items-center">
-                                        <svelte:component this={languageIcons[language.value]} class="m-0 p-0"/>
-                                        <span class="text-center">{language.name}</span>
-                                    </div>
-                                </DropdownItem>
-                            {/each}
-                        </Dropdown>
-
-                        <Button name="button_open_door" color="alternative" class="w-1/3">
-                            <LockOpenOutline/>
-                        </Button>
-                    </ButtonGroup>
-                </div>
-
-                {#if user === null}
-                    <ButtonGroup>
-                        <Button name="button_login" class="w-1/2" onclick={() => goto("/auth/login")}>
-                            {m.navigation_auth_login()}
-                        </Button>
-                        <Button name="button_register" class="w-1/2" onclick={() => goto("/auth/register")}>
-                            {m.navigation_auth_register()}
-                        </Button>
-                    </ButtonGroup>
-                {:else}
-                    <ButtonGroup>
-                        <Button name="button_logout" class="w-full" onclick={signOut}>
-                            <div class="flex gap-2">
-                                <ArrowRightToBracketOutline/>
-                                <Span>{m.navigation_auth_logout()}</Span>
-                            </div>
-                        </Button>
-                    </ButtonGroup>
-                {/if}
-            </div>
-        </SidebarGroup>
     </div>
+
+    <SidebarGroup class="flex flex-col grow justify-end">
+        <div class="flex flex-col gap-2 justify-around">
+            <div class="flex flex-col">
+                <ButtonGroup>
+                    <Button name="button_toggle_theme" color="alternative" class="w-1/3" onclick={toggleDarkMode}>
+                        {#if darkmode}
+                            <MoonOutline/>
+                        {:else}
+                            <SunOutline/>
+                        {/if}
+                    </Button>
+
+                    <Button name="button_change_language" color="alternative" class="w-1/3">
+                        <!--                            <svelte:component this={languageIcons[language]}/>-->
+                        <LanguageOutline/>
+                    </Button>
+                    <Dropdown class="h-64 overflow-y-auto" simple>
+                        {#each languages as language}
+                            <DropdownItem class="w-full" onclick={() => setLocale(language.value)}>
+                                <div class="flex gap-2 items-center">
+                                    <svelte:component this={languageIcons[language.value]} class="m-0 p-0"/>
+                                    <span class="text-center">{language.name}</span>
+                                </div>
+                            </DropdownItem>
+                        {/each}
+                    </Dropdown>
+
+                    <Button name="button_open_door" color="alternative" class="w-1/3">
+                        <LockOpenOutline/>
+                    </Button>
+                </ButtonGroup>
+            </div>
+
+            {#if user === null}
+                <ButtonGroup>
+                    <Button name="button_login" class="w-1/2" onclick={() => goto("/auth/login")}>
+                        <div class="flex gap-2 items-center">
+                            <ArrowLeftToBracketOutline/>
+                            <Span>{m.navigation_auth_login()}</Span>
+                        </div>
+                    </Button>
+                    <Button name="button_register" class="w-1/2" onclick={() => goto("/auth/register")}>
+                        <div class="flex gap-2 items-center">
+                            <UserAddOutline/>
+                            <Span>{m.navigation_auth_register()}</Span>
+                        </div>
+                    </Button>
+                </ButtonGroup>
+            {:else}
+                <ButtonGroup>
+                    <Button name="button_logout" class="w-full" onclick={signOut}>
+                        <div class="flex gap-2 items-center">
+                            <ArrowRightToBracketOutline/>
+                            <Span>{m.navigation_auth_logout()}</Span>
+                        </div>
+                    </Button>
+                </ButtonGroup>
+            {/if}
+        </div>
+    </SidebarGroup>
 </Sidebar>

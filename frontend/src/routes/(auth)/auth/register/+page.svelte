@@ -4,6 +4,9 @@
     import Altcha from '$lib/components/Altcha.svelte';
     import request from "$lib/api/api.js";
     import {EyeOutline, EyeSlashOutline} from "flowbite-svelte-icons";
+    import {dev} from "$app/environment";
+    import {goto} from "$app/navigation";
+    import {page} from "$app/state";
 
     let username = $state("");
     let firstName = $state("");
@@ -35,6 +38,9 @@
             body: JSON.stringify(payload),
             headers: {'Content-Type': 'application/json'}
         });
+
+        if (response.ok || dev)
+            await goto(page.url.searchParams.get('redirectTo') || '/auth/login', {invalidateAll: true,});
     }
 </script>
 

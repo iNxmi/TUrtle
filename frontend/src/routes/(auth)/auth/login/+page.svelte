@@ -34,9 +34,8 @@
             headers: {'Content-Type': 'application/json'}
         });
 
-        if (response.ok || dev) {
-            goto(page.url.searchParams.get('redirectTo') || '/dashboard', {invalidateAll: true,});
-        }
+        if (response.ok || dev)
+            await goto(page.url.searchParams.get('redirectTo') || '/user/dashboard', {invalidateAll: true,});
     }
 </script>
 

@@ -9,7 +9,9 @@
 <div class="flex flex-col justify-center bg-background min-h-svh">
     <div class="flex justify-center">
         <div class="flex flex-col gap-10">
-            <Heading tag="h1" class="text-center">{page.status} {page.error.message}</Heading>
+            <Heading tag="h1" class="text-center">
+                <span class="text-text">{page.status} {page.error.message}</span>
+            </Heading>
 
             {#if page.status === 404}
                 {#if random <= 0.5}
