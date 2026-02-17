@@ -72,7 +72,17 @@ class ItemBookingService(
         returnedAt: Instant? = null,
         status: ItemBookingEntity.Status? = null,
     ): ItemBookingEntity {
+        //TODO add create checks
+
         val entity = repository.findById(id).get()
+
+        if(userId != null)
+            if(!userRepository.existsById(userId))
+                throw HttpException.BadRequest("User with ID '$userId' does not exist.")
+
+        if(itemId != null)
+            if(!itemRepository.existsById(itemId))
+                throw HttpException.BadRequest("Item with ID '$itemId' does not exist.")
 
         if (start != null && end != null) {
             if (start.isAfter(end))

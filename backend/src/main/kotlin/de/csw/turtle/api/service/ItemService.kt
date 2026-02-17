@@ -67,6 +67,7 @@ class ItemService(
         needsConfirmation: Boolean? = null,
         acquiredAt: Instant? = null
     ): ItemEntity {
+
         val entity = repository.findById(id).get()
 
         if (name != null) {
@@ -80,6 +81,15 @@ class ItemService(
         if (description != null)
             if (description.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_DESCRIPTION_LENGTH))
                 throw HttpException.BadRequest("Description cannot exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_DESCRIPTION_LENGTH)} characters.")
+
+        if (categoryId != null)
+            if(!itemCategoryRepository.existsById(categoryId))
+                throw HttpException.BadRequest("Category with ID $categoryId does not exist.")
+
+        if(lockerId != null)
+            if(!lockerRepository.existsById(lockerId))
+                throw HttpException.BadRequest("Locker with ID $lockerId does not exist.")
+
 
         name?.let { entity.name = it }
         description?.let { entity.description = it }

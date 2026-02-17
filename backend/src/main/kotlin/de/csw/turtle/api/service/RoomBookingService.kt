@@ -96,6 +96,7 @@ class RoomBookingService(
         whitelistIds: Set<Long>? = null,
         status: RoomBookingEntity.Status? = null
     ): RoomBookingEntity {
+
         val entity = repository.findById(id).get()
 
         if (title != null)
@@ -117,11 +118,24 @@ class RoomBookingService(
                 throw HttpException.Conflict("Room is already booked from start '${start}' to end '${end}'.")
         }
 
+        if(start != null)
+            if (start.isBefore(Instant.now()))
+                throw HttpException.BadRequest("Start cannot be in the past.")
+
         if (start != null && end == null && start.isAfter(entity.end))
             throw HttpException.BadRequest("Start '${start}' cannot be after end '${entity.end}'.")
 
         if (start == null && end != null && end.isBefore(entity.start))
             throw HttpException.BadRequest("End '${end}' cannot be before '${entity.start}'.")
+
+        if(whitelistIds != null){
+            if(!whitelistIds.isEmpty()){
+                for (userId in whitelistIds) {
+                    if(!userRepository.existsById(userId))
+                        throw HttpException.BadRequest("Whitelisted user with id '$userId' does not exist.")
+                }
+            }
+        }
 
         val pre = entity.snapshot()
 

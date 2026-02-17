@@ -150,6 +150,41 @@ class UserService(
         status: UserEntity.Status? = null,
         roleIds: Set<Long>? = null
     ): UserEntity {
+
+        if (username != null){
+            if (username.isBlank())
+                throw HttpException.BadRequest("Username cannot be left blank.")
+            if (repository.existsByUsername(username))
+                throw HttpException.Conflict("Username '${username}' already exists.")
+        }
+        if (firstName != null)
+            if (firstName.isBlank())
+                throw HttpException.BadRequest("First name cannot be left blank.")
+
+        if (lastName != null)
+            if (lastName.isBlank())
+                throw HttpException.BadRequest("Last name cannot be left blank.")
+
+        if (email != null) {
+            if (email.isBlank())
+                throw HttpException.BadRequest("Email cannot be left blank.")
+            if (repository.findByEmail(email) != null)
+                throw HttpException.Conflict("Email '$email' already exists.")
+            if (!regex.matches(email))
+                throw HttpException.BadRequest("'${email}' is not a valid Email Address.")
+        }
+
+        if(emojis != null)
+            if (repository.findByEmojis(emojis) != null)
+                throw HttpException.Conflict("Emoji password '$emojis' already exists.")
+
+        if(roleIds != null){
+            for (roleId in roleIds){
+                if(!roleRepository.existsById(roleId))
+                    throw HttpException.BadRequest("Role with id '$roleId' does not exist.")
+            }
+        }
+
         val entity = repository.findById(id).get()
         val pre = entity.snapshot()
 
