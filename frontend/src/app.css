@@ -89,7 +89,7 @@
     --color-accent: #00c20d;
     --color-csw: #FF6A00;
 
-    --color-text: var(--color-gray-200);
+    --color-text: var(--color-gray-300);
     --color-muted: var(--color-gray-500);
 }
 
@@ -98,6 +98,13 @@
     src: url('/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype-variations');
     font-weight: 100 900;
     font-stretch: 75% 125%;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Standart Galactic Alphabed Unpixelated';
+    src: url('/fonts/standard-galactic-alphabet-unpixelated.otf.woff2') format('woff2');
     font-style: normal;
     font-display: swap;
 }
@@ -193,7 +200,6 @@
 
 .dark .fc-timegrid-event-harness-inset .fc-timegrid-event, .fc-timegrid-event.fc-event-mirror, .fc-timegrid-more-link {
     box-shadow: none;
-
 }
 
 .fc .fc-timegrid-slot-minor {

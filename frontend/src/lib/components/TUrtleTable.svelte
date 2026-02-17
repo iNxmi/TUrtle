@@ -1,30 +1,29 @@
 <script>
     import {
+        Button,
+        ButtonGroup,
+        Card,
+        Hr,
+        Input,
+        Table,
         TableBody,
         TableBodyCell,
         TableBodyRow,
         TableHead,
-        TableHeadCell,
-        Table,
-        Input,
-        Button,
-        P,
-        Hr,
-        Card,
-        ButtonGroup
+        TableHeadCell
     } from 'flowbite-svelte';
 
     import {
         AngleLeftOutline,
         AngleRightOutline,
+        ArrowDownOutline,
+        ArrowUpOutline,
+        CaretSortOutline,
         ChevronDoubleLeftOutline,
         ChevronDoubleRightOutline,
         PlusOutline,
-        SearchOutline,
         RefreshOutline,
-        CaretSortOutline,
-        ArrowUpOutline,
-        ArrowDownOutline
+        SearchOutline
     } from 'flowbite-svelte-icons';
 
     const noop = () => {
@@ -60,11 +59,11 @@
         showNewElementModal = $bindable()
     } = $props();
 
-     onCreate = () => {
+    onCreate = () => {
         showNewElementModal = true;
     }
     let search = $state("");
-    
+
 </script>
 
 <Card class="min-w-full max-h-full overflow-clip">
@@ -73,24 +72,25 @@
         <div class="flex flex-row gap-2 justify-between p-2">
             {#if !hideSearch}
                 <ButtonGroup disabled={disableSearch}>
-                    <Input class="field-sizing-content min-w-100 max-w-7xl" placeholder={`_search_`} bind:value={search} disabled={disableSearch}/>
-                    <Button class="cursor-pointer bg-orange-400"  onclick={() => onSearch(search)}>
+                    <Input class="field-sizing-content min-w-100 max-w-7xl" placeholder={`_search_`} bind:value={search}
+                           disabled={disableSearch}/>
+                    <Button class="cursor-pointer bg-orange-400" onclick={() => onSearch(search)}>
                         <SearchOutline class="text-white"/>
                     </Button>
                 </ButtonGroup>
             {/if}
-                <div class="flex flex-row gap-2 justify-end">
-            {#if !hideReload}
-                <Button class="hover:cursor-pointer" onclick={() => onReload()} disabled={disableReload}>
-                    <RefreshOutline/>
-                </Button>
-            {/if}
+            <div class="flex flex-row gap-2 justify-end">
+                {#if !hideReload}
+                    <Button class="hover:cursor-pointer" onclick={() => onReload()} disabled={disableReload}>
+                        <RefreshOutline/>
+                    </Button>
+                {/if}
 
-            {#if !hideAdd}
-                <Button class="hover:cursor-pointer" onclick={onCreate} disabled={disableAdd}>
-                    <PlusOutline/>
-                </Button>
-            {/if}
+                {#if !hideAdd}
+                    <Button class="hover:cursor-pointer" onclick={onCreate} disabled={disableAdd}>
+                        <PlusOutline/>
+                    </Button>
+                {/if}
             </div>
         </div>
 
@@ -117,7 +117,7 @@
         </TableHead>
         <TableBody>
             {#each items as item}
-                <TableBodyRow class="hover:cursor-pointer hover:text-orange-400 border-gray-200" onclick={() => item.onClick()}>
+                <TableBodyRow class="hover:cursor-pointer border-gray-200" onclick={() => item.onClick()}>
                     {#each item.values as value}
                         <TableBodyCell>{value}</TableBodyCell>
                     {/each}
@@ -131,9 +131,12 @@
 
         <div class="flex justify-between p-2">
             {#if !hideCount}
-                <P class="flex items-center text-gray-500">
-                    {page.number * page.size + 1} - {Math.min((page.number + 1) * page.size, page.totalElements)} ({page.totalElements})
-                </P>
+                <ButtonGroup>
+                    <Button disabled>
+                        {page.number * page.size + 1} - {Math.min((page.number + 1) * page.size, page.totalElements)}
+                        ({page.totalElements})
+                    </Button>
+                </ButtonGroup>
             {/if}
 
             {#if !hidePagination}
@@ -148,9 +151,9 @@
                         <AngleLeftOutline/>
                     </Button>
 
-                    <div class="border border-gray-100 dark:border-gray-700 text-orange-400 px-3 inline-flex items-center">
-                         {`${page.number + 1} / ${page.totalPages}`}
-                    </div>
+                    <Button disabled>
+                        {`${page.number + 1} / ${page.totalPages}`}
+                    </Button>
 
                     <Button class="hover:cursor-pointer disabled:cursor-not-allowed"
                             disabled={page.number >= page.totalPages - 1} onclick={() => onNextPage()}>

@@ -1,9 +1,8 @@
 import request from "$lib/api/api.js";
-import { faqPath} from '$lib/backend'
 
 export async function load() {
-    const response = await request(faqPath);
+    const response = await request(`/system-settings/emojis.all`);
     const payload = await response.json();
 
-    return {all: payload};
+    return {emojis: payload.value};
 }

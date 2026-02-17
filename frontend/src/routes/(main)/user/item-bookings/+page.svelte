@@ -7,11 +7,11 @@
     import timeGridPlugin from '@fullcalendar/timegrid';
 	import listPlugin from '@fullcalendar/list';
 	import deLocale from '@fullcalendar/core/locales/de';
-    import request from '$lib/api/api';
+    import request from '$lib/api/api.js';
     import LockerOpenModal from "$lib/components/LockerOpenModal.svelte";
     import DevicebookingTable from "$lib/components/DevicebookingTable.svelte";
-    import { fetchDeviceBookings, convertEventToFrontend } from "$lib/utils";
-    import { deviceBookingsPath } from "$lib/backend";
+    import { fetchDeviceBookings, convertEventToFrontend } from "$lib/utils.js";
+    import { deviceBookingsPath } from "$lib/backend.js";
     let { data } = $props();
     
     let reservations = $derived(data.reservations);

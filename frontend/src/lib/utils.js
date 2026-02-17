@@ -1,7 +1,7 @@
 import request from './api/api';
 import {dev} from '$app/environment';
 import {error, redirect} from '@sveltejs/kit';
-import {hardwarePath, deviceBookingsPath, roomBookingsPath} from '$lib/backend';
+import {deviceBookingsPath, hardwarePath, roomBookingsPath} from '$lib/backend';
 
 export function convertEventToBackend(calendarEvent) {
     if (dev) {
@@ -101,19 +101,12 @@ export async function openDoor() {
         return true;
     }
 }
-export function between(number, min, max){
+
+export function between(number, min, max) {
     return min <= number && number < max
 }
-export async function logOut(){
-        const response = await request('/auth/logout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        if(response.ok){
-            return true;
-        }
-        return false;
 
-    }
+export async function logOut() {
+    const response = await request('/auth/logout', {method: 'POST'});
+    return response.ok
+}

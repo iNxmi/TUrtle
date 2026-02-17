@@ -45,15 +45,11 @@
 </script>
 
 <button id="export-target" class="flex flex-col items-center select-none w-max h-max" onclick={rotate}>
-    <Heading class="inline-block">
-        <Span class="text-7xl text-csw!">
-            CSW
-        </Span>
+    <Heading class="inline-block text-7xl">
+        <Span class="text-csw">CSW</Span>
     </Heading>
 
     <Heading class="inline-block text-2xl tracking-[.35em]">
-        <Span class="text-csw!">
-            TUrtle
-        </Span>
+        <Span class="text-csw">TUrtle</Span>
     </Heading>
 </button>
