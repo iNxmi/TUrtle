@@ -41,11 +41,13 @@ class RoomBookingService(
         if(!userRepository.existsById(userId))
             throw HttpException.BadRequest("User with id '$userId' does not exist.")
 
-        if (title.isBlank() || title.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_TITLE_LENGTH))
-            throw HttpException.BadRequest("Title cannot be blank or exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_TITLE_LENGTH)} characters.")
+        val maxTitleLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_TITLE_LENGTH)
+        if (title.isBlank() || title.length > maxTitleLength)
+            throw HttpException.BadRequest("Title cannot be blank or exceed $maxTitleLength characters.")
 
-        if (description.isBlank() || description.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_DESCRIPTION_LENGTH))
-            throw HttpException.BadRequest("Description cannot be blank or exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_DESCRIPTION_LENGTH)} characters.")
+        val maxDescriptionLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_DESCRIPTION_LENGTH)
+        if (description.isBlank() || description.length > maxDescriptionLength)
+            throw HttpException.BadRequest("Description cannot be blank or exceed $maxDescriptionLength characters.")
 
         if (start.isBefore(Instant.now()))
             throw HttpException.BadRequest("Start cannot be in the past.")
@@ -99,13 +101,16 @@ class RoomBookingService(
 
         val entity = repository.findById(id).get()
 
-        if (title != null)
-            if (title.isBlank() || title.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_TITLE_LENGTH))
-                throw HttpException.BadRequest("Title cannot be blank or exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_TITLE_LENGTH)} characters.")
 
+        val maxTitleLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_TITLE_LENGTH)
+        if (title != null)
+            if (title.isBlank() || title.length > maxTitleLength)
+                throw HttpException.BadRequest("Title cannot be blank or exceed $maxTitleLength characters.")
+
+        val maxDescriptionLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_DESCRIPTION_LENGTH)
         if (description != null)
-            if (description.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_DESCRIPTION_LENGTH))
-                throw HttpException.BadRequest("Description cannot exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_DESCRIPTION_LENGTH)} characters.")
+            if (description.length > maxDescriptionLength)
+                throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
 
         if (start != null && end != null) {
             if (start.isAfter(end))

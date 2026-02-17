@@ -9,6 +9,7 @@ import de.csw.turtle.api.repository.LockerRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.Instant
+import kotlin.math.max
 
 @Service
 class ItemService(
@@ -30,14 +31,16 @@ class ItemService(
         acquiredAt: Instant
     ): ItemEntity {
 
-        if (name.isBlank() || name.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_NAME_LENGTH))
-            throw HttpException.BadRequest("Name cannot be blank and cannot exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_NAME_LENGTH)} characters.")
+        val maxNameLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_NAME_LENGTH)
+        if (name.isBlank() || name.length > maxNameLength)
+            throw HttpException.BadRequest("Name cannot be blank and cannot exceed $maxNameLength characters.")
 
         if (repository.findByName(name) != null)
             throw HttpException.Conflict("Name '${name}' already exists.")
 
-        if (description.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_DESCRIPTION_LENGTH))
-            throw HttpException.BadRequest("Description cannot exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_DESCRIPTION_LENGTH)} characters.")
+        val maxDescriptionLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_DESCRIPTION_LENGTH)
+        if (description.length > maxDescriptionLength)
+            throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
 
         if(!itemCategoryRepository.existsById(categoryId))
             throw HttpException.BadRequest("Category with ID $categoryId does not exist.")
@@ -70,17 +73,19 @@ class ItemService(
 
         val entity = repository.findById(id).get()
 
+        val maxNameLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_NAME_LENGTH)
         if (name != null) {
-            if (name.isBlank() || name.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_NAME_LENGTH))
-                throw HttpException.BadRequest("Name cannot be blank and cannot exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_NAME_LENGTH)} characters.")
+            if (name.isBlank() || name.length > maxNameLength)
+                throw HttpException.BadRequest("Name cannot be blank and cannot exceed $maxNameLength characters.")
 
             if (repository.findByName(name) != null)
                 throw HttpException.Conflict("Name '${name}' already exists.")
         }
 
+        val maxDescriptionLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_DESCRIPTION_LENGTH)
         if (description != null)
-            if (description.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_DESCRIPTION_LENGTH))
-                throw HttpException.BadRequest("Description cannot exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_DESCRIPTION_LENGTH)} characters.")
+            if (description.length > maxDescriptionLength)
+                throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
 
         if (categoryId != null)
             if(!itemCategoryRepository.existsById(categoryId))

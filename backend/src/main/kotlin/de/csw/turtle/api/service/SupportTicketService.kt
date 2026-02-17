@@ -26,11 +26,13 @@ class SupportTicketService(
         status: Status
     ): SupportTicketEntity {
 
-        if (subject.isBlank() || subject.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_SUBJECT_LENGTH))
-            throw HttpException.BadRequest("Subject cannot be left blank and cannot be longer than ${configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_SUBJECT_LENGTH)} characters.")
+        val maxSubjectLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_SUBJECT_LENGTH)
+        if (subject.isBlank() || subject.length > maxSubjectLength)
+            throw HttpException.BadRequest("Subject cannot be left blank and cannot be longer than $maxSubjectLength characters.")
 
-        if (description.isBlank() || description.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_DESCRIPTION_LENGTH))
-            throw HttpException.BadRequest("Description cannot be left blank and cannot be longer than ${configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_DESCRIPTION_LENGTH)} characters.")
+        val maxDescriptionLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_DESCRIPTION_LENGTH)
+        if (description.isBlank() || description.length > maxDescriptionLength)
+            throw HttpException.BadRequest("Description cannot be left blank and cannot be longer than $maxDescriptionLength characters.")
 
         if (!regex.matches(email))
             throw HttpException.BadRequest("'${email}' is not a valid Email Address.")
@@ -58,13 +60,15 @@ class SupportTicketService(
         status: Status? = null
     ): SupportTicketEntity {
 
+        val maxSubjectLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_SUBJECT_LENGTH)
         if (subject != null)
-            if (subject.isBlank() || subject.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_SUBJECT_LENGTH))
-                throw HttpException.BadRequest("Subject cannot be left blank and cannot be longer than ${configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_SUBJECT_LENGTH)} characters.")
+            if (subject.isBlank() || subject.length > maxSubjectLength)
+                throw HttpException.BadRequest("Subject cannot be left blank and cannot be longer than $maxSubjectLength} characters.")
 
+        val maxDescriptionLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_DESCRIPTION_LENGTH)
         if (description != null)
-            if (description.isBlank() || description.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_DESCRIPTION_LENGTH))
-                throw HttpException.BadRequest("Description cannot be left blank and cannot be longer than ${configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_DESCRIPTION_LENGTH)} characters.")
+            if (description.isBlank() || description.length > maxDescriptionLength)
+                throw HttpException.BadRequest("Description cannot be left blank and cannot be longer than $maxDescriptionLength characters.")
 
         if (email != null)
             if (!regex.matches(email))

@@ -72,8 +72,6 @@ class ItemBookingService(
         returnedAt: Instant? = null,
         status: ItemBookingEntity.Status? = null,
     ): ItemBookingEntity {
-        //TODO add create checks
-
         val entity = repository.findById(id).get()
 
         if(userId != null)

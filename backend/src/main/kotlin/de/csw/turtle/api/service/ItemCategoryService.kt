@@ -21,8 +21,9 @@ class ItemCategoryService(
         name: String
     ): ItemCategoryEntity {
 
-        if(name.isBlank() || name.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_CATEGORY_NAME_LENGTH))
-            throw HttpException.BadRequest("Name cannot be blank or exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_CATEGORY_NAME_LENGTH)} characters.")
+        val maxNameLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_CATEGORY_NAME_LENGTH)
+        if(name.isBlank() || name.length > maxNameLength)
+            throw HttpException.BadRequest("Name cannot be blank or exceed $maxNameLength} characters.")
 
 
         if (repository.findByName(name) != null)
@@ -37,9 +38,10 @@ class ItemCategoryService(
         id: Long,
         name: String? = null
     ): ItemCategoryEntity {
+        val maxNameLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_CATEGORY_NAME_LENGTH)
         if (name != null) {
-            if (name.isBlank() || name.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_CATEGORY_NAME_LENGTH))
-                throw HttpException.BadRequest("Name cannot be blank or exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_CATEGORY_NAME_LENGTH)} characters.")
+            if (name.isBlank() || name.length > maxNameLength)
+                throw HttpException.BadRequest("Name cannot be blank or exceed $maxNameLength characters.")
             if (repository.findByName(name) != null)
                 throw HttpException.Conflict("Item category with name '$name' already exists.")
         }

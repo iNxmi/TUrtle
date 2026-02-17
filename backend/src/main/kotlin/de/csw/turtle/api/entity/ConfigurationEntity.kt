@@ -38,6 +38,7 @@ class ConfigurationEntity(
 
         USER_VERIFICATION_DURATION,
         USER_EMAIL_TRUSTED,
+        USER_PASSWORD_REGEX,
 
         ALTCHA_SECRET,
         ALTCHA_MAX_NUMBER,
@@ -78,6 +79,8 @@ class ConfigurationEntity(
 
         FAQ_NAME_LENGTH,
         FAQ_TITLE_LENGTH,
+
+
 
         URL_X,
         URL_INSTAGRAM,

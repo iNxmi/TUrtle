@@ -78,6 +78,9 @@ class UserService(
         }
         //TODO password is min. 10 long, min. 1 number included, min. 1 symbol included, min. 1 upper and min. 1 lower case (maybe via regex)
 
+        val regex = configurationService.getTyped<String>(Key.USER_PASSWORD_REGEX).toRegex()
+        if(!regex.matches(password))
+            throw HttpException.BadRequest("Password needs to match '$regex' good luck :)")
 
         val entity = UserEntity(
             username = username,
@@ -183,6 +186,12 @@ class UserService(
                 if(!roleRepository.existsById(roleId))
                     throw HttpException.BadRequest("Role with id '$roleId' does not exist.")
             }
+        }
+
+        if (password != null) {
+            val regex = configurationService.getTyped<String>(Key.USER_PASSWORD_REGEX).toRegex()
+            if (!regex.matches(password))
+                throw HttpException.BadRequest("Password needs to match '$regex' good luck :)")
         }
 
         val entity = repository.findById(id).get()

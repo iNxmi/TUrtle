@@ -71,6 +71,9 @@ class DefaultConfiguration(
             val set = setOf(".*@stud\\.tu-darmstadt\\.de", ".*@tu-darmstadt\\.de")
             objectMapper.writeValueAsString(set)
         }
+        setDefault(Key.USER_PASSWORD_REGEX, Type.STRING, PUBLIC) {
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{10,}\$"
+        }
 
         setDefault(Key.ALTCHA_SECRET, Type.STRING) { randomBase64() }
         setDefault(Key.ALTCHA_MAX_NUMBER, Type.LONG) { 100_000L }
