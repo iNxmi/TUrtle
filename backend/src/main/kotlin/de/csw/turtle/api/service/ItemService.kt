@@ -31,13 +31,6 @@ class ItemService(
         acquiredAt: Instant
     ): ItemEntity {
 
-        //TODO name unique
-        //TODO name not blank
-        //TODO name <= 64
-        //TODO description <= 2048
-        //TODO category exists
-        //TODO locker exists
-
         if (name.isBlank() || name.length > maxNameLength)
             throw HttpException.BadRequest("Name cannot be blank and cannot exceed $maxNameLength characters.")
 
@@ -46,6 +39,12 @@ class ItemService(
 
         if (description.length > maxDescriptionLength)
             throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
+
+        if(!itemCategoryRepository.existsById(categoryId))
+            throw HttpException.BadRequest("Category with ID $categoryId does not exist.")
+
+        if(!lockerRepository.existsById(lockerId))
+            throw HttpException.BadRequest("Locker with ID $lockerId does not exist.")
 
         val entity = ItemEntity(
             name = name,

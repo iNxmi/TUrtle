@@ -39,11 +39,17 @@ class RoomBookingService(
         status: RoomBookingEntity.Status
     ): RoomBookingEntity {
 
+        if(!userRepository.existsById(userId))
+            throw HttpException.BadRequest("User with id '$userId' does not exist.")
+
         if (title.isBlank() || title.length > maxTitleLength)
             throw HttpException.BadRequest("Title cannot be blank or exceed $maxTitleLength characters.")
 
-        if (description.length > maxDescriptionLength)
-            throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
+        if (description.isBlank() || description.length > maxDescriptionLength)
+            throw HttpException.BadRequest("Description cannot be blank or exceed $maxDescriptionLength characters.")
+
+        if (start.isBefore(Instant.now()))
+            throw HttpException.BadRequest("Start cannot be in the past.")
 
         if (start == end)
             throw HttpException.BadRequest("Start '${start}' cannot be the same as end '${end}'.")
@@ -54,12 +60,12 @@ class RoomBookingService(
         if (repository.findAllOverlapping(start, end, -1).isNotEmpty())
             throw HttpException.Conflict("Room is already booked from '${start}' to '${end}'.")
 
-        //TODO userId is valid
-        //TODO title not empty, <= 64
-        //TODO start >= now
-        //TODO end > start
-        //TODO description not blank, <= 2048
-        //TODO whitelisted user ids check if valid users
+        if(!whitelistedUserIds.isEmpty()){
+            for (userId in whitelistedUserIds) {
+                if(!userRepository.existsById(userId))
+                    throw HttpException.BadRequest("Whitelisted user with id '$userId' does not exist.")
+            }
+        }
 
         val entity = RoomBookingEntity(
             user = userRepository.findById(userId).get(),

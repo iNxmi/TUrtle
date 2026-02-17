@@ -35,12 +35,6 @@ class SupportTicketService(
         if (!regex.matches(email))
             throw HttpException.BadRequest("'${email}' is not a valid Email Address.")
 
-        //TODO email is valid (regex)
-        //TODO subject is not empty
-        //TODO subject length is max 64
-        //TODO description is not empty
-        //TODO description max 2048 length
-
         val entity = SupportTicketEntity(
             urgency = urgency,
             category = category,

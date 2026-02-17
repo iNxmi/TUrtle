@@ -23,6 +23,8 @@ class UserService(
     private val eventPublisher: ApplicationEventPublisher
 ) : CRUDService<UserEntity>() {
 
+    private val regex = ("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$").toRegex()
+
     @Transactional
     fun generateEmojis(): String {
         val emojis = configurationService.getTyped<List<String>>(Key.EMOJIS_ALL)
@@ -50,20 +52,32 @@ class UserService(
         roleIds: Set<Long>
     ): UserEntity {
         if (username.isBlank())
-            throw HttpException.BadRequest("Username cannot be blank.")
-
-        //TODO firstName != empty
-        //TODO lastName != empty
-        //TODO email != empty
+            throw HttpException.BadRequest("Username cannot be left blank.")
+        if (firstName.isBlank())
+            throw HttpException.BadRequest("First name cannot be left blank.")
+        if (lastName.isBlank())
+            throw HttpException.BadRequest("Last name cannot be left blank.")
+        if (email.isBlank())
+            throw HttpException.BadRequest("Email cannot be left blank.")
 
         if (repository.existsByUsername(username))
             throw HttpException.Conflict("Username '${username}' already exists.")
 
-        //TODO email is valid (regex)
-        //TODO email is unique
-        //TODO emojis is unique
+        if (repository.findByEmail(email) != null)
+            throw HttpException.Conflict("Email '$email' already exists.")
+
+        if (!regex.matches(email))
+            throw HttpException.BadRequest("'${email}' is not a valid Email Address.")
+
+        if (repository.findByEmojis(emojis) != null)
+            throw HttpException.Conflict("Emoji password '$emojis' already exists.")
+
+        for (roleId in roleIds){
+            if(!roleRepository.existsById(roleId))
+                throw HttpException.BadRequest("Role with id '$roleId' does not exist.")
+        }
         //TODO password is min. 10 long, min. 1 number included, min. 1 symbol included, min. 1 upper and min. 1 lower case (maybe via regex)
-        //TODO role ids really point to roles
+
 
         val entity = UserEntity(
             username = username,

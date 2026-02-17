@@ -32,6 +32,13 @@ class ItemBookingService(
         returnedAt: Instant?,
         status: ItemBookingEntity.Status
     ): ItemBookingEntity {
+
+        if(!userRepository.existsById(userId))
+            throw HttpException.BadRequest("User with ID '$userId' does not exist.")
+
+        if(!itemRepository.existsById(itemId))
+            throw HttpException.BadRequest("Item with ID '$itemId' does not exist.")
+
         if (start == end)
             throw HttpException.BadRequest("Start '${start}' cannot be the same as end '${end}'.")
 
@@ -40,9 +47,6 @@ class ItemBookingService(
 
         if (getAllOverlapping(start, end, itemId, -1).isNotEmpty())
             throw HttpException.Conflict("Item with ID '${itemId}' is already booked between '${start}' and '${end}'")
-
-        //TODO user exists
-        //TODO item exists
 
         val entity = ItemBookingEntity(
             user = userRepository.findById(userId).get(),

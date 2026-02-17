@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service
 class ItemCategoryService(
     override val repository: ItemCategoryRepository
 ) : CRUDService<ItemCategoryEntity>() {
+    private val maxNameLength = 64
+
     fun getByNameOrNull(name: String): ItemCategoryEntity? = repository.findByName(name)
     fun getByName(name: String) = repository.findByName(name) ?: throw HttpException.NotFound(name)
 
@@ -18,9 +20,9 @@ class ItemCategoryService(
         name: String
     ): ItemCategoryEntity {
 
-        //TODO name not blank
-        //TODO name <= 64
-        //TODO name not already in use
+        if(name.isBlank() || name.length > maxNameLength)
+            throw HttpException.BadRequest("Name cannot be blank or exceed $maxNameLength characters.")
+
 
         if (repository.findByName(name) != null)
             throw HttpException.Conflict("Item category with name '$name' already exists.")
