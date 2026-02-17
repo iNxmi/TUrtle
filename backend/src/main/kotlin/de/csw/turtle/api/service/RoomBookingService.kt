@@ -1,5 +1,6 @@
 package de.csw.turtle.api.service
 
+import de.csw.turtle.api.entity.ConfigurationEntity
 import de.csw.turtle.api.entity.RoomBookingEntity
 import de.csw.turtle.api.entity.RoomBookingEntity.Accessibility
 import de.csw.turtle.api.event.CreatedRoomBookingEvent
@@ -15,6 +16,7 @@ import java.time.Instant
 @Service
 class RoomBookingService(
     override val repository: RoomBookingRepository,
+    private val configurationService: ConfigurationService,
     private val userRepository: UserRepository,
     private val eventPublisher: ApplicationEventPublisher
 ) : CRUDService<RoomBookingEntity>() {
@@ -23,9 +25,6 @@ class RoomBookingService(
         repository.findAllOverlapping(start, end, id)
 
     fun getCurrent(): RoomBookingEntity? = repository.findCurrent(Instant.now())
-
-    private val maxTitleLength = 64
-    private val maxDescriptionLength = 2048
 
     @Transactional
     fun create(
@@ -42,11 +41,11 @@ class RoomBookingService(
         if(!userRepository.existsById(userId))
             throw HttpException.BadRequest("User with id '$userId' does not exist.")
 
-        if (title.isBlank() || title.length > maxTitleLength)
-            throw HttpException.BadRequest("Title cannot be blank or exceed $maxTitleLength characters.")
+        if (title.isBlank() || title.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_TITLE_LENGTH))
+            throw HttpException.BadRequest("Title cannot be blank or exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_TITLE_LENGTH)} characters.")
 
-        if (description.isBlank() || description.length > maxDescriptionLength)
-            throw HttpException.BadRequest("Description cannot be blank or exceed $maxDescriptionLength characters.")
+        if (description.isBlank() || description.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_DESCRIPTION_LENGTH))
+            throw HttpException.BadRequest("Description cannot be blank or exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_DESCRIPTION_LENGTH)} characters.")
 
         if (start.isBefore(Instant.now()))
             throw HttpException.BadRequest("Start cannot be in the past.")
@@ -100,12 +99,12 @@ class RoomBookingService(
         val entity = repository.findById(id).get()
 
         if (title != null)
-            if (title.isBlank() || title.length > maxTitleLength)
-                throw HttpException.BadRequest("Title cannot be blank or exceed $maxTitleLength characters.")
+            if (title.isBlank() || title.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_TITLE_LENGTH))
+                throw HttpException.BadRequest("Title cannot be blank or exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_TITLE_LENGTH)} characters.")
 
         if (description != null)
-            if (description.length > maxDescriptionLength)
-                throw HttpException.BadRequest("Description cannot exceed $maxDescriptionLength characters.")
+            if (description.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_DESCRIPTION_LENGTH))
+                throw HttpException.BadRequest("Description cannot exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.ROOM_BOOKING_DESCRIPTION_LENGTH)} characters.")
 
         if (start != null && end != null) {
             if (start.isAfter(end))

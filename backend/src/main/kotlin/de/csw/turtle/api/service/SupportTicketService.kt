@@ -1,5 +1,6 @@
 package de.csw.turtle.api.service
 
+import de.csw.turtle.api.entity.ConfigurationEntity
 import de.csw.turtle.api.entity.SupportTicketEntity
 import de.csw.turtle.api.entity.SupportTicketEntity.*
 import de.csw.turtle.api.exception.HttpException
@@ -9,12 +10,12 @@ import org.springframework.stereotype.Service
 
 @Service
 class SupportTicketService(
-    override val repository: SupportTicketRepository
+    override val repository: SupportTicketRepository,
+    private val configurationService: ConfigurationService
 ) : CRUDService<SupportTicketEntity>() {
 
+    //TODO use system settings
     private val regex = ("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$").toRegex()
-    private val maxSubjectLength = 64
-    private val maxDescriptionLength = 2028
 
     @Transactional
     fun create(
@@ -26,11 +27,11 @@ class SupportTicketService(
         status: Status
     ): SupportTicketEntity {
 
-        if (subject.isBlank() || subject.length > maxSubjectLength)
-            throw HttpException.BadRequest("Subject cannot be left blank and cannot be longer than $maxSubjectLength characters.")
+        if (subject.isBlank() || subject.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_SUBJECT_LENGTH))
+            throw HttpException.BadRequest("Subject cannot be left blank and cannot be longer than ${configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_SUBJECT_LENGTH)} characters.")
 
-        if (description.isBlank() || description.length > maxDescriptionLength)
-            throw HttpException.BadRequest("Description cannot be left blank and cannot be longer than $maxDescriptionLength characters.")
+        if (description.isBlank() || description.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_DESCRIPTION_LENGTH))
+            throw HttpException.BadRequest("Description cannot be left blank and cannot be longer than ${configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_DESCRIPTION_LENGTH)} characters.")
 
         if (!regex.matches(email))
             throw HttpException.BadRequest("'${email}' is not a valid Email Address.")
@@ -59,12 +60,12 @@ class SupportTicketService(
     ): SupportTicketEntity {
 
         if (subject != null)
-            if (subject.isBlank() || subject.length > maxSubjectLength)
-                throw HttpException.BadRequest("Subject cannot be left blank and cannot be longer than $maxSubjectLength characters.")
+            if (subject.isBlank() || subject.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_SUBJECT_LENGTH))
+                throw HttpException.BadRequest("Subject cannot be left blank and cannot be longer than ${configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_SUBJECT_LENGTH)} characters.")
 
         if (description != null)
-            if (description.isBlank() || description.length > maxDescriptionLength)
-                throw HttpException.BadRequest("Description cannot be left blank and cannot be longer than $maxDescriptionLength characters.")
+            if (description.isBlank() || description.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_DESCRIPTION_LENGTH))
+                throw HttpException.BadRequest("Description cannot be left blank and cannot be longer than ${configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_DESCRIPTION_LENGTH)} characters.")
 
         if (email != null)
             if (!regex.matches(email))

@@ -99,6 +99,20 @@ class DefaultConfiguration(
         setDefault(Key.LOCKER_SSH_USERNAME, Type.STRING) { "" }
         setDefault(Key.LOCKER_SSH_PASSWORD, Type.STRING) { "" }
 
+        setDefault(Key.SUPPORT_TICKET_SUBJECT_LENGTH, Type.INT, PUBLIC) { 64}
+        setDefault(Key.SUPPORT_TICKET_DESCRIPTION_LENGTH, Type.INT, PUBLIC) { 2048 }
+
+        setDefault(Key.ROOM_BOOKING_TITLE_LENGTH, Type.INT, PUBLIC) { 64}
+        setDefault(Key.ROOM_BOOKING_DESCRIPTION_LENGTH, Type.INT, PUBLIC) { 2048 }
+
+        setDefault(Key.ITEM_NAME_LENGTH, Type.INT, PUBLIC) { 64}
+        setDefault(Key.ITEM_DESCRIPTION_LENGTH, Type.INT, PUBLIC) { 256 }
+
+        setDefault(Key.ITEM_CATEGORY_NAME_LENGTH, Type.INT, PUBLIC) { 64 }
+
+        setDefault(Key.FAQ_NAME_LENGTH, Type.INT, PUBLIC) { 64}
+        setDefault(Key.FAQ_TITLE_LENGTH, Type.INT, PUBLIC) { 64 }
+
         setDefault(Key.JWT_SECRET, Type.STRING) { randomBase64() }
         setDefault(Key.JWT_DURATION_ACCESS, Type.DURATION) { Duration.ofMinutes(5) }
         setDefault(Key.JWT_DURATION_REFRESH, Type.DURATION) { Duration.ofDays(30) }

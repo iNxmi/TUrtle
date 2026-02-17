@@ -1,5 +1,6 @@
 package de.csw.turtle.api.service
 
+import de.csw.turtle.api.entity.ConfigurationEntity
 import de.csw.turtle.api.entity.FAQEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.FAQRepository
@@ -8,14 +9,11 @@ import org.springframework.stereotype.Service
 
 @Service
 class FAQService(
-    override val repository: FAQRepository
+    override val repository: FAQRepository,
+    private val configurationService: ConfigurationService
 ) : CRUDService<FAQEntity>() {
 
     fun getByName(name: String): FAQEntity? = repository.findByName(name)
-
-    //TODO replace by system setting
-    private val maxNameLength = 64
-    private val maxTitleLength = 64
 
     @Transactional
     fun create(
@@ -24,14 +22,16 @@ class FAQService(
         content: String,
         enabled: Boolean
     ): FAQEntity {
-        if (name.isBlank() || name.length > maxNameLength)
-            throw HttpException.BadRequest("Name is required and cannot exceed $maxNameLength characters.")
+        if (name.isBlank() || name.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.FAQ_NAME_LENGTH))
+            throw HttpException.BadRequest("Name is required and cannot exceed ${configurationService.getTyped<Int>(
+                ConfigurationEntity.Key.FAQ_NAME_LENGTH)} characters.")
 
         if (repository.findByName(name) != null)
             throw HttpException.Conflict("Name '$name' already exists.")
 
-        if (title.isBlank() || title.length > maxTitleLength)
-            throw HttpException.BadRequest("Title is required and cannot exceed $maxTitleLength characters.")
+        if (title.isBlank() || title.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.FAQ_TITLE_LENGTH))
+            throw HttpException.BadRequest("Title is required and cannot exceed ${configurationService.getTyped<Int>(
+                ConfigurationEntity.Key.FAQ_TITLE_LENGTH)} characters.")
 
         if (content.isBlank())
             throw HttpException.BadRequest("Content is required.")
@@ -57,16 +57,16 @@ class FAQService(
         val entity = repository.findById(id).get()
 
         if (name != null) {
-            if (name.isBlank() || name.length > maxNameLength)
-                throw HttpException.BadRequest("Name is required and cannot exceed $maxNameLength characters.")
+            if (name.isBlank() || name.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.FAQ_NAME_LENGTH))
+                throw HttpException.BadRequest("Name is required and cannot exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.FAQ_NAME_LENGTH)} characters.")
 
             if (repository.findByName(name) != null)
                 throw HttpException.Conflict("Name '${name}' already exists.")
         }
 
         if (title != null)
-            if (title.isBlank() || title.length > maxTitleLength)
-                throw HttpException.BadRequest("Title is required and cannot exceed $maxTitleLength characters.")
+            if (title.isBlank() || title.length > configurationService.getTyped<Int>(ConfigurationEntity.Key.FAQ_TITLE_LENGTH))
+                throw HttpException.BadRequest("Title is required and cannot exceed ${configurationService.getTyped<Int>(ConfigurationEntity.Key.FAQ_TITLE_LENGTH)} characters.")
 
         if (content != null)
             if (content.isBlank())
