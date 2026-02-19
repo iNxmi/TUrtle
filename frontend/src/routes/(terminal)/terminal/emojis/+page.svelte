@@ -45,6 +45,8 @@
     let blink = $state(true)
 
     async function submitInput() {
+        shuffle();
+
         const payload = {
             emojis: code.join("")
         };
@@ -56,7 +58,6 @@
         });
 
         success = response.ok
-        shuffle();
 
         const startTime = Date.now()
         const blinkInterval = 500
