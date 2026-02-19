@@ -83,30 +83,42 @@
 </script>
 
 <div class="flex flex-col gap-5 h-full">
-    <div class="flex gap-10">
+    <div class="flex gap-[2vw]">
         {#each password as emoji}
             <span class="flex-1 p-2 text-5xl select-none text-center">
+                <!--{#if emoji === ''}-->
+                <!--    🐵-->
+                <!--{:else}-->
+                <!--    🙈-->
+                <!--{/if}       -->
+
+<!--                Green Circle    🟢-->
+<!--                Red Circle      🔴-->
+<!--                Blue Circle     🔵-->
+<!--                Orange Circle   🟠-->
+<!--                Yellow Circle   🟡-->
+
                 {#if emoji === ''}
-                    🐵
+                    🔵
                 {:else}
-                    🙈
+                    🟡
                 {/if}
             </span>
         {/each}
-            <button type="button"
-                    class="flex-1 rounded-2xl p-2 text-5xl select-none dark:shadow-cyan-500/25 dark:inset-shadow-cyan-500/25 not-active:shadow-md active:inset-shadow-sm"
-                    onclick={backspace}>🔙
-            </button>
+        <button type="button"
+                class="flex-1 rounded-2xl p-2 text-5xl select-none dark:shadow-cyan-500/25 dark:inset-shadow-cyan-500/25 not-active:shadow-md active:inset-shadow-sm"
+                onclick={backspace}>🔙
+        </button>
     </div>
 
     <Hr class="m-0 p-0"/>
 
-    <div id="keyboard" class="flex-1 flex flex-col gap-10">
+    <div id="keyboard" class="flex-1 flex flex-col gap-[2vh]">
         {#each emoji_rows as row}
-            <div class="flex-1 flex gap-10">
+            <div class="flex-1 flex gap-[2vw]">
                 {#each row as emoji}
                     <button type="button"
-                            class="flex-1 dark:shadow-cyan-500/25 dark:inset-shadow-cyan-500/25 not-active:shadow-md active:inset-shadow-sm rounded-2xl text-5xl select-none"
+                            class="p-2 flex-1 dark:shadow-cyan-500/25 dark:inset-shadow-cyan-500/25 not-active:shadow-md active:inset-shadow-sm rounded-2xl text-5xl select-none"
                             onclick={() => addEmoji(emoji)}>
                         {emoji}
                     </button>
