@@ -11,18 +11,22 @@
         href: "/terminal/emojis",
         icon: HomeSolid
     }, {
+        label: "_counter strike_",
+        href: "/terminal/counter-strike",
+        icon: UserHeadsetSolid
+    }, {
         label: "_qr_",
         href: "/terminal/qr",
         icon: QuestionCircleSolid
     }, {
         label: "_retina_scan_",
-        href: "/terminal",
+        href: "/terminal/retina-scan",
         icon: UserHeadsetSolid
     }];
 
     const helpItems = [{
         label: "_report_",
-        href: "/report",
+        href: "/terminal/report",
         icon: HomeSolid
     }];
 
