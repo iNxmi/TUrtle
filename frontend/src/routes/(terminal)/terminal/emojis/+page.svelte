@@ -8,7 +8,7 @@
     let {data} = $props();
     let emojis = $derived(data.emojis);
 
-    let password = $state([]);
+    let code = $state([]);
 
     function getGrid() {
         const randomized = getRandomized(emojis)
@@ -32,12 +32,12 @@
     let emoji_rows = $state(getGrid())
 
     function addEmoji(emoji) {
-        if (password.length >= CODE_LENGTH)
+        if (code.length >= CODE_LENGTH)
             return
 
-        password[password.length] = emoji;
+        code[code.length] = emoji;
 
-        if (password.length === CODE_LENGTH)
+        if (code.length === CODE_LENGTH)
             submitInput();
     }
 
@@ -46,7 +46,7 @@
 
     async function submitInput() {
         const payload = {
-            emojis: password.join("")
+            emojis: code.join("")
         };
 
         const response = await request('/hardware/door/emojis', {
@@ -56,7 +56,6 @@
         });
 
         success = response.ok
-        shuffle();
 
         const startTime = Date.now()
         const blinkInterval = 500
@@ -68,7 +67,8 @@
 
             if (elapsedTime > duration) {
                 clearInterval(interval);
-                password = [];
+                shuffle();
+                code = [];
                 success = null;
                 blink = true;
             }
@@ -76,10 +76,10 @@
     }
 
     const removeEmoji = () => {
-        if (password.length <= 0 || password.length >= CODE_LENGTH)
+        if (code.length <= 0 || code.length >= CODE_LENGTH)
             return;
 
-        password.pop();
+        code.pop();
     }
 
     function getRandomized(array) {
@@ -98,6 +98,8 @@
     shuffle();
 
     let defaultModal = $state(false);
+
+    const buttonClasses = "flex-1 p-2 select-none rounded-2xl dark:bg-background-secondary/30 text-[2em] not-active:shadow-sm/30 active:inset-shadow-sm/30 disabled:shadow-none disabled:inset-shadow-sm/30";
 </script>
 
 <div class="flex flex-col gap-5 h-full">
@@ -108,24 +110,30 @@
         <!--                Orange Circle   🟠-->
         <!--                Yellow Circle   🟡-->
         {#each Array.from({length: CODE_LENGTH}) as _, index}
-            {#if success === null}
-                <span class="flex-1 p-2 text-5xl select-none text-center">
-                     {#if index < password.length}🟡{:else}🔵{/if}
-                </span>
-            {:else}
-                <span class="flex-1 p-2 text-5xl select-none text-center">
+            <button disabled={index < code.length} class={buttonClasses}>
+                {#if success === null}
+                     {#if index < code.length}
+                         🟡
+                     {:else}
+                         🔵
+                     {/if}
+                {:else}
                     {#if blink === true}
-                        {#if success === true}🟢{:else if success === false}🔴{/if}
+                        {#if success === true}
+                            🟢
+                        {:else if success === false}
+                            🔴
+                        {/if}
                     {:else}
                         🔵
                     {/if}
-                </span>
-            {/if}
+                {/if}
+            </button>
         {/each}
 
-        <button disabled={password.length <= 0 || password.length >= CODE_LENGTH}
+        <button disabled={code.length <= 0 || code.length >= CODE_LENGTH}
                 type="button"
-                class="flex-1 rounded-2xl p-2 text-5xl select-none dark:shadow-cyan-500/25 dark:inset-shadow-cyan-500/25 not-active:shadow-md active:inset-shadow-sm disabled:shadow-none disabled:inset-shadow-none"
+                class={buttonClasses}
                 onclick={removeEmoji}>
             🔙
         </button>
@@ -137,9 +145,9 @@
         {#each emoji_rows as row}
             <div class="flex-1 flex gap-[2vw]">
                 {#each row as emoji}
-                    <button disabled={password.length >= CODE_LENGTH}
+                    <button disabled={code.length >= CODE_LENGTH}
                             type="button"
-                            class="p-2 flex-1 dark:shadow-cyan-500/25 dark:inset-shadow-cyan-500/25 not-active:shadow-md active:inset-shadow-sm rounded-2xl text-5xl select-none disabled:shadow-none disabled:inset-shadow-none"
+                            class={buttonClasses}
                             onclick={() => addEmoji(emoji)}>
                         {emoji}
                     </button>
