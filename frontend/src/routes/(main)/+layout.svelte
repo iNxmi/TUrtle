@@ -144,12 +144,14 @@
         label: m.navigation_category_manage(),
         items: manageItems
     }].filter(category => category.items.length > 0);
+
+    let header = user !== null ? `${user.firstName} ${user.lastName}` : null;
 </script>
 
 <div class="flex">
     <Navigation
             logoRedirect="/"
-            header={`${user.firstName} ${user.lastName}`}
+            header={header}
             categories={categories}
             showLogoutButton={user !== null}
     />

@@ -31,7 +31,7 @@
         }
     }, {
         name: 'Success!', rarity: 'gold', weight: 4, function: () => {
-            openDoor(seconds);
+            openDoor();
             seconds = initialSeconds
         }
     }];
@@ -45,9 +45,20 @@
         reel = Array.from({length: 10}, () => weightedRandom(items));
     });
 
-    async function openDoor(seconds) {
-        const response = await request(`/door?seconds=${seconds}`);
-        alert(await response.json());
+    async function openDoor() {
+        const payload = {
+            emojis: "💩💩💩💩💩"
+        }
+
+        const response = await request('/hardware/door/emojis', {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: {'Content-Type': 'application/json'}
+        });
+
+        const json = await response.json()
+
+        alert(JSON.stringify(json));
     }
 
     function weightedRandom(items) {

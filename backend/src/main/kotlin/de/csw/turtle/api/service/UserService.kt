@@ -78,9 +78,10 @@ class UserService(
         }
         //TODO password is min. 10 long, min. 1 number included, min. 1 symbol included, min. 1 upper and min. 1 lower case (maybe via regex)
 
-        val regex = configurationService.getTyped<String>(Key.USER_PASSWORD_REGEX).toRegex()
-        if(!regex.matches(password))
-            throw HttpException.BadRequest("Password needs to match '$regex' good luck :)")
+        //TODO uncomment when in prod
+//        val regex = configurationService.getTyped<String>(Key.USER_PASSWORD_REGEX).toRegex()
+//        if(!regex.matches(password))
+//            throw HttpException.BadRequest("Password needs to match '$regex' good luck :)")
 
         val entity = UserEntity(
             username = username,

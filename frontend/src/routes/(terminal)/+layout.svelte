@@ -1,42 +1,51 @@
 <script>
     import Navigation from "$lib/components/Navigation.svelte";
-    import {GlobeOutline, HomeSolid, QuestionCircleSolid, UserHeadsetSolid} from "flowbite-svelte-icons";
+    import {
+        QrCodeOutline,
+        EyeOutline,
+        OpenDoorOutline,
+        ExclamationCircleOutline,
+        QuestionCircleOutline,
+        UserHeadsetSolid,
+        AppleFullOutline
+    } from "flowbite-svelte-icons";
+    import {m} from "$lib/paraglide/messages.js";
 
     let {data, children} = $props();
     let permissions = $derived(data.permissions);
     let user = $derived(data.user);
 
     const openItems = [{
-        label: "_emojis_",
+        label: m.terminal_navigation_item_emojis(),
         href: "/terminal/emojis",
-        icon: HomeSolid
+        icon: AppleFullOutline
     }, {
-        label: "_counter strike_",
+        label: m.terminal_navigation_item_counter_strike(),
         href: "/terminal/counter-strike",
         icon: UserHeadsetSolid
     }, {
-        label: "_qr_",
-        href: "/terminal/qr",
-        icon: QuestionCircleSolid
+        label: m.terminal_navigation_item_qr_code(),
+        href: "/terminal/qr-code",
+        icon: QrCodeOutline
     }, {
-        label: "_retina_scan_",
+        label: m.terminal_navigation_item_retina_scan(),
         href: "/terminal/retina-scan",
-        icon: UserHeadsetSolid
+        icon: EyeOutline
     }];
 
     const helpItems = [{
-        label: "_report_",
+        label: m.terminal_navigation_item_report(),
         href: "/terminal/report",
-        icon: HomeSolid
+        icon: ExclamationCircleOutline
     }];
 
     let categories = [{
-        icon: GlobeOutline,
-        label: "_open_",
+        icon: OpenDoorOutline ,
+        label: m.terminal_navigation_category_open(),
         items: openItems
     }, {
-        icon: GlobeOutline,
-        label: "_help_",
+        icon: QuestionCircleOutline,
+        label: m.terminal_navigation_category_help(),
         items: helpItems
     }].filter(category => category.items.length > 0);
 </script>

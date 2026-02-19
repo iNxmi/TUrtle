@@ -7,7 +7,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
 import org.springframework.core.annotation.Order
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import java.time.Duration
 import java.time.Instant
@@ -23,8 +22,7 @@ class DataSeeder(
     private val supportTicketService: SupportTicketService,
     private val roleService: RoleService,
     private val roomBookingService: RoomBookingService,
-    private val userService: UserService,
-    private val passwordEncoder: PasswordEncoder
+    private val userService: UserService
 ) {
 
     private val faker = Faker()

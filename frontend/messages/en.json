@@ -1,6 +1,14 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
 
+  "terminal_navigation_item_emojis": "Emojis",
+  "terminal_navigation_item_counter_strike": "Counter Strike",
+  "terminal_navigation_item_qr_code": "QR Code",
+  "terminal_navigation_item_retina_scan": "Retina Scan",
+  "terminal_navigation_item_report": "Report Problem",
+  "terminal_navigation_category_open": "Open",
+  "terminal_navigation_category_help": "Help",
+
   "navigation_auth_login": "Login",
   "navigation_auth_register": "Register",
   "navigation_auth_logout": "Logout",
