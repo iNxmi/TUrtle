@@ -10,21 +10,26 @@
 
     let password = $state([]);
 
-    const make_rows = arr => {
-        let rows = [[], [], [], [], [], []];
-        let row_number = 0;
-        let index = 0;
-        for (let i = 0; i < arr.length; i++) {
-            rows[row_number][index] = arr[i];
-            index++;
-            if (index === 6) {
-                index = 0;
-                row_number++;
+    function getGrid() {
+        const randomized = getRandomized(emojis)
+
+        let grid = [[], [], [], [], [], []];
+
+        for (let y = 0; y < 6; y++) {
+            for (let x = 0; x < 6; x++) {
+                const index = x + y * 6;
+                grid[x][y] = randomized[index];
             }
         }
-        return rows;
+
+        return grid;
     }
-    let emoji_rows = $derived(make_rows(emojis));
+
+    function shuffle() {
+        emoji_rows = getGrid()
+    }
+
+    let emoji_rows = $state(getGrid())
 
     function addEmoji(emoji) {
         if (password.length >= CODE_LENGTH)
@@ -51,6 +56,7 @@
         });
 
         success = response.ok
+        shuffle();
 
         const startTime = Date.now()
         const blinkInterval = 500
@@ -62,7 +68,6 @@
 
             if (elapsedTime > duration) {
                 clearInterval(interval);
-                shuffle();
                 password = [];
                 success = null;
                 blink = true;
@@ -77,37 +82,31 @@
         password.pop();
     }
 
-    const shuffle = () => {
-        let arr = emojis;
-        for (let i = 0; i < arr.length; i++) {
-            let j = parseInt((Math.random() * (arr.length - i))) + i;
+    function getRandomized(array) {
+        let copy = array.slice();
+        for (let i = 0; i < copy.length; i++) {
+            let j = parseInt((Math.random() * (copy.length - i))) + i;
 
-            let tmp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = tmp;
+            let tmp = copy[i];
+            copy[i] = copy[j];
+            copy[j] = tmp;
         }
 
-        emojis = arr;
+        return copy;
     }
 
     shuffle();
+
     let defaultModal = $state(false);
 </script>
 
 <div class="flex flex-col gap-5 h-full">
     <div class="flex gap-[2vw]">
-        <!--{#if emoji === ''}-->
-        <!--    🐵-->
-        <!--{:else}-->
-        <!--    🙈-->
-        <!--{/if}       -->
-
         <!--                Green Circle    🟢-->
         <!--                Red Circle      🔴-->
         <!--                Blue Circle     🔵-->
         <!--                Orange Circle   🟠-->
         <!--                Yellow Circle   🟡-->
-
         {#each Array.from({length: CODE_LENGTH}) as _, index}
             {#if success === null}
                 <span class="flex-1 p-2 text-5xl select-none text-center">
