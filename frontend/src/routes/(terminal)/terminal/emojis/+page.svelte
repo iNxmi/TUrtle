@@ -56,6 +56,7 @@
         });
 
         success = response.ok
+        shuffle();
 
         const startTime = Date.now()
         const blinkInterval = 500
@@ -67,7 +68,6 @@
 
             if (elapsedTime > duration) {
                 clearInterval(interval);
-                shuffle();
                 code = [];
                 success = null;
                 blink = true;
