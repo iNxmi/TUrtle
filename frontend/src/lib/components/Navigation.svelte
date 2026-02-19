@@ -24,151 +24,26 @@
     import {Arab, De, Es, Fr, Hu, Jp, Ro, Ru, Us, Vi} from "svelte-flag-icons";
 
     import {
-        AdjustmentsVerticalSolid,
         ArrowLeftToBracketOutline,
         ArrowRightToBracketOutline,
-        BookOpenSolid,
-        BugSolid,
-        CalendarEditSolid,
-        ChartOutline,
-        ClipboardSolid,
-        FilePasteSolid,
-        GlobeOutline,
-        HomeSolid,
         LanguageOutline,
         LockOpenOutline,
         MoonOutline,
-        PaperClipOutline,
-        QuestionCircleSolid,
         SunOutline,
-        TerminalOutline,
-        UserAddOutline,
-        UserCircleOutline,
-        UserHeadsetSolid,
-        UsersGroupSolid,
-        UserSolid
+        UserAddOutline
     } from "flowbite-svelte-icons";
 
-    const {user, permissions} = $props()
+    const {
+        logoRedirect = "/",
+        header = null,
+        categories = [],
 
-    const publicItems = [{
-        label: m.navigation_public_home(),
-        href: "/",
-        icon: HomeSolid
-    }, {
-        label: m.navigation_public_faq(),
-        href: "/faq",
-        icon: QuestionCircleSolid
-    }, {
-        label: m.navigation_public_contact(),
-        href: "/contact",
-        icon: UserHeadsetSolid
-    }];
-
-    const userItems = [{
-        label: m.navigation_user_dashboard(),
-        href: "/user/dashboard",
-        icon: ChartOutline
-    }, {
-        label: m.navigation_user_item_bookings(),
-        href: "/user/item-bookings",
-        icon: CalendarEditSolid
-    }, {
-        permission: "REQUEST_ROOM_BOOKINGS",
-        label: m.navigation_user_room_bookings(),
-        href: "/user/room-bookings",
-        icon: CalendarEditSolid
-    }, {
-        label: m.navigation_user_profile(),
-        href: "/user/profile",
-        icon: UserSolid
-    }].filter(item => user != null && (!item.permission || permissions.includes(item.permission)));
-
-    const manageItems = [{
-        permission: "MANAGE_USERS",
-        label: m.navigation_manage_users(),
-        href: "/manage/users",
-        icon: UsersGroupSolid
-    }, {
-        permission: "MANAGE_ROLES",
-        label: m.navigation_manage_roles(),
-        href: "/manage/roles",
-        icon: UsersGroupSolid
-    }, {
-        permission: "MANAGE_ITEMS",
-        label: m.navigation_manage_items(),
-        href: "/manage/items",
-        icon: ClipboardSolid
-    }, {
-        permission: "MANAGE_ITEM_CATEGORIES",
-        label: m.navigation_manage_item_categories(),
-        href: "/manage/item-categories",
-        icon: ClipboardSolid
-    }, {
-        permission: "MANAGE_ROOM_BOOKINGS",
-        label: m.navigation_manage_room_bookings(),
-        href: "/manage/room-bookings",
-        icon: CalendarEditSolid
-    }, {
-        permission: "MANAGE_ITEM_BOOKINGS",
-        label: m.navigation_manage_item_bookings(),
-        href: "/manage/item-bookings",
-        icon: CalendarEditSolid
-    }, {
-        permission: "MANAGE_AUDIT_LOGS",
-        label: m.navigation_manage_audit_logs(),
-        href: "/manage/audit-logs",
-        icon: BookOpenSolid
-    }, {
-        permission: "MANAGE_GENERAL_TEMPLATES",
-        label: m.navigation_manage_content_templates(),
-        href: "/manage/content-templates",
-        icon: FilePasteSolid
-    }, {
-        permission: "MANAGE_EMAIL_TEMPLATES",
-        label: m.navigation_manage_email_templates(),
-        href: "/manage/email-templates",
-        icon: FilePasteSolid
-    }, {
-        permission: "MANAGE_FAQ",
-        label: m.navigation_manage_faq(),
-        href: "/manage/faq",
-        icon: FilePasteSolid
-    }, {
-        permission: "MANAGE_LOCKERS",
-        label: m.navigation_manage_lockers(),
-        href: "/manage/lockers",
-        icon: PaperClipOutline
-    }, {
-        permission: "MANAGE_SUPPORT_TICKETS",
-        label: m.navigation_manage_support_tickets(),
-        href: "/manage/support-tickets",
-        icon: UserHeadsetSolid
-    }, {
-        permission: "MANAGE_EXCEPTIONS",
-        label: m.navigation_manage_exceptions(),
-        href: "/manage/exceptions",
-        icon: BugSolid
-    }, {
-        permission: "MANAGE_SYSTEM_SETTINGS",
-        label: m.navigation_manage_system_settings(),
-        href: "/manage/system-settings",
-        icon: AdjustmentsVerticalSolid
-    }].filter(item => !item.permission || permissions.includes(item.permission));
-
-    let categories = [{
-        icon: GlobeOutline,
-        label: m.navigation_category_public(),
-        items: publicItems
-    }, {
-        icon: UserCircleOutline,
-        label: m.navigation_category_user(),
-        items: userItems
-    }, {
-        icon: TerminalOutline,
-        label: m.navigation_category_manage(),
-        items: manageItems
-    }].filter(category => category.items.length > 0);
+        hideDoorButton = false,
+        hideThemeButton = false,
+        hideLanguageButton = false,
+        hideAuthButtons = false,
+        showLogoutButton = false
+    } = $props()
 
     let language = $state(localStorage.getItem("PARAGLIDE_LOCALE") || "en");
     setContext("locale", () => language);
@@ -238,17 +113,15 @@
         divClass="flex flex-col gap-2 h-full"
 >
     <div class="flex flex-col items-center justify-between">
-        <TUrtleLogo path="/"/>
+        <TUrtleLogo path={logoRedirect}/>
     </div>
 
     <Hr class="m-0 p-0"/>
 
-    {#if user !== null}
+    {#if header !== null}
         <SidebarGroup>
             <Heading tag="h5" class="text-center">
-                        <Span class="text-csw">
-                            {`${user.firstName} ${user.lastName}`}
-                        </Span>
+                <Span class="text-csw">{header}</Span>
             </Heading>
         </SidebarGroup>
 
@@ -291,64 +164,77 @@
         {/each}
     </div>
 
-    <SidebarGroup class="flex flex-col grow justify-end">
-        <div class="flex flex-col gap-2 justify-around">
-            <div class="flex flex-col">
-                <ButtonGroup>
-                    <Button name="button_toggle_theme" color="alternative" class="w-1/3" onclick={toggleDarkMode}>
-                        {#if darkmode}
-                            <MoonOutline/>
-                        {:else}
-                            <SunOutline/>
-                        {/if}
-                    </Button>
+    {#if !hideThemeButton || !hideLanguageButton || !hideDoorButton || !hideAuthButtons}
+        <SidebarGroup class="flex flex-col grow justify-end">
+            <div class="flex flex-col gap-2 justify-around">
+                {#if !hideThemeButton || !hideLanguageButton || !hideDoorButton}
+                    <div class="flex flex-col">
+                        <ButtonGroup className="flex">
+                            {#if !hideThemeButton}
+                                <Button name="button_toggle_theme" color="alternative" class="flex-1"
+                                        onclick={toggleDarkMode}>
+                                    {#if darkmode}
+                                        <MoonOutline/>
+                                    {:else}
+                                        <SunOutline/>
+                                    {/if}
+                                </Button>
+                            {/if}
 
-                    <Button name="button_change_language" color="alternative" class="w-1/3">
-                        <!--                            <svelte:component this={languageIcons[language]}/>-->
-                        <LanguageOutline/>
-                    </Button>
-                    <Dropdown class="h-64 overflow-y-auto" simple>
-                        {#each languages as language}
-                            <DropdownItem class="w-full" onclick={() => setLocale(language.value)}>
+                            {#if !hideLanguageButton}
+                                <Button name="button_change_language" color="alternative" class="flex-1">
+                                    <LanguageOutline/>
+                                    <Dropdown class="h-64 overflow-y-auto" simple>
+                                        {#each languages as language}
+                                            <DropdownItem class="w-full" onclick={() => setLocale(language.value)}>
+                                                <div class="flex gap-2 items-center">
+                                                    <svelte:component this={languageIcons[language.value]}
+                                                                      class="m-0 p-0"/>
+                                                    <span class="text-center">{language.name}</span>
+                                                </div>
+                                            </DropdownItem>
+                                        {/each}
+                                    </Dropdown>
+                                </Button>
+                            {/if}
+
+                            {#if !hideDoorButton}
+                                <Button name="button_open_door" color="alternative" class="flex-1">
+                                    <LockOpenOutline/>
+                                </Button>
+                            {/if}
+                        </ButtonGroup>
+                    </div>
+                {/if}
+
+                {#if !hideAuthButtons}
+                    {#if showLogoutButton}
+                        <ButtonGroup className="flex">
+                            <Button name="button_logout" class="flex-1" onclick={signOut}>
                                 <div class="flex gap-2 items-center">
-                                    <svelte:component this={languageIcons[language.value]} class="m-0 p-0"/>
-                                    <span class="text-center">{language.name}</span>
+                                    <ArrowRightToBracketOutline/>
+                                    <Span>{m.navigation_auth_logout()}</Span>
                                 </div>
-                            </DropdownItem>
-                        {/each}
-                    </Dropdown>
-
-                    <Button name="button_open_door" color="alternative" class="w-1/3">
-                        <LockOpenOutline/>
-                    </Button>
-                </ButtonGroup>
+                            </Button>
+                        </ButtonGroup>
+                    {:else}
+                        <ButtonGroup className="flex">
+                            <Button name="button_login" class="flex-1" onclick={() => goto("/auth/login")}>
+                                <div class="flex gap-2 items-center">
+                                    <ArrowLeftToBracketOutline/>
+                                    <Span>{m.navigation_auth_login()}</Span>
+                                </div>
+                            </Button>
+                            <Button name="button_register" class="flex-1" onclick={() => goto("/auth/register")}>
+                                <div class="flex gap-2 items-center">
+                                    <UserAddOutline/>
+                                    <Span>{m.navigation_auth_register()}</Span>
+                                </div>
+                            </Button>
+                        </ButtonGroup>
+                    {/if}
+                {/if}
             </div>
-
-            {#if user === null}
-                <ButtonGroup>
-                    <Button name="button_login" class="w-1/2" onclick={() => goto("/auth/login")}>
-                        <div class="flex gap-2 items-center">
-                            <ArrowLeftToBracketOutline/>
-                            <Span>{m.navigation_auth_login()}</Span>
-                        </div>
-                    </Button>
-                    <Button name="button_register" class="w-1/2" onclick={() => goto("/auth/register")}>
-                        <div class="flex gap-2 items-center">
-                            <UserAddOutline/>
-                            <Span>{m.navigation_auth_register()}</Span>
-                        </div>
-                    </Button>
-                </ButtonGroup>
-            {:else}
-                <ButtonGroup>
-                    <Button name="button_logout" class="w-full" onclick={signOut}>
-                        <div class="flex gap-2 items-center">
-                            <ArrowRightToBracketOutline/>
-                            <Span>{m.navigation_auth_logout()}</Span>
-                        </div>
-                    </Button>
-                </ButtonGroup>
-            {/if}
-        </div>
-    </SidebarGroup>
+        </SidebarGroup>
+    {/if}
 </Sidebar>
