@@ -39,6 +39,7 @@
 
 <div class="flex">
     <Navigation
+            logoRedirect="/terminal/emojis"
             categories={categories}
             hideDoorButton
             hideAuthButtons

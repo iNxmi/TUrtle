@@ -148,6 +148,7 @@
 
 <div class="flex">
     <Navigation
+            logoRedirect="/"
             header={`${user.firstName} ${user.lastName}`}
             categories={categories}
             showLogoutButton={user !== null}

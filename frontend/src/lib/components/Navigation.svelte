@@ -34,6 +34,7 @@
     } from "flowbite-svelte-icons";
 
     const {
+        logoRedirect = "/",
         header = null,
         categories = [],
 
@@ -112,7 +113,7 @@
         divClass="flex flex-col gap-2 h-full"
 >
     <div class="flex flex-col items-center justify-between">
-        <TUrtleLogo path="/"/>
+        <TUrtleLogo path={logoRedirect}/>
     </div>
 
     <Hr class="m-0 p-0"/>

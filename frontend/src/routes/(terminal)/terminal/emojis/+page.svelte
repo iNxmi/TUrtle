@@ -83,9 +83,9 @@
 </script>
 
 <div class="flex flex-col gap-5 h-full">
-    <div class="flex">
+    <div class="flex gap-10">
         {#each password as emoji}
-            <span class="flex-1 text-5xl select-none text-center">
+            <span class="flex-1 p-2 text-5xl select-none text-center">
                 {#if emoji === ''}
                     🐵
                 {:else}
@@ -93,17 +93,20 @@
                 {/if}
             </span>
         {/each}
-        <button type="button" class="flex-1 text-5xl select-none" onclick={backspace}>🔙</button>
+            <button type="button"
+                    class="flex-1 rounded-2xl p-2 text-5xl select-none dark:shadow-cyan-500/25 dark:inset-shadow-cyan-500/25 not-active:shadow-md active:inset-shadow-sm"
+                    onclick={backspace}>🔙
+            </button>
     </div>
 
     <Hr class="m-0 p-0"/>
 
-    <div id="keyboard" class="flex-1 flex flex-col">
+    <div id="keyboard" class="flex-1 flex flex-col gap-10">
         {#each emoji_rows as row}
-            <div class="flex-1 flex">
+            <div class="flex-1 flex gap-10">
                 {#each row as emoji}
                     <button type="button"
-                            class="flex-1 text-5xl select-none"
+                            class="flex-1 dark:shadow-cyan-500/25 dark:inset-shadow-cyan-500/25 not-active:shadow-md active:inset-shadow-sm rounded-2xl text-5xl select-none"
                             onclick={() => addEmoji(emoji)}>
                         {emoji}
                     </button>
