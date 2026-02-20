@@ -1,5 +1,6 @@
 <script>
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
+    import OpenDoorModal from "$lib/components/OpenDoorModal.svelte";
     import {m} from "$lib/paraglide/messages.js";
     import {goto} from "$app/navigation";
     import {page} from "$app/state";
@@ -106,7 +107,7 @@
         }
     }
 
-    let doorModal = $state(false);
+    let openDoorModal = $state(false);
 </script>
 
 <svelte:window bind:innerWidth={innerWidth}/>
@@ -210,7 +211,7 @@
 
                             {#if !hideDoorButton}
                                 <Button name="button_open_door" color="alternative" class="flex-1"
-                                        onclick={() => (doorModal = true)}>
+                                        onclick={() => (openDoorModal = true)}>
                                     <LockOpenOutline/>
                                 </Button>
                             {/if}
@@ -250,19 +251,4 @@
     {/if}
 </Sidebar>
 
-<Modal form bind:open={doorModal} onaction={({action}) => handleDoorModal(action) }>
-
-    <div class="flex flex-col gap-5 align-center">
-        <div class="flex gap-5 justify-center">
-            <QuestionCircleSolid class="h-12 w-12"/>
-            <div class="flex flex-col justify-center">
-                <h1 class="text-lg font-bold">{m.modal_door_title()}</h1>
-            </div>
-        </div>
-        <h3 class="text-lg font-normal">{m.modal_door_content()}</h3>
-        <div class="flex gap-2 justify-center">
-            <Button type="submit" value="yes">{m.modal_door_button_unlock()}</Button>
-            <Button type="submit" value="no">{m.modal_door_button_cancel()}</Button>
-        </div>
-    </div>
-</Modal>
+<OpenDoorModal bind:open={openDoorModal}/>
