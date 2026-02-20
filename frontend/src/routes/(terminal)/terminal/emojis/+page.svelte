@@ -100,7 +100,7 @@
 
     let defaultModal = $state(false);
 
-    const buttonClasses = "flex-1 p-2 select-none rounded-2xl dark:bg-background-secondary/30 text-[2em] not-active:shadow-sm/30 active:inset-shadow-sm/30 disabled:shadow-none disabled:inset-shadow-sm/30";
+    const buttonClasses = "flex-1 select-none rounded-2xl dark:bg-background-secondary/30 text-[3em] not-active:shadow-sm/30 active:inset-shadow-sm/30 disabled:shadow-none disabled:inset-shadow-sm/30";
 </script>
 
 <div class="flex flex-col gap-5 h-full">
