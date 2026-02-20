@@ -256,14 +256,13 @@
         <div class="flex gap-5 justify-center">
             <QuestionCircleSolid class="h-12 w-12"/>
             <div class="flex flex-col justify-center">
-                <h1 class="text-lg font-bold">_Unlock the front door?_</h1>
+                <h1 class="text-lg font-bold">{m.modal_door_title()}</h1>
             </div>
         </div>
-        <h3 class="text-lg font-normal">_You will need to be logged into the local
-            network ("csw_intern") for this action to work_</h3>
+        <h3 class="text-lg font-normal">{m.modal_door_content()}</h3>
         <div class="flex gap-2 justify-center">
-            <Button type="submit" value="yes">_Unlock Door_</Button>
-            <Button type="submit" value="no">_Close_</Button>
+            <Button type="submit" value="yes">{m.modal_door_button_unlock()}</Button>
+            <Button type="submit" value="no">{m.modal_door_button_cancel()}</Button>
         </div>
     </div>
 </Modal>
