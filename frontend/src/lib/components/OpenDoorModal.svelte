@@ -5,17 +5,6 @@
     import {QuestionCircleSolid} from "flowbite-svelte-icons";
     import {
         Button,
-        ButtonGroup,
-        Dropdown,
-        DropdownItem,
-        Heading,
-        Hr,
-        Sidebar,
-        SidebarButton,
-        SidebarDropdownItem,
-        SidebarDropdownWrapper,
-        SidebarGroup,
-        Span
     } from "flowbite-svelte";
 
     async function handleDoorModal(action) {
