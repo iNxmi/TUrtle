@@ -109,7 +109,7 @@
         backdrop={false}
         closeSidebar={() => isOpen = false}
         position="static"
-        class="min-w-64 min-h-svh max-h-svh shadow-lg/20"
+        class="min-w-64 min-h-svh max-h-svh shadow-md/30"
         divClass="flex flex-col gap-2 h-full"
 >
     <div class="flex flex-col items-center justify-between">

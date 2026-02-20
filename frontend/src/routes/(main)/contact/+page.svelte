@@ -88,7 +88,7 @@
         <Button type="submit">{m.contact__button()}</Button>
     </form>
 
-    <Hr/>
+    <Hr class="m-0 p-0"/>
 
     <Markdown content={content}/>
 </div>
