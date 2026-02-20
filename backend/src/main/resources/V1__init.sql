@@ -1,6 +1,3 @@
--- ==========================
--- Users
--- ==========================
 CREATE TABLE users
 (
     id            BIGSERIAL PRIMARY KEY,
@@ -15,14 +12,11 @@ CREATE TABLE users
     updated_at    TIMESTAMP           NOT NULL DEFAULT now()
 );
 
--- ==========================
--- Tokens
--- ==========================
 CREATE TABLE tokens
 (
     id         BIGSERIAL PRIMARY KEY,
     uuid       VARCHAR(255) UNIQUE NOT NULL,
-    duration   INTERVAL            NOT NULL,
+    duration   NUMERIC(21, 0)      NOT NULL,
     type       VARCHAR(50)         NOT NULL,
     created_at TIMESTAMP           NOT NULL DEFAULT now(),
     updated_at TIMESTAMP           NOT NULL DEFAULT now()
@@ -35,9 +29,6 @@ CREATE TABLE user_tokens
     PRIMARY KEY (user_id, token_id)
 );
 
--- ==========================
--- Roles
--- ==========================
 CREATE TABLE roles
 (
     id         BIGSERIAL PRIMARY KEY,
@@ -61,9 +52,6 @@ CREATE TABLE user_roles
     PRIMARY KEY (user_id, role_id)
 );
 
--- ==========================
--- Room Bookings
--- ==========================
 CREATE TABLE room_bookings
 (
     id            BIGSERIAL PRIMARY KEY,
@@ -85,9 +73,6 @@ CREATE TABLE room_bookings_whitelisted_users
     PRIMARY KEY (room_booking_id, user_id)
 );
 
--- ==========================
--- Lockers & Items
--- ==========================
 CREATE TABLE lockers
 (
     id                     BIGSERIAL PRIMARY KEY,
@@ -134,9 +119,6 @@ CREATE TABLE item_bookings
     updated_at   TIMESTAMP   NOT NULL DEFAULT now()
 );
 
--- ==========================
--- Support Tickets
--- ==========================
 CREATE TABLE support_tickets
 (
     id          BIGSERIAL PRIMARY KEY,
@@ -150,9 +132,6 @@ CREATE TABLE support_tickets
     updated_at  TIMESTAMP    NOT NULL DEFAULT now()
 );
 
--- ==========================
--- FAQ
--- ==========================
 CREATE TABLE faq
 (
     id         BIGSERIAL PRIMARY KEY,
@@ -164,9 +143,6 @@ CREATE TABLE faq
     updated_at TIMESTAMP           NOT NULL DEFAULT now()
 );
 
--- ==========================
--- Exceptions
--- ==========================
 CREATE TABLE exceptions
 (
     id          BIGSERIAL PRIMARY KEY,
@@ -178,9 +154,6 @@ CREATE TABLE exceptions
     updated_at  TIMESTAMP NOT NULL DEFAULT now()
 );
 
--- ==========================
--- Email Templates
--- ==========================
 CREATE TABLE email_templates
 (
     id          BIGSERIAL PRIMARY KEY,
@@ -193,9 +166,6 @@ CREATE TABLE email_templates
     updated_at  TIMESTAMP           NOT NULL DEFAULT now()
 );
 
--- ==========================
--- Content Templates
--- ==========================
 CREATE TABLE content_templates
 (
     id          BIGSERIAL PRIMARY KEY,
@@ -207,9 +177,6 @@ CREATE TABLE content_templates
     updated_at  TIMESTAMP           NOT NULL DEFAULT now()
 );
 
--- ==========================
--- Configuration
--- ==========================
 CREATE TABLE configuration
 (
     id         BIGSERIAL PRIMARY KEY,
@@ -221,9 +188,7 @@ CREATE TABLE configuration
     updated_at TIMESTAMP           NOT NULL DEFAULT now()
 );
 
--- ==========================
--- Audit Logs
--- ==========================
+CREATE SEQUENCE audit_logs_seq START 1;
 CREATE TABLE audit_logs
 (
     id          BIGSERIAL PRIMARY KEY,
@@ -236,9 +201,6 @@ CREATE TABLE audit_logs
     updated_at  TIMESTAMP NOT NULL DEFAULT now()
 );
 
--- ==========================
--- Statistic Queries
--- ==========================
 CREATE TABLE statistic_queries
 (
     id          BIGSERIAL PRIMARY KEY,

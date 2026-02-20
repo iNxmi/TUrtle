@@ -21,6 +21,7 @@ class RoleEntity(
         name = "role_permissions",
         joinColumns = [JoinColumn(name = "role_id")],
     )
+    @Column(name = "permission")
     val permissions: MutableSet<Permission>,
 
     @Column(unique = true)

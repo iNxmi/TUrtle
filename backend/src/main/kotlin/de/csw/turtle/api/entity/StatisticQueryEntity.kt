@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import java.time.Instant
 
 @Entity
+@Table(name = "statistic_queries")
 class StatisticQueryEntity(
 
     @Id @GeneratedValue

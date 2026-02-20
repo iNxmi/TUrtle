@@ -72,8 +72,8 @@ class UserService(
         if (repository.findByEmojis(emojis) != null)
             throw HttpException.Conflict("Emoji password '$emojis' already exists.")
 
-        for (roleId in roleIds){
-            if(!roleRepository.existsById(roleId))
+        for (roleId in roleIds) {
+            if (!roleRepository.existsById(roleId))
                 throw HttpException.BadRequest("Role with id '$roleId' does not exist.")
         }
         //TODO password is min. 10 long, min. 1 number included, min. 1 symbol included, min. 1 upper and min. 1 lower case (maybe via regex)
@@ -117,8 +117,10 @@ class UserService(
     fun getByEmojis(emojis: String): UserEntity? = repository.findByEmojis(emojis)
     fun getByEmojisLegacyFix(emojis: String): UserEntity? {
         val all = repository.findByEmojisStartsWith("$")
-        val user = all.firstOrNull { passwordEncoder.matches(emojis, it.emojis) }
-            ?: return null
+        val user = all.firstOrNull { user ->
+            val legacyEmojis = emojis.replace("❄️", "❄").replace("✂️", "✂").replace("☎️", "☎")
+            passwordEncoder.matches(legacyEmojis, user.emojis)
+        } ?: return null
 
         user.emojis = emojis
         repository.save(user)
@@ -155,7 +157,7 @@ class UserService(
         roleIds: Set<Long>? = null
     ): UserEntity {
 
-        if (username != null){
+        if (username != null) {
             if (username.isBlank())
                 throw HttpException.BadRequest("Username cannot be left blank.")
             if (repository.existsByUsername(username))
@@ -178,13 +180,13 @@ class UserService(
                 throw HttpException.BadRequest("'${email}' is not a valid Email Address.")
         }
 
-        if(emojis != null)
+        if (emojis != null)
             if (repository.findByEmojis(emojis) != null)
                 throw HttpException.Conflict("Emoji password '$emojis' already exists.")
 
-        if(roleIds != null){
-            for (roleId in roleIds){
-                if(!roleRepository.existsById(roleId))
+        if (roleIds != null) {
+            for (roleId in roleIds) {
+                if (!roleRepository.existsById(roleId))
                     throw HttpException.BadRequest("Role with id '$roleId' does not exist.")
             }
         }

@@ -43,7 +43,8 @@ class DataSeeder(
             val bCrypt = BCryptPasswordEncoder()
 
             val legacy = Math.random() in 0.0f..0.1f
-            val emojis = userService.generateEmojis()
+
+            val emojis = userService.generateEmojis().replace("❄️", "❄").replace("✂️", "✂").replace("☎️", "☎")
 
             try {
                 userService.create(
