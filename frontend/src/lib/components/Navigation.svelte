@@ -1,8 +1,7 @@
 <script>
-    import {A, Checkbox, Input, InputAddon, Label} from "flowbite-svelte";
-
     import RegisterModal from "$lib/components/RegisterModal.svelte"
     import LoginModal from "$lib/components/LoginModal.svelte"
+    import OpenDoorModal from "$lib/components/OpenDoorModal.svelte";
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
     import {m} from "$lib/paraglide/messages.js";
     import {goto} from "$app/navigation";
@@ -29,14 +28,13 @@
 
     import {
         ArrowLeftToBracketOutline,
-        ArrowRightToBracketOutline, EyeOutline, EyeSlashOutline,
+        ArrowRightToBracketOutline,
         LanguageOutline,
         LockOpenOutline,
         MoonOutline,
         SunOutline,
         UserAddOutline
     } from "flowbite-svelte-icons";
-    import Altcha from "$lib/components/Altcha.svelte";
 
     const {
         logoRedirect = "/",
@@ -105,6 +103,7 @@
 
     let loginModal = $state(false);
     let registerModal = $state(false);
+    let openDoorModal = $state(false);
 </script>
 
 <svelte:window bind:innerWidth={innerWidth}/>
@@ -207,7 +206,8 @@
                             {/if}
 
                             {#if !hideDoorButton}
-                                <Button name="button_open_door" color="alternative" class="flex-1">
+                                <Button name="button_open_door" color="alternative" class="flex-1"
+                                        onclick={() => (openDoorModal = true)}>
                                     <LockOpenOutline/>
                                 </Button>
                             {/if}
@@ -216,7 +216,7 @@
                 {/if}
 
                 {#if !hideAuthButtons}
-                    {#if !showLogoutButton}
+                    {#if showLogoutButton}
                         <ButtonGroup className="flex">
                             <Button name="button_logout" class="flex-1" onclick={signOut}>
                                 <div class="flex gap-2 items-center">
@@ -249,3 +249,4 @@
 
 <LoginModal bind:open={loginModal}/>
 <RegisterModal bind:open={registerModal}/>
+<OpenDoorModal bind:open={openDoorModal}/>
