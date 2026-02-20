@@ -101,12 +101,6 @@
             await goto("/", {invalidateAll: true});
     }
 
-    async function handleDoorModal(action) {
-        if (action === "yes") {
-            request("/hardware/door", {method: "POST"});
-        }
-    }
-
     let openDoorModal = $state(false);
 </script>
 
