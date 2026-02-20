@@ -5,7 +5,7 @@ import java.time.Duration
 import java.time.Instant
 
 @Entity
-@Table(name = "uuids")
+@Table(name = "tokens")
 class TokenEntity(
 
     @Id @GeneratedValue

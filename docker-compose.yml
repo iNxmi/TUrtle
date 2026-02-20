@@ -6,11 +6,11 @@ networks:
 
 services:
   postgres:
-    image: postgres:16
+    image: postgres:18
     container_name: csw__turtle_database
     restart: no
     volumes:
-      - database_volume:/var/lib/postgresql/data
+      - database_volume:/var/lib/postgresql
     networks:
       - network
     environment:

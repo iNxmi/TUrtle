@@ -11,6 +11,7 @@ class ConfigurationEntity(
     override val id: Long = 0,
 
     @Column(unique = true)
+    @Enumerated(EnumType.STRING)
     var key: Key,
 
     @Enumerated(EnumType.STRING)

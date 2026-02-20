@@ -11,14 +11,9 @@ spring:
     username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
 
-  session:
-    store-type: jdbc
-    jdbc:
-      initialize-schema: always
-
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
 
   mail:
     host: ${SMTP_HOST}
