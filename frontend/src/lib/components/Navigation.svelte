@@ -1,4 +1,8 @@
 <script>
+    import {A, Checkbox, Input, InputAddon, Label} from "flowbite-svelte";
+
+    import RegisterModal from "$lib/components/RegisterModal.svelte"
+    import LoginModal from "$lib/components/LoginModal.svelte"
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
     import {m} from "$lib/paraglide/messages.js";
     import {goto} from "$app/navigation";
@@ -25,13 +29,14 @@
 
     import {
         ArrowLeftToBracketOutline,
-        ArrowRightToBracketOutline,
+        ArrowRightToBracketOutline, EyeOutline, EyeSlashOutline,
         LanguageOutline,
         LockOpenOutline,
         MoonOutline,
         SunOutline,
         UserAddOutline
     } from "flowbite-svelte-icons";
+    import Altcha from "$lib/components/Altcha.svelte";
 
     const {
         logoRedirect = "/",
@@ -97,6 +102,9 @@
         if (response.ok)
             await goto("/", {invalidateAll: true});
     }
+
+    let loginModal = $state(false);
+    let registerModal = $state(false);
 </script>
 
 <svelte:window bind:innerWidth={innerWidth}/>
@@ -184,18 +192,18 @@
                             {#if !hideLanguageButton}
                                 <Button name="button_change_language" color="alternative" class="flex-1">
                                     <LanguageOutline/>
-                                    <Dropdown class="h-64 overflow-y-auto" simple>
-                                        {#each languages as language}
-                                            <DropdownItem class="w-full" onclick={() => setLocale(language.value)}>
-                                                <div class="flex gap-2 items-center">
-                                                    <svelte:component this={languageIcons[language.value]}
-                                                                      class="m-0 p-0"/>
-                                                    <span class="text-center">{language.name}</span>
-                                                </div>
-                                            </DropdownItem>
-                                        {/each}
-                                    </Dropdown>
                                 </Button>
+                                <Dropdown class="h-64 overflow-y-auto" simple>
+                                    {#each languages as language}
+                                        <DropdownItem class="w-full" onclick={() => setLocale(language.value)}>
+                                            <div class="flex gap-2 items-center">
+                                                <svelte:component this={languageIcons[language.value]}
+                                                                  class="m-0 p-0"/>
+                                                <span class="text-center">{language.name}</span>
+                                            </div>
+                                        </DropdownItem>
+                                    {/each}
+                                </Dropdown>
                             {/if}
 
                             {#if !hideDoorButton}
@@ -208,7 +216,7 @@
                 {/if}
 
                 {#if !hideAuthButtons}
-                    {#if showLogoutButton}
+                    {#if !showLogoutButton}
                         <ButtonGroup className="flex">
                             <Button name="button_logout" class="flex-1" onclick={signOut}>
                                 <div class="flex gap-2 items-center">
@@ -219,13 +227,13 @@
                         </ButtonGroup>
                     {:else}
                         <ButtonGroup className="flex">
-                            <Button name="button_login" class="flex-1" onclick={() => goto("/auth/login")}>
+                            <Button name="button_login" class="flex-1" onclick={() => (loginModal = true)}>
                                 <div class="flex gap-2 items-center">
                                     <ArrowLeftToBracketOutline/>
                                     <Span>{m.navigation_auth_login()}</Span>
                                 </div>
                             </Button>
-                            <Button name="button_register" class="flex-1" onclick={() => goto("/auth/register")}>
+                            <Button name="button_register" class="flex-1" onclick={() => (registerModal = true)}>
                                 <div class="flex gap-2 items-center">
                                     <UserAddOutline/>
                                     <Span>{m.navigation_auth_register()}</Span>
@@ -238,3 +246,6 @@
         </SidebarGroup>
     {/if}
 </Sidebar>
+
+<LoginModal bind:open={loginModal}/>
+<RegisterModal bind:open={registerModal}/>
