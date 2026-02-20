@@ -9,7 +9,7 @@
 
     async function handleDoorModal(action) {
         if (action === "yes") {
-            request("/hardware/door", {method: "POST"});
+            request("/hardware/door/open", {method: "POST"});
         }
     }
 
