@@ -6,6 +6,8 @@
     import request from "$lib/api/api";
     import {setContext} from "svelte";
     import {setLocale} from "$lib/paraglide/runtime.js";
+    import {Modal} from "flowbite-svelte";
+    import {QuestionCircleSolid} from "flowbite-svelte-icons";
     import {
         Button,
         ButtonGroup,
@@ -97,6 +99,14 @@
         if (response.ok)
             await goto("/", {invalidateAll: true});
     }
+
+    async function handleDoorModal(action) {
+        if (action === "yes") {
+            request("/hardware/door", {method: "POST"});
+        }
+    }
+
+    let doorModal = $state(false);
 </script>
 
 <svelte:window bind:innerWidth={innerWidth}/>
@@ -199,7 +209,8 @@
                             {/if}
 
                             {#if !hideDoorButton}
-                                <Button name="button_open_door" color="alternative" class="flex-1">
+                                <Button name="button_open_door" color="alternative" class="flex-1"
+                                        onclick={() => (doorModal = true)}>
                                     <LockOpenOutline/>
                                 </Button>
                             {/if}
@@ -238,3 +249,16 @@
         </SidebarGroup>
     {/if}
 </Sidebar>
+
+<Modal form bind:open={doorModal} onaction={({action}) => handleDoorModal(action) }>
+
+    <div class="text-center">
+        <QuestionCircleSolid class="mx-auto mb-4 h-12 w-12 text-gray-400 dark: text-gray-400"/>
+        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">_You will need to be logged into the local
+            network ("csw_intern") for this action to work_</h3>
+        <div class="space-x-2">
+            <Button type="submit" value="yes">_Open Door_</Button>
+            <Button type="submit" value="no">_Close_</Button>
+        </div>
+    </div>
+</Modal>
