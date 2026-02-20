@@ -190,19 +190,18 @@
 
                             {#if !hideLanguageButton}
                                 <Button name="button_change_language" color="alternative" class="flex-1">
+                                    <Dropdown class="h-64 overflow-y-auto" simple>
+                                        {#each languages as language}
+                                            <DropdownItem class="w-full" onclick={() => setLocale(language.value)}>
+                                                <div class="flex gap-2 items-center">
+                                                    <svelte:component this={languageIcons[language.value]} class="m-0 p-0"/>
+                                                    <span class="text-center">{language.name}</span>
+                                                </div>
+                                            </DropdownItem>
+                                        {/each}
+                                    </Dropdown>
                                     <LanguageOutline/>
                                 </Button>
-                                <Dropdown class="h-64 overflow-y-auto" simple>
-                                    {#each languages as language}
-                                        <DropdownItem class="w-full" onclick={() => setLocale(language.value)}>
-                                            <div class="flex gap-2 items-center">
-                                                <svelte:component this={languageIcons[language.value]}
-                                                                  class="m-0 p-0"/>
-                                                <span class="text-center">{language.name}</span>
-                                            </div>
-                                        </DropdownItem>
-                                    {/each}
-                                </Dropdown>
                             {/if}
 
                             {#if !hideDoorButton}
