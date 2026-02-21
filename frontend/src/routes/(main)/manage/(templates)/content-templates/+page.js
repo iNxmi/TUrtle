@@ -1,5 +1,5 @@
 import {create} from "$lib/page.js"
-import {contentTemplatesPath} from '$lib/backend';
+import {contentTemplatesPath} from '$lib/backend.js';
 
 
 export const load = create(

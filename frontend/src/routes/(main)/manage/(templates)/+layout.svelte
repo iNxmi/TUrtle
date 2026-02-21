@@ -6,14 +6,11 @@
     let key = $derived(page.url.pathname);
 
     const items = [{
-        title: "Contact",
-        href: "/contact"
+        title: "Email",
+        href: "/manage/email-templates"
     }, {
-        title: "About",
-        href: "/about"
-    }, {
-        title: "TOS",
-        href: "/tos"
+        title: "Content",
+        href: "/manage/content-templates"
     }];
 </script>
 

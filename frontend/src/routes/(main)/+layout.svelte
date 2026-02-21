@@ -28,109 +28,130 @@
 
     const publicItems = [{
         label: m.main_navigation_item_public_home(),
+        keys: ["/"],
         href: "/",
         icon: HomeSolid
     }, {
         label: m.main_navigation_item_public_faq(),
+        keys: ["/faq"],
         href: "/faq",
         icon: QuestionCircleSolid
     }, {
         label: m.main_navigation_item_public_contact(),
+        keys: ["/contact"],
         href: "/contact",
         icon: UserHeadsetSolid
     }].sort((a, b) => a.href.localeCompare(b.href));
 
     const userItems = [{
         label: m.main_navigation_item_user_dashboard(),
+        keys: ["/user/darhboard"],
         href: "/user/dashboard",
         icon: ChartOutline
     }, {
         label: m.main_navigation_item_user_item_bookings(),
+        keys: ["/user/item-bookings"],
         href: "/user/item-bookings",
         icon: CalendarEditSolid
     }, {
-        permission: "REQUEST_ROOM_BOOKINGS",
+        permissions: ["REQUEST_ROOM_BOOKINGS"],
         label: m.main_navigation_item_user_room_bookings(),
+        keys: ["/user/room-bookings"],
         href: "/user/room-bookings",
         icon: CalendarEditSolid
     }, {
         label: m.main_navigation_item_user_profile(),
+        keys: ["/user/profile"],
         href: "/user/profile",
         icon: UserSolid
-    }].filter(item => user != null && (!item.permission || permissions.includes(item.permission)))
+    }].filter(item => user != null && (!item.permissions || item.permissions.some(p => permissions.includes(p))))
         .sort((a, b) => a.href.localeCompare(b.href));
 
     const manageItems = [{
-        permission: "MANAGE_USERS",
+        permissions: ["MANAGE_USERS"],
         label: m.main_navigation_item_manage_users(),
+        keys: ["/manage/users"],
         href: "/manage/users",
         icon: UsersGroupSolid
     }, {
-        permission: "MANAGE_ROLES",
+        permissions: ["MANAGE_ROLES"],
         label: m.main_navigation_item_manage_roles(),
+        keys: ["/manage/roles"],
         href: "/manage/roles",
         icon: UsersGroupSolid
     }, {
-        permission: "MANAGE_ITEMS",
+        permissions: ["MANAGE_ITEMS"],
         label: m.main_navigation_item_manage_items(),
+        keys: ["/manage/items"],
         href: "/manage/items",
         icon: ClipboardSolid
     }, {
-        permission: "MANAGE_ITEM_CATEGORIES",
+        permissions: ["MANAGE_ITEM_CATEGORIES"],
         label: m.main_navigation_item_manage_item_categories(),
+        keys: ["/manage/item-categories"],
         href: "/manage/item-categories",
         icon: ClipboardSolid
     }, {
-        permission: "MANAGE_ROOM_BOOKINGS",
+        permissions: ["MANAGE_ROOM_BOOKINGS"],
         label: m.main_navigation_item_manage_room_bookings(),
+        keys: ["/manage/room-bookings"],
         href: "/manage/room-bookings",
         icon: CalendarEditSolid
     }, {
-        permission: "MANAGE_ITEM_BOOKINGS",
+        permissions: ["MANAGE_ITEM_BOOKINGS"],
         label: m.main_navigation_item_manage_item_bookings(),
+        keys: ["/manage/item-bookings"],
         href: "/manage/item-bookings",
         icon: CalendarEditSolid
     }, {
-        permission: "MANAGE_AUDIT_LOGS",
+        permissions: ["MANAGE_AUDIT_LOGS"],
         label: m.main_navigation_item_manage_audit_logs(),
+        keys: ["/manage/audit-logs"],
         href: "/manage/audit-logs",
         icon: BookOpenSolid
     }, {
-        permission: "MANAGE_GENERAL_TEMPLATES",
-        label: m.main_navigation_item_manage_content_templates(),
-        href: "/manage/content-templates",
-        icon: FilePasteSolid
-    }, {
-        permission: "MANAGE_EMAIL_TEMPLATES",
-        label: m.main_navigation_item_manage_email_templates(),
+        permissions: [
+            "MANAGE_EMAIL_TEMPLATES",
+            "MANAGE_CONTENT_TEMPLATES"
+        ],
+        label: m.main_navigation_item_manage_templates(),
+        keys: [
+            "/manage/email-templates",
+            "/manage/content-templates"
+        ],
         href: "/manage/email-templates",
         icon: FilePasteSolid
     }, {
-        permission: "MANAGE_FAQ",
+        permissions: ["MANAGE_FAQ"],
         label: m.main_navigation_item_manage_faq(),
+        keys: ["/manage/faq"],
         href: "/manage/faq",
         icon: FilePasteSolid
     }, {
-        permission: "MANAGE_LOCKERS",
+        permissions: ["MANAGE_LOCKERS"],
         label: m.main_navigation_item_manage_lockers(),
+        keys: ["/manage/lockers"],
         href: "/manage/lockers",
         icon: PaperClipOutline
     }, {
-        permission: "MANAGE_SUPPORT_TICKETS",
+        permissions: ["MANAGE_SUPPORT_TICKETS"],
         label: m.main_navigation_item_manage_support_tickets(),
+        keys: ["/manage/support-tickets"],
         href: "/manage/support-tickets",
         icon: UserHeadsetSolid
     }, {
-        permission: "MANAGE_EXCEPTIONS",
+        permissions: ["MANAGE_EXCEPTIONS"],
         label: m.main_navigation_item_manage_exceptions(),
+        keys: ["/manage/exceptions"],
         href: "/manage/exceptions",
         icon: BugSolid
     }, {
-        permission: "MANAGE_CONFIGURATION",
+        permissions: ["MANAGE_CONFIGURATION"],
         label: m.main_navigation_item_manage_configuration(),
+        keys: ["/manage/configuration"],
         href: "/manage/configuration",
         icon: AdjustmentsVerticalSolid
-    }].filter(item => !item.permission || permissions.includes(item.permission))
+    }].filter(item => !item.permissions || item.permissions.some(p => permissions.includes(p)))
         .sort((a, b) => a.href.localeCompare(b.href));
 
     let categories = [{
