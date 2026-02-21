@@ -1,15 +1,15 @@
 <script>
-    import { setContext } from 'svelte';
-    import { Modal, Button } from 'flowbite-svelte';
+    import {setContext} from 'svelte';
+    import {Button, Modal} from 'flowbite-svelte';
 
-    let { children } = $props();
+    let {children} = $props();
     let open = $state(false);
     let resolvePromise = $state(null);
 
     let title = $state('');
     let message = $state();
 
-    function confirm(msg, ttl = '_Confirm_'){
+    function confirm(msg, ttl = '_Confirm_') {
         title = ttl;
         message = msg;
         open = true;
@@ -17,15 +17,16 @@
         return new Promise((resolve) => {
             resolvePromise = resolve;
         })
-    };
+    }
 
-    function close(result){
+    function close(result) {
         open = false;
-        if(resolvePromise){
+        if (resolvePromise) {
             resolvePromise(result);
             resolvePromise = null;
         }
     }
+
     setContext('confirm', confirm);
 
 </script>

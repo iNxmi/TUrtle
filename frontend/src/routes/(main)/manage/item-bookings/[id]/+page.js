@@ -1,26 +1,26 @@
 import request from "$lib/api/api";
-import { itemsBookingsPath, usersPath, itemsPath } from '$lib/backend';
+import {itemsBookingsPath, itemsPath, usersPath} from '$lib/backend';
 
-export async function load({params}){
+export async function load({params}) {
 
-    const devicebookingResponse = await request(itemsBookingsPath+`/${params.id}`);
+    const devicebookingResponse = await request(itemsBookingsPath + `/${params.id}`);
 
-    if(devicebookingResponse.ok){
+    if (devicebookingResponse.ok) {
         const deviceBooking = await devicebookingResponse.json();
         console.log(JSON.stringify(deviceBooking));
-        const userResponse = await request(usersPath+`/${deviceBooking.userId}`);
+        const userResponse = await request(usersPath + `/${deviceBooking.userId}`);
         let user;
         let device;
-        if(userResponse.ok){
+        if (userResponse.ok) {
             user = await userResponse.json();
-            
+
         } else {
             user = undefined;
         }
 
-        const deviceResponse = await request(itemsPath+`/${deviceBooking.itemId}`);
+        const deviceResponse = await request(itemsPath + `/${deviceBooking.itemId}`);
 
-        if(deviceResponse.ok){
+        if (deviceResponse.ok) {
             device = await deviceResponse.json();
         } else {
             device = undefined;

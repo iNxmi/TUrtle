@@ -1,18 +1,20 @@
 <script>
     import {Button, Heading, Input, Label, Modal} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
+    import request from "$lib/api/api.js";
+
     let changePasswordModal = $state(false);
     let changeOTA = $state(false);
 
-    import request from "$lib/api/api.js";
     async function logout() {
         await request("/auth/logout")
     }
-    async function changePassword(){
+
+    async function changePassword() {
         let newPassword = document.getElementById("new_password").value
         let newPasswordRepeat = document.getElementById("new_password_repeat").value
 
-        if(newPassword !== newPasswordRepeat){
+        if (newPassword !== newPasswordRepeat) {
             alert("__New Password does not match!!! PLZ Enter the same password!!__")
             return;
         }
@@ -21,7 +23,7 @@
             password: document.getElementById("new_password").value
         }
 
-        const response = await request("/user/profile",{
+        const response = await request("/user/profile", {
             method: 'PATCH',
             body: JSON.stringify(payload),
             headers: {'Content-Type': 'application/json'}
@@ -31,7 +33,7 @@
 
     let {data} = $props();
     // user is already in data prop because it is defined in +layout.js so no need to create a +server.js to load it again :)
-   let user = $derived(data.user);
+    let user = $derived(data.user);
 </script>
 
 <form class="flex flex-col gap-5">

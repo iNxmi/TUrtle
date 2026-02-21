@@ -8,12 +8,12 @@
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-    <script> 
-    const darkmode = localStorage.getItem('darkmode');
-            if ( darkmode) {
-                document.documentElement.classList.remove('light', 'dark');
-                document.documentElement.classList.add('dark');
-            }
+    <script>
+        const darkmode = localStorage.getItem('darkmode');
+        if (darkmode) {
+            document.documentElement.classList.remove('light', 'dark');
+            document.documentElement.classList.add('dark');
+        }
     </script>
     <!-- <meta name="color-scheme" content="dark light" /> -->
     %sveltekit.head%

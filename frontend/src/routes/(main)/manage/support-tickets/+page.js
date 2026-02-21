@@ -1,8 +1,8 @@
 import {create} from "$lib/page.js"
-import { supportTicketsPath} from '$lib/backend'
+import {supportTicketsPath} from '$lib/backend'
 
 export const load = create(
-   supportTicketsPath,
+    supportTicketsPath,
     [
         "id",
         "urgency",

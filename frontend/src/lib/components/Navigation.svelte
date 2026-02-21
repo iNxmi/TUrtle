@@ -13,7 +13,6 @@
         Button,
         ButtonGroup,
         Dropdown,
-        DropdownHeader,
         DropdownItem,
         Heading,
         Hr,
@@ -195,7 +194,8 @@
                                         {#each languages as language}
                                             <DropdownItem class="w-full" onclick={() => setLocale(language.value)}>
                                                 <div class="flex gap-2 items-center">
-                                                    <svelte:component this={languageIcons[language.value]} class="m-0 p-0"/>
+                                                    <svelte:component this={languageIcons[language.value]}
+                                                                      class="m-0 p-0"/>
                                                     <span class="text-center">{language.name}</span>
                                                 </div>
                                             </DropdownItem>

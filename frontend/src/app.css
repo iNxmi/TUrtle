@@ -43,10 +43,10 @@
     --color-secondary-dark: var(--color-green-700);
     --color-accent-dark: var(--color-green-800);
     --base-font-color: #121212;
-    
+
     --color-table-dark: #d1f3d1;
     --color-accent: #3dff4a;
-    
+
     --color-csw: #FF6A00;
     --color-text: var(--color-gray-800);
     --color-muted: var(--color-gray-500);
@@ -109,50 +109,65 @@
     font-display: swap;
 }
 
-.prose /* .dark */ {
-    a{
+.prose /* .dark */
+{
+    a {
         color: var(--color-text);
     }
+
     dd {
         color: var(--color-text);
     }
+
     h1 {
         color: var(--color-text);
     }
-    h2{
+
+    h2 {
         color: var(--color-text);
     }
+
     h3 {
         color: var(--color-text);
-    } 
+    }
+
     h4 {
         color: var(--color-text);
     }
+
     h5 {
         color: var(--color-text);
     }
+
     h6 {
         color: var(--color-text);
     }
-    li{
+
+    li {
         color: var(--color-text);
     }
+
     p {
         color: var(--color-text);
     }
-    td{
+
+    td {
         color: var(--color-text);
     }
-    li::marker{
+
+    li::marker {
         color: var(--color-text);
     }
-    strong{
+
+    strong {
         color: var(--color-text);
     }
-    strong{
+
+    strong {
         color: #fff;
     }
 }
+
 .dark .fc {
     div {
         color: var(--color-text);
@@ -182,17 +197,18 @@
             var(--color-gray-700) 40px,
             var(--color-gray-800) 40px,
             var(--color-gray-800) 80px
-        );
+    );
 }
+
 .pending-booking {
-        background: repeating-linear-gradient(
+    background: repeating-linear-gradient(
             45deg,
             var(--color-gray-50),
             var(--color-gray-50) 40px,
             var(--color-gray-100) 40px,
             var(--color-gray-100) 80px
-        );
-    } 
+    );
+}
 
 .dark .fc {
     --fc-border-color: theme(--color-gray-700);
@@ -243,7 +259,7 @@
         display: none;
     }
 
-    html{
+    html {
         @apply text-text;
     }
 }

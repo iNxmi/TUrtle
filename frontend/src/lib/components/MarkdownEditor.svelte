@@ -1,5 +1,5 @@
 <script>
-    import { Tabs, TabItem, Textarea } from "flowbite-svelte";
+    import {TabItem, Tabs, Textarea} from "flowbite-svelte";
     import Markdown from '$lib/components/Markdown.svelte'
 
     let {content, disabled} = $props();
@@ -7,7 +7,7 @@
 
 <Tabs>
     <TabItem open title="Markdown">
-        <Textarea rows="12" class="w-full" bind:value={content} {disabled} />
+        <Textarea rows="12" class="w-full" bind:value={content} {disabled}/>
     </TabItem>
 
     <TabItem title="Preview">

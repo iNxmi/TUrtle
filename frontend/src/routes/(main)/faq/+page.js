@@ -1,5 +1,5 @@
 import request from "$lib/api/api.js";
-import { faqPath} from '$lib/backend'
+import {faqPath} from '$lib/backend'
 
 export async function load() {
     const response = await request(`${faqPath}?rsql=enabled==true`);

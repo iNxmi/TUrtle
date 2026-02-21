@@ -12,7 +12,7 @@ export function create(
         const parameters = new URLSearchParams()
         const finalEndpoint = url.searchParams.get('endpoint') || endpoint;
         let endpoints;
-        if(!Array.isArray(finalEndpoint)){
+        if (!Array.isArray(finalEndpoint)) {
             endpoints = finalEndpoint.split(',');
         } else {
             endpoints = [...finalEndpoint];
@@ -37,27 +37,27 @@ export function create(
         const sortDirection = url.searchParams.get("sortDirection");
         if (sortDirection != null)
             parameters.set("sortDirection", sortDirection)
-        if(initialRSQL){
-            parameters.set('rsql', initialRSQL+`${params.id}`)
+        if (initialRSQL) {
+            parameters.set('rsql', initialRSQL + `${params.id}`)
         }
 
         let page = [];
- 
+
         const response = await request(`${endpoints[0]}?${parameters}`);
         checkAuthorization(response, url.pathname);
         page.push(await response.json());
-        
+
         endpoints.shift();
 
-        for(const endpoint of endpoints){
-             
+        for (const endpoint of endpoints) {
+
             const response = await request(`${endpoint}`);
             checkAuthorization(response, url.pathname);
             const endpointData = await response.json();
             page.push(endpointData);
         }
-       
-        if(page.length === 1) {
+
+        if (page.length === 1) {
             page = page[0];
         }
         return {page};

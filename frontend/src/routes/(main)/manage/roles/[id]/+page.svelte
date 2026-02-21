@@ -7,7 +7,7 @@
     let content = $derived([{
         name: m.manage_roles_id_label_id(),
         value: data.role.id,
-    },{
+    }, {
         name: m.manage_roles_id_label_name(),
         value: data.role.name,
     }, {

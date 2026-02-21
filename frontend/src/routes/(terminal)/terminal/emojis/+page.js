@@ -1,5 +1,3 @@
-import request from "$lib/api/api.js";
-
 //TODO fix for prod
 export async function load() {
     // const response = await request(`/system-settings/emojis.all`);

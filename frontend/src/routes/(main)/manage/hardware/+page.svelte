@@ -1,9 +1,9 @@
 <script>
-    import {Label, Button, Card, Heading} from 'flowbite-svelte';
+    import {Button, Heading} from 'flowbite-svelte';
     import request from '$lib/api/api';
-    import {openLocker, openDoor} from '$lib/utils';
-	import { invalidateAll } from '$app/navigation';
-    import { lockersPath } from '$lib/backend';
+    import {openDoor, openLocker} from '$lib/utils';
+    import {invalidateAll} from '$app/navigation';
+    import {lockersPath} from '$lib/backend';
 
     let {data} = $props();
 
@@ -12,14 +12,14 @@
             locked: locker.locked !== true
         }
 
-        await request(lockersPath+`/${locker.id}`, {
+        await request(lockersPath + `/${locker.id}`, {
             method: "PATCH",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)
         });
 
-       /*  location.reload() */
-       invalidateAll();
+        /*  location.reload() */
+        invalidateAll();
     }
 
     async function lockDoor() {

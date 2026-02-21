@@ -1,7 +1,7 @@
 <script>
     import request from '$lib/api/api';
-    import { Modal, Input, Checkbox, Label, Button } from 'flowbite-svelte';
-    import { EnvelopeSolid } from 'flowbite-svelte-icons';
+    import {Button, Checkbox, Input, Label, Modal} from 'flowbite-svelte';
+    import {EnvelopeSolid} from 'flowbite-svelte-icons';
 
     let {showModal = $bindable()} = $props();
 
@@ -20,30 +20,30 @@
 
     let hasAccepted = $derived(acceptGDPR && acceptTOS);
 
-    async function createNewUser(){
-        if(acceptGDPR && acceptTOS && user.password === passwordRepeat){
-            const userResponse = await request('/users',{
+    async function createNewUser() {
+        if (acceptGDPR && acceptTOS && user.password === passwordRepeat) {
+            const userResponse = await request('/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(user)
             });
-            if(userResponse.ok){
-                showModal=false;
+            if (userResponse.ok) {
+                showModal = false;
             }
         }
     }
 </script>
-<Modal bind:open={showModal} title='_New User_'> 
+<Modal bind:open={showModal} title='_New User_'>
     <form>
         <div class="mb-6 grid gap-6 md:grid-cols-2">
             <Label for="firstname">_First name_
-                <Input id="firstname" required placeholder="Max" bind:value={user.firstName} />
+                <Input id="firstname" required placeholder="Max" bind:value={user.firstName}/>
             </Label>
             <Label>
                 _Last name_
-                <Input required  placeholder="Mustermann" bind:value={user.lastName} />
+                <Input required placeholder="Mustermann" bind:value={user.lastName}/>
             </Label>
             <Label>
                 _Username_
@@ -51,9 +51,10 @@
             </Label>
             <Label>
                 _Email_
-                <Input class="ps-8" type="email" placeholder="max.mustermann@stud.tu-darmstadt.de" bind:value={user.email} required>
+                <Input class="ps-8" type="email" placeholder="max.mustermann@stud.tu-darmstadt.de"
+                       bind:value={user.email} required>
                     {#snippet left()}
-                        <EnvelopeSolid />
+                        <EnvelopeSolid/>
                     {/snippet}
                 </Input>
             </Label>
@@ -66,8 +67,10 @@
                 <Input pattern={user.password} required bind:value={passwordRepeat}/>
             </Label>
             <div class="flex flex-col gap-2">
-                <Checkbox required bind:checked={acceptTOS}><span>_Accept_ <a class="text-csw" href="/tos">_Terms of Service_</a></span></Checkbox>
-                <Checkbox required bind:checked={acceptGDPR}> <span>_Accept_ <a class="text-csw" href="/gdpr">_GDPR Agreement_</a></span></Checkbox>
+                <Checkbox required bind:checked={acceptTOS}><span>_Accept_ <a class="text-csw" href="/tos">_Terms of Service_</a></span>
+                </Checkbox>
+                <Checkbox required bind:checked={acceptGDPR}><span>_Accept_ <a class="text-csw" href="/gdpr">_GDPR Agreement_</a></span>
+                </Checkbox>
             </div>
             <Button disabled={!hasAccepted} type="submit" onclick={createNewUser}>_Create new User_</Button>
         </div>

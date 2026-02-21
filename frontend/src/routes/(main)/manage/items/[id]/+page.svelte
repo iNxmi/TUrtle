@@ -1,6 +1,7 @@
 <script>
     import ItemDetailsPage from "$lib/components/ItemDetailsPage.svelte";
-    let { data } = $props()
+
+    let {data} = $props()
 
     let content = $derived(
         [
@@ -31,4 +32,4 @@
         ]
     )
 </script>
-<ItemDetailsPage title=_Device_ {content} />
+<ItemDetailsPage title=_Device_ {content}/>

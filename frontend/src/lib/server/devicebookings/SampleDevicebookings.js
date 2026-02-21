@@ -11,7 +11,7 @@ export const seedDevicebookings = (db) => {
             status: "COLLECTION_READY",
             createdAt: new Date(Date.now())
         },
-         {
+        {
             name: "Asus Laptop",
             start: "2026-01-06T06:00Z",
             end: "2026-01-08T06:00Z",
@@ -21,7 +21,7 @@ export const seedDevicebookings = (db) => {
             status: "RESERVATION_ENDED",
             createdAt: new Date(Date.now())
         },
-         {
+        {
             name: "IPad",
             start: "2026-01-02T06:00Z",
             end: "2026-01-04T06:00Z",
@@ -31,7 +31,7 @@ export const seedDevicebookings = (db) => {
             status: "RESERVED",
             createdAt: new Date(Date.now())
         },
-         {
+        {
             name: "Samsung Tab A",
             start: "2026-01-03T06:00Z",
             end: "2026-01-05T06:00Z",

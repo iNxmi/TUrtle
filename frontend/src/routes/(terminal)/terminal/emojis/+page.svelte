@@ -113,11 +113,11 @@
         {#each Array.from({length: CODE_LENGTH}) as _, index}
             <button disabled={index < code.length} class={buttonClasses}>
                 {#if success === null}
-                     {#if index < code.length}
-                         🟡
-                     {:else}
-                         🔵
-                     {/if}
+                    {#if index < code.length}
+                        🟡
+                    {:else}
+                        🔵
+                    {/if}
                 {:else}
                     {#if blink === true}
                         {#if success === true}

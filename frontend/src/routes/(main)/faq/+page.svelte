@@ -1,5 +1,5 @@
 <script>
-    import {Heading, A, Accordion, AccordionItem} from 'flowbite-svelte';
+    import {A, Accordion, AccordionItem, Heading} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
     import Markdown from '$lib/components/Markdown.svelte';
 

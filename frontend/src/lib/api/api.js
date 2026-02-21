@@ -1,5 +1,5 @@
 import {dev} from '$app/environment';
-import {authPath, jwtRefreshPath} from '$lib/backend';
+import {jwtRefreshPath} from '$lib/backend';
 import {redirect} from '@sveltejs/kit';
 
 export default async function request(url, options) {

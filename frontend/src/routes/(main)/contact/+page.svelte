@@ -78,7 +78,8 @@
 
         <Label>
             <span>{m.modal_contact_label_description()}</span>
-            <Textarea bind:value={description} class="w-full" placeholder={m.modal_contact_placeholder_description()} required/>
+            <Textarea bind:value={description} class="w-full" placeholder={m.modal_contact_placeholder_description()}
+                      required/>
         </Label>
 
         <Checkbox required>{m.modal_contact_label_i_agree_to_tos()}</Checkbox>

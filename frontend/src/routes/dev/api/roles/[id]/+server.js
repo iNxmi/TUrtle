@@ -1,18 +1,18 @@
-import { json } from "@sveltejs/kit";
+import {json} from "@sveltejs/kit";
 
-export async function GET({params}){
+export async function GET({params}) {
 
     const permissions = [
         "FRONTEND__SIDEBAR_CATEGORY__PUBLIC",
-        
+
         "FRONTEND__SIDEBAR_CATEGORY__USER",
 
         "FRONTEND__SIDEBAR_CATEGORY__ADMINISTRATOR",
 
         "FRONTEND__SIDEBAR_ITEM__HOME",
-    
+
         "FRONTEND__SIDEBAR_ITEM__LOGIN",
-    
+
         "FRONTEND__SIDEBAR_ITEM__REGISTER",
 
         "FRONTEND__SIDEBAR_ITEM__SUPPORT",
@@ -28,7 +28,7 @@ export async function GET({params}){
         "FRONTEND__SIDEBAR_ITEM__BOOK_DEVICE",
 
         "FRONTEND__SIDEBAR_ITEM__BOOK_ROOM",
-    
+
         "FRONTEND__SIDEBAR_ITEM__MANAGE_USERS",
 
         "FRONTEND__SIDEBAR_ITEM__MANAGE_ROOM_BOOKINGS",
@@ -38,11 +38,11 @@ export async function GET({params}){
         "FRONTEND__SIDEBAR_ITEM__MANAGE_EXCEPTIONS",
 
         "FRONTEND__SIDEBAR_ITEM__MANAGE_NEWS",
-    
+
         "FRONTEND__SIDEBAR_ITEM__MANAGE_AUDIT_LOGS",
-    
+
         "FRONTEND__SIDEBAR_ITEM__MANAGE_ROLES",
-        
+
         "FRONTEND__SIDEBAR_ITEM__MANAGE_TEMPLATES",
 
         "FRONTEND__SIDEBAR_ITEM__HARDWARE_OVERRIDE",

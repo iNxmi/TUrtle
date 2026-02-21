@@ -254,7 +254,7 @@
 
         setTimeout(() => successRequest = undefined, 1500);
 
-    };
+    }
 
     async function denyEvent() {
         calendar.getEventById(selectedEvent.id).setExtendedProp('status', 'REJECTED');
@@ -272,7 +272,7 @@
 
         setTimeout(() => successRequest = undefined, 1500);
 
-    };
+    }
 
     async function saveEvent() {
         if (between(newStartDate.getHours(), 6, 18) || between(newEndDate.getHours(), 6, 18)) {            //TODO: Fix times
@@ -311,7 +311,7 @@
         }
 
         setTimeout(() => successRequest = undefined, 1500);
-    };
+    }
 
     function sortFunction(x, y, selectUsers) {
         if (selectUsers.includes(x) && !selectUsers.includes(y)) return -1;

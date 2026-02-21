@@ -1,6 +1,6 @@
-import { json } from '@sveltejs/kit';
+import {json} from '@sveltejs/kit';
 
-export async function GET(){
+export async function GET() {
     const itemsPublic = [
         "MANAGE_AUDIT_LOGS",
         "MANAGE_DOOR",

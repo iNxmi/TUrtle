@@ -1,8 +1,7 @@
 <script>
     import {onMount, tick} from 'svelte';
-    import {Button} from 'flowbite-svelte';
+    import {Button, Heading} from 'flowbite-svelte';
     import request from "$lib/api/api.js"
-    import {Heading} from "flowbite-svelte";
 
     const ITEM_WIDTH = 120;
     const VIEWPORT_WIDTH = 360;

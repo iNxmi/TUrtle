@@ -1,13 +1,13 @@
 <script>
     import Navigation from "$lib/components/Navigation.svelte";
     import {
-        QrCodeOutline,
+        AppleFullOutline,
+        ExclamationCircleOutline,
         EyeOutline,
         OpenDoorOutline,
-        ExclamationCircleOutline,
+        QrCodeOutline,
         QuestionCircleOutline,
-        UserHeadsetSolid,
-        AppleFullOutline
+        UserHeadsetSolid
     } from "flowbite-svelte-icons";
     import {m} from "$lib/paraglide/messages.js";
 
@@ -40,7 +40,7 @@
     }];
 
     let categories = [{
-        icon: OpenDoorOutline ,
+        icon: OpenDoorOutline,
         label: m.terminal_navigation_category_open(),
         items: openItems
     }, {

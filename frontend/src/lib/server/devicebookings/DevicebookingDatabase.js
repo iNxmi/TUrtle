@@ -1,27 +1,31 @@
-export class DevicebookingDatabase{
+export class DevicebookingDatabase {
     constructor(db) {
         this.db = db;
         this.collection = 'devicebookings';
         this.id = 0;
     }
 
-    createDevicebooking(booking){
+    createDevicebooking(booking) {
         this.db.create(this.collection, {
             id: this.id.toString(),
             ...booking
         });
         this.id += 1;
     }
-    getDevicebookings(){
+
+    getDevicebookings() {
         return this.db.read(this.collection);
     }
-    getDevicebookingById(id){
+
+    getDevicebookingById(id) {
         return this.db.read(this.collection, id);
     }
-    deleteDevicebookingById(id){
+
+    deleteDevicebookingById(id) {
         this.db.delete(this.collection, id);
     }
-    updateDevicebookingById(id, booking){
+
+    updateDevicebookingById(id, booking) {
         this.db.update(this.collection, id, booking);
     }
 

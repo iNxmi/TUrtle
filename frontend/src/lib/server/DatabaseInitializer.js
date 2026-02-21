@@ -1,11 +1,11 @@
 import SimpleDB from './SimpleDB';
-import { UserDatabase } from './users/UserDatabase';
-import { EventDatabase } from './events/EventDatabase';
-import { seedEvents } from './events/sampleEvents';
-import { DevicebookingDatabase } from './devicebookings/DevicebookingDatabase';
-import { seedDevicebookings } from './devicebookings/SampleDevicebookings';
-import { ItemDatabase } from './items/ItemDatabase';
-import { seedItems } from './items/SampleItems';
+import {UserDatabase} from './users/UserDatabase';
+import {EventDatabase} from './events/EventDatabase';
+import {seedEvents} from './events/sampleEvents';
+import {DevicebookingDatabase} from './devicebookings/DevicebookingDatabase';
+import {seedDevicebookings} from './devicebookings/SampleDevicebookings';
+import {ItemDatabase} from './items/ItemDatabase';
+import {seedItems} from './items/SampleItems';
 
 const sharedDB = new SimpleDB();
 

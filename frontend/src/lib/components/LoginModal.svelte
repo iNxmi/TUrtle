@@ -1,7 +1,6 @@
 <script>
     import {A, Button, ButtonGroup, Checkbox, Heading, Input, InputAddon, Label, Modal} from 'flowbite-svelte';
     import {EyeOutline, EyeSlashOutline} from 'flowbite-svelte-icons';
-    import Altcha from "$lib/components/Altcha.svelte";
     import {m} from '$lib/paraglide/messages.js';
     import request from '$lib/api/api.js';
     import {goto} from '$app/navigation';
@@ -78,7 +77,7 @@
 
         <!--                TODO reimplement trusted check, get trusted value from layout-->
         <!--                {#if !data.trusted}-->
-<!--                            <Altcha bind:value={altchaToken}/>-->
+        <!--                            <Altcha bind:value={altchaToken}/>-->
         <!--{/if}-->
 
         <Button class="cursor-pointer" type="submit">{m.login__button()}</Button>

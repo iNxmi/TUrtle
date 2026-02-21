@@ -1,5 +1,5 @@
 import {create} from "$lib/page.js"
-import { usersPath} from '$lib/backend'
+import {usersPath} from '$lib/backend'
 
 export const load = create(
     usersPath,

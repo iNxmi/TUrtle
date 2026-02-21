@@ -1,11 +1,8 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
     import request from "$lib/api/api";
-    import {Modal} from "flowbite-svelte";
+    import {Button, Modal} from "flowbite-svelte";
     import {QuestionCircleSolid} from "flowbite-svelte-icons";
-    import {
-        Button,
-    } from "flowbite-svelte";
 
     async function handleDoorModal(action) {
         if (action === "yes") {
