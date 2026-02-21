@@ -1,7 +1,7 @@
 <script>
     import {Button, Input, Label, Modal} from "flowbite-svelte";
-    import WhitelistDropdown from "./WhitelistDropdown.svelte";
-    import request from "$lib/api/api";
+    import WhitelistDropdown from "../WhitelistDropdown.svelte";
+    import request from "$lib/api/api.js";
 
     let {showNewRoleModal = $bindable(), permissions} = $props();
 

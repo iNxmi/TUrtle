@@ -1,5 +1,5 @@
 <script>
-    import request from '$lib/api/api';
+    import request from '$lib/api/api.js';
     import {Button, Checkbox, Input, Label, Modal} from 'flowbite-svelte';
     import {EnvelopeSolid} from 'flowbite-svelte-icons';
 

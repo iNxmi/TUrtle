@@ -1,7 +1,7 @@
 <script>
     import {Button, Modal} from 'flowbite-svelte';
-    import {openLocker} from '$lib/utils'
-    import request from '$lib/api/api';
+    import {openLocker} from '$lib/utils.js'
+    import request from '$lib/api/api.js';
 
     let {showOpenLockerModal: open = $bindable(false), locker, reservationIndex, reservations = $bindable()} = $props();
 

@@ -5,7 +5,7 @@
     import request from '$lib/api/api.js';
     import {goto} from '$app/navigation';
     import {page} from '$app/state';
-    import {authPath} from '$lib/backend'
+    import {authPath} from '$lib/backend.js'
     import {dev} from '$app/environment';
 
     let username = $state("");

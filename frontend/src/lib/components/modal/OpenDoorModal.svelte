@@ -1,6 +1,6 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
-    import request from "$lib/api/api";
+    import request from "$lib/api/api.js";
     import {Button, Modal} from "flowbite-svelte";
     import {QuestionCircleSolid} from "flowbite-svelte-icons";
 

@@ -1,7 +1,7 @@
 <script>
-    import RegisterModal from "$lib/components/RegisterModal.svelte"
-    import LoginModal from "$lib/components/LoginModal.svelte"
-    import OpenDoorModal from "$lib/components/OpenDoorModal.svelte";
+    import RegisterModal from "$lib/components/modal/RegisterModal.svelte"
+    import LoginModal from "$lib/components/modal/LoginModal.svelte"
+    import OpenDoorModal from "$lib/components/modal/OpenDoorModal.svelte";
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
     import {m} from "$lib/paraglide/messages.js";
     import {goto} from "$app/navigation";

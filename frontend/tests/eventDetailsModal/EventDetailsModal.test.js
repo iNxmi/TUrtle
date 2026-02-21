@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import { render } from 'vitest-browser-svelte'
-import EventDetailsModal from '../../src/lib/components/EventDetailsModal.svelte'
+import EventDetailsModal from '$lib/components/modal/EventDetailsModal.svelte'
 import { events } from '../../src/lib/server/events/sampleEvents'
 import { users } from '../../src/lib/server/users/sampleUsers'
 

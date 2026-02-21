@@ -1,5 +1,5 @@
 <script>
-    import OpenLockerModal from "./OpenLockerModal.svelte";
+    import OpenLockerModal from "./modal/OpenLockerModal.svelte";
     import {getContext} from "svelte";
 
     let {reservations, devices} = $props();
