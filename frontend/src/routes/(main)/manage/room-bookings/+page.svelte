@@ -2,12 +2,10 @@
     import {getContext} from 'svelte';
     import {dev} from '$app/environment';
     import {fade} from 'svelte/transition';
-    import request from '$lib/api/api';
-    import {between, convertEventToBackend, convertEventToFrontend, fetchRoomBookings} from '$lib/utils';
+    import request from '$lib/api/api.js';
+    import {between, convertEventToBackend, convertEventToFrontend, fetchRoomBookings} from '$lib/utils.js';
     import {Button, Datepicker, Heading, Label, P, Textarea, Timepicker, Toggle} from 'flowbite-svelte';
     import WhitelistDropdown from '$lib/components/WhitelistDropdown.svelte';
-    import {m} from '$lib/paraglide/messages.js';
-
     import {TrashBinSolid} from 'flowbite-svelte-icons';
 
     import {Calendar} from '@fullcalendar/core';
@@ -15,7 +13,7 @@
     import timeGridPlugin from '@fullcalendar/timegrid';
     import listPlugin from '@fullcalendar/list';
     import interactionPlugin from '@fullcalendar/interaction';
-    import {roomBookingsPath} from '$lib/backend';
+    import {roomBookingsPath} from '$lib/backend.js';
     import {page} from '$app/state';
 
     let {data} = $props();
@@ -205,7 +203,7 @@
         });
         selectedEvent.remove();
         selectedEvent = false;
-    };
+    }
 
     function createNewBackendEvent() {
         if (dev) {
@@ -235,7 +233,7 @@
             accessibility: useWhitelist ? "WHITELIST" : whitelistDisableOverride ? "UNLOCKED" : "LOCKED",
             whitelistedUserIds: eventWhitelist
         }
-    };
+    }
 
     const confirm = getContext('confirm');
 
@@ -401,11 +399,12 @@
 
             {/if}
             {#if selectedEvent.extendedProps.status === 'REQUESTED'}
-                <Button color='green' onclick={approveEvent}>_Approve</Button>
-                <Button color='red' onclick={denyEvent}>_Deny</Button>
+                <Button color='green' onclick={approveEvent}>_Approve_</Button>
+                <Button color='red' onclick={denyEvent}>_Deny_</Button>
             {:else}
                 <Button class="cursor-pointer" onclick={saveEvent}
-                        disabled={creator[0] !== currentUser.id}>{m.save()} </Button>
+                        disabled={creator[0] !== currentUser.id}>_save_
+                </Button>
             {/if}
             {#if successRequest}
                 <p out:fade class={(successRequest.ok ? "text-green-600" : "text-red-500")+" text-xs"}>
@@ -414,10 +413,11 @@
             {/if}
         {:else}
             <div class="flex flex-col h-full justify-center items-center">
-                <Heading tag="h4"
-                         class="text-gray-500! dark:text-gray-400!">{m.admin_bookings__select_event()}</Heading>
-                <P class="text-gray-400 dark:text-gray-500! mb-2.5">{m.or()}</P>
-                <Button onclick={createEvent}>{m.admin_bookings__create_new_event()}</Button>
+                <Heading tag="h4" class="text-gray-500! dark:text-gray-400!">
+                    _select_
+                </Heading>
+                <P class="text-gray-400 dark:text-gray-500! mb-2.5">_or_</P>
+                <Button onclick={createEvent}>_new booking_</Button>
             </div>
         {/if}
     </div>
