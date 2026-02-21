@@ -1,7 +1,7 @@
 import request from './api/api';
 import {dev} from '$app/environment';
 import {error, redirect} from '@sveltejs/kit';
-import {deviceBookingsPath, hardwarePath, roomBookingsPath} from '$lib/backend';
+import {itemsBookingsPath, hardwarePath, roomBookingsPath} from '$lib/backend';
 
 export function convertEventToBackend(calendarEvent) {
     if (dev) {
@@ -62,7 +62,7 @@ export async function fetchRoomBookings(info) {
 }
 
 export async function fetchDeviceBookings(info) {
-    const url = deviceBookingsPath + `?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`;
+    const url = itemsBookingsPath + `?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`;
     const response = await request(url);
     if (!response.ok) {
         return false;

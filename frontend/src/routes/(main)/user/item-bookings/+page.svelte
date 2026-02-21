@@ -1,7 +1,6 @@
 <script>
-
     import { Heading, Card, Select, Checkbox, Datepicker, Label, Timepicker, Button, Modal } from "flowbite-svelte";
-    import {onMount, getContext} from 'svelte';
+    import {getContext} from 'svelte';
     import { fade } from 'svelte/transition';
     import { Calendar } from '@fullcalendar/core';
     import timeGridPlugin from '@fullcalendar/timegrid';
@@ -11,7 +10,7 @@
     import LockerOpenModal from "$lib/components/LockerOpenModal.svelte";
     import DevicebookingTable from "$lib/components/DevicebookingTable.svelte";
     import { fetchDeviceBookings, convertEventToFrontend } from "$lib/utils.js";
-    import { deviceBookingsPath } from "$lib/backend.js";
+    import { itemsBookingsPath } from "$lib/backend.js";
     let { data } = $props();
     
     let reservations = $derived(data.reservations);
@@ -138,7 +137,7 @@
      }
         
 
-    const response = await request(deviceBookingsPath, {
+    const response = await request(itemsBookingsPath, {
         method: 'POST',
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify(newBooking)

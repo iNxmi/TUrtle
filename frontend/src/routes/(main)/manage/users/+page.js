@@ -1,14 +1,14 @@
 import {create} from "$lib/page.js"
-import { auditLogsPath } from '$lib/backend'
+import { usersPath} from '$lib/backend'
 
 export const load = create(
-    auditLogsPath,
+    usersPath,
     [
         "id",
-        "ipAddress",
         "username",
-        "endpoint",
-        "httpMethod",
+        "firstName",
+        "lastName",
+        "email",
         "createdAt"
     ],
     ""

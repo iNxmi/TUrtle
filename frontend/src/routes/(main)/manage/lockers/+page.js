@@ -1,12 +1,12 @@
-import {create} from '$lib/page';
-import {itemsPath} from '$lib/backend';
+import {create} from "$lib/page.js"
+import {lockersPath} from '$lib/backend';
 
 export const load = create(
-    itemsPath,
+    lockersPath,
     [
         "id",
         "name",
-        "acquiredAt",
+        "index",
         "updatedAt",
         "createdAt"
     ],

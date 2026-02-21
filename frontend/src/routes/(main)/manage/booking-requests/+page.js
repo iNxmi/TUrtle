@@ -1,10 +1,9 @@
 import request from "$lib/api/api";
 import { checkAuthorization } from "$lib/utils";
-import { usersPath, deviceBookingsPath } from '$lib/backend';
+import { usersPath, itemsBookingsPath } from '$lib/backend';
 import { create } from "$lib/page";
 export const load = create(
-    [deviceBookingsPath, usersPath],
-
+    [itemsBookingsPath, usersPath],
     [
         'id',
         'userId',

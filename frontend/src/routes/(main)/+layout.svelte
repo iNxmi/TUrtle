@@ -27,121 +27,123 @@
     let user = $derived(data.user);
 
     const publicItems = [{
-        label: m.navigation_public_home(),
+        label: m.main_navigation_public_home(),
         href: "/",
         icon: HomeSolid
     }, {
-        label: m.navigation_public_faq(),
+        label: m.main_navigation_public_faq(),
         href: "/faq",
         icon: QuestionCircleSolid
     }, {
-        label: m.navigation_public_contact(),
+        label: m.main_navigation_public_contact(),
         href: "/contact",
         icon: UserHeadsetSolid
-    }];
+    }].sort((a, b) => a.href.localeCompare(b.href));
 
     const userItems = [{
-        label: m.navigation_user_dashboard(),
+        label: m.main_navigation_user_dashboard(),
         href: "/user/dashboard",
         icon: ChartOutline
     }, {
-        label: m.navigation_user_item_bookings(),
+        label: m.main_navigation_user_item_bookings(),
         href: "/user/item-bookings",
         icon: CalendarEditSolid
     }, {
         permission: "REQUEST_ROOM_BOOKINGS",
-        label: m.navigation_user_room_bookings(),
+        label: m.main_navigation_user_room_bookings(),
         href: "/user/room-bookings",
         icon: CalendarEditSolid
     }, {
-        label: m.navigation_user_profile(),
+        label: m.main_navigation_user_profile(),
         href: "/user/profile",
         icon: UserSolid
-    }].filter(item => user != null && (!item.permission || permissions.includes(item.permission)));
+    }].filter(item => user != null && (!item.permission || permissions.includes(item.permission)))
+        .sort((a, b) => a.href.localeCompare(b.href));
 
     const manageItems = [{
         permission: "MANAGE_USERS",
-        label: m.navigation_manage_users(),
+        label: m.main_navigation_manage_users(),
         href: "/manage/users",
         icon: UsersGroupSolid
     }, {
         permission: "MANAGE_ROLES",
-        label: m.navigation_manage_roles(),
+        label: m.main_navigation_manage_roles(),
         href: "/manage/roles",
         icon: UsersGroupSolid
     }, {
         permission: "MANAGE_ITEMS",
-        label: m.navigation_manage_items(),
+        label: m.main_navigation_manage_items(),
         href: "/manage/items",
         icon: ClipboardSolid
     }, {
         permission: "MANAGE_ITEM_CATEGORIES",
-        label: m.navigation_manage_item_categories(),
+        label: m.main_navigation_manage_item_categories(),
         href: "/manage/item-categories",
         icon: ClipboardSolid
     }, {
         permission: "MANAGE_ROOM_BOOKINGS",
-        label: m.navigation_manage_room_bookings(),
+        label: m.main_navigation_manage_room_bookings(),
         href: "/manage/room-bookings",
         icon: CalendarEditSolid
     }, {
         permission: "MANAGE_ITEM_BOOKINGS",
-        label: m.navigation_manage_item_bookings(),
+        label: m.main_navigation_manage_item_bookings(),
         href: "/manage/item-bookings",
         icon: CalendarEditSolid
     }, {
         permission: "MANAGE_AUDIT_LOGS",
-        label: m.navigation_manage_audit_logs(),
+        label: m.main_navigation_manage_audit_logs(),
         href: "/manage/audit-logs",
         icon: BookOpenSolid
     }, {
         permission: "MANAGE_GENERAL_TEMPLATES",
-        label: m.navigation_manage_content_templates(),
+        label: m.main_navigation_manage_content_templates(),
         href: "/manage/content-templates",
         icon: FilePasteSolid
     }, {
         permission: "MANAGE_EMAIL_TEMPLATES",
-        label: m.navigation_manage_email_templates(),
+        label: m.main_navigation_manage_email_templates(),
         href: "/manage/email-templates",
         icon: FilePasteSolid
     }, {
         permission: "MANAGE_FAQ",
-        label: m.navigation_manage_faq(),
+        label: m.main_navigation_manage_faq(),
         href: "/manage/faq",
         icon: FilePasteSolid
     }, {
         permission: "MANAGE_LOCKERS",
-        label: m.navigation_manage_lockers(),
+        label: m.main_navigation_manage_lockers(),
         href: "/manage/lockers",
         icon: PaperClipOutline
     }, {
         permission: "MANAGE_SUPPORT_TICKETS",
-        label: m.navigation_manage_support_tickets(),
+        label: m.main_navigation_manage_support_tickets(),
         href: "/manage/support-tickets",
         icon: UserHeadsetSolid
     }, {
         permission: "MANAGE_EXCEPTIONS",
-        label: m.navigation_manage_exceptions(),
+        label: m.main_navigation_manage_exceptions(),
         href: "/manage/exceptions",
         icon: BugSolid
     }, {
-        permission: "MANAGE_SYSTEM_SETTINGS",
-        label: m.navigation_manage_system_settings(),
-        href: "/manage/system-settings",
+        permission: "MANAGE_CONFIGURATION",
+        label: m.main_navigation_manage_configuration(),
+        href: "/manage/configuration",
         icon: AdjustmentsVerticalSolid
-    }].filter(item => !item.permission || permissions.includes(item.permission));
+    }].filter(item => !item.permission || permissions.includes(item.permission))
+        .sort((a, b) => a.href.localeCompare(b.href));
 
     let categories = [{
         icon: GlobeOutline,
-        label: m.navigation_category_public(),
+        label: m.main_navigation_category_public(),
         items: publicItems
     }, {
         icon: UserCircleOutline,
-        label: m.navigation_category_user(),
+        label: m.main_navigation_category_user(),
         items: userItems
     }, {
         icon: TerminalOutline,
-        label: m.navigation_category_manage(),
+        label: m.main_navigation_category_manage(),
         items: manageItems
     }].filter(category => category.items.length > 0);
 
@@ -157,7 +159,7 @@
     />
 
     <div class="w-full bg-background max-h-svh overflow-y-auto">
-        <div class="min-h-svh max-h-svh p-5">
+        <div class="min-h-svh p-5">
             <ConfirmProvider>
                 {@render children?.()}
             </ConfirmProvider>

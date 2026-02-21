@@ -16,17 +16,17 @@
     let content = $derived(data.content);
 
     const urgencies = [
-        {value: "LOW", name: m.contact__urgency_low()},
-        {value: "MEDIUM", name: m.contact__urgency_medium()},
-        {value: "HIGH", name: m.contact__urgency_high()},
-        {value: "CRITICAL", name: m.contact__urgency_critical()}
+        {value: "LOW", name: m.modal_contact_urgency_low()},
+        {value: "MEDIUM", name: m.modal_contact_urgency_medium()},
+        {value: "HIGH", name: m.modal_contact_urgency_high()},
+        {value: "CRITICAL", name: m.modal_contact_urgency_critical()}
     ];
 
     const categories = [
-        {value: "TECHNICAL", name: m.contact__category_technical()},
-        {value: "BILLING", name: m.contact__category_billing()},
-        {value: "GENERAL", name: m.contact__category_general()},
-        {value: "OTHER", name: m.contact__category_other()}
+        {value: "TECHNICAL", name: m.modal_contact_category_technical()},
+        {value: "BILLING", name: m.modal_contact_category_billing()},
+        {value: "GENERAL", name: m.modal_contact_category_general()},
+        {value: "OTHER", name: m.modal_contact_category_other()}
     ];
 
     async function send(event) {
@@ -52,40 +52,40 @@
 <div class="flex flex-col gap-10">
     <form class="flex flex-col gap-5" onsubmit={send}>
         <Heading class="text-center" tag="h3">
-            {m.contact__title()}
+            {m.modal_contact_title()}
         </Heading>
 
         <div class="flex gap-5">
             <Label class="flex flex-1 flex-col">
-                <span>{m.contact__urgency_label()}</span>
+                <span>{m.modal_contact_label_urgency()}</span>
                 <Select bind:value={urgency} items={urgencies} required/>
             </Label>
             <Label class="flex flex-1 flex-col">
-                <span>{m.contact__category_label()}</span>
+                <span>{m.modal_contact_label_category()}</span>
                 <Select bind:value={category} items={categories} required/>
             </Label>
         </div>
 
         <Label>
-            <span>{m.contact__email_label()}</span>
+            <span>{m.modal_contact_label_email()}</span>
             <Input bind:value={email} type="email" required/>
         </Label>
 
         <Label>
-            <span>{m.contact__subject_label()}</span>
+            <span>{m.modal_contact_label_subject()}</span>
             <Input bind:value={subject} type="text" required/>
         </Label>
 
         <Label>
-            <span>{m.contact__description_label()}</span>
-            <Textarea bind:value={description} class="w-full" placeholder="_describe_your_issue" required/>
+            <span>{m.modal_contact_label_description()}</span>
+            <Textarea bind:value={description} class="w-full" placeholder={m.modal_contact_placeholder_description()} required/>
         </Label>
 
-        <Checkbox required>{m.contact__i_agree_to_tos()}</Checkbox>
+        <Checkbox required>{m.modal_contact_label_i_agree_to_tos()}</Checkbox>
 
         <Altcha bind:value={altchaToken}/>
 
-        <Button type="submit">{m.contact__button()}</Button>
+        <Button type="submit">{m.modal_contact_button()}</Button>
     </form>
 
     <Hr class="m-0 p-0"/>

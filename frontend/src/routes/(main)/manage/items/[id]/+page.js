@@ -1,13 +1,13 @@
 import request from "$lib/api/api";
-import { devicesPath, deviceCategoriesPath} from '$lib/backend'
+import { itemsPath, itemCategoriesPath} from '$lib/backend'
 
 export async function load({params}){
-    const deviceResponse = await request(devicesPath+`/${params.id}`);
+    const deviceResponse = await request(itemsPath+`/${params.id}`);
 
     if(deviceResponse.ok){
 
         const device = await deviceResponse.json();
-        const categoryResponse = await request(deviceCategoriesPath+`/${device.category}`);
+        const categoryResponse = await request(itemCategoriesPath+`/${device.category}`);
 
         if(categoryResponse.ok){
             const category = await categoryResponse.json();

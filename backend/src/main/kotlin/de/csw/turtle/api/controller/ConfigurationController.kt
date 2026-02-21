@@ -48,7 +48,7 @@ class ConfigurationController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS))
+        if (!user.hasPermission(Permission.MANAGE_CONFIGURATION))
             throw HttpException.Forbidden()
 
         return ResponseEntity.ok(dto)
@@ -68,7 +68,7 @@ class ConfigurationController(
         httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
 
-        val specification = if (user == null || !user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS)) {
+        val specification = if (user == null || !user.hasPermission(Permission.MANAGE_CONFIGURATION)) {
             Specification { root, _, builder ->
                 builder.equal(
                     root.get<ConfigurationEntity.Visibility>("visibility"),
@@ -107,7 +107,7 @@ class ConfigurationController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_SYSTEM_SETTINGS))
+        if (!user.hasPermission(Permission.MANAGE_CONFIGURATION))
             throw HttpException.Forbidden()
 
         val entity = configurationService.patch(

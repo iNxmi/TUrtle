@@ -1,6 +1,6 @@
 <script>
     import ItemDetailsPage from "$lib/components/ItemDetailsPage.svelte";
-    import { usersPath, devicesPath} from '$lib/backend'
+    import { usersPath, itemsPath} from '$lib/backend'
    
     let { data } = $props();
     
@@ -17,7 +17,7 @@
         {
             name: '_Device_',
             value: device.name,
-            endpoint: devicesPath+`/${device.id}`
+            endpoint: itemsPath+`/${device.id}`
         },
         {
             name: '_Start_',

@@ -3,7 +3,7 @@
     import {m} from '$lib/paraglide/messages.js';
     import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
 	import request from "$lib/api/api.js";
-    import { templatesPath } from "$lib/backend.js";
+    import { contentTemplatesPath } from "$lib/backend.js";
 
     let {data} = $props();
     let template = $derived(data.template);
@@ -20,7 +20,7 @@
 
     async function saveTemplate() {
 
-        const response = request(templatesPath+`/${template.id}`, {
+        const response = request(contentTemplatesPath+`/${template.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

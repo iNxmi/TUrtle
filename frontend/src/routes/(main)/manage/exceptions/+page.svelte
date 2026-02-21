@@ -2,8 +2,6 @@
     import {m} from '$lib/paraglide/messages.js';
     import TableView from "$lib/components/TableView.svelte"
 
-    import {Heading} from "flowbite-svelte";
-
     const {data} = $props();
 
     const headers = [
@@ -15,12 +13,7 @@
     ]
 </script>
 
-<div class="flex flex-col gap-10">
-    <Heading tag="h2" class="text-center">{m.admin_exceptions__title()}</Heading>
-
-    <TableView
-            endpoint="/admin/exceptions"
-            headers={headers}
-            contentPage={data.page}
-    />
-</div>
+<TableView endpoint="/manage/exceptions"
+           headers={headers}
+           contentPage={data.page}
+/>

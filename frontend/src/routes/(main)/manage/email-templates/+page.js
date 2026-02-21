@@ -1,14 +1,16 @@
 import {create} from "$lib/page.js"
-import { contentTemplatesPath} from '$lib/backend';
+import {emailTemplatesPath} from '$lib/backend';
 
 
 export const load = create(
-    contentTemplatesPath,
+    emailTemplatesPath,
     [
         "id",
         "name",
         "description",
+        "subject",
         "content",
         "createdAt"
-    ]
+    ],
+    ""
 )

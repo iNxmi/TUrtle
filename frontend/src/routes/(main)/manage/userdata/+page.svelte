@@ -5,7 +5,7 @@
     import { Tabs, TabItem} from 'flowbite-svelte';
     import {goto} from "$app/navigation";
     import { page } from '$app/state';
-    import { usersPath, deviceBookingsPath } from '$lib/backend.js';
+    import { usersPath, itemsBookingsPath } from '$lib/backend.js';
 
     import {Heading} from "flowbite-svelte";
 
@@ -33,29 +33,15 @@
     let currentTab = $state(page.url.searchParams.get("endpoint" || '/users'));
 
 </script>
-<!-- <div class="flex flex-col gap-10"> -->
-    <Tabs>
-        {#if data.userPermissions.includes('MANAGE_USERS')}
-        <TabItem onclick={() => goto(`?endpoint=${usersPath}`, {invalidateAll: true})} classes={{button:"cursor-pointer"}} open={currentTab === usersPath} title="_Users_">
-            <Heading tag="h2" class="text-center mb-4">{m.admin_users__title()}</Heading>
-            <TableView
-                    endpoint="/admin/users"
-                    headers={usersHeaders}
-                    contentPage={data.page}
-                    bind:showNewElementModal={showNewElementModal}
-            />
-        </TabItem>
-        {/if}
-        {#if data.userPermissions.includes('MANAGE_ITEM_BOOKINGS')}
-        <TabItem onclick={() => goto(`?endpoint=${deviceBookingsPath}`, {invalidateAll: true})} classes={{button:"cursor-pointer"}} title="devicebookings" open={currentTab === deviceBookingsPath}>
-            <Heading tag="h2" class="text-center mb-4">_Device Booking Management_</Heading>
+
+
+       <Heading tag="h2" class="text-center mb-4">_Device Booking Management_</Heading>
             <TableView 
             endpoint="/admin/item-bookings"
             headers={itembookingsHeaders}
             contentPage={data.page}
             hideAdd={true}/>
-        </TabItem>
-        {/if}
-    </Tabs>
-<!-- </div> -->
+
+
+
 <NewUserModal bind:showModal={showNewElementModal} />
