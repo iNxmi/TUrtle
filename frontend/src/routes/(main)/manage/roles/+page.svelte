@@ -11,8 +11,7 @@
     ]
 </script>
 
-<TableView
-        endpoint="/manage/roles"
-        headers={headers}
-        contentPage={data.page}
+<TableView endpoint="/manage/roles"
+           headers={headers}
+           contentPage={data.page}
 />

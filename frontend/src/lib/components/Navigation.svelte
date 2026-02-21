@@ -13,6 +13,7 @@
         Button,
         ButtonGroup,
         Dropdown,
+        DropdownHeader,
         DropdownItem,
         Heading,
         Hr,
@@ -220,7 +221,7 @@
                             <Button name="button_logout" class="flex-1" onclick={signOut}>
                                 <div class="flex gap-2 items-center">
                                     <ArrowRightToBracketOutline/>
-                                    <Span>{m.navigation_auth_logout()}</Span>
+                                    <Span>{m.main_navigation_button_logout()}</Span>
                                 </div>
                             </Button>
                         </ButtonGroup>
@@ -229,13 +230,13 @@
                             <Button name="button_login" class="flex-1" onclick={() => (loginModal = true)}>
                                 <div class="flex gap-2 items-center">
                                     <ArrowLeftToBracketOutline/>
-                                    <Span>{m.navigation_auth_login()}</Span>
+                                    <Span>{m.main_navigation_button_login()}</Span>
                                 </div>
                             </Button>
                             <Button name="button_register" class="flex-1" onclick={() => (registerModal = true)}>
                                 <div class="flex gap-2 items-center">
                                     <UserAddOutline/>
-                                    <Span>{m.navigation_auth_register()}</Span>
+                                    <Span>{m.main_navigation_button_register()}</Span>
                                 </div>
                             </Button>
                         </ButtonGroup>

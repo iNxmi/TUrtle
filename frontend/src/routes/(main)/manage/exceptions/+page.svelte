@@ -5,11 +5,11 @@
     const {data} = $props();
 
     const headers = [
-        {id: "id", display: m.admin_exceptions__id_label()},
-        {id: "endpoint", display: m.admin_exceptions__endpoint_label()},
-        {id: "exception", display: m.admin_exceptions__exception_label()},
-        {id: "message", display: m.admin_exceptions__message_label()},
-        {id: "createdAt", display: m.admin_exceptions__created_at_label()},
+        {id: "id", display: m.manage_exceptions_label_id()},
+        {id: "endpoint", display: m.manage_exceptions_label_endpoint()},
+        {id: "exception", display: m.manage_exceptions_label_exception()},
+        {id: "message", display: m.manage_exceptions_label_message()},
+        {id: "createdAt", display: m.manage_exceptions_label_created_at()},
     ]
 </script>
 

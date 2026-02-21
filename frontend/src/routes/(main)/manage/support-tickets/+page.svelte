@@ -5,12 +5,12 @@
     const {data} = $props();
 
     const headers = [
-        {id: "id", display: m.admin_support__id_label()},
-        {id: "urgency", display: m.admin_support__urgency_label()},
-        {id: "category", display: m.admin_support__category_label()},
-        {id: "subject", display: m.admin_support__subject_label()},
-        {id: "email", display: m.admin_support__email_label()},
-        {id: "createdAt", display: m.admin_support__created_at_label()}
+        {id: "id", display: m.manage_support_tickets_label_id()},
+        {id: "urgency", display: m.manage_support_tickets_label_urgency()},
+        {id: "category", display: m.manage_support_tickets_label_category()},
+        {id: "subject", display: m.manage_support_tickets_label_subject()},
+        {id: "email", display: m.manage_support_tickets_label_email()},
+        {id: "createdAt", display: m.manage_support_tickets_label_created_at()}
     ]
 </script>
 
