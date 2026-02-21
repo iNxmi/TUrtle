@@ -88,6 +88,18 @@
   "faq_title": "Frequently Asked Questions",
   "faq_label_problem_not_solved": "Problem not solved? Contact us.",
 
+  "tos_title": "Terms of Service",
+  "gdpr_title": "General Data Protection Regulation",
+  "imprint_title": "Imprint",
+  "about_title": "About",
+
+  "user_profile_label_username": "Username",
+  "user_profile_label_first_name": "First Name",
+  "user_profile_label_last_name": "Last Name",
+  "user_profile_label_roles": "Roles",
+  "user_profile_label_email": "Email",
+  "user_profile_label_created_at": "Created At",
+
   "manage_items_label_id": "ID",
   "manage_items_label_name": "Name",
   "manage_items_label_acquired_at": "Acquired At",
@@ -157,18 +169,5 @@
   "manage_content_templates_label_id": "ID",
   "manage_content_templates_label_name": "Name",
   "manage_content_templates_label_description": "Description",
-  "manage_content_templates_label_created_at": "Created At",
-
-  "tos_title": "Terms of Service",
-  "gdpr_title": "General Data Protection Regulation",
-  "imprint_title": "Imprint",
-  "about_title": "About",
-
-  "user_profile_title": "Profile",
-  "user_profile_label_username": "Username",
-  "user_profile_label_first_name": "First Name",
-  "user_profile_label_last_name": "Last Name",
-  "user_profile_label_roles": "Roles",
-  "user_profile_label_email": "Email",
-  "user_profile_label_created_at": "Created At"
+  "manage_content_templates_label_created_at": "Created At"
 }
