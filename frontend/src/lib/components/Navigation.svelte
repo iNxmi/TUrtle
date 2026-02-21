@@ -2,18 +2,16 @@
     import RegisterModal from "$lib/components/modal/RegisterModal.svelte"
     import LoginModal from "$lib/components/modal/LoginModal.svelte"
     import OpenDoorModal from "$lib/components/modal/OpenDoorModal.svelte";
+    import LanguageDropdown from "$lib/components/LanguageDropdown.svelte";
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
     import {m} from "$lib/paraglide/messages.js";
     import {goto} from "$app/navigation";
     import {page} from "$app/state";
     import request from "$lib/api/api";
-    import {setContext} from "svelte";
-    import {setLocale} from "$lib/paraglide/runtime.js";
+
     import {
         Button,
         ButtonGroup,
-        Dropdown,
-        DropdownItem,
         Heading,
         Hr,
         Sidebar,
@@ -23,8 +21,6 @@
         SidebarGroup,
         Span
     } from "flowbite-svelte";
-
-    import {Arab, De, Es, Fr, Hu, Jp, Ro, Ru, Us, Vi} from "svelte-flag-icons";
 
     import {
         ArrowLeftToBracketOutline,
@@ -47,39 +43,6 @@
         hideAuthButtons = false,
         showLogoutButton = false
     } = $props()
-
-    let language = $state(localStorage.getItem("PARAGLIDE_LOCALE") || "en");
-    setContext("locale", () => language);
-    $effect(() => {
-        if (language)
-            setLocale(language);
-    })
-
-    const languageIcons = {
-        "en": Us,
-        "de": De,
-        "ja": Jp,
-        "ar": Arab,
-        "ru": Ru,
-        "vi": Vi,
-        "hu": Hu,
-        "ro": Ro,
-        "fr": Fr,
-        "es": Es,
-    }
-
-    const languages = [
-        {value: "en", name: "English"},
-        {value: "de", name: "Deutsch"},
-        {value: "ja", name: "日本語"},
-        {value: "ar", name: "عربي"},
-        {value: "ru", name: "Русский"},
-        {value: "vi", name: "Tiếng Việt"},
-        {value: "hu", name: "Magyar"},
-        {value: "ro", name: "Română"},
-        {value: "fr", name: "Français"},
-        {value: "es", name: "Español"}
-    ].sort((a, b) => a.value.localeCompare(b.value));
 
     let darkmode = $state(localStorage.getItem("darkmode") || false);
 
@@ -190,17 +153,7 @@
 
                             {#if !hideLanguageButton}
                                 <Button name="button_change_language" color="alternative" class="flex-1">
-                                    <Dropdown class="h-64 overflow-y-auto" simple>
-                                        {#each languages as language}
-                                            <DropdownItem class="w-full" onclick={() => setLocale(language.value)}>
-                                                <div class="flex gap-2 items-center">
-                                                    <svelte:component this={languageIcons[language.value]}
-                                                                      class="m-0 p-0"/>
-                                                    <span class="text-center">{language.name}</span>
-                                                </div>
-                                            </DropdownItem>
-                                        {/each}
-                                    </Dropdown>
+                                    <LanguageDropdown/>
                                     <LanguageOutline/>
                                 </Button>
                             {/if}
