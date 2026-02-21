@@ -8,7 +8,7 @@
         endpoint,
         headers = [],
         contentPage,
-        showNewElementModal = $bindable(),
+        onCreate = () => {}
     } = $props();
 
     let items = $derived.by(() => {
@@ -39,7 +39,6 @@
         headers={headers}
         items={items}
         page={pageInfo}
-        bind:showNewElementModal={showNewElementModal}
 
         sortProperty={searchParams.get("sortProperty")}
         sortDirection={searchParams.get("sortDirection")}
@@ -82,5 +81,6 @@
         }}
 
         onReload={() => invalidateAll()}
+        onCreate={onCreate}
 />
  

@@ -11,7 +11,7 @@
     }
 
     let {
-        open = false
+        open = $bindable(false)
     } = $props();
 
 </script>

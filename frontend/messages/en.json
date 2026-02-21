@@ -100,6 +100,13 @@
   "user_profile_label_email": "Email",
   "user_profile_label_created_at": "Created At",
 
+  "user_item_bookings_label_id": "ID",
+  "user_item_bookings_label_item_id": "Item ID",
+  "user_item_bookings_label_start": "Start",
+  "user_item_bookings_label_end": "End",
+  "user_item_bookings_label_updated_at": "Updated At",
+  "user_item_bookings_label_created_at": "Created At",
+
   "manage_items_label_id": "ID",
   "manage_items_label_name": "Name",
   "manage_items_label_acquired_at": "Acquired At",

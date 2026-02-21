@@ -1,9 +1,9 @@
 import request from "$lib/api/api.js";
-import {itemsBookingsPath, itemsPath, usersPath} from '$lib/backend.js';
+import {itemBookingsPath, itemsPath, usersPath} from '$lib/backend.js';
 
 export async function load({params}) {
 
-    const devicebookingResponse = await request(itemsBookingsPath + `/${params.id}`);
+    const devicebookingResponse = await request(itemBookingsPath + `/${params.id}`);
 
     if (devicebookingResponse.ok) {
         const deviceBooking = await devicebookingResponse.json();

@@ -16,7 +16,7 @@
     let showPassword = $state(false);
 
     let {
-        open = false
+        open = $bindable(false)
     } = $props();
 
     async function login(event) {

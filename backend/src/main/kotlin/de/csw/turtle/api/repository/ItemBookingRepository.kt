@@ -18,7 +18,7 @@ interface ItemBookingRepository : CRUDRepository<ItemBookingEntity> {
     fun findAllOverlapping(
         @Param("start") start: Instant,
         @Param("end") end: Instant,
-        @Param("item") itemId: Long,
+        @Param("itemId") itemId: Long,
         @Param("id") id: Long
     ): Set<ItemBookingEntity>
 

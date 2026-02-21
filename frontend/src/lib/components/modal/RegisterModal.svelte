@@ -19,7 +19,7 @@
     let showPasswordRepeat = $state(false);
 
     let {
-        open
+        open = $bindable(false)
     } = $props();
 
     async function register(event) {

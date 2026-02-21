@@ -1,8 +1,8 @@
-import {itemsBookingsPath, usersPath} from '$lib/backend.js';
+import {itemBookingsPath, usersPath} from '$lib/backend.js';
 import {create} from "$lib/page.js";
 
 export const load = create(
-    [itemsBookingsPath, usersPath],
+    [itemBookingsPath, usersPath],
     [
         'id',
         'userId',
@@ -12,5 +12,6 @@ export const load = create(
         'status',
         'updatedAt',
         'createdAt'
-    ]
+    ],
+    ""
 )

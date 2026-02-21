@@ -55,15 +55,10 @@
         disableAdd = false,
         disableReload = false,
         disablePagination = false,
-        disableSearch = false,
-        showNewElementModal = $bindable()
+        disableSearch = false
     } = $props();
 
-    onCreate = () => {
-        showNewElementModal = true;
-    }
     let search = $state("");
-
 </script>
 
 <Card class="min-w-full max-h-full overflow-clip">
@@ -87,7 +82,7 @@
                 {/if}
 
                 {#if !hideAdd}
-                    <Button class="hover:cursor-pointer" onclick={onCreate} disabled={disableAdd}>
+                    <Button class="hover:cursor-pointer" onclick={() => onCreate()} disabled={disableAdd}>
                         <PlusOutline/>
                     </Button>
                 {/if}

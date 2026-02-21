@@ -8,34 +8,39 @@
 
 <form class="flex flex-col gap-5">
     <Label>
-        <span>{m.admin_users_id__username_label()}</span>
+        <span>{m.manage_users_label_id()}</span>
+        <Input type="text" value={user.id} disabled/>
+    </Label>
+
+    <Label>
+        <span>{m.manage_users_label_username()}</span>
         <Input type="text" value={user.username} disabled/>
     </Label>
 
     <div class="flex gap-5">
         <Label class="flex-1">
-            <span>{m.admin_users_id__first_name_label()}</span>
+            <span>{m.manage_users_label_first_name()}</span>
             <Input ype="text" value={user.firstName} disabled/>
         </Label>
 
         <Label class="flex-1">
-            <span>{m.admin_users_id__last_name_label()}</span>
+            <span>{m.manage_users_label_last_name()}</span>
             <Input type="text" value={user.lastName} disabled/>
         </Label>
     </div>
 
     <Label>
-        <span>{m.admin_users_id__email_label()}</span>
+        <span>{m.manage_users_label_email()}</span>
         <Input type="text" value={user.email} disabled/>
     </Label>
 
     <Label>
-        <span>{m.admin_users_id__roles_label()}</span>
+        <span>{m.manage_users_label_roles()}</span>
         <Input type="text" value={JSON.stringify(user.roles)} disabled/>
     </Label>
 
     <Label>
-        <span>{m.admin_users_id__created_at_label()}</span>
+        <span>{m.manage_users_label_created_at()}</span>
         <Input type="text" value={(new Date(user.createdAt)).toLocaleString()} disabled/>
     </Label>
 </form>
