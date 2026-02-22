@@ -1,13 +1,12 @@
 <script>
     import RegisterModal from "$lib/components/modal/RegisterModal.svelte"
     import LoginModal from "$lib/components/modal/LoginModal.svelte"
+    import LogoutModal from "$lib/components/modal/LogoutModal.svelte"
     import OpenDoorModal from "$lib/components/modal/OpenDoorModal.svelte";
     import LanguageDropdown from "$lib/components/LanguageDropdown.svelte";
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
     import {m} from "$lib/paraglide/messages.js";
-    import {goto} from "$app/navigation";
     import {page} from "$app/state";
-    import request from "$lib/api/api";
 
     import {
         Button,
@@ -57,14 +56,8 @@
     let innerWidth = $state();
     let isOpen = $derived(!innerWidth || innerWidth >= 768);
 
-    async function signOut() {
-        const response = await request("/auth/logout", {method: "POST"});
-
-        if (response.ok)
-            await goto("/", {invalidateAll: true});
-    }
-
     let loginModal = $state(false);
+    let logoutModal = $state(false);
     let registerModal = $state(false);
     let openDoorModal = $state(false);
 </script>
@@ -171,7 +164,7 @@
                 {#if !hideAuthButtons}
                     {#if showLogoutButton}
                         <ButtonGroup className="flex">
-                            <Button name="button_logout" class="flex-1" onclick={signOut}>
+                            <Button name="button_logout" class="flex-1" onclick={() => logoutModal = true}>
                                 <div class="flex gap-2 items-center">
                                     <ArrowRightToBracketOutline/>
                                     <Span>{m.main_navigation_button_logout()}</Span>
@@ -180,13 +173,13 @@
                         </ButtonGroup>
                     {:else}
                         <ButtonGroup className="flex">
-                            <Button name="button_login" class="flex-1" onclick={() => (loginModal = true)}>
+                            <Button name="button_login" class="flex-1" onclick={() => loginModal = true}>
                                 <div class="flex gap-2 items-center">
                                     <ArrowLeftToBracketOutline/>
                                     <Span>{m.main_navigation_button_login()}</Span>
                                 </div>
                             </Button>
-                            <Button name="button_register" class="flex-1" onclick={() => (registerModal = true)}>
+                            <Button name="button_register" class="flex-1" onclick={() => registerModal = true}>
                                 <div class="flex gap-2 items-center">
                                     <UserAddOutline/>
                                     <Span>{m.main_navigation_button_register()}</Span>
@@ -201,5 +194,6 @@
 </Sidebar>
 
 <LoginModal bind:open={loginModal}/>
+<LogoutModal bind:open={logoutModal}/>
 <RegisterModal bind:open={registerModal}/>
 <OpenDoorModal bind:open={openDoorModal}/>

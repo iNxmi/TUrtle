@@ -28,7 +28,7 @@
         };
 
         const response = await request(authPath + '/login', {
-            method: 'POST',
+            method: "POST",
             body: JSON.stringify(payload),
             headers: {'Content-Type': 'application/json'}
         });

@@ -9,13 +9,14 @@
     } = $props();
 
     async function unlock(event) {
-        event.preventDefault()
+        event.preventDefault();
 
         const response = await request(`/hardware/locker/open?id=${locker.id}`, {method: "POST"});
+        if (!response.ok)
+            return;
 
         open = false;
     }
-
 </script>
 
 <Modal form bind:open={open} size="sm">
@@ -34,8 +35,12 @@
         </h3>
 
         <div class="flex gap-2">
-            <Button type="submit" value="unlock" color="red" onclick={unlock}>_Unlock_</Button>
-            <Button type="submit" value="cancel" color="alternative" onclick={() => open = false}>_Cancel_</Button>
+            <Button color="red" onclick={unlock}>
+                _Unlock_
+            </Button>
+            <Button color="alternative" onclick={() => open = false}>
+                _Cancel_
+            </Button>
         </div>
     </div>
 </Modal>

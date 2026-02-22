@@ -47,6 +47,11 @@
   "modal_door_button_unlock": "Unlock",
   "modal_door_button_cancel": "Cancel",
 
+  "modal_logout_title": "Logout",
+  "modal_logout_content": "Do you really want to logout?",
+  "modal_logout_button_logout": "Logout",
+  "modal_logout_button_cancel": "Cancel",
+
   "modal_login_title": "Login to TUrtle",
   "modal_login_label_username_or_email": "Email or Username",
   "modal_login_label_password": "Password",
