@@ -13,7 +13,7 @@
         event.preventDefault()
 
         const response = await request("/auth/logout", {method: "POST"})
-        if (!response.ok)
+        if (response.status !== 204)
             return;
 
         await invalidateAll();
