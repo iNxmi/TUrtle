@@ -61,20 +61,19 @@
     let search = $state("");
 </script>
 
-<Card class="min-w-full max-h-full overflow-clip">
-
+<Card class="min-w-full min-h-full overflow-auto">
     {#if !hideSearch || !hideAdd || !hideReload}
-        <div class="flex flex-row gap-2 justify-between p-2">
+        <div class="flex gap-2 justify-between p-2">
             {#if !hideSearch}
-                <ButtonGroup disabled={disableSearch}>
-                    <Input class="field-sizing-content min-w-100 max-w-7xl" placeholder={`_search_`} bind:value={search}
+                <ButtonGroup disabled={disableSearch} class="flex-1">
+                    <Input placeholder={`_search_`} bind:value={search}
                            disabled={disableSearch}/>
                     <Button class="cursor-pointer bg-orange-400" onclick={() => onSearch(search)}>
                         <SearchOutline class="text-white"/>
                     </Button>
                 </ButtonGroup>
             {/if}
-            <div class="flex flex-row gap-2 justify-end">
+            <div class="flex-2 flex gap-2 justify-end">
                 {#if !hideReload}
                     <Button class="hover:cursor-pointer" onclick={() => onReload()} disabled={disableReload}>
                         <RefreshOutline/>
@@ -129,8 +128,7 @@
             {#if !hideCount}
                 <ButtonGroup>
                     <Button disabled>
-                        {page.number * page.size + 1} - {Math.min((page.number + 1) * page.size, page.totalElements)}
-                        ({page.totalElements})
+                        {page.number * page.size + 1} - {Math.min((page.number + 1) * page.size, page.totalElements)} ({page.totalElements})
                     </Button>
                 </ButtonGroup>
             {/if}
