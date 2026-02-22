@@ -46,9 +46,9 @@
         icon: UserHeadsetSolid
     }].sort((a, b) => a.href.localeCompare(b.href));
 
-    const userItems = [{
+    const userItems = $derived([{
         label: m.main_navigation_item_user_dashboard(),
-        keys: ["/user/darhboard"],
+        keys: ["/user/dashboard"],
         href: "/user/dashboard",
         icon: ChartOutline
     }, {
@@ -68,9 +68,9 @@
         href: "/user/profile",
         icon: UserSolid
     }].filter(item => user != null && (!item.permissions || item.permissions.some(p => permissions.includes(p))))
-        .sort((a, b) => a.href.localeCompare(b.href));
+        .sort((a, b) => a.href.localeCompare(b.href)));
 
-    const manageItems = [{
+    const manageItems = $derived([{
         permissions: ["MANAGE_USERS"],
         label: m.main_navigation_item_manage_users(),
         keys: ["/manage/users"],
@@ -155,9 +155,9 @@
         href: "/manage/configuration",
         icon: AdjustmentsVerticalSolid
     }].filter(item => !item.permissions || item.permissions.some(p => permissions.includes(p)))
-        .sort((a, b) => a.href.localeCompare(b.href));
+        .sort((a, b) => a.href.localeCompare(b.href)));
 
-    let categories = [{
+    let categories = $derived([{
         icon: GlobeOutline,
         label: m.main_navigation_category_public(),
         items: publicItems
@@ -169,9 +169,9 @@
         icon: TerminalOutline,
         label: m.main_navigation_category_manage(),
         items: manageItems
-    }].filter(category => category.items.length > 0);
+    }].filter(category => category.items.length > 0));
 
-    let header = user !== null ? `${user.firstName} ${user.lastName}` : null;
+    let header = $derived(user !== null ? `${user.firstName} ${user.lastName}` : null);
 </script>
 
 <div class="flex">

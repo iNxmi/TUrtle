@@ -4,7 +4,7 @@
     import request from "$lib/api/api.js";
     import {EyeOutline, EyeSlashOutline} from "flowbite-svelte-icons";
     import {dev} from "$app/environment";
-    import {goto} from "$app/navigation";
+    import {goto, invalidateAll} from "$app/navigation";
     import {page} from "$app/state";
 
     let username = $state("");
@@ -40,41 +40,44 @@
             headers: {'Content-Type': 'application/json'}
         });
 
-        if (response.ok || dev)
-            await goto(page.url.searchParams.get('redirectTo') || '/auth/login', {invalidateAll: true,});
+        if (!response.ok)
+            return;
+
+        await invalidateAll()
+        open = false
     }
 </script>
 
 <Modal form bind:open={open} class="shadow-md/30">
     <form class="flex flex-col gap-5" onsubmit={register}>
         <Heading tag="h3" class="text-center">
-            {m.register__title()}
+            {m.modal_register_title()}
         </Heading>
 
         <Label>
-            <span>{m.register__username_label()}</span>
+            <span>{m.modal_register_label_username()}</span>
             <Input bind:value={username} type="text" required/>
         </Label>
 
         <div class="flex gap-5">
             <Label class="flex-1">
-                <span>{m.register__first_name_label()}</span>
+                <span>{m.modal_register_label_first_name()}</span>
                 <Input bind:value={firstName} type="text" required/>
             </Label>
             <Label class="flex-1">
-                <span>{m.register__last_name_label()}</span>
+                <span>{m.modal_register_label_last_name()}</span>
                 <Input bind:value={lastName} type="text" required/>
             </Label>
         </div>
 
         <Label>
-            <span>{m.register__email_label()}</span>
+            <span>{m.modal_register_label_email()}</span>
             <Input bind:value={email} type="email" required/>
         </Label>
 
         <div class="flex gap-5">
             <Label class="flex-1">
-                <span>{m.register__password_label()}</span>
+                <span>{m.modal_register_label_password()}</span>
                 <ButtonGroup class="w-full">
                     <Input bind:value={password} type={showPassword ? "text" : "password"} required/>
                     <InputAddon>
@@ -92,7 +95,7 @@
                 </ButtonGroup>
             </Label>
             <Label class="flex-1">
-                <span>{m.register__password_repeat_label()}</span>
+                <span>{m.modal_register_label_password_repeat()}</span>
                 <ButtonGroup class="w-full">
                     <Input bind:value={passwordRepeat} type={showPasswordRepeat ? "text" : "password"} required/>
                     <InputAddon>
@@ -111,17 +114,17 @@
             </Label>
         </div>
 
-        <Checkbox id="agree_tos" required>{m.register__i_agree_to_tos()}</Checkbox>
+        <Checkbox id="agree_tos" required>{m.modal_register_label_i_agree_to_tos()}</Checkbox>
 
         <!--                TODO reimplement trusted check, get trusted value from layout-->
         <!--                {#if !data.trusted}-->
         <!--                            <Altcha bind:value={altchaToken}/>-->
         <!--{/if}-->
 
-        <Button type="submit" class="w-full cursor-pointer">{m.register__button()}</Button>
+        <Button type="submit" class="w-full cursor-pointer">{m.modal_register_button()}</Button>
 
         <A href="/auth/login"
-           class="text-sm text-blue-700 hover:underline dark:text-blue-500">{m.register__already_have_a_account()}
+           class="text-sm text-blue-700 hover:underline dark:text-blue-500">{m.modal_register_label_already_have_a_account()}
         </A>
     </form>
 </Modal>
