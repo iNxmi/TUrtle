@@ -1,14 +1,6 @@
-import {create} from "$lib/page.js"
-import {supportTicketsPath} from '$lib/backend.js'
+import {getPage} from "$lib/utils.js";
 
-export const load = create(
-    supportTicketsPath,
-    [
-        "id",
-        "urgency",
-        "category",
-        "subject",
-        "email",
-        "createdAt"
-    ]
-)
+export async function load({url}) {
+    const page = await getPage(url, "/support-tickets")
+    return {page: page};
+}

@@ -3,10 +3,42 @@ import {dev} from '$app/environment';
 import {error, redirect} from '@sveltejs/kit';
 import {hardwarePath, itemBookingsPath, roomBookingsPath} from '$lib/backend';
 
+export async function getPage(url, endpoint) {
+    const parameters = new URLSearchParams()
+
+    // TODO temporary disabled because of backend incompatibility
+    // const search = url.searchParams.get("search");
+    // if (search != null) {
+    //     const rsql = properties.map(
+    //         property => `${property}=ilike=${search}`
+    //     ).join(",")
+    //
+    //     parameters.set("rsql", rsql)
+    // }
+
+    const pageNumber = url.searchParams.get("pageNumber") || "0";
+    parameters.set("pageNumber", pageNumber)
+
+    const pageSize = url.searchParams.get("pageSize");
+    if (pageSize != null)
+        parameters.set("pageSize", pageSize)
+
+    const sortProperty = url.searchParams.get("sortProperty");
+    if (sortProperty != null)
+        parameters.set("sortProperty", sortProperty)
+
+    const sortDirection = url.searchParams.get("sortDirection");
+    if (sortDirection != null)
+        parameters.set("sortDirection", sortDirection)
+
+    const response = await request(`${endpoint}?${parameters}`);
+    return await response.json();
+}
+
 export function convertEventToBackend(calendarEvent) {
-    if (dev) {
+    if (dev)
         return calendarEvent;
-    }
+
     return {
         title: calendarEvent.title,
         start: calendarEvent.start,

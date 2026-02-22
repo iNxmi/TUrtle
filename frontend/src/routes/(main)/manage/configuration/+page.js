@@ -1,15 +1,6 @@
-import {create} from "$lib/page.js"
-import {configurationPath} from '$lib/backend.js'
+import {getPage} from "$lib/utils.js";
 
-export const load = create(
-    configurationPath,
-    [
-        "id",
-        "key",
-        "type",
-        "value",
-        "updatedAt",
-        "createdAt"
-    ],
-    ""
-)
+export async function load({url}) {
+        const page = await getPage(url, "/configuration")
+        return {page: page};
+}

@@ -1,15 +1,6 @@
-import {create} from "$lib/page.js"
-import {usersPath} from '$lib/backend.js'
+import {getPage} from "$lib/utils.js";
 
-export const load = create(
-    usersPath,
-    [
-        "id",
-        "username",
-        "firstName",
-        "lastName",
-        "email",
-        "createdAt"
-    ],
-    ""
-)
+export async function load({url}) {
+    const page = await getPage(url, "/users")
+    return {page: page};
+}

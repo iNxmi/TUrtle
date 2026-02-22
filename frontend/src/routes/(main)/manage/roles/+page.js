@@ -1,14 +1,6 @@
-import {create} from "$lib/page.js"
-import {rolesPath} from '$lib/backend.js'
+import {getPage} from "$lib/utils.js";
 
-export const load = create(
-    rolesPath,
-    [
-        "id",
-        "ipAddress",
-        "username",
-        "endpoint",
-        "httpMethod",
-        "createdAt"
-    ]
-)
+export async function load({url}) {
+    const page = await getPage(url, "/roles")
+    return {page: page};
+}

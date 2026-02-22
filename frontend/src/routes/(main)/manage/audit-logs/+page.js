@@ -1,15 +1,6 @@
-import {create} from "$lib/page.js"
-import {auditLogsPath} from '$lib/backend.js'
+import {getPage} from "$lib/utils.js";
 
-export const load = create(
-    auditLogsPath,
-    [
-        "id",
-        "ipAddress",
-        "username",
-        "endpoint",
-        "httpMethod",
-        "createdAt"
-    ],
-    ""
-)
+export async function load({url}) {
+        const page = await getPage(url, "/audit-logs")
+        return {page: page};
+}

@@ -1,13 +1,6 @@
-import {create} from "$lib/page.js"
-import {exceptionsPath} from '$lib/backend.js'
+import {getPage} from "$lib/utils.js";
 
-export const load = create(
-    exceptionsPath,
-    [
-        "id",
-        "endpoint",
-        "exception",
-        "message",
-        "createdAt"
-    ]
-)
+export async function load({url}) {
+        const page = await getPage(url, "/exceptions")
+        return {page: page};
+}

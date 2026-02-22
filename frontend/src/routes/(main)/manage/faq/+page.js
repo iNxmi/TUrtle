@@ -1,14 +1,6 @@
-import {create} from "$lib/page.js"
-import {faqPath} from '$lib/backend.js';
+import {getPage} from "$lib/utils.js";
 
-
-export const load = create(
-    faqPath,
-    [
-        "id",
-        "name",
-        "updatedAt",
-        "createdAt"
-    ],
-    ""
-)
+export async function load({url}) {
+    const page = await getPage(url, "/faq")
+    return {page: page};
+}

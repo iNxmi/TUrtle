@@ -1,12 +1,6 @@
-import {create} from "$lib/page.js"
-import {itemBookingsPath} from '$lib/backend.js'
+import {getPage} from "$lib/utils.js";
 
-export const load = create(
-    itemBookingsPath,
-    [
-        "id",
-        "updatedAt",
-        "createdAt"
-    ],
-    ""
-)
+export async function load({url}) {
+    const page = await getPage(url, "/item-bookings")
+    return {page: page};
+}

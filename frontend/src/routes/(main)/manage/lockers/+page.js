@@ -1,14 +1,6 @@
-import {create} from "$lib/page.js"
-import {lockersPath} from '$lib/backend.js';
+import {getPage} from "$lib/utils.js";
 
-export const load = create(
-    lockersPath,
-    [
-        "id",
-        "name",
-        "index",
-        "updatedAt",
-        "createdAt"
-    ],
-    ""
-)
+export async function load({url}) {
+    const page = await getPage(url, "/lockers")
+    return {page: page};
+}

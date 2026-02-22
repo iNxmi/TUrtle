@@ -2,7 +2,6 @@
     import TableView from "$lib/components/TableView.svelte";
     import {m} from "$lib/paraglide/messages.js";
     import CreateItemBookingModal from "$lib/components/modal/CreateItemBookingModal.svelte";
-    import OpenLockerModal from "$lib/components/modal/OpenLockerModal.svelte";
 
     const {data} = $props();
 
@@ -15,17 +14,15 @@
         {id: "createdAt", display: m.user_item_bookings_label_created_at()},
     ];
 
-    const categories = [
-        {name: "0", value: "0"},
-        {name: "1", value: "1"},
-        {name: "2", value: "2"}
-    ];
+    const categories = $derived(data.categories.map(category => ({
+        value: category.id,
+        name: category.name
+    })));
 
-    const items = [
-        {name: "0", value: "0"},
-        {name: "1", value: "1"},
-        {name: "2", value: "2"}
-    ];
+    const items = $derived(data.items.map(item => ({
+        value: item.id,
+        name: item.name
+    })));
 
     let modal = $state(false);
 </script>
@@ -36,5 +33,4 @@
            onCreate={() => modal = true}
 />
 
-<!--<OpenLockerModal bind:open={modal}/>-->
 <CreateItemBookingModal bind:open={modal} {categories} {items}/>

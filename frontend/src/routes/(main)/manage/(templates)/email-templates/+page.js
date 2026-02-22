@@ -1,16 +1,6 @@
-import {create} from "$lib/page.js"
-import {emailTemplatesPath} from '$lib/backend.js';
+import {getPage} from "$lib/utils.js";
 
-
-export const load = create(
-    emailTemplatesPath,
-    [
-        "id",
-        "name",
-        "description",
-        "subject",
-        "content",
-        "createdAt"
-    ],
-    ""
-)
+export async function load({url}) {
+        const page = await getPage(url, "/email-templates")
+        return {page: page};
+}

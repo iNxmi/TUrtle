@@ -1,5 +1,8 @@
 import request from "$lib/api/api.js"
 import {checkAuthorization} from "$lib/utils";
+import {dev} from "$app/environment";
+import {jwtRefreshPath} from "$lib/backend.js";
+import {redirect} from "@sveltejs/kit";
 
 export function create(
     endpoint,

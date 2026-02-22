@@ -1,14 +1,6 @@
-import {create} from "$lib/page.js"
-import {contentTemplatesPath} from '$lib/backend.js';
+import {getPage} from "$lib/utils.js";
 
-
-export const load = create(
-    contentTemplatesPath,
-    [
-        "id",
-        "name",
-        "description",
-        "content",
-        "createdAt"
-    ]
-)
+export async function load({url}) {
+    const page = await getPage(url, "/content-templates")
+    return {page: page};
+}
