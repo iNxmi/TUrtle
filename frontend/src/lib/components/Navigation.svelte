@@ -14,7 +14,6 @@
         Heading,
         Hr,
         Sidebar,
-        SidebarButton,
         SidebarDropdownItem,
         SidebarDropdownWrapper,
         SidebarGroup,
@@ -53,8 +52,6 @@
     }
 
     let activeUrl = $derived(page.url.pathname);
-    let innerWidth = $state();
-    let isOpen = $derived(!innerWidth || innerWidth >= 768);
 
     let loginModal = $state(false);
     let logoutModal = $state(false);
@@ -62,18 +59,14 @@
     let openDoorModal = $state(false);
 </script>
 
-<svelte:window bind:innerWidth={innerWidth}/>
-<SidebarButton onclick={() => isOpen = !isOpen} class="mb-2"/>
-<Sidebar
-        {activeUrl}
-        isOpen={isOpen}
-        isSingle={false}
-        alwaysOpen={innerWidth > 768}
-        backdrop={false}
-        closeSidebar={() => isOpen = false}
-        position="static"
-        class="min-w-64 min-h-svh max-h-svh shadow-md/30"
-        divClass="flex flex-col gap-2 h-full"
+<Sidebar activeUrl={activeUrl}
+         isOpen
+         isSingle={false}
+         alwaysOpen
+         backdrop={false}
+         position="static"
+         class="min-w-64 min-h-svh max-h-svh shadow-md/30"
+         divClass="flex flex-col gap-2 h-full"
 >
     <div class="flex flex-col items-center justify-between">
         <TUrtleLogo path={logoRedirect}/>
