@@ -44,7 +44,7 @@
 
   "modal_door_title": "Unlock the door?",
   "modal_door_content": "You will need to be logged into the local network (\"csw_intern\") for this action to work.",
-  "modal_door_button_unlock": "Unlock Door",
+  "modal_door_button_unlock": "Unlock",
   "modal_door_button_cancel": "Cancel",
 
   "modal_login_title": "Login to TUrtle",

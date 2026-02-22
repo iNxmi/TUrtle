@@ -8,11 +8,11 @@
         endpoint,
         headers = [],
         contentPage,
-        onCreate = () => {}
+        onCreate = () => {
+        }
     } = $props();
 
     let items = $derived.by(() => {
-
         let items = [];
         for (const entity of contentPage.content) {
             const values = []
@@ -30,57 +30,54 @@
 
 
     let pageInfo = $derived(contentPage.page);
-
     let searchParams = $derived(page.url.searchParams);
 </script>
 
-<!-- TODO improve redirect maybe with svelte or js props and js dynamis (this removes the feature to copy any url with search, pagination or sort queries) -->
-<TUrtleTable
-        headers={headers}
-        items={items}
-        page={pageInfo}
+<TUrtleTable headers={headers}
+             items={items}
+             page={pageInfo}
 
-        sortProperty={searchParams.get("sortProperty")}
-        sortDirection={searchParams.get("sortDirection")}
+             sortProperty={searchParams.get("sortProperty")}
+             sortDirection={searchParams.get("sortDirection")}
 
-        onFirstPage={() => {
-            searchParams.set("pageNumber", 0)
-            goto(`?${searchParams.toString()}`, {invalidateAll: true});
-        }}
+             onFirstPage={() => {
+                 searchParams.set("pageNumber", 0)
+                 goto(`?${searchParams.toString()}`, {invalidateAll: true});
+             }}
 
-        onPreviousPage={() => {
-            searchParams.set("pageNumber", pageInfo.number - 1)
-            goto(`?${searchParams.toString()}`, {invalidateAll: true});
-        }}
+             onPreviousPage={() => {
+                 searchParams.set("pageNumber", pageInfo.number - 1)
+                 goto(`?${searchParams.toString()}`, {invalidateAll: true});
+             }}
 
-        onNextPage={() => {
-            searchParams.set("pageNumber", pageInfo.number + 1)
-            goto(`?${searchParams.toString()}`, {invalidateAll: true});
-        }}
+             onNextPage={() => {
+                 searchParams.set("pageNumber", pageInfo.number + 1)
+                 goto(`?${searchParams.toString()}`, {invalidateAll: true});
+             }}
 
-        onLastPage={() => {
-            searchParams.set("pageNumber", pageInfo.totalPages - 1)
-            goto(`?${searchParams.toString()}`, {invalidateAll: true});
-        }}
+             onLastPage={() => {
+                 searchParams.set("pageNumber", pageInfo.totalPages - 1)
+                 goto(`?${searchParams.toString()}`, {invalidateAll: true});
+             }}
 
-        onSearch={(search) => {
-            searchParams.set("search", search)
-            goto(`?${searchParams.toString()}`, {invalidateAll: true});
-        }}
+             onSearch={(search) => {
+                 searchParams.set("search", search)
+                 goto(`?${searchParams.toString()}`, {invalidateAll: true});
+             }}
 
-        onHeaderClicked={(header) => {
-            searchParams.set("sortProperty", header)
+             onHeaderClicked={(header) => {
+                searchParams.set("sortProperty", header)
 
-            if(searchParams.get("sortDirection") === "DESC") {
-                searchParams.set("sortDirection", "ASC")
-            } else {
-                searchParams.set("sortDirection", "DESC")
-            }
+                if(searchParams.get("sortDirection") === "DESC") {
+                    searchParams.set("sortDirection", "ASC")
+                } else {
+                    searchParams.set("sortDirection", "DESC")
+                }
 
-            goto(`?${searchParams.toString()}`, {invalidateAll: true});
-        }}
+                goto(`?${searchParams.toString()}`, {invalidateAll: true});
+             }}
 
-        onReload={() => invalidateAll()}
-        onCreate={onCreate}
+             onReload={() => invalidateAll()}
+             onCreate={onCreate}
 />
  

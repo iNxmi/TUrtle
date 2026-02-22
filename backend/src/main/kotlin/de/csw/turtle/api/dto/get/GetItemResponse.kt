@@ -8,8 +8,8 @@ data class GetItemResponse(
 
     val name: String?,
     val description: String?,
-    val category: Long?,
-    val locker: Long?,
+    val categoryId: Long?,
+    val lockerId: Long?,
     val needsConfirmation: Boolean?,
     val acquiredAt: Instant?,
 
@@ -22,8 +22,8 @@ data class GetItemResponse(
 
         name = entity.name,
         description = entity.description,
-        category = entity.category.id,
-        locker = entity.locker.id,
+        categoryId = entity.category.id,
+        lockerId = entity.locker.id,
         needsConfirmation = entity.needsConfirmation,
         acquiredAt = entity.acquiredAt,
 

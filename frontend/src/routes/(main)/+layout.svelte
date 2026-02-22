@@ -3,6 +3,7 @@
     import Footer from "$lib/components/Footer.svelte";
     import ConfirmProvider from '$lib/components/ConfirmProvider.svelte';
     import {m} from "$lib/paraglide/messages.js";
+    import Breadcrumbs from "$lib/components/Breadcrumbs.svelte";
     import {
         AdjustmentsVerticalSolid,
         BookOpenSolid,
@@ -21,6 +22,8 @@
         UsersGroupSolid,
         UserSolid
     } from "flowbite-svelte-icons";
+
+    import {Hr} from "flowbite-svelte";
 
     let {data, children} = $props();
     let permissions = $derived(data.permissions);
@@ -172,19 +175,23 @@
 </script>
 
 <div class="flex">
-    <Navigation
-            logoRedirect="/"
-            header={header}
-            categories={categories}
-            showLogoutButton={user !== null}
+    <Navigation logoRedirect="/"
+                header={header}
+                categories={categories}
+                showLogoutButton={user !== null}
     />
 
     <div class="w-full bg-background max-h-svh overflow-y-auto">
-        <div class="min-h-svh p-5">
+        <div class="flex flex-col gap-5 min-h-svh p-5">
+            <Breadcrumbs/>
+
+            <Hr class="m-0 p-0"/>
+
             <ConfirmProvider>
                 {@render children?.()}
             </ConfirmProvider>
         </div>
+
         <Footer/>
     </div>
 </div>

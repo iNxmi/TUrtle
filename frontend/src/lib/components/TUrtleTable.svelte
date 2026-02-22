@@ -16,9 +16,9 @@
     import {
         AngleLeftOutline,
         AngleRightOutline,
-        ArrowDownOutline,
-        ArrowUpOutline,
-        CaretSortOutline,
+        ChevronDownOutline,
+        ChevronUpOutline,
+        ChevronSortOutline,
         ChevronDoubleLeftOutline,
         ChevronDoubleRightOutline,
         PlusOutline,
@@ -92,24 +92,25 @@
         <Hr class="m-0 p-0"/>
     {/if}
 
-    <Table bor hoverable>
+    <Table hoverable>
         <TableHead color="default">
             {#each headers as header}
                 <TableHeadCell class="hover:cursor-pointer" onclick={() => onHeaderClicked(header.id)}>
-                    <div class={header.id === sortProperty ? "flex items-center gap-1 text-orange-400" : "flex items-center gap-1"}>
-                        <span>{header.display}</span>
+                    <div class={`flex items-center gap-1 ${header.id === sortProperty ? "text-orange-400": ""}`}>
+                        <span class="select-none">{header.display}</span>
 
                         {#if header.id === sortProperty && sortDirection === "ASC"}
-                            <ArrowUpOutline/>
+                            <ChevronUpOutline/>
                         {:else if header.id === sortProperty && sortDirection === "DESC"}
-                            <ArrowDownOutline/>
+                            <ChevronDownOutline/>
                         {:else}
-                            <CaretSortOutline/>
+                            <ChevronSortOutline/>
                         {/if}
                     </div>
                 </TableHeadCell>
             {/each}
         </TableHead>
+
         <TableBody>
             {#each items as item}
                 <TableBodyRow class="hover:cursor-pointer border-gray-200" onclick={() => item.onClick()}>

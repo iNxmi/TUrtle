@@ -51,10 +51,6 @@
 
 <div class="flex flex-col gap-10">
     <form class="flex flex-col gap-5" onsubmit={send}>
-        <Heading class="text-center" tag="h3">
-            {m.modal_contact_title()}
-        </Heading>
-
         <div class="flex gap-5">
             <Label class="flex flex-1 flex-col">
                 <span>{m.modal_contact_label_urgency()}</span>

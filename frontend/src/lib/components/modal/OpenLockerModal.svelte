@@ -1,36 +1,41 @@
 <script>
     import {Button, Modal} from 'flowbite-svelte';
-    import {openLocker} from '$lib/utils.js'
     import request from '$lib/api/api.js';
+    import {QuestionCircleSolid} from "flowbite-svelte-icons";
 
-    let {showOpenLockerModal: open = $bindable(false), locker, reservationIndex, reservations = $bindable()} = $props();
+    let {
+        open = $bindable(false),
+        locker
+    } = $props();
 
-    async function handleOpenLocker() {
+    async function unlock(event) {
+        event.preventDefault()
+
+        const response = await request(`/hardware/locker/open?id=${locker.id}`, {method: "POST"});
 
         open = false;
-        const updatedStatus = await openLocker(locker, reservations[reservationIndex]);
-        const reservationResponse = await request('/devicebookings', {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({status: updatedStatus})
-        });
-
-        const tempReservations = [...reservations];
-        tempReservations[reservationIndex].status = updatedStatus;
-        reservations = tempReservations;
     }
 
 </script>
 
-<Modal form bind:open={open} size="xs" permanent>
-    <div class="text-center">
-        <h3 class="mb-5 text-lg"> _Do you want to open locker <span class="text-csw font-bold">{locker}</span> now?_
+<Modal form bind:open={open} size="sm">
+    <div class="flex flex-col gap-5 items-center">
+        <div class="flex gap-5 justify-center">
+            <QuestionCircleSolid class="h-12 w-12"/>
+            <div class="flex flex-col justify-center">
+                <h1 class="text-lg font-bold">
+                    _unlock locker <span class="text-csw font-bold">{locker.index}</span>?_
+                </h1>
+            </div>
+        </div>
+
+        <h3 class="text-lg text-center">
+            by unlocking you agree to the following tos
         </h3>
-        <div class="space-x-2">
-            <Button class="hover:cursor-pointer" onclick={() => handleOpenLocker()}>_Yes_</Button>
-            <Button class="hover:cursor-pointer" color="red" onclick={() => open = false}>_No_</Button>
+
+        <div class="flex gap-2">
+            <Button type="submit" value="unlock" color="red" onclick={unlock}>_Unlock_</Button>
+            <Button type="submit" value="cancel" color="alternative" onclick={() => open = false}>_Cancel_</Button>
         </div>
     </div>
 </Modal>
