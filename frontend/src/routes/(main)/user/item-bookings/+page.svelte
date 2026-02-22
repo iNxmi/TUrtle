@@ -36,5 +36,5 @@
            onCreate={() => modal = true}
 />
 
-<OpenLockerModal bind:open={modal}/>
-<!--<CreateItemBookingModal bind:open={modal} {categories} {items}/>-->
+<!--<OpenLockerModal bind:open={modal}/>-->
+<CreateItemBookingModal bind:open={modal} {categories} {items}/>

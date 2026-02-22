@@ -12,6 +12,7 @@
     "test:browser": "vitest --config=vitest.browser.config.js"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.20",
     "altcha": "^2.3.0",
     "bytemd": "^1.22.0",
     "fast-deep-equal": "^3.1.3",

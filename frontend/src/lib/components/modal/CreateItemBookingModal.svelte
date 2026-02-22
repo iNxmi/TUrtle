@@ -1,5 +1,7 @@
 <script>
-    import {Button, Datepicker, Heading, Label, Modal, Select} from "flowbite-svelte";
+    import {Button, Datepicker, Heading, Hr, Label, Modal, Select} from "flowbite-svelte";
+    import {m} from "$lib/paraglide/messages";
+    import Calendar from "$lib/components/Calendar.svelte"
     import Timepicker from "$lib/components/Timepicker.svelte";
     import request from "$lib/api/api.js";
 
@@ -15,6 +17,37 @@
     const now = new Date();
     let start = $state(new Date(now));
     let end = $state(new Date(now));
+
+    let event = $derived({
+        title: "Item Booking",
+        start: start.toISOString(),
+        end: end.toISOString()
+    })
+
+    async function getEvents(itemId) {
+        const response = await request(`/item-bookings?rsql=item.id==${itemId}`);
+        const json = await response.json();
+
+        return json.map(item => ({
+            title: "test",
+            start: item.start,
+            end: item.end
+        }));
+    }
+
+    let sources = $derived([{
+        events: [event]
+    }, {
+        events: async (_, successCallback, failureCallback) => {
+            try {
+                const events = await getEvents(item);
+                successCallback(events);
+            } catch (e) {
+                failureCallback(e);
+            }
+        },
+        color: "orange"
+    }])
 
     async function submit(event) {
         event.preventDefault();
@@ -35,40 +68,51 @@
     }
 </script>
 
-<Modal form bind:open={open} outsideclose={false}>
-    <form class="flex flex-col gap-5" onsubmit={submit}>
+<Modal form bind:open={open} outsideclose={false} size=xl>
+    <div class="flex flex-col gap-5">
+
         <Heading tag="h3" class="text-center">
-            _Create Item Booking_
+            {m.modal_create_item_booking_title()}
         </Heading>
 
-        <Label>
-            <span>_Category_</span>
-            <Select bind:value={category} items={categories} required/>
-        </Label>
+        <Hr class="m-0 p-0"/>
 
-        <Label>
-            <span>_Item_</span>
-            <Select disabled={category === null} bind:value={item} items={items} required/>
-        </Label>
+        <div class="flex gap-5">
+            <form class="shrink flex flex-col gap-5" onsubmit={submit}>
+                <Label>
+                    <span>{m.modal_create_item_booking_label_category()}</span>
+                    <Select bind:value={category} items={categories} required/>
+                </Label>
 
-        <div class="flex gap-10 justify-between">
-            <Label class="flex-1">
-                <span>_Start_</span>
-                <div class="flex flex-col gap-1">
-                    <Datepicker disabled={item === null} bind:value={start}/>
-                    <Timepicker disabled={item === null} bind:value={start}/>
+                <Label>
+                    <span>{m.modal_create_item_booking_label_item()}</span>
+                    <Select disabled={category === null} bind:value={item} items={items} required/>
+                </Label>
+
+                <Label>
+                    <span>{m.modal_create_item_booking_label_start()}</span>
+                    <div class="flex flex-col gap-1">
+                        <Datepicker disabled={item === null} bind:value={start}/>
+                        <Timepicker disabled={item === null} bind:value={start}/>
+                    </div>
+                </Label>
+
+                <Label>
+                    <span>{m.modal_create_item_booking_label_end()}</span>
+                    <div class="flex flex-col gap-1">
+                        <Datepicker disabled={item === null} bind:value={end}/>
+                        <Timepicker disabled={item === null} bind:value={end}/>
+                    </div>
+                </Label>
+
+                <div class="grow flex flex-col justify-end">
+                    <Button class="w-full" type="submit">
+                        {m.modal_create_item_booking_button()}
+                    </Button>
                 </div>
-            </Label>
+            </form>
 
-            <Label class="flex-1">
-                <span>_End_</span>
-                <div class="flex flex-col gap-1">
-                    <Datepicker disabled={item === null} bind:value={end}/>
-                    <Timepicker disabled={item === null} bind:value={end}/>
-                </div>
-            </Label>
+            <Calendar sources={sources} class="grow"/>
         </div>
-
-        <Button type="submit">_Submit_</Button>
-    </form>
+    </div>
 </Modal>

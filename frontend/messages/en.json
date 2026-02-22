@@ -42,6 +42,13 @@
   "footer_gdpr": "General Data Protection Regulation",
   "footer_contact": "Contact",
 
+  "modal_create_item_booking_title": "Create Item Booking",
+  "modal_create_item_booking_label_category": "Category",
+  "modal_create_item_booking_label_item": "Item",
+  "modal_create_item_booking_label_start": "Start",
+  "modal_create_item_booking_label_end": "End",
+  "modal_create_item_booking_button": "Submit",
+
   "modal_door_title": "Unlock the door?",
   "modal_door_content": "You will need to be logged into the local network (\"csw_intern\") for this action to work.",
   "modal_door_button_unlock": "Unlock",
