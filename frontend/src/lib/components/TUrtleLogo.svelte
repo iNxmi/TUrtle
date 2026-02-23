@@ -44,7 +44,7 @@
     }
 </script>
 
-<button id="export-target" class="flex flex-col items-center select-none w-max h-max" onclick={rotate}>
+<button id="export-target" class="flex flex-col items-center select-none w-max h-max hover:cursor-pointer" onclick={rotate}>
     <Heading class="inline-block text-7xl">
         <Span class="text-csw">CSW</Span>
     </Heading>

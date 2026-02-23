@@ -40,7 +40,7 @@
             headers: {'Content-Type': 'application/json'}
         });
 
-        if (!response.ok)
+        if (response.status !== 204)
             return;
 
         await invalidateAll()

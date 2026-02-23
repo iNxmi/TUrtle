@@ -4,6 +4,7 @@
     import Calendar from "$lib/components/Calendar.svelte"
     import Timepicker from "$lib/components/Timepicker.svelte";
     import request from "$lib/api/api.js";
+    import {invalidateAll} from "$app/navigation";
 
     let {
         open = $bindable(false),
@@ -18,13 +19,8 @@
     let start = $state(new Date(now));
     let end = $state(new Date(now));
 
-    let event = $derived({
-        start: start.toISOString(),
-        end: end.toISOString()
-    })
-
     async function getEvents(itemId) {
-        if(itemId === null)
+        if (itemId === null)
             return [];
 
         const response = await request(`/item-bookings?rsql=item.id==${itemId}`);
@@ -37,7 +33,10 @@
     }
 
     let sources = $derived([{
-        events: [event]
+        events: [{
+            start: start.toISOString(),
+            end: end.toISOString()
+        }]
     }, {
         events: async (_, successCallback, failureCallback) => {
             try {
@@ -65,6 +64,10 @@
             headers: {"Content-Type": "application/json"}
         });
 
+        if (!response.ok)
+            return;
+
+        await invalidateAll();
         open = false;
     }
 </script>

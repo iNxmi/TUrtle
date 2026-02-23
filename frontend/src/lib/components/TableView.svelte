@@ -8,8 +8,7 @@
         endpoint,
         headers = [],
         contentPage,
-        onCreate = () => {
-        }
+        onCreate = () => {}
     } = $props();
 
     let items = $derived.by(() => {
