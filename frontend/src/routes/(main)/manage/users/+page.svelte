@@ -2,6 +2,7 @@
     import TableView from "$lib/components/TableView.svelte";
     import {m} from "$lib/paraglide/messages.js";
     import {goto} from "$app/navigation";
+    import ManageCreateUserModal from "$lib/components/modal/ManageCreateUserModal.svelte";
 
     const {data} = $props();
 
@@ -17,9 +18,16 @@
             transform: (value) => new Date(value).toLocaleString()
         }
     ];
+
+    let modal = $state(false);
 </script>
 
 <TableView columns={columns}
            contentPage={data.page}
            onItemClicked={(item) => goto(`/manage/users/${item.id}`)}
+           onCreate={() => modal = true}
 />
+
+{#if modal}
+    <ManageCreateUserModal bind:open={modal}/>
+{/if}

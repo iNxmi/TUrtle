@@ -1,6 +1,6 @@
 <script>
-    import {A, Button, ButtonGroup, Checkbox, Heading, Input, InputAddon, Label, Modal} from 'flowbite-svelte';
-    import {EyeOutline, EyeSlashOutline} from 'flowbite-svelte-icons';
+    import {A, Button, Checkbox, Heading, Input, Label, Modal} from 'flowbite-svelte';
+    import PasswordInput from "$lib/components/PasswordInput.svelte";
     import Altcha from "$lib/components/Altcha.svelte"
     import {m} from '$lib/paraglide/messages.js';
     import request from '$lib/api/api.js';
@@ -16,8 +16,6 @@
     let password = $state("");
     let rememberMe = $state(false);
     let altchaToken = $state("");
-
-    let showPassword = $state(false);
 
     async function login(event) {
         event.preventDefault();
@@ -43,7 +41,7 @@
     }
 </script>
 
-<Modal form bind:open={open} size="sm" class="shadow-md/30">
+<Modal form bind:open={open} size="sm" outsideclose={false}>
     <form class="flex flex-col gap-5" onsubmit={login}>
         <Heading tag="h3" class="text-center">
             {m.modal_login_title()}
@@ -55,25 +53,8 @@
         </Label>
 
         <Label>
-            <div class="flex justify-between">
-                <span>{m.modal_login_label_password()}</span>
-            </div>
-
-            <ButtonGroup class="w-full">
-                <Input bind:value={password} type={showPassword ? "text" : "password"} required/>
-                <InputAddon>
-                    <button type="button" onclick={(e) => {
-                            e.preventDefault();
-                            showPassword = !showPassword;
-                        }}>
-                        {#if showPassword}
-                            <EyeOutline class="h-6 w-6"/>
-                        {:else}
-                            <EyeSlashOutline class="h-6 w-6"/>
-                        {/if}
-                    </button>
-                </InputAddon>
-            </ButtonGroup>
+            <span>{m.modal_login_label_password()}</span>
+            <PasswordInput bind:value={password} required/>
         </Label>
 
         <Checkbox bind:checked={rememberMe}>{m.modal_login_label_remember_me({days: 30})}</Checkbox>

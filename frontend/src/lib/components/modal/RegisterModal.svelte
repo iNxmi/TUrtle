@@ -1,5 +1,6 @@
 <script>
     import {A, Button, ButtonGroup, Checkbox, Heading, Input, InputAddon, Label, Modal} from "flowbite-svelte";
+    import PasswordInput from "$lib/components/PasswordInput.svelte";
     import {m} from '$lib/paraglide/messages.js';
     import request from "$lib/api/api.js";
     import {EyeOutline, EyeSlashOutline} from "flowbite-svelte-icons";
@@ -13,9 +14,6 @@
     let password = $state("");
     let passwordRepeat = $state("");
     let altchaToken = $state("");
-
-    let showPassword = $state(false);
-    let showPasswordRepeat = $state(false);
 
     let {
         isTrusted = false,
@@ -48,7 +46,7 @@
     }
 </script>
 
-<Modal form bind:open={open} class="shadow-md/30">
+<Modal form bind:open={open} outsideclose={false}>
     <form class="flex flex-col gap-5" onsubmit={register}>
         <Heading tag="h3" class="text-center">
             {m.modal_register_title()}
@@ -78,39 +76,11 @@
         <div class="flex gap-5">
             <Label class="flex-1">
                 <span>{m.modal_register_label_password()}</span>
-                <ButtonGroup class="w-full">
-                    <Input bind:value={password} type={showPassword ? "text" : "password"} required/>
-                    <InputAddon>
-                        <button type="button" onclick={(e) => {
-                                e.preventDefault();
-                                showPassword = !showPassword;
-                            }}>
-                            {#if showPassword}
-                                <EyeOutline class="h-6 w-6"/>
-                            {:else}
-                                <EyeSlashOutline class="h-6 w-6"/>
-                            {/if}
-                        </button>
-                    </InputAddon>
-                </ButtonGroup>
+                <PasswordInput bind:value={password} required/>
             </Label>
             <Label class="flex-1">
                 <span>{m.modal_register_label_password_repeat()}</span>
-                <ButtonGroup class="w-full">
-                    <Input bind:value={passwordRepeat} type={showPasswordRepeat ? "text" : "password"} required/>
-                    <InputAddon>
-                        <button type="button" onclick={(e) => {
-                                e.preventDefault();
-                                showPasswordRepeat = !showPasswordRepeat;
-                            }}>
-                            {#if showPasswordRepeat}
-                                <EyeOutline class="h-6 w-6"/>
-                            {:else}
-                                <EyeSlashOutline class="h-6 w-6"/>
-                            {/if}
-                        </button>
-                    </InputAddon>
-                </ButtonGroup>
+                <PasswordInput bind:value={passwordRepeat} required/>
             </Label>
         </div>
 

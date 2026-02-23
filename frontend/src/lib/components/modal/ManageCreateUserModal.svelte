@@ -1,0 +1,113 @@
+<script>
+    import {Button, Heading, Input, Label, Modal, MultiSelect, Select} from "flowbite-svelte";
+    import PasswordInput from "$lib/components/PasswordInput.svelte";
+    import {m} from "$lib/paraglide/messages";
+    import request from "$lib/api/api.js";
+    import {onMount} from "svelte";
+    import {invalidateAll} from "$app/navigation";
+
+    let {
+        open = $bindable(false)
+    } = $props();
+
+    let roleItems = $state([]);
+    onMount(async () => {
+        const roles = await getRoles();
+        roleItems = roles.map((role) => ({value: role.id, name: role.name}));
+    });
+
+    async function getRoles() {
+        const response = await request("/roles");
+        return await response.json();
+    }
+
+    let statusItems = [
+        {value: "ARCHIVED", name: "Archived"},
+        {value: "PENDING_VERIFICATION", name: "Pending Verification"},
+        {value: "ACTIVE", name: "Active"},
+        {value: "DELETED", name: "Deleted"},
+        {value: "PENDING_APPROVAL", name: "Pending Approval"},
+        {value: "REJECTED", name: "Rejected"},
+        {value: "SUSPENDED", name: "Suspended"},
+    ];
+
+    let passwordRepeat = $state("");
+    let input = $state({
+        username: "",
+        firstName: "",
+        lastName: "",
+        roleIds: [1],
+        status: "PENDING_VERIFICATION",
+        email: "",
+        password: ""
+    })
+
+    async function submit(event) {
+        event.preventDefault()
+
+        const payload = $state.snapshot(input);
+        const response = await request("/users", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(payload)
+        });
+
+        if (response.status !== 201)
+            return;
+
+        await invalidateAll();
+        open = false;
+    }
+</script>
+
+<Modal form bind:open={open} outsideclose={false}>
+    <form onsubmit={submit} class="flex flex-col gap-5">
+        <Heading tag="h3" class="text-center">
+            {m.modal_manage_create_user_title()}
+        </Heading>
+
+        <Label>
+            <span>{m.modal_manage_create_user_label_username()}</span>
+            <Input name="username" type="text" bind:value={input.username} required/>
+        </Label>
+
+        <div class="flex gap-5">
+            <Label class="flex-1">
+                <span>{m.modal_manage_create_user_label_first_name()}</span>
+                <Input name="first_name" type="text" bind:value={input.firstName} required/>
+            </Label>
+            <Label class="flex-1">
+                <span>{m.modal_manage_create_user_label_last_name()}</span>
+                <Input name="last_name" type="text" bind:value={input.lastName} required/>
+            </Label>
+        </div>
+
+        <Label>
+            <span>{m.modal_manage_create_user_label_email()}</span>
+            <Input name="roles" type="email" bind:value={input.email} required/>
+        </Label>
+
+        <div class="flex gap-5">
+            <Label class="flex-1">
+                <span>{m.modal_manage_create_user_label_password()}</span>
+                <PasswordInput name="password" type="password" bind:value={input.password} required/>
+            </Label>
+            <Label class="flex-1">
+                <span>{m.modal_manage_create_user_label_password_repeat()}</span>
+                <PasswordInput name="password_repeat" type="password" bind:value={passwordRepeat} required/>
+            </Label>
+        </div>
+
+        <Label>
+            <span>{m.modal_manage_create_user_label_roles()}</span>
+            <MultiSelect name="roles" items={roleItems} bind:value={input.roleIds} required/>
+        </Label>
+
+        <Label>
+            <span>{m.modal_manage_create_user_label_status()}</span>
+            <Select name="status" items={statusItems} bind:value={input.status} required/>
+        </Label>
+
+        <Button type="submit">{m.modal_manage_create_user_button()}</Button>
+    </form>
+</Modal>

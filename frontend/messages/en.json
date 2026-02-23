@@ -57,6 +57,17 @@
   "modal_user_create_room_booking_label_accessibility": "Accessibility",
   "modal_user_create_room_booking_button": "Submit",
 
+  "modal_manage_create_user_title": "Create User",
+  "modal_manage_create_user_label_username": "Username",
+  "modal_manage_create_user_label_first_name": "First Name",
+  "modal_manage_create_user_label_last_name": "Last Name",
+  "modal_manage_create_user_label_email": "Email",
+  "modal_manage_create_user_label_password": "Password",
+  "modal_manage_create_user_label_password_repeat": "Repeat Password",
+  "modal_manage_create_user_label_roles": "Roles",
+  "modal_manage_create_user_label_status": "Status",
+  "modal_manage_create_user_button": "Create",
+
   "modal_door_title": "Unlock the door?",
   "modal_door_content": "You will need to be logged into the local network ('csw_intern') for this action to work.",
   "modal_door_button_unlock": "Unlock",

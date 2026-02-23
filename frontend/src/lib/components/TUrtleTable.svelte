@@ -77,13 +77,13 @@
             {/if}
             <div class="flex-2 flex gap-2 justify-end">
                 {#if !hideReload}
-                    <Button class="hover:cursor-pointer" onclick={() => onReload?.()} disabled={disableReload}>
+                    <Button class="hover:cursor-pointer" color="alternative" onclick={() => onReload?.()} disabled={disableReload}>
                         <RefreshOutline/>
                     </Button>
                 {/if}
 
                 {#if !hideAdd}
-                    <Button class="hover:cursor-pointer" onclick={() => onCreate?.()} disabled={disableAdd}>
+                    <Button class="hover:cursor-pointer" color="primary" onclick={() => onCreate?.()} disabled={disableAdd}>
                         <PlusOutline/>
                     </Button>
                 {/if}
