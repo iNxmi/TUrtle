@@ -186,8 +186,6 @@
         <div class="flex flex-col gap-5 min-h-svh p-5">
             <Breadcrumbs/>
 
-            <Hr class="m-0 p-0"/>
-
             <ConfirmProvider>
                 {@render children?.()}
             </ConfirmProvider>

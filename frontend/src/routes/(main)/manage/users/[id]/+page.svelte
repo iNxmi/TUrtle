@@ -1,5 +1,5 @@
 <script>
-    import {Input,  MultiSelect} from "flowbite-svelte";
+    import {Input, MultiSelect} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
 
     let {data} = $props();
@@ -7,7 +7,7 @@
     let roles = $derived(data.roles);
 </script>
 
-<form class="flex flex-col gap-5">
+<form class="bg-background-secondary rounded-2xl shadow-sm/30 p-5 flex flex-col gap-5">
     <div>
         <span>{m.manage_users_label_id()}</span>
         <Input type="text" value={user.id} disabled/>

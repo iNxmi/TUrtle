@@ -38,7 +38,7 @@
     }
 </script>
 
-<Breadcrumb>
+<Breadcrumb solid class="dark:border-none">
     {#each breadcrumbs as breadcrumb, index}
         {#if index === 0}
             <BreadcrumbItem href={breadcrumb.href} home>

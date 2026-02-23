@@ -1,5 +1,5 @@
 <script>
-    import {Input, div, MultiSelect} from "flowbite-svelte";
+    import {Input, MultiSelect} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
 
     let {data} = $props();

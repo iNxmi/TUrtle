@@ -1,5 +1,5 @@
 <script>
-    import {Button, Checkbox, Heading, Hr, Input, div, Select, Textarea} from 'flowbite-svelte';
+    import {Button, Checkbox, Hr, Input, Select, Textarea} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
     import Altcha from '$lib/components/Altcha.svelte';
     import request from "$lib/api/api.js";

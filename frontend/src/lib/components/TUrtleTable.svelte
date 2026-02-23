@@ -63,9 +63,9 @@
     let search = $state("");
 </script>
 
-<Card class="min-w-full min-h-full overflow-auto">
+<Card class="min-w-full min-h-full overflow-auto dark:border-none">
     {#if !hideSearch || !hideAdd || !hideReload}
-        <div class="flex gap-2 justify-between p-2">
+        <div class="flex gap-2 justify-between p-3">
             {#if !hideSearch}
                 <ButtonGroup disabled={disableSearch} class="flex-1">
                     <Input placeholder={`_search_`} bind:value={search}
@@ -133,7 +133,7 @@
     {#if !hideCount || !hidePagination}
         <Hr class="m-0 p-0"/>
 
-        <div class="flex justify-between p-2">
+        <div class="flex justify-between p-3">
             {#if !hideCount}
                 <ButtonGroup>
                     <Button disabled>
