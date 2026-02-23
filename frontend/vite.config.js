@@ -16,9 +16,15 @@ export default defineConfig({
         })
     ],
     build: {
-        sourcemap: true, // 🔹 important for readable debugger
+        sourcemap: true, // important for readable debugger
     },
     server: {
-        open: true, // optional: opens browser on dev
+        open: true, // opens browser on dev
+        proxy: {
+            "/api": {
+                target: 'http://localhost:8080',
+                changeOrigin: true
+            }
+        }
     }
 });
