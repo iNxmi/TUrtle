@@ -48,9 +48,9 @@
     --color-accent: #3dff4a;
 
     --color-csw: #FF6A00;
+
     --color-text: var(--color-gray-800);
     --color-muted: var(--color-gray-500);
-
 }
 
 .dark {
@@ -87,6 +87,7 @@
 
     --color-table-dark: #053105;
     --color-accent: #00c20d;
+
     --color-csw: #FF6A00;
 
     --color-text: var(--color-gray-300);
@@ -222,34 +223,34 @@
     border-top-style: none;
 }
 
-.fc .fc-button-primary {
-    background-color: var(--color-primary-700);
-    border-color: var(--color-primary-700);
-    color: var(--fc-button-text-color);
-}
+/*.fc .fc-button-primary {*/
+/*    background-color: var(--color-primary-700);*/
+/*    border-color: var(--color-primary-700);*/
+/*    color: var(--fc-button-text-color);*/
+/*}*/
 
-.fc .fc-button-primary:disabled {
-    background-color: var(--color-orange-300);
-    border-color: var(--color-orange-300);
-    color: var(--fc-button-text-color);
-}
+/*.fc .fc-button-primary:disabled {*/
+/*    background-color: var(--color-orange-300);*/
+/*    border-color: var(--color-orange-300);*/
+/*    color: var(--fc-button-text-color);*/
+/*}*/
 
-.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
-    background-color: var(--color-primary-800);
-    border-color: var(--color-primary-800);
-    color: var(--fc-button-text-color);
-}
+/*.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {*/
+/*    background-color: var(--color-primary-800);*/
+/*    border-color: var(--color-primary-800);*/
+/*    color: var(--fc-button-text-color);*/
+/*}*/
 
-.fc .fc-button-primary:hover {
-    background-color: var(--color-csw);
-    border-color: var(--color-csw);
-    color: var(--fc-button-text-color);
-}
+/*.fc .fc-button-primary:hover {*/
+/*    background-color: var(--color-csw);*/
+/*    border-color: var(--color-csw);*/
+/*    color: var(--fc-button-text-color);*/
+/*}*/
 
-.fc .fc-button-primary:focus:not(:focus-visible) {
-    outline: none !important;
-    box-shadow: none !important;
-}
+/*.fc .fc-button-primary:focus:not(:focus-visible) {*/
+/*    outline: none !important;*/
+/*    box-shadow: none !important;*/
+/*}*/
 
 /* .markdown has been replaced by tailwindcss 'prose' class */
 
