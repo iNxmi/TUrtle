@@ -23,8 +23,6 @@
         UserSolid
     } from "flowbite-svelte-icons";
 
-    import {Hr} from "flowbite-svelte";
-
     let {data, children} = $props();
     let permissions = $derived(data.permissions);
     let user = $derived(data.user);

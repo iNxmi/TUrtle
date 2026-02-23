@@ -1,6 +1,7 @@
 <script>
     import {Breadcrumb, BreadcrumbItem} from "flowbite-svelte";
     import {page} from "$app/state";
+import Card from "$lib/components/Card.svelte";
 
     let breadcrumbs = $derived(getBreadcrumbs(page.url.pathname))
 
@@ -38,16 +39,18 @@
     }
 </script>
 
-<Breadcrumb solid class="dark:border-none">
-    {#each breadcrumbs as breadcrumb, index}
-        {#if index === 0}
-            <BreadcrumbItem href={breadcrumb.href} home>
-                <span class="font-bold">{breadcrumb.name}</span>
-            </BreadcrumbItem>
-        {:else}
-            <BreadcrumbItem href={breadcrumb.href}>
-                <span class="font-bold">{breadcrumb.name}</span>
-            </BreadcrumbItem>
-        {/if}
-    {/each}
-</Breadcrumb>
+<Card>
+    <Breadcrumb class="dark:border-none">
+        {#each breadcrumbs as breadcrumb, index}
+            {#if index === 0}
+                <BreadcrumbItem href={breadcrumb.href} home>
+                    <span class="font-bold">{breadcrumb.name}</span>
+                </BreadcrumbItem>
+            {:else}
+                <BreadcrumbItem href={breadcrumb.href}>
+                    <span class="font-bold">{breadcrumb.name}</span>
+                </BreadcrumbItem>
+            {/if}
+        {/each}
+    </Breadcrumb>
+</Card>

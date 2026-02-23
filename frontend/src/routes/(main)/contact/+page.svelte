@@ -1,9 +1,10 @@
 <script>
-    import {Button, Checkbox, Hr, Input, Select, Textarea} from 'flowbite-svelte';
+    import {Button, Checkbox, Input, Select, Textarea} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
     import Altcha from '$lib/components/Altcha.svelte';
     import request from "$lib/api/api.js";
     import Markdown from "$lib/components/Markdown.svelte";
+    import Card from "$lib/components/Card.svelte";
 
     let urgency = $state('');
     let category = $state('');
@@ -49,43 +50,41 @@
     }
 </script>
 
-<div class="flex flex-col gap-10">
-    <form class="flex flex-col gap-5" onsubmit={send}>
-        <div class="flex gap-5">
-            <div class="flex flex-1 flex-col">
-                <span>{m.modal_contact_label_urgency()}</span>
-                <Select bind:value={urgency} items={urgencies} required/>
-            </div>
-            <div class="flex flex-1 flex-col">
-                <span>{m.modal_contact_label_category()}</span>
-                <Select bind:value={category} items={categories} required/>
-            </div>
+<Card>
+    <Markdown {content}/>
+</Card>
+
+<form class="bg-background-secondary rounded-2xl shadow-sm/30 p-5 flex flex-col gap-5" onsubmit={send}>
+    <div class="flex gap-5">
+        <div class="flex flex-1 flex-col">
+            <span>{m.modal_contact_label_urgency()}</span>
+            <Select bind:value={urgency} items={urgencies} required/>
         </div>
-
-        <div>
-            <span>{m.modal_contact_label_email()}</span>
-            <Input bind:value={email} type="email" required/>
+        <div class="flex flex-1 flex-col">
+            <span>{m.modal_contact_label_category()}</span>
+            <Select bind:value={category} items={categories} required/>
         </div>
+    </div>
 
-        <div>
-            <span>{m.modal_contact_label_subject()}</span>
-            <Input bind:value={subject} type="text" required/>
-        </div>
+    <div>
+        <span>{m.modal_contact_label_email()}</span>
+        <Input bind:value={email} type="email" required/>
+    </div>
 
-        <div>
-            <span>{m.modal_contact_label_description()}</span>
-            <Textarea bind:value={description} class="w-full" placeholder={m.modal_contact_placeholder_description()}
-                      required/>
-        </div>
+    <div>
+        <span>{m.modal_contact_label_subject()}</span>
+        <Input bind:value={subject} type="text" required/>
+    </div>
 
-        <Checkbox required>{m.modal_contact_label_i_agree_to_tos()}</Checkbox>
+    <div>
+        <span>{m.modal_contact_label_description()}</span>
+        <Textarea bind:value={description} class="w-full" placeholder={m.modal_contact_placeholder_description()}
+                  required/>
+    </div>
 
-        <Altcha bind:value={altchaToken}/>
+    <Checkbox required>{m.modal_contact_label_i_agree_to_tos()}</Checkbox>
 
-        <Button type="submit">{m.modal_contact_button()}</Button>
-    </form>
+    <Altcha bind:value={altchaToken}/>
 
-    <Hr class="m-0 p-0"/>
-
-    <Markdown content={content}/>
-</div>
+    <Button type="submit">{m.modal_contact_button()}</Button>
+</form>

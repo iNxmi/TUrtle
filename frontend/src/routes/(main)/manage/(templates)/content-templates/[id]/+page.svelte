@@ -1,5 +1,5 @@
 <script>
-    import {Button, Input, div, Textarea} from "flowbite-svelte";
+    import {Button, Input, Textarea} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
     import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
     import request from "$lib/api/api.js";

@@ -1,5 +1,5 @@
 <script>
-    import {A, Accordion, AccordionItem, Heading} from 'flowbite-svelte';
+    import {A, Accordion, AccordionItem} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
     import Markdown from '$lib/components/Markdown.svelte';
 
@@ -7,12 +7,8 @@
     let all = $derived(data.all);
 </script>
 
-<div class="flex flex-col align-center gap-10">
-    <Heading class="text-center m-0 p-0" tag="h3">
-        {m.faq_title()}
-    </Heading>
-
-    <Accordion flush multiple>
+<div class="flex flex-col gap-5">
+    <Accordion class="bg-background-secondary dark:border-none" multiple>
         {#each all as faq, index}
             <AccordionItem>
                 {#snippet header()}
@@ -23,5 +19,7 @@
         {/each}
     </Accordion>
 
-    <A href="/contact">{m.faq_label_problem_not_solved()}</A>
+    <A href="/contact">
+        {m.faq_label_problem_not_solved()}
+    </A>
 </div>

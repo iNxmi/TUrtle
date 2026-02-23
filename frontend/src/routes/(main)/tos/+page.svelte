@@ -2,15 +2,12 @@
     import {m} from '$lib/paraglide/messages.js';
     import {Heading} from 'flowbite-svelte';
     import Markdown from '$lib/components/Markdown.svelte';
+    import Card from "$lib/components/Card.svelte";
 
     let {data} = $props();
     let content = $derived(data.content);
 </script>
 
-<div class="flex flex-col align-center gap-10">
-    <Heading class="text-center m-0 p-0" tag="h3">
-        {m.tos_title()}
-    </Heading>
-
+<Card>
     <Markdown {content}/>
-</div>
+</Card>
