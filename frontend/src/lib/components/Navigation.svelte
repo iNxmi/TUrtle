@@ -1,7 +1,7 @@
 <script>
-    import RegisterModal from "$lib/components/modal/RegisterModal.svelte"
-    import LoginModal from "$lib/components/modal/LoginModal.svelte"
-    import LogoutModal from "$lib/components/modal/LogoutModal.svelte"
+    import RegisterModal from "$lib/components/modal/auth/RegisterModal.svelte"
+    import LoginModal from "$lib/components/modal/auth/LoginModal.svelte"
+    import LogoutModal from "$lib/components/modal/auth/LogoutModal.svelte"
     import OpenDoorModal from "$lib/components/modal/OpenDoorModal.svelte";
     import LanguageDropdown from "$lib/components/LanguageDropdown.svelte";
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";

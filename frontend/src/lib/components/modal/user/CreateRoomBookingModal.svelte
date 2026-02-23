@@ -1,6 +1,6 @@
 <script>
-    import {Button, Datepicker, Heading, Hr, Input, Label, Modal, Select, Textarea} from "flowbite-svelte";
-    import {m} from "$lib/paraglide/messages";
+    import {Button, Datepicker, Heading, Hr, Input, Modal, Select, Textarea} from "flowbite-svelte";
+    import {m} from "$lib/paraglide/messages.js";
     import Calendar from "$lib/components/Calendar.svelte"
     import Timepicker from "$lib/components/Timepicker.svelte";
     import request from "$lib/api/api.js";
@@ -93,36 +93,36 @@
 
         <div class="flex gap-5">
             <form class="shrink flex flex-col gap-5" onsubmit={submit}>
-                <Label>
+                <div>
                     <span>{m.modal_user_create_room_booking_label_title()}</span>
                     <Input bind:value={title} required/>
-                </Label>
+                </div>
 
-                <Label>
+                <div>
                     <span>{m.modal_user_create_room_booking_label_description()}</span>
                     <Textarea bind:value={description} required/>
-                </Label>
+                </div>
 
-                <Label>
+                <div>
                     <span>{m.modal_user_create_room_booking_label_start()}</span>
                     <div class="flex flex-col gap-1">
                         <Datepicker bind:value={start} required/>
                         <Timepicker bind:value={start} required/>
                     </div>
-                </Label>
+                </div>
 
-                <Label>
+                <div>
                     <span>{m.modal_user_create_room_booking_label_end()}</span>
                     <div class="flex flex-col gap-1">
                         <Datepicker bind:value={end} required/>
                         <Timepicker bind:value={end} required/>
                     </div>
-                </Label>
+                </div>
 
-                <Label>
+                <div>
                     <span>{m.modal_user_create_room_booking_label_accessibility()}</span>
                     <Select bind:value={accessibility} items={accessibilities} required/>
-                </Label>
+                </div>
 
                 <div class="grow flex flex-col justify-end">
                     <Button class="w-full" type="submit">

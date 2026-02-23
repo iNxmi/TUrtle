@@ -4,7 +4,7 @@
     import {fade} from 'svelte/transition';
     import request from '$lib/api/api.js';
     import {between, convertEventToBackend, convertEventToFrontend, fetchRoomBookings} from '$lib/utils.js';
-    import {Button, Datepicker, Heading, Label, P, Textarea, Timepicker, Toggle} from 'flowbite-svelte';
+    import {Button, Datepicker, Heading, div, P, Textarea, Timepicker, Toggle} from 'flowbite-svelte';
     import WhitelistDropdown from '$lib/components/WhitelistDropdown.svelte';
     import {TrashBinSolid} from 'flowbite-svelte-icons';
 
@@ -364,28 +364,28 @@
                     <TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
                 </button>
             </div>
-            <Label>_Creator_
+            <div>_Creator_
                 <WhitelistDropdown disabled={creator[0] !== currentUser.id} users={dropdownUsers}
                                    bind:value={creator} single {displayFunction} {sortFunction}
                                    {filterFunction}/>
-            </Label>
-            <Label class="space-y-2"> <span>_Start_</span>
+            </div>
+            <div class="space-y-2"> <span>_Start_</span>
                 <Datepicker disabled={creator[0] !== currentUser.id}
                             monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
                 <Timepicker disabled={creator[0] !== currentUser.id} divClass="shadow-none!"
                             bind:value={startTime}/>
-            </Label>
-            <Label class="space-y-2"> <span>_End_</span>
+            </div>
+            <div class="space-y-2"> <span>_End_</span>
                 <Datepicker disabled={creator[0] !== currentUser.id}
                             monthBtnSelected="bg-csw! hover:text-white!" bind:value={endDate}></Datepicker>
                 <Timepicker disabled={creator[0] !== currentUser.id} divClass="shadow-none!"
                             bind:value={endTime}/>
-            </Label>
-            <Label for="description" class="mb-0">_Description_
+            </div>
+            <div for="description" class="mb-0">_Description_
                 <Textarea disabled={creator[0] !== currentUser.id} id="description"
                           placeholder="_Sample description_" rows={3} class="w-full"
                           bind:value={eventDescription}/>
-            </Label>
+            </div>
             <Toggle disabled={creator[0] !== currentUser.id} size="small"
                     bind:checked={whitelistDisableOverride} onchange={setOpenToEveryone}>_Open to everyone_
             </Toggle>

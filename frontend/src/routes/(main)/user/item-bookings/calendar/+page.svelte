@@ -1,7 +1,7 @@
 <!--
 <script>
 
-    import {Button, Card, Checkbox, Datepicker, Heading, Label, Modal, Select, Timepicker} from "flowbite-svelte";
+    import {Button, Card, Checkbox, Datepicker, Heading, div, Modal, Select, Timepicker} from "flowbite-svelte";
     import {getContext} from 'svelte';
     import {fade} from 'svelte/transition';
     import {Calendar} from '@fullcalendar/core';
@@ -233,32 +233,32 @@
                         <Checkbox class="mb-2" bind:checked={instantBooking}>_Instant Booking_</Checkbox>
                         {#if instantBooking}
                             <div class="flex flex-col gap-2">
-                                <Label class="text-gray-700 mb-2"> _End Date_
+                                <div class="text-gray-700 mb-2"> _End Date_
                                     <Datepicker bind:value={bookingRange.to}/>
-                                </Label>
+                                </div>
                                 <div>
-                                    <Label>
-                                        _End Time_</Label>
+                                    <div>
+                                        _End Time_</div>
                                     <Timepicker bind:value={bookingEndTime} divClass="shadow-none!"/>
                                 </div>
                             </div>
                         {:else if !instantBooking && !bookingSuccess}
-                            <Label class="text-gray-700 mb-2">
+                            <div class="text-gray-700 mb-2">
                                 _Selected Range_
                                 <Datepicker disabled={instantBooking} range bind:rangeFrom={bookingRange.from}
                                             bind:rangeTo={bookingRange.to}/>
-                            </Label>
+                            </div>
                             <div class="flex flex-row gap-12">
                                 <div>
-                                    <Label class="text-gray-700">
-                                        _Start Time_</Label>
+                                    <div class="text-gray-700">
+                                        _Start Time_</div>
                                     <Timepicker bind:value={bookingStartTime} divClass="shadow-none!"
                                                 disabled={instantBooking}/>
 
                                 </div>
                                 <div>
-                                    <Label class="text-gray-700">
-                                        _End Time_</Label>
+                                    <div class="text-gray-700">
+                                        _End Time_</div>
                                     <Timepicker bind:value={bookingEndTime} divClass="shadow-none!"
                                                 disabled={instantBooking}/>
                                 </div>

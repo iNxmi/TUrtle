@@ -1,7 +1,7 @@
 <script>
     import TableView from "$lib/components/TableView.svelte";
     import {m} from "$lib/paraglide/messages.js";
-    import UserCreateRoomBookingModal from "$lib/components/modal/UserCreateRoomBookingModal.svelte";
+    import CreateRoomBookingModal from "$lib/components/modal/user/CreateRoomBookingModal.svelte";
 
     const {data} = $props();
 
@@ -45,5 +45,5 @@
 />
 
 {#if modal}
-    <UserCreateRoomBookingModal bind:open={modal}/>
+    <CreateRoomBookingModal bind:open={modal}/>
 {/if}

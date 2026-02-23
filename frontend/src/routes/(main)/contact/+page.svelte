@@ -1,5 +1,5 @@
 <script>
-    import {Button, Checkbox, Heading, Hr, Input, Label, Select, Textarea} from 'flowbite-svelte';
+    import {Button, Checkbox, Heading, Hr, Input, div, Select, Textarea} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
     import Altcha from '$lib/components/Altcha.svelte';
     import request from "$lib/api/api.js";
@@ -52,31 +52,31 @@
 <div class="flex flex-col gap-10">
     <form class="flex flex-col gap-5" onsubmit={send}>
         <div class="flex gap-5">
-            <Label class="flex flex-1 flex-col">
+            <div class="flex flex-1 flex-col">
                 <span>{m.modal_contact_label_urgency()}</span>
                 <Select bind:value={urgency} items={urgencies} required/>
-            </Label>
-            <Label class="flex flex-1 flex-col">
+            </div>
+            <div class="flex flex-1 flex-col">
                 <span>{m.modal_contact_label_category()}</span>
                 <Select bind:value={category} items={categories} required/>
-            </Label>
+            </div>
         </div>
 
-        <Label>
+        <div>
             <span>{m.modal_contact_label_email()}</span>
             <Input bind:value={email} type="email" required/>
-        </Label>
+        </div>
 
-        <Label>
+        <div>
             <span>{m.modal_contact_label_subject()}</span>
             <Input bind:value={subject} type="text" required/>
-        </Label>
+        </div>
 
-        <Label>
+        <div>
             <span>{m.modal_contact_label_description()}</span>
             <Textarea bind:value={description} class="w-full" placeholder={m.modal_contact_placeholder_description()}
                       required/>
-        </Label>
+        </div>
 
         <Checkbox required>{m.modal_contact_label_i_agree_to_tos()}</Checkbox>
 

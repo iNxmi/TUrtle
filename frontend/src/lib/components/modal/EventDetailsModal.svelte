@@ -1,5 +1,5 @@
 <script>
-    import {Label, Modal, P} from 'flowbite-svelte';
+    import {div, Modal, P} from 'flowbite-svelte';
     import {CalendarMonthOutline, ClockOutline} from 'flowbite-svelte-icons';
 
     let {showEventDetailsModal = $bindable(), selectedEvent, creator} = $props();
@@ -34,11 +34,11 @@
                 {`${durationInHours}:${durationInMinutes}`}
             </div>
         </div>
-        <Label class="font-bold text-md">_Creator_
+        <div class="font-bold text-md">_Creator_
             <P>{creator.firstName + " " + creator.lastName}</P>
-        </Label>
-        <Label class="font-bold text-md">_Description_
+        </div>
+        <div class="font-bold text-md">_Description_
             <P>{selectedEvent.extendedProps.description}</P>
-        </Label>
+        </div>
     </Modal>
 {/if}

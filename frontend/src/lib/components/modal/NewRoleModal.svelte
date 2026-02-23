@@ -1,5 +1,5 @@
 <script>
-    import {Button, Input, Label, Modal} from "flowbite-svelte";
+    import {Button, Input, div, Modal} from "flowbite-svelte";
     import WhitelistDropdown from "../WhitelistDropdown.svelte";
     import request from "$lib/api/api.js";
 
@@ -46,15 +46,15 @@
        onclose={()=> {selectedRoles = []}}>
 
     <div class="flex flex-col gap-5">
-        <Label>
+        <div>
             _Name_
             <Input type='text' bind:value={roleName}/>
-        </Label>
-        <Label>
+        </div>
+        <div>
             _Roles_
             <WhitelistDropdown users={dropdownPermissions} bind:value={selectedRoles} {filterFunction} {sortFunction}
                                {displayFunction}/>
-        </Label>
+        </div>
     </div>
     <Button type='submit' onclick={createRole}>_Create Role_</Button>
 </Modal>

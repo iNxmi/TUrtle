@@ -1,7 +1,7 @@
 <script>
-    import {Button, Heading, Input, Label, Modal, MultiSelect, Select} from "flowbite-svelte";
+    import {Button, Heading, Input, Modal, MultiSelect, Select} from "flowbite-svelte";
     import PasswordInput from "$lib/components/PasswordInput.svelte";
-    import {m} from "$lib/paraglide/messages";
+    import {m} from "$lib/paraglide/messages.js";
     import request from "$lib/api/api.js";
     import {onMount} from "svelte";
     import {invalidateAll} from "$app/navigation";
@@ -66,47 +66,47 @@
             {m.modal_manage_create_user_title()}
         </Heading>
 
-        <Label>
+        <div>
             <span>{m.modal_manage_create_user_label_username()}</span>
             <Input name="username" type="text" bind:value={input.username} required/>
-        </Label>
+        </div>
 
         <div class="flex gap-5">
-            <Label class="flex-1">
+            <div class="flex-1">
                 <span>{m.modal_manage_create_user_label_first_name()}</span>
                 <Input name="first_name" type="text" bind:value={input.firstName} required/>
-            </Label>
-            <Label class="flex-1">
+            </div>
+            <div class="flex-1">
                 <span>{m.modal_manage_create_user_label_last_name()}</span>
                 <Input name="last_name" type="text" bind:value={input.lastName} required/>
-            </Label>
+            </div>
         </div>
 
-        <Label>
+        <div>
             <span>{m.modal_manage_create_user_label_email()}</span>
-            <Input name="roles" type="email" bind:value={input.email} required/>
-        </Label>
+            <Input name="email" type="email" bind:value={input.email} required/>
+        </div>
 
         <div class="flex gap-5">
-            <Label class="flex-1">
+            <div class="flex-1">
                 <span>{m.modal_manage_create_user_label_password()}</span>
                 <PasswordInput name="password" type="password" bind:value={input.password} required/>
-            </Label>
-            <Label class="flex-1">
+            </div>
+            <div class="flex-1">
                 <span>{m.modal_manage_create_user_label_password_repeat()}</span>
                 <PasswordInput name="password_repeat" type="password" bind:value={passwordRepeat} required/>
-            </Label>
+            </div>
         </div>
 
-        <Label>
+        <div>
             <span>{m.modal_manage_create_user_label_roles()}</span>
             <MultiSelect name="roles" items={roleItems} bind:value={input.roleIds} required/>
-        </Label>
+        </div>
 
-        <Label>
+        <div>
             <span>{m.modal_manage_create_user_label_status()}</span>
             <Select name="status" items={statusItems} bind:value={input.status} required/>
-        </Label>
+        </div>
 
         <Button type="submit">{m.modal_manage_create_user_button()}</Button>
     </form>

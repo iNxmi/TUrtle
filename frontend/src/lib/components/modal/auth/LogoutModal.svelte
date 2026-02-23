@@ -3,7 +3,7 @@
     import {QuestionCircleSolid} from "flowbite-svelte-icons";
     import request from "$lib/api/api.js";
     import {goto, invalidateAll} from "$app/navigation";
-    import {m} from "$lib/paraglide/messages";
+    import {m} from "$lib/paraglide/messages.js";
 
     let {
         open = $bindable(false)

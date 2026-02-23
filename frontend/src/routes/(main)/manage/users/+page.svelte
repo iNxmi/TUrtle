@@ -2,7 +2,7 @@
     import TableView from "$lib/components/TableView.svelte";
     import {m} from "$lib/paraglide/messages.js";
     import {goto} from "$app/navigation";
-    import ManageCreateUserModal from "$lib/components/modal/ManageCreateUserModal.svelte";
+    import CreateUserModal from "$lib/components/modal/manage/CreateUserModal.svelte";
 
     const {data} = $props();
 
@@ -29,5 +29,5 @@
 />
 
 {#if modal}
-    <ManageCreateUserModal bind:open={modal}/>
+    <CreateUserModal bind:open={modal}/>
 {/if}

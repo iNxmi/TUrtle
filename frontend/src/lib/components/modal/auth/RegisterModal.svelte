@@ -1,9 +1,8 @@
 <script>
-    import {A, Button, ButtonGroup, Checkbox, Heading, Input, InputAddon, Label, Modal} from "flowbite-svelte";
+    import {A, Button, Checkbox, Heading, Input, Modal} from "flowbite-svelte";
     import PasswordInput from "$lib/components/PasswordInput.svelte";
     import {m} from '$lib/paraglide/messages.js';
     import request from "$lib/api/api.js";
-    import {EyeOutline, EyeSlashOutline} from "flowbite-svelte-icons";
     import Altcha from "$lib/components/Altcha.svelte";
     import {invalidateAll} from "$app/navigation";
 
@@ -52,36 +51,36 @@
             {m.modal_register_title()}
         </Heading>
 
-        <Label>
+        <div>
             <span>{m.modal_register_label_username()}</span>
             <Input bind:value={username} type="text" required/>
-        </Label>
-
-        <div class="flex gap-5">
-            <Label class="flex-1">
-                <span>{m.modal_register_label_first_name()}</span>
-                <Input bind:value={firstName} type="text" required/>
-            </Label>
-            <Label class="flex-1">
-                <span>{m.modal_register_label_last_name()}</span>
-                <Input bind:value={lastName} type="text" required/>
-            </Label>
         </div>
 
-        <Label>
+        <div class="flex gap-5">
+            <div class="flex-1">
+                <span>{m.modal_register_label_first_name()}</span>
+                <Input bind:value={firstName} type="text" required/>
+            </div>
+            <div class="flex-1">
+                <span>{m.modal_register_label_last_name()}</span>
+                <Input bind:value={lastName} type="text" required/>
+            </div>
+        </div>
+
+        <div>
             <span>{m.modal_register_label_email()}</span>
             <Input bind:value={email} type="email" required/>
-        </Label>
+        </div>
 
         <div class="flex gap-5">
-            <Label class="flex-1">
+            <div class="flex-1">
                 <span>{m.modal_register_label_password()}</span>
                 <PasswordInput bind:value={password} required/>
-            </Label>
-            <Label class="flex-1">
+            </div>
+            <div class="flex-1">
                 <span>{m.modal_register_label_password_repeat()}</span>
                 <PasswordInput bind:value={passwordRepeat} required/>
-            </Label>
+            </div>
         </div>
 
         <Checkbox id="agree_tos" required>{m.modal_register_label_i_agree_to_tos()}</Checkbox>

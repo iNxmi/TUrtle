@@ -1,5 +1,5 @@
 <script>
-    import {A, Button, Checkbox, Heading, Input, Label, Modal} from 'flowbite-svelte';
+    import {A, Button, Checkbox, Heading, Input, Modal} from 'flowbite-svelte';
     import PasswordInput from "$lib/components/PasswordInput.svelte";
     import Altcha from "$lib/components/Altcha.svelte"
     import {m} from '$lib/paraglide/messages.js';
@@ -47,15 +47,15 @@
             {m.modal_login_title()}
         </Heading>
 
-        <Label>
+        <div>
             <span>{m.modal_login_label_username_or_email()}</span>
             <Input bind:value={username} type="text" required/>
-        </Label>
+        </div>
 
-        <Label>
+        <div>
             <span>{m.modal_login_label_password()}</span>
             <PasswordInput bind:value={password} required/>
-        </Label>
+        </div>
 
         <Checkbox bind:checked={rememberMe}>{m.modal_login_label_remember_me({days: 30})}</Checkbox>
 

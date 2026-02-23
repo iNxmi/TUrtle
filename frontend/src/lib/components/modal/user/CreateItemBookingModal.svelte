@@ -1,6 +1,6 @@
 <script>
-    import {Button, Datepicker, Heading, Hr, Label, Modal, Select} from "flowbite-svelte";
-    import {m} from "$lib/paraglide/messages";
+    import {Button, Datepicker, Heading, Hr, Modal, Select} from "flowbite-svelte";
+    import {m} from "$lib/paraglide/messages.js";
     import Calendar from "$lib/components/Calendar.svelte"
     import Timepicker from "$lib/components/Timepicker.svelte";
     import request from "$lib/api/api.js";
@@ -83,31 +83,31 @@
 
         <div class="flex gap-5">
             <form class="shrink flex flex-col gap-5" onsubmit={submit}>
-                <Label>
+                <div>
                     <span>{m.modal_user_create_item_booking_label_category()}</span>
                     <Select bind:value={categoryId} items={categories} required/>
-                </Label>
+                </div>
 
-                <Label>
+                <div>
                     <span>{m.modal_user_create_item_booking_label_item()}</span>
                     <Select disabled={categoryId === null} bind:value={itemId} items={items} required/>
-                </Label>
+                </div>
 
-                <Label>
+                <div>
                     <span>{m.modal_user_create_item_booking_label_start()}</span>
                     <div class="flex flex-col gap-1">
                         <Datepicker disabled={itemId === null} bind:value={start}/>
                         <Timepicker disabled={itemId === null} bind:value={start}/>
                     </div>
-                </Label>
+                </div>
 
-                <Label>
+                <div>
                     <span>{m.modal_user_create_item_booking_label_end()}</span>
                     <div class="flex flex-col gap-1">
                         <Datepicker disabled={itemId === null} bind:value={end}/>
                         <Timepicker disabled={itemId === null} bind:value={end}/>
                     </div>
-                </Label>
+                </div>
 
                 <div class="grow flex flex-col justify-end">
                     <Button class="w-full" type="submit">
