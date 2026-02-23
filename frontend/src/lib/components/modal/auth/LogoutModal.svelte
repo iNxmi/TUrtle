@@ -1,6 +1,5 @@
 <script>
-    import {Button, Modal} from "flowbite-svelte";
-    import {QuestionCircleSolid} from "flowbite-svelte-icons";
+    import {Button, Heading, Hr, Modal} from "flowbite-svelte";
     import request from "$lib/api/api.js";
     import {goto, invalidateAll} from "$app/navigation";
     import {m} from "$lib/paraglide/messages.js";
@@ -24,22 +23,21 @@
 
 <Modal form bind:open={open} size="xs">
     <div class="flex flex-col gap-5 align-center">
-        <div class="flex gap-5 justify-center">
-            <QuestionCircleSolid class="h-12 w-12"/>
-            <div class="flex flex-col justify-center">
-                <h1 class="text-lg font-bold">{m.modal_logout_title()}</h1>
-            </div>
-        </div>
+        <Heading tag="h3" class="text-center">
+            {m.modal_logout_title()}
+        </Heading>
+
+        <Hr class="m-0 p-0"/>
 
         <h3 class="text-lg text-center">
             {m.modal_logout_content()}
         </h3>
 
         <div class="flex gap-2 justify-center">
-            <Button color="red" onclick={logout}>
+            <Button name="button_logout" color="red" onclick={logout}>
                 {m.modal_logout_button_logout()}
             </Button>
-            <Button color="alternative" onclick={() => open = false}>
+            <Button name="button_cancel" color="alternative" onclick={() => open = false}>
                 {m.modal_logout_button_cancel()}
             </Button>
         </div>

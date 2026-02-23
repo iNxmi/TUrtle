@@ -1,5 +1,5 @@
 <script>
-    import {A, Button, Checkbox, Heading, Input, Modal} from 'flowbite-svelte';
+    import {A, Button, Checkbox, Heading, Hr, Input, Modal} from 'flowbite-svelte';
     import PasswordInput from "$lib/components/PasswordInput.svelte";
     import Altcha from "$lib/components/Altcha.svelte"
     import {m} from '$lib/paraglide/messages.js';
@@ -47,29 +47,38 @@
             {m.modal_login_title()}
         </Heading>
 
+        <Hr class="m-0 p-0"/>
+
         <div>
             <span>{m.modal_login_label_username_or_email()}</span>
-            <Input bind:value={username} type="text" required/>
+            <Input name="input_email_or_username" type="text" bind:value={username} required/>
         </div>
 
         <div>
             <span>{m.modal_login_label_password()}</span>
-            <PasswordInput bind:value={password} required/>
+            <PasswordInput name="input_password" bind:value={password} required/>
         </div>
 
-        <Checkbox bind:checked={rememberMe}>{m.modal_login_label_remember_me({days: 30})}</Checkbox>
+        <div class="flex">
+            <div class="flex flex-col justify-center">
+                <Checkbox name="input_remember_me" bind:checked={rememberMe}/>
+            </div>
+            <span>{m.modal_login_label_remember_me({days: 30})}</span>
+        </div>
 
         {#if !isTrusted}
-            <Altcha bind:value={altchaToken}/>
+            <Altcha name="input_altcha" bind:value={altchaToken}/>
         {/if}
 
-        <Button class="cursor-pointer" type="submit">{m.modal_login_button()}</Button>
+        <Button name="button_submit" type="submit">
+            {m.modal_login_button()}
+        </Button>
 
-        <div class="flex gap-20 justify-between">
-            <A href="/auth/register" class="text-sm text-blue-700 hover:underline dark:text-blue-500">
+        <div class="flex justify-between">
+            <A href="/auth/register" class="text-blue-700 hover:underline dark:text-blue-500">
                 {m.modal_login_label_no_account()}
             </A>
-            <A href="/frontend/static" class="text-sm text-blue-700 hover:underline dark:text-blue-500">
+            <A href="/frontend/static" class="text-blue-700 hover:underline dark:text-blue-500">
                 {m.modal_login_label_forgot_password()}
             </A>
         </div>

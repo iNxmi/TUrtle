@@ -3,7 +3,6 @@
     import equal from 'fast-deep-equal';
     import {Badge, Checkbox, CloseButton, Input} from 'flowbite-svelte';
 
-
     let {
         users,
         onchange = false,

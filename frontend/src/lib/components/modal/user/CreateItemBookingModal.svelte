@@ -74,7 +74,6 @@
 
 <Modal form bind:open={open} outsideclose={false} size=xl>
     <div class="flex flex-col gap-5">
-
         <Heading tag="h3" class="text-center">
             {m.modal_user_create_item_booking_title()}
         </Heading>
