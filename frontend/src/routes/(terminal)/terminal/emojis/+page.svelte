@@ -38,13 +38,13 @@
         code[code.length] = emoji;
 
         if (code.length === CODE_LENGTH)
-            submitInput();
+            submit();
     }
 
     let success = $state(null)
     let blink = $state(true)
 
-    async function submitInput() {
+    async function submit() {
         shuffle();
 
         const payload = {
@@ -73,7 +73,7 @@
                 success = null;
                 blink = true;
             }
-        }, 50)
+        }, 50);
     }
 
     const removeEmoji = () => {

@@ -2,7 +2,7 @@
     import {Button, Modal} from "flowbite-svelte";
     import {QuestionCircleSolid} from "flowbite-svelte-icons";
     import request from "$lib/api/api.js";
-    import {invalidateAll} from "$app/navigation";
+    import {goto, invalidateAll} from "$app/navigation";
     import {m} from "$lib/paraglide/messages";
 
     let {
@@ -17,6 +17,7 @@
             return;
 
         await invalidateAll();
+        await goto("/");
         open = false;
     }
 </script>

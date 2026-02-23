@@ -1,6 +1,7 @@
 <script>
     import {page} from '$app/state';
-    import {Heading} from 'flowbite-svelte';
+    import {Heading, Button} from 'flowbite-svelte';
+    import {goto} from '$app/navigation';
     import {A404NotFoundShoppingDark, A404NotFoundSmileyDark} from "flowbite-svelte-illustrations";
 
     const random = Math.random()
@@ -20,6 +21,8 @@
                     <A404NotFoundSmileyDark/>
                 {/if}
             {/if}
+
+            <Button color="alternative" onclick={() => goto("/")}>Home</Button>
         </div>
     </div>
 </div>
