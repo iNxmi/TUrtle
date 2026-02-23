@@ -162,6 +162,7 @@
   "manage_users_label_last_name": "Last Name",
   "manage_users_label_email": "Email",
   "manage_users_label_roles": "Roles",
+  "manage_users_label_emojis": "Emojis",
   "manage_users_label_created_at": "Created At",
 
   "manage_lockers_label_id": "ID",

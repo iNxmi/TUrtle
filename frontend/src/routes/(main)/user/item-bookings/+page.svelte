@@ -5,6 +5,16 @@
 
     const {data} = $props();
 
+    const categories = $derived(data.categories.map(category => ({
+        value: category.id,
+        name: category.name
+    })));
+
+    const items = $derived(data.items.map(item => ({
+        value: item.id,
+        name: item.name
+    })));
+
     const columns = [
         {field: "id", label: m.user_item_bookings_label_id()},
         {field: "itemId", label: m.user_item_bookings_label_item_id()},
@@ -25,18 +35,8 @@
             field: "createdAt",
             label: m.user_item_bookings_label_created_at(),
             transform: (item) => new Date(item).toLocaleString()
-        },
+        }
     ];
-
-    const categories = $derived(data.categories.map(category => ({
-        value: category.id,
-        name: category.name
-    })));
-
-    const items = $derived(data.items.map(item => ({
-        value: item.id,
-        name: item.name
-    })));
 
     let modal = $state(false);
 </script>
@@ -46,4 +46,6 @@
            onCreate={() => modal = true}
 />
 
-<UserCreateItemBookingModal bind:open={modal} {categories} {items}/>
+{#if modal}
+    <UserCreateItemBookingModal bind:open={modal} {categories} {items}/>
+{/if}

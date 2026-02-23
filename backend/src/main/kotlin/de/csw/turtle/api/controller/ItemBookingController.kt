@@ -120,22 +120,15 @@ class ItemBookingController(
             Sort.by(sortDirection, sortProperty)
         } ?: Sort.unsorted()
 
-        val specification: Specification<ItemBookingEntity> =
-            if (user.hasPermission(Permission.MANAGE_ITEM_BOOKINGS)) {
-                Specification.unrestricted()
-            } else Specification { root, _, builder ->
-                builder.equal(root.get<UserEntity>("user"), user)
-            }
-
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = itemBookingService.getPage(rsql = rsql, pageable = pageable, specification = specification)
+            val page = itemBookingService.getPage(rsql = rsql, pageable = pageable)
             val dto = page.map { GetItemBookingResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
         val collection =
-            itemBookingService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
+            itemBookingService.getAll(rsql = rsql, sort = sort).toMutableSet()
         val dto = collection.map { GetItemBookingResponse(it) }
         return ResponseEntity.ok(dto)
     }

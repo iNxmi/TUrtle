@@ -4,6 +4,7 @@
 
     let {data} = $props();
     let user = $derived(data.user);
+    let roles = $derived(data.roles);
 </script>
 
 <form class="flex flex-col gap-5">
@@ -35,8 +36,13 @@
     </Label>
 
     <Label>
+        <span>{m.manage_users_label_emojis()}</span>
+        <Input type="text" value={user.emojis} disabled/>
+    </Label>
+
+    <Label>
         <span>{m.manage_users_label_roles()}</span>
-        <Input type="text" value={JSON.stringify(user.roles)} disabled/>
+        <Input type="text" value={JSON.stringify(user.roleIds.map((id) => roles[id]?.name))} disabled/>
     </Label>
 
     <Label>
