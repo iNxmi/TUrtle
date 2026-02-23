@@ -6,6 +6,6 @@ export async function load() {
 }
 
 async function getRoles() {
-    const response = await request("/roles");
+    const response = await request("/api/roles");
     return await response.json();
 }

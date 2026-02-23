@@ -1,16 +1,11 @@
-import {redirect} from '@sveltejs/kit';
-
-export default async function request(url, options) {
-    const endpoint = `/api${url}`;
-
-    const response = await fetch(endpoint, options);
+export default async function request(url, options = {}) {
+    const response = await fetch(url, options);
     if (response.status !== 401)
-        return response
+        return response;
 
-    //TODO implement proper fix for not being logged in (optional parameter like planned)
-    const refreshResponse = await fetch("/api/auth/refresh", {method: "POST"});
-    if (refreshResponse.status === 401 && url !== "/auth/me" && url !== "/permissions")
-        throw redirect(401, "/");
+    const refreshResponse = await fetch("/api/auth/refresh", {method: "POST",});
+    if (refreshResponse.status !== 204)
+        return response;
 
-    return await fetch(endpoint, options);
+    return fetch(url, options);
 }

@@ -15,8 +15,8 @@
         })));
 
     async function createRole() {
-        const response = await request('/roles', {
-            method: 'POST',
+        const response = await request("/api/roles", {
+            method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },

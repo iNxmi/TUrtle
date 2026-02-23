@@ -11,7 +11,7 @@
     async function logout(event) {
         event.preventDefault()
 
-        const response = await request("/auth/logout", {method: "POST"})
+        const response = await request("/api/auth/logout", {method: "POST"})
         if (response.status !== 204)
             return;
 

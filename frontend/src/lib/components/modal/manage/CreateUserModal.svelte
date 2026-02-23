@@ -17,7 +17,7 @@
     });
 
     async function getRoles() {
-        const response = await request("/roles");
+        const response = await request("/api/roles");
         return await response.json();
     }
 
@@ -46,7 +46,7 @@
         event.preventDefault()
 
         const payload = $state.snapshot(input);
-        const response = await request("/users", {
+        const response = await request("/api/users", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)

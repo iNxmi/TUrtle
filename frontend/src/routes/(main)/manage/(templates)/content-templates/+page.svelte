@@ -4,16 +4,18 @@
 
     const {data} = $props();
 
-    const headers = [
-        {id: "id", display: m.manage_content_templates_label_id()},
-        {id: "name", display: m.manage_content_templates_label_name()},
-        {id: "description", display: m.manage_content_templates_label_description()},
-        {id: "createdAt", display: m.manage_content_templates_label_created_at()}
+    const columns = [
+        {field: "id", label: m.manage_content_templates_label_id()},
+        {field: "name", label: m.manage_content_templates_label_name()},
+        {field: "description", label: m.manage_content_templates_label_description()},
+        {
+            field: "createdAt",
+            label: m.manage_content_templates_label_created_at(),
+            transform: (item) => new Date(item).toLocaleString()
+        }
     ]
 </script>
 
-<TableView
-        endpoint="/manage/content-templates"
-        headers={headers}
-        contentPage={data.page}
+<TableView columns={columns}
+           contentPage={data.page}
 />

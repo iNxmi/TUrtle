@@ -42,7 +42,7 @@
             altchaToken: $state.snapshot(altchaToken)
         }
 
-        const response = await request("/support-tickets", {
+        const response = await request("/api/support-tickets", {
             method: "POST",
             body: JSON.stringify(payload),
             headers: {"Content-Type": "application/json"}

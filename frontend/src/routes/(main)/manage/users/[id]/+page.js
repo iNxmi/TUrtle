@@ -11,11 +11,11 @@ export async function load({params}) {
 }
 
 async function getUser(id) {
-    const response = await request(`/users/${id}`);
+    const response = await request(`/api/users/${id}`);
     return await response.json();
 }
 
 async function getRoles() {
-    const response = await request("/roles");
+    const response = await request("/api/roles");
     return await response.json();
 }

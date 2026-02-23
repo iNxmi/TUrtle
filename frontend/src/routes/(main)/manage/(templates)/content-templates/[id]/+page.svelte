@@ -20,7 +20,7 @@
 
     async function saveTemplate() {
 
-        const response = request(contentTemplatesPath + `/${template.id}`, {
+        const response = request(`/api/content-templates/${template.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

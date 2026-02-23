@@ -49,10 +49,10 @@
             emojis: "💩💩💩💩💩"
         }
 
-        const response = await request('/hardware/door/emojis', {
-            method: 'POST',
+        const response = await request("/api/hardware/door/emojis", {
+            method: "POST",
             body: JSON.stringify(payload),
-            headers: {'Content-Type': 'application/json'}
+            headers: {"Content-Type": "application/json"}
         });
 
         const json = await response.json()

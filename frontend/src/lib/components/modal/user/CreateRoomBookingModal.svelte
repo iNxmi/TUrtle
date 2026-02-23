@@ -30,7 +30,7 @@
     let end = $state(new Date(now));
 
     async function getEvents() {
-        const response = await request(`/room-bookings`);
+        const response = await request("/api/room-bookings");
         const json = await response.json();
 
         return json.map(event => ({
@@ -68,7 +68,7 @@
             accessibility: accessibility
         };
 
-        const response = await request("/room-bookings", {
+        const response = await request("/api/room-bookings", {
             method: "POST",
             body: JSON.stringify(payload),
             headers: {"Content-Type": "application/json"}

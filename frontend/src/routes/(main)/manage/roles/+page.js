@@ -1,6 +1,6 @@
 import {getPage} from "$lib/utils.js";
 
 export async function load({url}) {
-    const page = await getPage(url, "/roles")
+    const page = await getPage(url, "/api/roles")
     return {page: page};
 }

@@ -1,5 +1,5 @@
 <script>
-    import {A, Button, Checkbox, Heading, Hr, Input, Modal} from 'flowbite-svelte';
+    import {A, Button, Checkbox, Heading, Hr, Input, Modal, Spinner} from 'flowbite-svelte';
     import PasswordInput from "$lib/components/PasswordInput.svelte";
     import Altcha from "$lib/components/Altcha.svelte"
     import {m} from '$lib/paraglide/messages.js';
@@ -12,6 +12,8 @@
         open = $bindable(false)
     } = $props();
 
+    let loading = $state(false);
+
     let username = $state("");
     let password = $state("");
     let rememberMe = $state(false);
@@ -20,6 +22,8 @@
     async function login(event) {
         event.preventDefault();
 
+        loading = true;
+
         const payload = {
             emailOrUsername: $state.snapshot(username),
             password: $state.snapshot(password),
@@ -27,11 +31,13 @@
             altchaToken: $state.snapshot(altchaToken)
         };
 
-        const response = await request(authPath + '/login', {
+        const response = await request("/api/auth/login", {
             method: "POST",
             body: JSON.stringify(payload),
             headers: {'Content-Type': 'application/json'}
         });
+
+        loading = false;
 
         if (!response.ok)
             return;
@@ -71,7 +77,11 @@
         {/if}
 
         <Button name="button_submit" type="submit">
-            {m.modal_login_button()}
+            {#if loading === true}
+                <Spinner type="dots"/>
+            {:else}
+                {m.modal_login_button()}
+            {/if}
         </Button>
 
         <div class="flex justify-between">

@@ -23,7 +23,7 @@
         if (itemId === null)
             return [];
 
-        const response = await request(`/item-bookings?rsql=item.id==${itemId}`);
+        const response = await request(`/api/item-bookings?rsql=item.id==${itemId}`);
         const json = await response.json();
 
         return json.map(event => ({
@@ -58,7 +58,7 @@
             end: end.toISOString()
         };
 
-        const response = await request("/item-bookings", {
+        const response = await request("/api/item-bookings", {
             method: "POST",
             body: JSON.stringify(payload),
             headers: {"Content-Type": "application/json"}

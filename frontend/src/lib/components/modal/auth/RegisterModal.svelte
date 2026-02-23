@@ -31,13 +31,13 @@
             altchaToken: $state.snapshot(altchaToken)
         };
 
-        const response = await request("/users", {
-            method: 'POST',
+        const response = await request("/api/users", {
+            method: "POST",
             body: JSON.stringify(payload),
-            headers: {'Content-Type': 'application/json'}
+            headers: {"Content-Type": "application/json"}
         });
 
-        if (response.status !== 204)
+        if (response.status !== 201)
             return;
 
         await invalidateAll()

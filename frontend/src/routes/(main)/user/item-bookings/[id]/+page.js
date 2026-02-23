@@ -13,19 +13,19 @@ export async function load({params}) {
 }
 
 async function getBooking(id) {
-    const url = `/item-bookings/${id}`;
+    const url = `/api/item-bookings/${id}`;
     const response = await request(url);
     return await response.json();
 }
 
 async function getItem(id) {
-    const url = `/items/${id}`;
+    const url = `/api/items/${id}`;
     const response = await request(url);
     return await response.json();
 }
 
 async function getLocker(id) {
-    const url = `/lockers/${id}`;
+    const url = `/api/lockers/${id}`;
     const response = await request(url);
     return await response.json();
 }

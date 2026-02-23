@@ -18,7 +18,7 @@ export async function load() {
 }
 
 async function getPermissions() {
-    const response = await request("/permissions");
+    const response = await request("/api/permissions");
     if (!response.ok)
         return [];
 
@@ -26,7 +26,7 @@ async function getPermissions() {
 }
 
 async function getUser() {
-    const response = await request("/auth/me");
+    const response = await request("/api/auth/me");
     if (!response.ok)
         return null;
 
@@ -34,7 +34,7 @@ async function getUser() {
 }
 
 async function getIsTrustedDevice() {
-    const response = await request("/altcha/trusted");
+    const response = await request("/api/altcha/trusted");
     if (!response.ok)
         return false;
 

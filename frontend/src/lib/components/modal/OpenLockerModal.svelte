@@ -11,7 +11,7 @@
     async function unlock(event) {
         event.preventDefault();
 
-        const response = await request(`/hardware/locker/open?id=${locker.id}`, {method: "POST"});
+        const response = await request(`/api/hardware/locker/open?id=${locker.id}`, {method: "POST"});
         if (!response.ok)
             return;
 

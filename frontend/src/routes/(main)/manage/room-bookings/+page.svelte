@@ -4,7 +4,7 @@
     import {fade} from 'svelte/transition';
     import request from '$lib/api/api.js';
     import {between, convertEventToBackend, convertEventToFrontend, fetchRoomBookings} from '$lib/utils.js';
-    import {Button, Datepicker, Heading, div, P, Textarea, Timepicker, Toggle} from 'flowbite-svelte';
+    import {Button, Datepicker, Heading, P, Textarea, Timepicker, Toggle} from 'flowbite-svelte';
     import WhitelistDropdown from '$lib/components/WhitelistDropdown.svelte';
     import {TrashBinSolid} from 'flowbite-svelte-icons';
 
@@ -13,7 +13,6 @@
     import timeGridPlugin from '@fullcalendar/timegrid';
     import listPlugin from '@fullcalendar/list';
     import interactionPlugin from '@fullcalendar/interaction';
-    import {roomBookingsPath} from '$lib/backend.js';
     import {page} from '$app/state';
 
     let {data} = $props();
@@ -120,7 +119,7 @@
                     },
                     eventDrop: function (eventDropInfo) {
                         eventDropInfo.jsEvent.preventDefault();
-                        request(roomBookingsPath + `/${eventDropInfo.event.id}`, {
+                        request(`/api/room-bookings/${eventDropInfo.event.id}`, {
                             method: "PATCH",
                             body: JSON.stringify(convertEventToBackend(eventDropInfo.event)),
                             headers: {'Content-Type': 'application/json'}
@@ -128,7 +127,7 @@
                     },
                     eventResize: function (eventResizeInfo) {
                         eventResizeInfo.jsEvent.preventDefault();
-                        request(roomBookingsPath + `/${eventResizeInfo.event.id}`, {
+                        request(`/api/room-bookings/${eventResizeInfo.event.id}`, {
                             method: "PATCH",
                             body: JSON.stringify(convertEventToBackend(eventResizeInfo.event)),
                             headers: {'Content-Type': 'application/json'}
@@ -198,7 +197,7 @@
     }
 
     function removeEvent() {
-        const response = request(roomBookingsPath + `/${selectedEvent.id}`, {
+        const response = request(`/api/room-bookings/${selectedEvent.id}`, {
             method: 'DELETE'
         });
         selectedEvent.remove();
@@ -242,7 +241,7 @@
         calendar.getEventById(selectedEvent.id).setExtendedProp('status', 'APPROVED');
         calendar.getEventById(selectedEvent.id).setProp('color', 'oklch(75% 0.183 55.934)');
 
-        const response = await request(roomBookingsPath + `/${selectedEvent.id}`, {
+        const response = await request(`/api/room-bookings/${selectedEvent.id}`, {
             method: 'PATCH',
             body: JSON.stringify(convertEventToBackend({status: 'APPROVED'})),
             headers: {'Content-Type': 'application/json'}
@@ -260,7 +259,7 @@
         calendar.getEventById(selectedEvent.id).setExtendedProp('status', 'REJECTED');
         calendar.getEventById(selectedEvent.id).setProp('color', 'red');
 
-        const response = await request(roomBookingsPath + `/${selectedEvent.id}`, {
+        const response = await request(`/api/room-bookings/${selectedEvent.id}`, {
             method: 'PATCH',
             body: JSON.stringify(convertEventToBackend({status: 'REJECTED'})),
             headers: {'Content-Type': 'application/json'}
@@ -300,7 +299,7 @@
             calendar.getEventById(selectedEvent.id).setExtendedProp('whitelistedUserIds', eventWhitelist);
             calendar.getEventById(selectedEvent.id).setExtendedProp('openToEveryone', whitelistDisableOverride);
         }
-        const response = await request(selectedEvent.new ? roomBookingsPath : roomBookingsPath + `/${selectedEvent.id}`, {
+        const response = await request(selectedEvent.new ? "/api/room-bookings" : `/api/room-bookings/${selectedEvent.id}`, {
             method: selectedEvent.new ? 'POST' : 'PATCH',
             body: JSON.stringify(selectedEvent.new ? createNewBackendEvent() : convertEventToBackend(calendar.getEventById(selectedEvent.id))),
             headers: {'Content-Type': 'application/json'}
@@ -369,13 +368,13 @@
                                    bind:value={creator} single {displayFunction} {sortFunction}
                                    {filterFunction}/>
             </div>
-            <div class="space-y-2"> <span>_Start_</span>
+            <div class="space-y-2"><span>_Start_</span>
                 <Datepicker disabled={creator[0] !== currentUser.id}
                             monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
                 <Timepicker disabled={creator[0] !== currentUser.id} divClass="shadow-none!"
                             bind:value={startTime}/>
             </div>
-            <div class="space-y-2"> <span>_End_</span>
+            <div class="space-y-2"><span>_End_</span>
                 <Datepicker disabled={creator[0] !== currentUser.id}
                             monthBtnSelected="bg-csw! hover:text-white!" bind:value={endDate}></Datepicker>
                 <Timepicker disabled={creator[0] !== currentUser.id} divClass="shadow-none!"

@@ -47,7 +47,7 @@
                 info.jsEvent.preventDefault();
                 selectedEvent = info.event;
 
-                const response = await request(`/users/${selectedEvent.extendedProps.creator}`);
+                const response = await request(`/api/users/${selectedEvent.extendedProps.creator}`);
                 selectedEventCreatorName = await response.json();
                 showEventDetailsModal = true;
             },

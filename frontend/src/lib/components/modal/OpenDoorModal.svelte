@@ -11,7 +11,7 @@
     async function unlock(event) {
         event.preventDefault();
 
-        const response = await request("/hardware/door/open", {method: "POST"});
+        const response = await request("/api/hardware/door/open", {method: "POST"});
         if (!response.ok)
             return;
 

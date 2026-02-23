@@ -6,7 +6,7 @@ export async function load({params}) {
 }
 
 async function getBooking(id) {
-    const url = `/room-bookings/${id}`;
+    const url = `/api/room-bookings/${id}`;
     const response = await request(url);
     return await response.json();
 }
