@@ -17,6 +17,5 @@ async function getUser(id) {
 
 async function getRoles() {
     const response = await request("/roles");
-    const elements = await response.json();
-    return Object.fromEntries(elements.map(element => [element.id, element]))
+    return await response.json();
 }

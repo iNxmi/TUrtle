@@ -1,5 +1,5 @@
 <script>
-    import {Input, Label} from "flowbite-svelte";
+    import {Input, Label, MultiSelect} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
 
     let {data} = $props();
@@ -42,7 +42,7 @@
 
     <Label>
         <span>{m.manage_users_label_roles()}</span>
-        <Input type="text" value={JSON.stringify(user.roleIds.map((id) => roles[id]?.name))} disabled/>
+        <MultiSelect items={roles.map((role) => ({value: role.id, name: role.name}))} value={user.roleIds} disabled/>
     </Label>
 
     <Label>
