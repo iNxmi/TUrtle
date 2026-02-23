@@ -4,13 +4,12 @@
 
     const {data} = $props();
 
-    const headers = [
-        {id: "id", display: m.manage_item_bookings_label_id()},
-        {id: "createdAt", display: m.manage_item_bookings_label_created_at()}
+    const columns = [
+        {field: "id",           label: m.manage_item_bookings_label_id()},
+        {field: "createdAt",    label: m.manage_item_bookings_label_created_at(), transform: (item) => new Date(item).toLocaleString()}
     ];
 </script>
 
-<TableView endpoint="/manage/item-bookings"
-           headers={headers}
+<TableView columns={columns}
            contentPage={data.page}
 />

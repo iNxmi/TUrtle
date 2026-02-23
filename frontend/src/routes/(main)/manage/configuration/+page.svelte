@@ -4,17 +4,24 @@
 
     const {data} = $props();
 
-    const headers = [
-        {id: "id", display: m.manage_configuration_label_id()},
-        {id: "key", display: m.manage_configuration_label_key()},
-        {id: "type", display: m.manage_configuration_label_type()},
-        {id: "value", display: m.manage_configuration_label_value()},
-        {id: "updatedAt", display: m.manage_configuration_label_updated_at()},
-        {id: "createdAt", display: m.manage_configuration_label_created_at()}
+    const columns = [
+        {field: "id", label: m.manage_configuration_label_id()},
+        {field: "key", label: m.manage_configuration_label_key()},
+        {field: "type", label: m.manage_configuration_label_type()},
+        {field: "value", label: m.manage_configuration_label_value()},
+        {
+            field: "updatedAt",
+            label: m.manage_configuration_label_updated_at(),
+            transform: (item) => new Date(item).toLocaleString()
+        },
+        {
+            field: "createdAt",
+            label: m.manage_configuration_label_created_at(),
+            transform: (item) => new Date(item).toLocaleString()
+        }
     ];
 </script>
 
-<TableView endpoint="/manage/configuration"
-           headers={headers}
+<TableView columns={columns}
            contentPage={data.page}
 />

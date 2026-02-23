@@ -4,14 +4,18 @@
 
     const {data} = $props();
 
-    const headers = [
-        {id: "id", display: m.manage_roles_label_id()},
-        {id: "name", display: m.manage_roles_label_name()},
-        {id: "createdAt", display: m.manage_roles_label_created_at()},
+    const columns = [
+        {field: "id", label: m.manage_roles_label_id()},
+        {field: "name", label: m.manage_roles_label_name()},
+        {
+            field: "createdAt",
+            label: m.manage_roles_label_created_at(),
+            transform: (item) => new Date(item).toLocaleString()
+        },
     ]
 </script>
 
 <TableView endpoint="/manage/roles"
-           headers={headers}
+           columns={columns}
            contentPage={data.page}
 />

@@ -4,15 +4,18 @@
 
     const {data} = $props();
 
-    const headers = [
-        {id: "id", display: m.manage_lockers_label_id()},
-        {id: "name", display: m.manage_lockers_label_name()},
-        {id: "index", display: m.manage_lockers_label_index()},
-        {id: "createdAt", display: m.manage_lockers_label_created_at()}
+    const columns = [
+        {field: "id", label: m.manage_lockers_label_id()},
+        {field: "name", label: m.manage_lockers_label_name()},
+        {field: "index", label: m.manage_lockers_label_index()},
+        {
+            field: "createdAt",
+            label: m.manage_lockers_label_created_at(),
+            transform: (item) => new Date(item).toLocaleString()
+        }
     ];
 </script>
 
-<TableView endpoint="/manage/lockers"
-           headers={headers}
+<TableView columns={columns}
            contentPage={data.page}
 />

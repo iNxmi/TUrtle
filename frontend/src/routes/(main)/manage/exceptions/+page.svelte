@@ -4,16 +4,19 @@
 
     const {data} = $props();
 
-    const headers = [
-        {id: "id", display: m.manage_exceptions_label_id()},
-        {id: "endpoint", display: m.manage_exceptions_label_endpoint()},
-        {id: "exception", display: m.manage_exceptions_label_exception()},
-        {id: "message", display: m.manage_exceptions_label_message()},
-        {id: "createdAt", display: m.manage_exceptions_label_created_at()},
+    const columns = [
+        {field: "id", label: m.manage_exceptions_label_id()},
+        {field: "endpoint", label: m.manage_exceptions_label_endpoint()},
+        {field: "exception", label: m.manage_exceptions_label_exception()},
+        {field: "message", label: m.manage_exceptions_label_message()},
+        {
+            field: "createdAt",
+            label: m.manage_exceptions_label_created_at(),
+            transform: (item) => new Date(item).toLocaleString()
+        }
     ]
 </script>
 
-<TableView endpoint="/manage/exceptions"
-           headers={headers}
+<TableView columns={columns}
            contentPage={data.page}
 />

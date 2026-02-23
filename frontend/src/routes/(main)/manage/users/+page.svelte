@@ -1,20 +1,25 @@
 <script>
     import TableView from "$lib/components/TableView.svelte";
     import {m} from "$lib/paraglide/messages.js";
+    import {goto} from "$app/navigation";
 
     const {data} = $props();
 
-    const headers = [
-        {id: "id", display: m.manage_users_label_id()},
-        {id: "username", display: m.manage_users_label_username()},
-        {id: "firstName", display: m.manage_users_label_first_name()},
-        {id: "lastName", display: m.manage_users_label_last_name()},
-        {id: "email", display: m.manage_users_label_email()},
-        {id: "createdAt", display: m.manage_users_label_created_at()},
+    const columns = [
+        {field: "id", label: m.manage_users_label_id()},
+        {field: "username", label: m.manage_users_label_username()},
+        {field: "firstName", label: m.manage_users_label_first_name()},
+        {field: "lastName", label: m.manage_users_label_last_name()},
+        {field: "email", label: m.manage_users_label_email()},
+        {
+            field: "createdAt",
+            label: m.manage_users_label_created_at(),
+            transform: (value) => new Date(value).toLocaleString()
+        }
     ];
 </script>
 
-<TableView endpoint="/manage/users"
-           headers={headers}
+<TableView columns={columns}
            contentPage={data.page}
+           onItemClicked={(item) => goto(`/manage/users/${item.id}`)}
 />

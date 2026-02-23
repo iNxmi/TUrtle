@@ -76,7 +76,7 @@
     <div class="flex flex-col gap-5">
 
         <Heading tag="h3" class="text-center">
-            {m.modal_create_item_booking_title()}
+            {m.modal_user_create_item_booking_title()}
         </Heading>
 
         <Hr class="m-0 p-0"/>
@@ -84,17 +84,17 @@
         <div class="flex gap-5">
             <form class="shrink flex flex-col gap-5" onsubmit={submit}>
                 <Label>
-                    <span>{m.modal_create_item_booking_label_category()}</span>
+                    <span>{m.modal_user_create_item_booking_label_category()}</span>
                     <Select bind:value={categoryId} items={categories} required/>
                 </Label>
 
                 <Label>
-                    <span>{m.modal_create_item_booking_label_item()}</span>
+                    <span>{m.modal_user_create_item_booking_label_item()}</span>
                     <Select disabled={categoryId === null} bind:value={itemId} items={items} required/>
                 </Label>
 
                 <Label>
-                    <span>{m.modal_create_item_booking_label_start()}</span>
+                    <span>{m.modal_user_create_item_booking_label_start()}</span>
                     <div class="flex flex-col gap-1">
                         <Datepicker disabled={itemId === null} bind:value={start}/>
                         <Timepicker disabled={itemId === null} bind:value={start}/>
@@ -102,7 +102,7 @@
                 </Label>
 
                 <Label>
-                    <span>{m.modal_create_item_booking_label_end()}</span>
+                    <span>{m.modal_user_create_item_booking_label_end()}</span>
                     <div class="flex flex-col gap-1">
                         <Datepicker disabled={itemId === null} bind:value={end}/>
                         <Timepicker disabled={itemId === null} bind:value={end}/>
@@ -111,7 +111,7 @@
 
                 <div class="grow flex flex-col justify-end">
                     <Button class="w-full" type="submit">
-                        {m.modal_create_item_booking_button()}
+                        {m.modal_user_create_item_booking_button()}
                     </Button>
                 </div>
             </form>

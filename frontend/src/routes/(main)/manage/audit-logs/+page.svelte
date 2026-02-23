@@ -4,17 +4,20 @@
 
     const {data} = $props();
 
-    const headers = [
-        {id: "id", display: m.manage_audit_logs_label_id()},
-        {id: "username", display: m.manage_audit_logs_label_username()},
-        {id: "ipAddress", display: m.manage_audit_logs_label_ip_address()},
-        {id: "endpoint", display: m.manage_audit_logs_label_endpoint()},
-        {id: "httpMethod", display: m.manage_audit_logs_label_http_method()},
-        {id: "createdAt", display: m.manage_audit_logs_label_created_at()}
+    const columns = [
+        {field: "id", label: m.manage_audit_logs_label_id()},
+        {field: "userId", label: m.manage_audit_logs_label_user_id()},
+        {field: "ipAddress", label: m.manage_audit_logs_label_ip_address()},
+        {field: "endpoint", label: m.manage_audit_logs_label_endpoint()},
+        {field: "httpMethod", label: m.manage_audit_logs_label_http_method()},
+        {
+            field: "createdAt",
+            label: m.manage_audit_logs_label_created_at(),
+            transform: (value) => new Date(value).toLocaleString()
+        }
     ];
 </script>
 
-<TableView endpoint="/manage/audit-logs"
-           headers={headers}
+<TableView columns={columns}
            contentPage={data.page}
 />

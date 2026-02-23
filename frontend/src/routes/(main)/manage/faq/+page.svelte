@@ -4,14 +4,17 @@
 
     const {data} = $props();
 
-    const headers = [
-        {id: "id", display: m.manage_faq_label_id()},
-        {id: "name", display: m.manage_faq_label_name()},
-        {id: "createdAt", display: m.manage_faq_label_created_at()}
+    const columns = [
+        {field: "id", label: m.manage_faq_label_id()},
+        {field: "name", label: m.manage_faq_label_name()},
+        {
+            field: "createdAt",
+            label: m.manage_faq_label_created_at(),
+            transform: (item) => new Date(item).toLocaleString()
+        }
     ];
 </script>
 
-<TableView endpoint="/manage/faq"
-           headers={headers}
+<TableView columns={columns}
            contentPage={data.page}
 />

@@ -16,35 +16,37 @@
     import {
         AngleLeftOutline,
         AngleRightOutline,
-        ChevronDownOutline,
-        ChevronUpOutline,
-        ChevronSortOutline,
         ChevronDoubleLeftOutline,
         ChevronDoubleRightOutline,
+        ChevronDownOutline,
+        ChevronSortOutline,
+        ChevronUpOutline,
         PlusOutline,
         RefreshOutline,
         SearchOutline
     } from 'flowbite-svelte-icons';
 
-    const noop = () => {
-    };
+    // const columns = [
+    //     {label: "ID", field: "id", map: (value) => value.toString()},
+    // ]
 
     let {
-        headers = [],
+        columns = [],
         items = [],
         page = {},
 
         sortProperty,
         sortDirection,
 
-        onCreate = noop,
-        onSearch = noop,
-        onReload = noop,
-        onFirstPage = noop,
-        onPreviousPage = noop,
-        onNextPage = noop,
-        onLastPage = noop,
-        onHeaderClicked = noop,
+        onCreate,
+        onSearch,
+        onReload,
+        onFirstPage,
+        onPreviousPage,
+        onNextPage,
+        onLastPage,
+        onColumnClicked,
+        onItemClicked,
 
         hideAdd = false,
         hideReload = false,
@@ -68,20 +70,20 @@
                 <ButtonGroup disabled={disableSearch} class="flex-1">
                     <Input placeholder={`_search_`} bind:value={search}
                            disabled={disableSearch}/>
-                    <Button class="cursor-pointer bg-orange-400" onclick={() => onSearch(search)}>
+                    <Button class="cursor-pointer bg-orange-400" onclick={() => onSearch?.(search)}>
                         <SearchOutline class="text-white"/>
                     </Button>
                 </ButtonGroup>
             {/if}
             <div class="flex-2 flex gap-2 justify-end">
                 {#if !hideReload}
-                    <Button class="hover:cursor-pointer" onclick={() => onReload()} disabled={disableReload}>
+                    <Button class="hover:cursor-pointer" onclick={() => onReload?.()} disabled={disableReload}>
                         <RefreshOutline/>
                     </Button>
                 {/if}
 
                 {#if !hideAdd}
-                    <Button class="hover:cursor-pointer" onclick={() => onCreate()} disabled={disableAdd}>
+                    <Button class="hover:cursor-pointer" onclick={() => onCreate?.()} disabled={disableAdd}>
                         <PlusOutline/>
                     </Button>
                 {/if}
@@ -93,14 +95,14 @@
 
     <Table hoverable>
         <TableHead color="default">
-            {#each headers as header}
-                <TableHeadCell class="hover:cursor-pointer" onclick={() => onHeaderClicked(header.id)}>
-                    <div class={`flex items-center gap-1 ${header.id === sortProperty ? "text-orange-400": ""}`}>
-                        <span class="select-none">{header.display}</span>
+            {#each columns as column}
+                <TableHeadCell class="hover:cursor-pointer" onclick={() => onColumnClicked?.(column)}>
+                    <div class={`flex items-center gap-1 ${column.field === sortProperty ? "text-orange-400": ""}`}>
+                        <span class="select-none">{column.label}</span>
 
-                        {#if header.id === sortProperty && sortDirection === "ASC"}
+                        {#if column.field === sortProperty && sortDirection === "ASC"}
                             <ChevronUpOutline/>
-                        {:else if header.id === sortProperty && sortDirection === "DESC"}
+                        {:else if column.field === sortProperty && sortDirection === "DESC"}
                             <ChevronDownOutline/>
                         {:else}
                             <ChevronSortOutline/>
@@ -112,9 +114,16 @@
 
         <TableBody>
             {#each items as item}
-                <TableBodyRow class="hover:cursor-pointer border-gray-200" onclick={() => item.onClick()}>
-                    {#each item.values as value}
-                        <TableBodyCell>{value}</TableBodyCell>
+                <TableBodyRow class={`border-gray-200 ${onItemClicked !== undefined ? "hover:cursor-pointer": "" }`}
+                              onclick={() => onItemClicked?.(item)}>
+                    {#each columns as column}
+                        <TableBodyCell>
+                            {#if column.transform === undefined}
+                                {item[column.field]}
+                            {:else}
+                                {column.transform(item[column.field])}
+                            {/if}
+                        </TableBodyCell>
                     {/each}
                 </TableBodyRow>
             {/each}
@@ -128,7 +137,8 @@
             {#if !hideCount}
                 <ButtonGroup>
                     <Button disabled>
-                        {page.number * page.size + 1} - {Math.min((page.number + 1) * page.size, page.totalElements)} ({page.totalElements})
+                        {page.number * page.size + 1} - {Math.min((page.number + 1) * page.size, page.totalElements)}
+                        ({page.totalElements})
                     </Button>
                 </ButtonGroup>
             {/if}
@@ -136,12 +146,12 @@
             {#if !hidePagination}
                 <ButtonGroup disabled={disablePagination}>
                     <Button class="hover:cursor-pointer disabled:cursor-not-allowed" disabled={page.number <= 0}
-                            onclick={() => onFirstPage()}>
+                            onclick={() => onFirstPage?.()}>
                         <ChevronDoubleLeftOutline/>
                     </Button>
 
                     <Button class="hover:cursor-pointer disabled:cursor-not-allowed" disabled={page.number <= 0}
-                            onclick={() => onPreviousPage()}>
+                            onclick={() => onPreviousPage?.()}>
                         <AngleLeftOutline/>
                     </Button>
 
@@ -150,12 +160,12 @@
                     </Button>
 
                     <Button class="hover:cursor-pointer disabled:cursor-not-allowed"
-                            disabled={page.number >= page.totalPages - 1} onclick={() => onNextPage()}>
+                            disabled={page.number >= page.totalPages - 1} onclick={() => onNextPage?.()}>
                         <AngleRightOutline/>
                     </Button>
 
                     <Button class="hover:cursor-pointer disabled:cursor-not-allowed"
-                            disabled={page.number >= page.totalPages - 1} onclick={() => onLastPage()}>
+                            disabled={page.number >= page.totalPages - 1} onclick={() => onLastPage?.()}>
                         <ChevronDoubleRightOutline/>
                     </Button>
                 </ButtonGroup>

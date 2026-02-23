@@ -4,18 +4,20 @@
 
     const {data} = $props();
 
-    const headers = [
-        {id: "id", display: m.manage_support_tickets_label_id()},
-        {id: "urgency", display: m.manage_support_tickets_label_urgency()},
-        {id: "category", display: m.manage_support_tickets_label_category()},
-        {id: "subject", display: m.manage_support_tickets_label_subject()},
-        {id: "email", display: m.manage_support_tickets_label_email()},
-        {id: "createdAt", display: m.manage_support_tickets_label_created_at()}
-    ]
+    const columns = [
+        {field: "id", label: m.manage_support_tickets_label_id()},
+        {field: "urgency", label: m.manage_support_tickets_label_urgency()},
+        {field: "category", label: m.manage_support_tickets_label_category()},
+        {field: "subject", label: m.manage_support_tickets_label_subject()},
+        {field: "email", label: m.manage_support_tickets_label_email()},
+        {
+            field: "createdAt",
+            label: m.manage_support_tickets_label_created_at(),
+            transform: (item) => new Date(item).toLocaleString()
+        }
+    ];
 </script>
 
-<TableView
-        endpoint="/manage/support-tickets"
-        headers={headers}
-        contentPage={data.page}
+<TableView columns={columns}
+           contentPage={data.page}
 />

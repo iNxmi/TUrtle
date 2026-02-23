@@ -191,8 +191,8 @@
   "manage_exceptions_label_created_at": "Created At",
 
   "manage_audit_logs_label_id": "ID",
+  "manage_audit_logs_label_user_id": "User ID",
   "manage_audit_logs_label_ip_address": "IP Address",
-  "manage_audit_logs_label_username": "Username",
   "manage_audit_logs_label_endpoint": "Endpoint",
   "manage_audit_logs_label_http_method": "HTTP Method",
   "manage_audit_logs_label_created_at": "Created At",

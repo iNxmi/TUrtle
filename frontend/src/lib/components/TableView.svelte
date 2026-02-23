@@ -5,24 +5,19 @@
     import {goto, invalidateAll} from '$app/navigation';
 
     let {
-        endpoint,
-        headers = [],
+        columns = [],
         contentPage,
-        onCreate = () => {}
+        onCreate,
+        onItemClicked
     } = $props();
 
     let items = $derived.by(() => {
         let items = [];
         for (const entity of contentPage.content) {
             const values = []
-            for (const header of headers)
-                values.push(entity[header.id])
-
-            const item = {
-                onClick: () => goto(`${endpoint}/${entity.id}`),
-                values: values
-            };
-            items.push(item);
+            for (const column of columns)
+                values.push(entity[column.field])
+            items.push(values);
         }
         return items;
     });
@@ -32,8 +27,8 @@
     let searchParams = $derived(page.url.searchParams);
 </script>
 
-<TUrtleTable headers={headers}
-             items={items}
+<TUrtleTable columns={columns}
+             items={contentPage.content}
              page={pageInfo}
 
              sortProperty={searchParams.get("sortProperty")}
@@ -64,8 +59,8 @@
                  goto(`?${searchParams.toString()}`, {invalidateAll: true});
              }}
 
-             onHeaderClicked={(header) => {
-                searchParams.set("sortProperty", header)
+             onColumnClicked={(column) => {
+                searchParams.set("sortProperty", column.field)
 
                 if(searchParams.get("sortDirection") === "DESC") {
                     searchParams.set("sortDirection", "ASC")
@@ -76,7 +71,11 @@
                 goto(`?${searchParams.toString()}`, {invalidateAll: true});
              }}
 
+             onItemClicked={onItemClicked}
+
              onReload={() => invalidateAll()}
+
+             hideAdd={!onCreate}
              onCreate={onCreate}
 />
  
