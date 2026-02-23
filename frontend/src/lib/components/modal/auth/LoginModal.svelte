@@ -22,6 +22,7 @@
 
     async function login(event) {
         event.preventDefault();
+        error = "";
 
         const payload = {
             emailOrUsername: $state.snapshot(username),
