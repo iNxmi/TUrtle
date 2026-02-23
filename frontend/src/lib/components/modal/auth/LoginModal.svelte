@@ -5,7 +5,6 @@
     import {m} from '$lib/paraglide/messages.js';
     import request from '$lib/api/api.js';
     import {invalidateAll} from '$app/navigation';
-    import {authPath} from '$lib/backend.js'
 
     let {
         isTrusted = false,
@@ -19,10 +18,10 @@
     let rememberMe = $state(false);
     let altchaToken = $state("");
 
+    let error = $state("");
+
     async function login(event) {
         event.preventDefault();
-
-        loading = true;
 
         const payload = {
             emailOrUsername: $state.snapshot(username),
@@ -31,16 +30,20 @@
             altchaToken: $state.snapshot(altchaToken)
         };
 
+        loading = true;
         const response = await request("/api/auth/login", {
             method: "POST",
             body: JSON.stringify(payload),
             headers: {'Content-Type': 'application/json'}
         });
-
         loading = false;
 
-        if (!response.ok)
+        //TODO replace by local checks and interpretation as exceptions are given in english only and only for dev/api purposes.
+        if (!response.ok) {
+            const json = await response.json();
+            error = json.message;
             return;
+        }
 
         await invalidateAll()
         open = false
@@ -76,9 +79,13 @@
             <Altcha name="input_altcha" bind:value={altchaToken}/>
         {/if}
 
+        {#if error?.trim()}
+            <span class="text-red-400 text-justify">{error}</span>
+        {/if}
+
         <Button name="button_submit" type="submit">
             {#if loading === true}
-                <Spinner type="dots"/>
+                <Spinner size="5"/>
             {:else}
                 {m.modal_login_button()}
             {/if}

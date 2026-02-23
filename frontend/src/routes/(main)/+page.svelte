@@ -1,5 +1,5 @@
 <script>
-    import {Heading, Span} from "flowbite-svelte";
+    import {Spinner, Heading, Span} from "flowbite-svelte";
     import Card from "$lib/components/Card.svelte";
 </script>
 
