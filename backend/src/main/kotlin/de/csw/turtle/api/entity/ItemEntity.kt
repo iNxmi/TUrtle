@@ -7,7 +7,7 @@ import java.time.Instant
 @Table(name = "items")
 class ItemEntity(
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long = 0,
 
     @Column(unique = true)

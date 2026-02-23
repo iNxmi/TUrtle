@@ -7,7 +7,7 @@ import java.time.Instant
 @Table(name = "room_bookings")
 class RoomBookingEntity(
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long = 0,
 
     @ManyToOne

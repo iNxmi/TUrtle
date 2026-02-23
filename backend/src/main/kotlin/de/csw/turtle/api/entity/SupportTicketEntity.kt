@@ -7,7 +7,7 @@ import java.time.Instant
 @Table(name = "support_tickets")
 class SupportTicketEntity(
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long = 0,
 
     @Enumerated(EnumType.STRING)

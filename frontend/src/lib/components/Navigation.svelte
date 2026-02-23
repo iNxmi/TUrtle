@@ -35,6 +35,9 @@
         header = null,
         categories = [],
 
+        isTrusted = false,
+        isLocalNetwork = false,
+
         hideDoorButton = false,
         hideThemeButton = false,
         hideLanguageButton = false,
@@ -145,8 +148,7 @@
                             {/if}
 
                             {#if !hideDoorButton}
-                                <Button name="button_open_door" color="alternative" class="flex-1"
-                                        onclick={() => (openDoorModal = true)}>
+                                <Button disabled={!isLocalNetwork} name="button_open_door" color="alternative" class="flex-1" onclick={() => (openDoorModal = true)}>
                                     <LockOpenOutline/>
                                 </Button>
                             {/if}
@@ -186,7 +188,18 @@
     {/if}
 </Sidebar>
 
-<LoginModal bind:open={loginModal}/>
-<LogoutModal bind:open={logoutModal}/>
-<RegisterModal bind:open={registerModal}/>
-<OpenDoorModal bind:open={openDoorModal}/>
+{#if loginModal}
+    <LoginModal bind:open={loginModal} isTrusted={isTrusted}/>
+{/if}
+
+{#if logoutModal}
+    <LogoutModal bind:open={logoutModal}/>
+{/if}
+
+{#if registerModal}
+    <RegisterModal bind:open={registerModal} isTrusted={isTrusted}/>
+{/if}
+
+{#if openDoorModal}
+    <OpenDoorModal bind:open={openDoorModal}/>
+{/if}

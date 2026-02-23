@@ -1,10 +1,16 @@
 <script>
     import {A, Button, ButtonGroup, Checkbox, Heading, Input, InputAddon, Label, Modal} from 'flowbite-svelte';
     import {EyeOutline, EyeSlashOutline} from 'flowbite-svelte-icons';
+    import Altcha from "$lib/components/Altcha.svelte"
     import {m} from '$lib/paraglide/messages.js';
     import request from '$lib/api/api.js';
     import {invalidateAll} from '$app/navigation';
     import {authPath} from '$lib/backend.js'
+
+    let {
+        isTrusted = false,
+        open = $bindable(false)
+    } = $props();
 
     let username = $state("");
     let password = $state("");
@@ -12,10 +18,6 @@
     let altchaToken = $state("");
 
     let showPassword = $state(false);
-
-    let {
-        open = $bindable(false)
-    } = $props();
 
     async function login(event) {
         event.preventDefault();
@@ -76,10 +78,9 @@
 
         <Checkbox bind:checked={rememberMe}>{m.modal_login_label_remember_me({days: 30})}</Checkbox>
 
-        <!--                TODO reimplement trusted check, get trusted value from layout-->
-        <!--                {#if !data.trusted}-->
-        <!--                            <Altcha bind:value={altchaToken}/>-->
-        <!--{/if}-->
+        {#if !isTrusted}
+            <Altcha bind:value={altchaToken}/>
+        {/if}
 
         <Button class="cursor-pointer" type="submit">{m.modal_login_button()}</Button>
 

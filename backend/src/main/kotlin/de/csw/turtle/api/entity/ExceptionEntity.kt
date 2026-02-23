@@ -7,7 +7,7 @@ import java.time.Instant
 @Table(name = "exceptions")
 class ExceptionEntity(
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long = 0,
 
     var endpoint: String,

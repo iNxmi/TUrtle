@@ -3,9 +3,8 @@
     import {m} from '$lib/paraglide/messages.js';
     import request from "$lib/api/api.js";
     import {EyeOutline, EyeSlashOutline} from "flowbite-svelte-icons";
-    import {dev} from "$app/environment";
-    import {goto, invalidateAll} from "$app/navigation";
-    import {page} from "$app/state";
+    import Altcha from "$lib/components/Altcha.svelte";
+    import {invalidateAll} from "$app/navigation";
 
     let username = $state("");
     let firstName = $state("");
@@ -19,6 +18,7 @@
     let showPasswordRepeat = $state(false);
 
     let {
+        isTrusted = false,
         open = $bindable(false)
     } = $props();
 
@@ -116,10 +116,9 @@
 
         <Checkbox id="agree_tos" required>{m.modal_register_label_i_agree_to_tos()}</Checkbox>
 
-        <!--                TODO reimplement trusted check, get trusted value from layout-->
-        <!--                {#if !data.trusted}-->
-        <!--                            <Altcha bind:value={altchaToken}/>-->
-        <!--{/if}-->
+        {#if !isTrusted}
+            <Altcha bind:value={altchaToken}/>
+        {/if}
 
         <Button type="submit" class="w-full cursor-pointer">{m.modal_register_button()}</Button>
 

@@ -19,10 +19,9 @@
         await invalidateAll();
         open = false;
     }
-
 </script>
 
-<Modal form bind:open={open}>
+<Modal form bind:open={open} size="xs">
     <div class="flex flex-col gap-5 align-center">
         <div class="flex gap-5 justify-center">
             <QuestionCircleSolid class="h-12 w-12"/>

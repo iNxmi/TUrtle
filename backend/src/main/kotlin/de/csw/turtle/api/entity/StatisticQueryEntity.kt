@@ -7,7 +7,7 @@ import java.time.Instant
 @Table(name = "statistic_queries")
 class StatisticQueryEntity(
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long = 0,
 
     var name: String,

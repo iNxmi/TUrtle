@@ -1,23 +1,48 @@
 import request from "$lib/api/api.js";
-/* import { checkAuthorization } from "$lib/utils"; */
-import {authPath, permissionsPath} from '$lib/backend'
 
 export const prerender = false;
 export const ssr = false;
 
-export async function load({url}) {
-    let payload = {
-        user: null,
-        permissions: []
-    }
+export async function load() {
+    const user = await getUser();
+    const permissions = await getPermissions();
+    const isTrustedDevice = await getIsTrustedDevice();
+    const isLocalNetwork = await getIsLocalNetwork();
 
-    const permissionsResponse = await request(permissionsPath);
-    if (permissionsResponse.ok)
-        payload.permissions = await permissionsResponse.json();
+    return {
+        user: user,
+        permissions: permissions,
+        isTrustedDevice: isTrustedDevice,
+        isLocalNetwork: isLocalNetwork
+    };
+}
 
-    const meResponse = await request(authPath + '/me');
-    if (meResponse.ok)
-        payload.user = await meResponse.json();
+async function getPermissions() {
+    const response = await request("/permissions");
+    if (!response.ok)
+        return [];
 
-    return payload;
+    return await response.json()
+}
+
+async function getUser() {
+    const response = await request("/auth/me");
+    if (!response.ok)
+        return null;
+
+    return await response.json();
+}
+
+async function getIsTrustedDevice() {
+    const response = await request("/altcha/trusted");
+    if (!response.ok)
+        return false;
+
+    const json = await response.json();
+    return json.trusted;
+}
+
+//TODO implement backend endpoint for checking if local
+async function getIsLocalNetwork() {
+    return true;
 }

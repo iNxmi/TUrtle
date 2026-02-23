@@ -7,7 +7,7 @@ import java.time.Instant
 @Table(name = "email_templates")
 class EmailTemplateEntity(
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long = 0,
 
     @Column(unique = true)

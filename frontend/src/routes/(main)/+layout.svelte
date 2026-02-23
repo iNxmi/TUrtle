@@ -178,6 +178,7 @@
     <Navigation logoRedirect="/"
                 header={header}
                 categories={categories}
+                isTrusted={data.isTrustedDevice}
                 showLogoutButton={user !== null}
     />
 
