@@ -5,13 +5,20 @@
     const {data} = $props();
 
     const columns = [
-        {field: "id", label: m.manage_lockers_label_id()},
+        {field: "id", label: m.manage_lockers_label_id(), enabled: false},
         {field: "name", label: m.manage_lockers_label_name()},
         {field: "index", label: m.manage_lockers_label_index()},
         {
+            field: "updatedAt",
+            label: m.manage_users_label_updated_at(),
+            transform: (value) => new Date(value).toLocaleString(),
+            enabled: false
+        },
+        {
             field: "createdAt",
-            label: m.manage_lockers_label_created_at(),
-            transform: (item) => new Date(item).toLocaleString()
+            label: m.manage_users_label_created_at(),
+            transform: (value) => new Date(value).toLocaleString(),
+            enabled: false
         }
     ];
 </script>

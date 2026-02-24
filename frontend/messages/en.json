@@ -158,6 +158,10 @@
   "manage_item_categories_label_created_at": "Created At",
 
   "manage_item_bookings_label_id": "ID",
+  "manage_item_bookings_label_user_id": "User ID",
+  "manage_item_bookings_label_item_id": "Item ID",
+  "manage_item_bookings_label_start": "Start",
+  "manage_item_bookings_label_end": "End",
   "manage_item_bookings_label_created_at": "Created At",
 
   "manage_configuration_label_id": "ID",
@@ -216,10 +220,13 @@
 
   "manage_email_templates_label_id": "ID",
   "manage_email_templates_label_name": "Name",
+  "manage_email_templates_label_type": "Type",
+  "manage_email_templates_label_description": "Description",
   "manage_email_templates_label_created_at": "Created At",
 
   "manage_content_templates_label_id": "ID",
   "manage_content_templates_label_name": "Name",
+  "manage_content_templates_label_type": "Type",
   "manage_content_templates_label_description": "Description",
   "manage_content_templates_label_created_at": "Created At"
 }

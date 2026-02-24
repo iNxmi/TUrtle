@@ -7,7 +7,7 @@
     const {data} = $props();
 
     const columns = [
-        {field: "id", label: m.manage_users_label_id()},
+        {field: "id", label: m.manage_users_label_id(), enabled: false},
         {field: "status", label: m.manage_users_label_status()},
         {field: "username", label: m.manage_users_label_username()},
         {field: "firstName", label: m.manage_users_label_first_name()},
@@ -16,12 +16,14 @@
         {
             field: "updatedAt",
             label: m.manage_users_label_updated_at(),
-            transform: (value) => new Date(value).toLocaleString()
+            transform: (value) => new Date(value).toLocaleString(),
+            enabled: false
         },
         {
             field: "createdAt",
             label: m.manage_users_label_created_at(),
-            transform: (value) => new Date(value).toLocaleString()
+            transform: (value) => new Date(value).toLocaleString(),
+            enabled: false
         }
     ];
 

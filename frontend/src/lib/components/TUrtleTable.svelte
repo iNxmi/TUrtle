@@ -30,8 +30,11 @@
         TableRowOutline
     } from 'flowbite-svelte-icons';
 
+    //Example for columns prop,
     // const columns = [
-    //     {label: "ID", field: "id", map: (value) => value.toString()},
+    //     {field: "id", label: "ID", enabled: false},
+    //     {field: "username", label: "Username"},
+    //     {field: "createdAt", label: "Created At", transform: (item) => new Date(item).toLocaleString()}
     // ]
 
     let {
@@ -64,15 +67,15 @@
         disableSearch = false
     } = $props();
 
-    let activeColumns = $state(Object.fromEntries(columns.map(column => [column.field, true])));
+    let activeColumns = $state(Object.fromEntries(columns.map(column => [column.field, column.enabled !== false])));
     let search = $state("");
 </script>
 
 <Card class="min-w-full min-h-full overflow-auto dark:border-none">
     {#if !hideSearch || !hideAdd || !hideReload}
         <div class="flex gap-2 justify-between p-3">
-            {#if !hideSearch}
-                <ButtonGroup disabled={disableSearch} class="flex-1">
+            <div class="flex-1">
+                <ButtonGroup>
                     <Button>
                         <Dropdown simple>
                             {#each columns as column}
@@ -83,7 +86,11 @@
                         </Dropdown>
                         <TableRowOutline/>
                     </Button>
+                </ButtonGroup>
+            </div>
 
+            {#if !hideSearch}
+                <ButtonGroup disabled={disableSearch} class="flex-2">
                     <Input placeholder="_search_" bind:value={search} disabled={disableSearch}/>
 
                     <Button onclick={() => onSearch?.(search)}>
@@ -91,20 +98,23 @@
                     </Button>
                 </ButtonGroup>
             {/if}
-            <div class="flex-2 flex gap-2 justify-end">
-                {#if !hideReload}
-                    <Button class="hover:cursor-pointer" color="alternative" onclick={() => onReload?.()}
-                            disabled={disableReload}>
-                        <RefreshOutline/>
-                    </Button>
-                {/if}
 
-                {#if !hideAdd}
-                    <Button class="hover:cursor-pointer" color="primary" onclick={() => onCreate?.()}
-                            disabled={disableAdd}>
-                        <PlusOutline/>
-                    </Button>
-                {/if}
+            <div class="flex-1 flex justify-end">
+                <ButtonGroup>
+                    {#if !hideReload}
+                        <Button class="hover:cursor-pointer" color="alternative" onclick={() => onReload?.()}
+                                disabled={disableReload}>
+                            <RefreshOutline/>
+                        </Button>
+                    {/if}
+
+                    {#if !hideAdd}
+                        <Button class="hover:cursor-pointer" color="green" onclick={() => onCreate?.()}
+                                disabled={disableAdd}>
+                            <PlusOutline/>
+                        </Button>
+                    {/if}
+                </ButtonGroup>
             </div>
         </div>
 

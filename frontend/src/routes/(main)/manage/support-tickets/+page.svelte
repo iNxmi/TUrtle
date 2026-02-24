@@ -6,7 +6,7 @@
     const {data} = $props();
 
     const columns = [
-        {field: "id", label: m.manage_support_tickets_label_id()},
+        {field: "id", label: m.manage_support_tickets_label_id(), enabled: false},
         {field: "status", label: m.manage_support_tickets_label_status()},
         {field: "urgency", label: m.manage_support_tickets_label_urgency()},
         {field: "category", label: m.manage_support_tickets_label_category()},
@@ -14,13 +14,15 @@
         {field: "email", label: m.manage_support_tickets_label_email()},
         {
             field: "updatedAt",
-            label: m.manage_support_tickets_label_updated_at(),
-            transform: (item) => new Date(item).toLocaleString()
+            label: m.manage_users_label_updated_at(),
+            transform: (value) => new Date(value).toLocaleString(),
+            enabled: false
         },
         {
             field: "createdAt",
-            label: m.manage_support_tickets_label_created_at(),
-            transform: (item) => new Date(item).toLocaleString()
+            label: m.manage_users_label_created_at(),
+            transform: (value) => new Date(value).toLocaleString(),
+            enabled: false
         }
     ];
 </script>
