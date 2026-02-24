@@ -79,7 +79,7 @@
     <div>
         <span>{m.modal_contact_label_content()}</span>
         <Textarea bind:value={ticketContent} class="w-full" placeholder={m.modal_contact_placeholder_content()}
-                  required/>
+                  required rows="12"/>
     </div>
 
     <Checkbox required>{m.modal_contact_label_i_agree_to_tos()}</Checkbox>

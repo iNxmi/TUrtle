@@ -1,12 +1,33 @@
 <script>
-    import ItemDetailsPage from "$lib/components/ItemDetailsPage.svelte";
+    import {m} from "$lib/paraglide/messages.js";
+    import {Input} from "flowbite-svelte";
+    import Card from "$lib/components/Card.svelte";
 
     let {data} = $props();
-
-    let content = $derived([
-        {name: '_Name_', value: data.deviceCategory.name},
-        {name: '_Updated At_', value: data.deviceCategory.updatedAt},
-        {name: '_Created At_', value: data.deviceCategory.createdAt}
-    ]);
+    let category = $derived(data.category);
 </script>
-<ItemDetailsPage title="_Device Category_" {content}/>
+
+<Card>
+    <form class="flex flex-col gap-5">
+        <div>
+            <span>{m.manage_item_categories_label_id()}</span>
+            <Input type="text" value={category.id} disabled/>
+        </div>
+
+        <div>
+            <span>{m.manage_item_categories_label_name()}</span>
+            <Input type="text" value={category.name} disabled/>
+        </div>
+
+        <div class="flex gap-5">
+            <div class="flex-1">
+                <span>{m.manage_item_categories_label_created_at()}</span>
+                <Input type="text" value={(new Date(category.createdAt)).toLocaleString()} disabled/>
+            </div>
+            <div class="flex-1">
+                <span>{m.manage_item_categories_label_updated_at()}</span>
+                <Input type="text" value={(new Date(category.updatedAt)).toLocaleString()} disabled/>
+            </div>
+        </div>
+    </form>
+</Card>
