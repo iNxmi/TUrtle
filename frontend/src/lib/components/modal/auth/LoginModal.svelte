@@ -33,11 +33,6 @@
 
         loading = true;
         const response = await Auth.login(payload);
-        // const response = await request("/api/auth/login", {
-        //     method: "POST",
-        //     body: JSON.stringify(payload),
-        //     headers: {"Content-Type": "application/json"}
-        // });
         loading = false;
 
         //TODO replace by local checks and interpretation as exceptions are given in english only and only for dev/api purposes.
