@@ -64,7 +64,7 @@
         disableAdd = false,
         disableReload = false,
         disablePagination = false,
-        disableSearch = false
+        disableSearch = true
     } = $props();
 
     let activeColumns = $state(Object.fromEntries(columns.map(column => [column.field, column.enabled !== false])));
@@ -74,7 +74,7 @@
 <Card class="min-w-full min-h-full overflow-auto dark:border-none">
     {#if !hideSearch || !hideAdd || !hideReload}
         <div class="flex gap-2 justify-between p-3">
-            <div class="flex-1">
+            <div class="flex-1 flex">
                 <ButtonGroup>
                     <Button>
                         <Dropdown simple>

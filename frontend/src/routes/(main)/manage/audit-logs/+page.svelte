@@ -10,6 +10,7 @@
         {field: "ipAddress", label: m.manage_audit_logs_label_ip_address()},
         {field: "endpoint", label: m.manage_audit_logs_label_endpoint()},
         {field: "httpMethod", label: m.manage_audit_logs_label_http_method()},
+        {field: "status", label: m.manage_audit_logs_label_status()},
         {
             field: "updatedAt",
             label: m.manage_audit_logs_label_updated_at(),

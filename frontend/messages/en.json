@@ -234,6 +234,7 @@
   "manage_audit_logs_label_ip_address": "IP Address",
   "manage_audit_logs_label_endpoint": "Endpoint",
   "manage_audit_logs_label_http_method": "HTTP Method",
+  "manage_audit_logs_label_status": "Status",
   "manage_audit_logs_label_updated_at": "Updated At",
   "manage_audit_logs_label_created_at": "Created At",
 
