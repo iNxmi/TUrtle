@@ -11,13 +11,13 @@
         {field: "type", label: m.manage_configuration_label_type()},
         {
             field: "updatedAt",
-            label: m.manage_users_label_updated_at(),
+            label: m.manage_configuration_label_updated_at(),
             transform: (value) => new Date(value).toLocaleString(),
             enabled: false
         },
         {
             field: "createdAt",
-            label: m.manage_users_label_created_at(),
+            label: m.manage_configuration_label_created_at(),
             transform: (value) => new Date(value).toLocaleString(),
             enabled: false
         }

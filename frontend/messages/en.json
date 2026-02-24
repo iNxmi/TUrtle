@@ -162,6 +162,7 @@
   "manage_item_bookings_label_item_id": "Item ID",
   "manage_item_bookings_label_start": "Start",
   "manage_item_bookings_label_end": "End",
+  "manage_item_bookings_label_updated_at": "Updated At",
   "manage_item_bookings_label_created_at": "Created At",
 
   "manage_configuration_label_id": "ID",
@@ -185,6 +186,7 @@
   "manage_lockers_label_id": "ID",
   "manage_lockers_label_name": "Name",
   "manage_lockers_label_index": "Index",
+  "manage_lockers_label_updated_at": "Updated At",
   "manage_lockers_label_created_at": "Created At",
 
   "manage_roles_label_id": "ID",
@@ -204,12 +206,14 @@
 
   "manage_faq_label_id": "ID",
   "manage_faq_label_name": "Name",
+  "manage_faq_label_updated_at": "Created At",
   "manage_faq_label_created_at": "Created At",
 
   "manage_exceptions_label_id": "ID",
   "manage_exceptions_label_endpoint": "Endpoint",
   "manage_exceptions_label_exception": "Exception",
   "manage_exceptions_label_message": "Message",
+  "manage_exceptions_label_updated_at": "Updated At",
   "manage_exceptions_label_created_at": "Created At",
 
   "manage_audit_logs_label_id": "ID",
@@ -217,6 +221,7 @@
   "manage_audit_logs_label_ip_address": "IP Address",
   "manage_audit_logs_label_endpoint": "Endpoint",
   "manage_audit_logs_label_http_method": "HTTP Method",
+  "manage_audit_logs_label_updated_at": "Updated At",
   "manage_audit_logs_label_created_at": "Created At",
 
   "manage_email_templates_label_id": "ID",
