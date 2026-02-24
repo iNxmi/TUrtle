@@ -42,6 +42,7 @@
             permission.name.toLowerCase().includes(searchTerm.toLowerCase());
     }
 </script>
+
 <Modal classes={{body: 'flex flex-col justify-between gap-2 h-100'}} bind:open={showNewRoleModal}
        onclose={()=> {selectedRoles = []}}>
 

@@ -21,7 +21,7 @@ class SupportTicketEntity(
     var subject: String,
 
     @Column(columnDefinition = "TEXT")
-    var description: String,
+    var content: String,
 
     @Enumerated(EnumType.STRING)
     var status: Status,
@@ -71,7 +71,7 @@ class SupportTicketEntity(
         category = category,
         email = email,
         subject = subject,
-        description = description,
+        content = content,
         status = status,
         updatedAt = updatedAt,
         createdAt = createdAt

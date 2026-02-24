@@ -7,6 +7,6 @@ data class PatchSupportTicketRequest(
     val category: SupportTicketEntity.Category? = null,
     val email: String? = null,
     val subject: String? = null,
-    val description: String? = null,
+    val content: String? = null,
     val status: SupportTicketEntity.Status? = null
 ) : PatchRequest

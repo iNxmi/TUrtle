@@ -2,7 +2,7 @@
     import RegisterModal from "$lib/components/modal/auth/RegisterModal.svelte"
     import LoginModal from "$lib/components/modal/auth/LoginModal.svelte"
     import LogoutModal from "$lib/components/modal/auth/LogoutModal.svelte"
-    import OpenDoorModal from "$lib/components/modal/OpenDoorModal.svelte";
+    import UnlockDoorModal from "$lib/components/modal/UnlockDoorModal.svelte";
     import LanguageDropdown from "$lib/components/LanguageDropdown.svelte";
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
     import {m} from "$lib/paraglide/messages.js";
@@ -201,5 +201,5 @@
 {/if}
 
 {#if openDoorModal}
-    <OpenDoorModal bind:open={openDoorModal}/>
+    <UnlockDoorModal bind:open={openDoorModal}/>
 {/if}

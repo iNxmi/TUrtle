@@ -10,7 +10,7 @@
     let category = $state('');
     let email = $state('');
     let subject = $state('');
-    let description = $state('');
+    let ticketContent = $state('');
     let altchaToken = $state('');
 
     const {data} = $props();
@@ -38,7 +38,7 @@
             category: $state.snapshot(category),
             email: $state.snapshot(email),
             subject: $state.snapshot(subject),
-            description: $state.snapshot(description),
+            content: $state.snapshot(ticketContent),
             altchaToken: $state.snapshot(altchaToken)
         }
 
@@ -77,8 +77,8 @@
     </div>
 
     <div>
-        <span>{m.modal_contact_label_description()}</span>
-        <Textarea bind:value={description} class="w-full" placeholder={m.modal_contact_placeholder_description()}
+        <span>{m.modal_contact_label_content()}</span>
+        <Textarea bind:value={ticketContent} class="w-full" placeholder={m.modal_contact_placeholder_content()}
                   required/>
     </div>
 

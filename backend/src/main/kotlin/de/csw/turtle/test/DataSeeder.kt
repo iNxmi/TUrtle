@@ -30,7 +30,7 @@ class DataSeeder(
     @EventListener(ApplicationReadyEvent::class)
     @Order(1)
     fun seedUsers() {
-        while (userService.count() < 512) {
+        while (userService.count() < 64) {
             val firstName = faker.name.firstName()
             val lastName = faker.name.lastName()
             val email = faker.internet.email("$firstName $lastName")
@@ -100,7 +100,7 @@ class DataSeeder(
             val email = faker.internet.email("$firstName $lastName")
 
             val subject = "This is a support ticket about Something"
-            val description = "I am facing an issue with Something. Please help!"
+            val content = "I am facing an issue with Something. Please help!"
 
             try {
                 supportTicketService.create(
@@ -108,7 +108,7 @@ class DataSeeder(
                     category = randomEnum(),
                     email = email,
                     subject = subject,
-                    description = description,
+                    content = content,
                     status = randomEnum()
                 )
             } catch (_: Exception) {
@@ -153,6 +153,5 @@ class DataSeeder(
     }
 
     private inline fun <reified T : Enum<T>> randomEnum(): T = enumValues<T>().random()
-
 
 }

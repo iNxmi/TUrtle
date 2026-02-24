@@ -35,7 +35,7 @@
         const response = await request("/api/auth/login", {
             method: "POST",
             body: JSON.stringify(payload),
-            headers: {'Content-Type': 'application/json'}
+            headers: {"Content-Type": "application/json"}
         });
         loading = false;
 

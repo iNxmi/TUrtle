@@ -22,7 +22,7 @@ class SupportTicketService(
         category: Category,
         email: String,
         subject: String,
-        description: String,
+        content: String,
         status: Status
     ): SupportTicketEntity {
 
@@ -31,8 +31,8 @@ class SupportTicketService(
             throw HttpException.BadRequest("Subject cannot be left blank and cannot be longer than $maxSubjectLength characters.")
 
         val maxDescriptionLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_DESCRIPTION_LENGTH)
-        if (description.isBlank() || description.length > maxDescriptionLength)
-            throw HttpException.BadRequest("Description cannot be left blank and cannot be longer than $maxDescriptionLength characters.")
+        if (content.isBlank() || content.length > maxDescriptionLength)
+            throw HttpException.BadRequest("Content cannot be left blank and cannot be longer than $maxDescriptionLength characters.")
 
         if (!regex.matches(email))
             throw HttpException.BadRequest("'${email}' is not a valid Email Address.")
@@ -42,7 +42,7 @@ class SupportTicketService(
             category = category,
             email = email,
             subject = subject,
-            description = description,
+            content = content,
             status = status
         )
 
@@ -56,7 +56,7 @@ class SupportTicketService(
         category: Category? = null,
         email: String? = null,
         subject: String? = null,
-        description: String? = null,
+        content: String? = null,
         status: Status? = null
     ): SupportTicketEntity {
 
@@ -66,8 +66,8 @@ class SupportTicketService(
                 throw HttpException.BadRequest("Subject cannot be left blank and cannot be longer than $maxSubjectLength} characters.")
 
         val maxDescriptionLength = configurationService.getTyped<Int>(ConfigurationEntity.Key.SUPPORT_TICKET_DESCRIPTION_LENGTH)
-        if (description != null)
-            if (description.isBlank() || description.length > maxDescriptionLength)
+        if (content != null)
+            if (content.isBlank() || content.length > maxDescriptionLength)
                 throw HttpException.BadRequest("Description cannot be left blank and cannot be longer than $maxDescriptionLength characters.")
 
         if (email != null)
@@ -80,7 +80,7 @@ class SupportTicketService(
         category?.let { entity.category = it }
         email?.let { entity.email = it }
         subject?.let { entity.subject = it }
-        description?.let { entity.description = it }
+        content?.let { entity.content = it }
         status?.let { entity.status = it }
 
         return repository.save(entity)

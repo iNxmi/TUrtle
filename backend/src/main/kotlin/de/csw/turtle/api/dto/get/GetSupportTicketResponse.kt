@@ -10,7 +10,7 @@ data class GetSupportTicketResponse(
     val category: SupportTicketEntity.Category?,
     val email: String?,
     val subject: String?,
-    val description: String?,
+    val content: String?,
     val status: SupportTicketEntity.Status?,
 
     override val updatedAt: Instant?,
@@ -24,7 +24,7 @@ data class GetSupportTicketResponse(
         category = entity.category,
         email = entity.email,
         subject = entity.subject,
-        description = entity.description,
+        content = entity.content,
         status = entity.status,
 
         updatedAt = entity.updatedAt,

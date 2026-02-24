@@ -1,5 +1,5 @@
 <script>
-    import OpenLockerModal from "$lib/components/modal/OpenLockerModal.svelte";
+    import UnlockLockerModal from "$lib/components/modal/UnlockLockerModal.svelte";
     import {Button, Input, div} from "flowbite-svelte";
 
     let {data} = $props();
@@ -41,4 +41,4 @@
     <Button onclick={() => modal = true}>Unlock Locker</Button>
 </form>
 
-<OpenLockerModal bind:open={modal} locker={locker}/>
+<UnlockLockerModal bind:open={modal} locker={locker}/>

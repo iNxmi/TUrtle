@@ -56,7 +56,7 @@ class SupportTicketController(
             category = request.category,
             email = request.email,
             subject = request.subject,
-            description = request.description,
+            content = request.content,
             status = Status.OPEN
         )
 
@@ -150,7 +150,7 @@ class SupportTicketController(
             category = request.category,
             email = request.email,
             subject = request.subject,
-            description = request.description,
+            content = request.content,
             status = request.status
         )
 

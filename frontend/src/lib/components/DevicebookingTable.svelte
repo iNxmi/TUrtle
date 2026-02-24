@@ -1,5 +1,5 @@
 <script>
-    import OpenLockerModal from "./modal/OpenLockerModal.svelte";
+    import UnlockLockerModal from "./modal/UnlockLockerModal.svelte";
     import {getContext} from "svelte";
 
     let {reservations, devices} = $props();
@@ -122,5 +122,5 @@
         </div>
     {/each}
 </div>
-<OpenLockerModal bind:showOpenLockerModal={showOpenLockerModal} {locker} reservationIndex={selectedReservationIndex}
-                 bind:reservations={reservations}/>
+<UnlockLockerModal bind:showOpenLockerModal={showOpenLockerModal} {locker} reservationIndex={selectedReservationIndex}
+                   bind:reservations={reservations}/>
