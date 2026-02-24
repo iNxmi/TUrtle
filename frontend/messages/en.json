@@ -190,6 +190,8 @@
   "manage_lockers_label_id": "ID",
   "manage_lockers_label_name": "Name",
   "manage_lockers_label_index": "Index",
+  "manage_lockers_label_software_unlockable": "Software Unlockable",
+  "manage_lockers_label_locked": "Locked",
   "manage_lockers_label_updated_at": "Updated At",
   "manage_lockers_label_created_at": "Created At",
 

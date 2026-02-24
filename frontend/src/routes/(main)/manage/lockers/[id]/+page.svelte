@@ -25,6 +25,17 @@
         </div>
 
         <div class="flex gap-5">
+            <div>
+                <span>{m.manage_lockers_label_software_unlockable()}</span>
+                <Input type="text" value={locker.softwareUnlockable} disabled/>
+            </div>
+            <div>
+                <span>{m.manage_lockers_label_locked()}</span>
+                <Input type="text" value={locker.locked} disabled/>
+            </div>
+        </div>
+
+        <div class="flex gap-5">
             <div class="flex-1">
                 <span>{m.manage_lockers_label_created_at()}</span>
                 <Input type="text" value={(new Date(locker.createdAt)).toLocaleString()} disabled/>
