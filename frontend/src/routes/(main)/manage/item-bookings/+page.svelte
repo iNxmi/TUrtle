@@ -10,8 +10,14 @@
         {field: "itemId", label: m.manage_item_bookings_label_item_id()},
         {field: "userId", label: m.manage_item_bookings_label_user_id()},
         {field: "status", label: m.manage_item_bookings_label_status()},
-        {field: "start", label: m.manage_item_bookings_label_start()},
-        {field: "end", label: m.manage_item_bookings_label_end()},
+        {
+            field: "start", label: m.manage_item_bookings_label_start(),
+            transform: (value) => new Date(value).toLocaleString()
+        },
+        {
+            field: "end", label: m.manage_item_bookings_label_end(),
+            transform: (value) => new Date(value).toLocaleString()
+        },
         {
             field: "updatedAt",
             label: m.manage_item_bookings_label_updated_at(),

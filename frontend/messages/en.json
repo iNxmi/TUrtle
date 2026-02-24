@@ -170,6 +170,18 @@
   "manage_item_bookings_label_updated_at": "Updated At",
   "manage_item_bookings_label_created_at": "Created At",
 
+  "manage_room_bookings_label_id": "ID",
+  "manage_room_bookings_label_user_id": "User ID",
+  "manage_room_bookings_label_title": "Title",
+  "manage_room_bookings_label_description": "Description",
+  "manage_room_bookings_label_accessibility": "Accessibility",
+  "manage_room_bookings_label_whitelist": "Whitelist",
+  "manage_room_bookings_label_start": "Start",
+  "manage_room_bookings_label_end": "End",
+  "manage_room_bookings_label_status": "Status",
+  "manage_room_bookings_label_updated_at": "Updated At",
+  "manage_room_bookings_label_created_at": "Created At",
+
   "manage_configuration_label_id": "ID",
   "manage_configuration_label_key": "Key",
   "manage_configuration_label_type": "Type",

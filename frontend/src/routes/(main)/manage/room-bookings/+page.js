@@ -1,17 +1,6 @@
-import {itemBookingsPath, usersPath} from '$lib/backend.js';
-import {create} from "$lib/page.js";
+import {getPage} from "$lib/utils.js";
 
-export const load = create(
-    [itemBookingsPath, usersPath],
-    [
-        'id',
-        'userId',
-        'itemId',
-        'start',
-        'end',
-        'status',
-        'updatedAt',
-        'createdAt'
-    ],
-    ""
-)
+export async function load({url}) {
+    const page = await getPage(url, "/api/room-bookings")
+    return {page: page};
+}
