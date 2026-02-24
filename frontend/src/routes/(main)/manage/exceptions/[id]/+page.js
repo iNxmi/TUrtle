@@ -1,10 +1,11 @@
 import request from "$lib/api/api.js";
-import {exceptionsPath} from '$lib/backend.js'
 
 export async function load({params}) {
-    const url = `/api/exceptions/${params.id}`;
-    const response = await request(url);
-    const payload = await response.json();
+    const exception = await getException(params.id);
+    return {exception: exception};
+}
 
-    return {exception: payload};
+async function getException(id) {
+    const response = await request(`/api/exceptions/${id}`);
+    return await response.json();
 }

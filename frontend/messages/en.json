@@ -224,6 +224,7 @@
   "manage_exceptions_label_endpoint": "Endpoint",
   "manage_exceptions_label_exception": "Exception",
   "manage_exceptions_label_message": "Message",
+  "manage_exceptions_label_stack_trace": "Stack Trace",
   "manage_exceptions_label_updated_at": "Updated At",
   "manage_exceptions_label_created_at": "Created At",
 
