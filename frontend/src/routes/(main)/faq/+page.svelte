@@ -12,16 +12,16 @@
         {#each all as faq}
             <AccordionItem>
                 {#snippet header()}
-                    <span>
-                        {faq.id}. {faq.title} ({new Date(faq.updatedAt).toLocaleDateString()})
-                    </span>
+                    {faq.id}. {faq.title} ({new Date(faq.updatedAt).toLocaleDateString()})
                 {/snippet}
                 <Markdown content={faq.content}/>
             </AccordionItem>
         {/each}
     </Accordion>
 
-    <A href="/contact">
-        {m.faq_label_problem_not_solved()}
-    </A>
+    <div class="flex">
+        <A href="/contact">
+            {m.faq_label_problem_not_solved()}
+        </A>
+    </div>
 </div>
