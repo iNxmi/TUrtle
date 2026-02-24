@@ -110,6 +110,10 @@
     font-display: swap;
 }
 
+select option {
+    font-family: 'Inter', sans-serif;
+}
+
 .prose /* .dark */
 {
     a {
