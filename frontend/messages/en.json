@@ -197,6 +197,7 @@
 
   "manage_roles_label_id": "ID",
   "manage_roles_label_name": "Name",
+  "manage_roles_label_type": "Type",
   "manage_roles_label_updated_at": "Updated At",
   "manage_roles_label_created_at": "Created At",
 

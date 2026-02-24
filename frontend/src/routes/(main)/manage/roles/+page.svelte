@@ -8,6 +8,7 @@
     const columns = [
         {field: "id", label: m.manage_roles_label_id(), enabled: false},
         {field: "name", label: m.manage_roles_label_name()},
+        {field: "type", label: m.manage_roles_label_type()},
         {
             field: "updatedAt",
             label: m.manage_roles_label_updated_at(),

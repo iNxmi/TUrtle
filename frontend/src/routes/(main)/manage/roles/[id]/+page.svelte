@@ -19,6 +19,11 @@
             <Input type="text" value={role.name} disabled/>
         </div>
 
+        <div>
+            <span>{m.manage_roles_label_type()}</span>
+            <Input type="text" value={role.type} disabled/>
+        </div>
+
         <!--TODO replace by multiselect-->
         <div>
             <span>{m.manage_roles_label_name()}</span>
