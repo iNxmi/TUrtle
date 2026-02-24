@@ -174,6 +174,7 @@
   "manage_configuration_label_key": "Key",
   "manage_configuration_label_type": "Type",
   "manage_configuration_label_value": "Value",
+  "manage_configuration_label_visibility": "Visibility",
   "manage_configuration_label_updated_at": "Updated At",
   "manage_configuration_label_created_at": "Created At",
 

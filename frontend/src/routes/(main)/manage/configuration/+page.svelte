@@ -1,6 +1,7 @@
 <script>
     import TableView from "$lib/components/TableView.svelte"
     import {m} from '$lib/paraglide/messages.js';
+    import {goto} from "$app/navigation";
 
     const {data} = $props();
 
@@ -9,6 +10,7 @@
         {field: "key", label: m.manage_configuration_label_key()},
         {field: "value", label: m.manage_configuration_label_value()},
         {field: "type", label: m.manage_configuration_label_type()},
+        {field: "visibility", label: m.manage_configuration_label_visibility()},
         {
             field: "updatedAt",
             label: m.manage_configuration_label_updated_at(),
@@ -26,4 +28,5 @@
 
 <TableView columns={columns}
            contentPage={data.page}
+           onItemClicked={(item) => goto(`/manage/configuration/${item.id}`)}
 />
