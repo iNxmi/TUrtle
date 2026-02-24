@@ -166,6 +166,7 @@
   "manage_item_bookings_label_item_id": "Item ID",
   "manage_item_bookings_label_start": "Start",
   "manage_item_bookings_label_end": "End",
+  "manage_item_bookings_label_status": "Status",
   "manage_item_bookings_label_updated_at": "Updated At",
   "manage_item_bookings_label_created_at": "Created At",
 
