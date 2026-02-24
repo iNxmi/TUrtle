@@ -8,7 +8,7 @@
     <A class="flex-1 text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white" href="/">© 2025 CSW
         TUrtle All Rights Reserved.</A>
 
-    <div class="flex flex-1 gap-x-4 justify-around flex-wrap">
+    <div class="flex flex-1 gap-x-4 justify-center flex-wrap">
         <A class="text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white"
            href="/imprint">{m.footer_imprint()}</A>
         <A class="text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white"

@@ -3,6 +3,9 @@
         Button,
         ButtonGroup,
         Card,
+        Checkbox,
+        Dropdown,
+        DropdownItem,
         Hr,
         Input,
         Table,
@@ -23,7 +26,8 @@
         ChevronUpOutline,
         PlusOutline,
         RefreshOutline,
-        SearchOutline
+        SearchOutline,
+        TableRowOutline
     } from 'flowbite-svelte-icons';
 
     // const columns = [
@@ -60,6 +64,7 @@
         disableSearch = false
     } = $props();
 
+    let activeColumns = $state(Object.fromEntries(columns.map(column => [column.field, true])));
     let search = $state("");
 </script>
 
@@ -68,22 +73,35 @@
         <div class="flex gap-2 justify-between p-3">
             {#if !hideSearch}
                 <ButtonGroup disabled={disableSearch} class="flex-1">
-                    <Input placeholder={`_search_`} bind:value={search}
-                           disabled={disableSearch}/>
-                    <Button class="cursor-pointer bg-orange-400" onclick={() => onSearch?.(search)}>
-                        <SearchOutline class="text-white"/>
+                    <Button>
+                        <Dropdown simple>
+                            {#each columns as column}
+                                <DropdownItem>
+                                    <Checkbox bind:checked={activeColumns[column.field]}>{column.label}</Checkbox>
+                                </DropdownItem>
+                            {/each}
+                        </Dropdown>
+                        <TableRowOutline/>
+                    </Button>
+
+                    <Input placeholder="_search_" bind:value={search} disabled={disableSearch}/>
+
+                    <Button onclick={() => onSearch?.(search)}>
+                        <SearchOutline/>
                     </Button>
                 </ButtonGroup>
             {/if}
             <div class="flex-2 flex gap-2 justify-end">
                 {#if !hideReload}
-                    <Button class="hover:cursor-pointer" color="alternative" onclick={() => onReload?.()} disabled={disableReload}>
+                    <Button class="hover:cursor-pointer" color="alternative" onclick={() => onReload?.()}
+                            disabled={disableReload}>
                         <RefreshOutline/>
                     </Button>
                 {/if}
 
                 {#if !hideAdd}
-                    <Button class="hover:cursor-pointer" color="primary" onclick={() => onCreate?.()} disabled={disableAdd}>
+                    <Button class="hover:cursor-pointer" color="primary" onclick={() => onCreate?.()}
+                            disabled={disableAdd}>
                         <PlusOutline/>
                     </Button>
                 {/if}
@@ -96,19 +114,21 @@
     <Table hoverable>
         <TableHead color="default">
             {#each columns as column}
-                <TableHeadCell class="hover:cursor-pointer" onclick={() => onColumnClicked?.(column)}>
-                    <div class={`flex items-center gap-1 ${column.field === sortProperty ? "text-orange-400": ""}`}>
-                        <span class="select-none">{column.label}</span>
+                {#if activeColumns[column.field] === true}
+                    <TableHeadCell class="hover:cursor-pointer" onclick={() => onColumnClicked?.(column)}>
+                        <div class={`flex items-center gap-1 ${column.field === sortProperty ? "text-orange-400": ""}`}>
+                            <span class="select-none">{column.label}</span>
 
-                        {#if column.field === sortProperty && sortDirection === "ASC"}
-                            <ChevronUpOutline/>
-                        {:else if column.field === sortProperty && sortDirection === "DESC"}
-                            <ChevronDownOutline/>
-                        {:else}
-                            <ChevronSortOutline/>
-                        {/if}
-                    </div>
-                </TableHeadCell>
+                            {#if column.field === sortProperty && sortDirection === "ASC"}
+                                <ChevronUpOutline/>
+                            {:else if column.field === sortProperty && sortDirection === "DESC"}
+                                <ChevronDownOutline/>
+                            {:else}
+                                <ChevronSortOutline/>
+                            {/if}
+                        </div>
+                    </TableHeadCell>
+                {/if}
             {/each}
         </TableHead>
 
@@ -117,13 +137,15 @@
                 <TableBodyRow class={`border-gray-200 ${onItemClicked !== undefined ? "hover:cursor-pointer": "" }`}
                               onclick={() => onItemClicked?.(item)}>
                     {#each columns as column}
-                        <TableBodyCell>
-                            {#if column.transform === undefined}
-                                {item[column.field]}
-                            {:else}
-                                {column.transform(item[column.field])}
-                            {/if}
-                        </TableBodyCell>
+                        {#if activeColumns[column.field] === true}
+                            <TableBodyCell>
+                                {#if column.transform === undefined}
+                                    {item[column.field]}
+                                {:else}
+                                    {column.transform(item[column.field])}
+                                {/if}
+                            </TableBodyCell>
+                        {/if}
                     {/each}
                 </TableBodyRow>
             {/each}

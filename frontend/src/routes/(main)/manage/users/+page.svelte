@@ -8,10 +8,16 @@
 
     const columns = [
         {field: "id", label: m.manage_users_label_id()},
+        {field: "status", label: m.manage_users_label_status()},
         {field: "username", label: m.manage_users_label_username()},
         {field: "firstName", label: m.manage_users_label_first_name()},
         {field: "lastName", label: m.manage_users_label_last_name()},
         {field: "email", label: m.manage_users_label_email()},
+        {
+            field: "updatedAt",
+            label: m.manage_users_label_updated_at(),
+            transform: (value) => new Date(value).toLocaleString()
+        },
         {
             field: "createdAt",
             label: m.manage_users_label_created_at(),
