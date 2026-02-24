@@ -1,7 +1,7 @@
 <script>
     import {onMount, tick} from 'svelte';
     import {Button, Heading} from 'flowbite-svelte';
-    import request from "$lib/api/api.js"
+    import {Hardware} from "$lib/api"
 
     const ITEM_WIDTH = 120;
     const VIEWPORT_WIDTH = 360;
@@ -45,19 +45,8 @@
     });
 
     async function openDoor() {
-        const payload = {
-            emojis: "💩💩💩💩💩"
-        }
-
-        const response = await request("/api/hardware/door/emojis", {
-            method: "POST",
-            body: JSON.stringify(payload),
-            headers: {"Content-Type": "application/json"}
-        });
-
+        const response = await Hardware.doorEmojis("💩💩💩💩💩");
         const json = await response.json()
-
-        alert(JSON.stringify(json));
     }
 
     function weightedRandom(items) {

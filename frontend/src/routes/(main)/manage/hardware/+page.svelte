@@ -1,9 +1,7 @@
 <script>
     import {Button, Heading} from 'flowbite-svelte';
-    import request from '$lib/api/api.js';
     import {openDoor, openLocker} from '$lib/utils.js';
     import {invalidateAll} from '$app/navigation';
-    import {lockersPath} from '$lib/backend.js';
 
     let {data} = $props();
 

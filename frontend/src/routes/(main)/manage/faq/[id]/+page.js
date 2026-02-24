@@ -1,4 +1,4 @@
-import request from "$lib/api/api.js";
+import {Faq} from "$lib/api";
 
 export async function load({params}) {
     const faq = await getFAQ(params.id);
@@ -6,6 +6,6 @@ export async function load({params}) {
 }
 
 async function getFAQ(id) {
-    const response = await request(`/api/faq/${id}`);
+    const response = await Faq.get(id);
     return await response.json();
 }

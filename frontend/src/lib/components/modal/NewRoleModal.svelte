@@ -1,7 +1,7 @@
 <script>
-    import {Button, Input, div, Modal} from "flowbite-svelte";
+    import {Button, Input, Modal} from "flowbite-svelte";
     import WhitelistDropdown from "../WhitelistDropdown.svelte";
-    import request from "$lib/api/api.js";
+    import {Roles} from "$lib/api";
 
     let {showNewRoleModal = $bindable(), permissions} = $props();
 
@@ -15,12 +15,9 @@
         })));
 
     async function createRole() {
-        const response = await request("/api/roles", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({name: roleName, permissions: selectedRoles})
+        const response = await Roles.create({
+            name: roleName,
+            permissions: selectedRoles
         });
 
         if (response.ok) {

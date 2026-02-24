@@ -3,7 +3,7 @@
     import {m} from "$lib/paraglide/messages.js";
     import Calendar from "$lib/components/Calendar.svelte"
     import Timepicker from "$lib/components/Timepicker.svelte";
-    import request from "$lib/api/api.js";
+    import {RoomBookings} from "$lib/api";
     import {invalidateAll} from "$app/navigation";
 
     let {
@@ -30,7 +30,7 @@
     let end = $state(new Date(now));
 
     async function getEvents() {
-        const response = await request("/api/room-bookings");
+        const response = await RoomBookings.getCollection();
         const json = await response.json();
 
         return json.map(event => ({
@@ -68,11 +68,7 @@
             accessibility: accessibility
         };
 
-        const response = await request("/api/room-bookings", {
-            method: "POST",
-            body: JSON.stringify(payload),
-            headers: {"Content-Type": "application/json"}
-        });
+        const response = await RoomBookings.create(payload);
 
         if (!response.ok)
             return;

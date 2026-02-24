@@ -2,7 +2,7 @@
     import {Button, Heading, Hr, Input, Modal, MultiSelect, Select} from "flowbite-svelte";
     import PasswordInput from "$lib/components/PasswordInput.svelte";
     import {m} from "$lib/paraglide/messages.js";
-    import request from "$lib/api/api.js";
+    import {Roles} from "$lib/api";
     import {onMount} from "svelte";
     import {invalidateAll} from "$app/navigation";
 
@@ -17,7 +17,7 @@
     });
 
     async function getRoles() {
-        const response = await request("/api/roles");
+        const response = await Roles.getCollection();
         return await response.json();
     }
 
@@ -46,11 +46,7 @@
         event.preventDefault()
 
         const payload = $state.snapshot(input);
-        const response = await request("/api/users", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(payload)
-        });
+        const response = await Users.create(payload);
 
         if (response.status !== 201)
             return;

@@ -1,6 +1,5 @@
 <script>
     import TUrtleTable from '$lib/components/TUrtleTable.svelte';
-
     import {page} from '$app/state';
     import {goto, invalidateAll} from '$app/navigation';
 

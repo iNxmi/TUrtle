@@ -1,7 +1,9 @@
-import request from "$lib/api/api.js";
+import {Faq} from "$lib/api";
 
 export async function load() {
-    const response = await request("/api/faq?rsql=enabled==true");
+    const response = await Faq.getCollection({
+        rsql: "enabled==true"
+    });
     const payload = await response.json();
 
     return {all: payload};

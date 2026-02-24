@@ -1,6 +1,6 @@
 <script>
     import {Button, Heading, Hr, Modal} from "flowbite-svelte";
-    import request from "$lib/api/api.js";
+    import {Auth} from "$lib/api";
     import {goto, invalidateAll} from "$app/navigation";
     import {m} from "$lib/paraglide/messages.js";
 
@@ -11,7 +11,7 @@
     async function logout(event) {
         event.preventDefault()
 
-        const response = await request("/api/auth/logout", {method: "POST"})
+        const response = await Auth.logout();
         if (response.status !== 204)
             return;
 

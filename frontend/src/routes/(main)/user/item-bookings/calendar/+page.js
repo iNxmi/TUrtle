@@ -1,5 +1,5 @@
 /*
-import request from "$lib/api/api.js";
+import {request} from "$lib/api/API.js";
 import { checkAuthorization } from "$lib/utils.js";
 import {deviceCategoriesPath, deviceBookingsPath, devicesPath} from '$lib/backend.js';
 /!* import { json } from "@sveltejs/kit";

@@ -2,8 +2,7 @@
     import {Button, Input, Textarea} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
     import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
-    import request from "$lib/api/api.js";
-    import {contentTemplatesPath} from "$lib/backend.js";
+    import {ContentTemplates} from "$lib/api";
 
     let {data} = $props();
     let template = $derived(data.template);
@@ -19,14 +18,7 @@
     });
 
     async function saveTemplate() {
-
-        const response = request(`/api/content-templates/${template.id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedTemplate)
-        });
+        const response = await ContentTemplates.patch(template.id, updatedTemplate);
     }
 </script>
 

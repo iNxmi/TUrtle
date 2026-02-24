@@ -1,6 +1,6 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
-    import request from "$lib/api/api.js";
+    import {Hardware} from "$lib/api";
     import {Button, Modal} from "flowbite-svelte";
     import {QuestionCircleSolid} from "flowbite-svelte-icons";
 
@@ -11,7 +11,7 @@
     async function unlock(event) {
         event.preventDefault();
 
-        const response = await request("/api/hardware/door/open", {method: "POST"});
+        const response = await Hardware.doorOpen();
         if (!response.ok)
             return;
 

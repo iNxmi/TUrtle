@@ -1,6 +1,6 @@
 <script>
     import {getContext, onMount} from 'svelte';
-    import request from '$lib/api/api.js';
+    import {request} from '$lib/api/API.js';
     import {convertEventToFrontend, fetchRoomBookings} from '$lib/utils.js'
     import EventDetailsModal from '$lib/components/modal/EventDetailsModal.svelte';
     import {Calendar} from '@fullcalendar/core';

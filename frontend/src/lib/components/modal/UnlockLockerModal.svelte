@@ -1,6 +1,6 @@
 <script>
     import {Button, Modal} from 'flowbite-svelte';
-    import request from '$lib/api/api.js';
+    import {Hardware} from '$lib/api';
     import {QuestionCircleSolid} from "flowbite-svelte-icons";
 
     let {
@@ -11,7 +11,7 @@
     async function unlock(event) {
         event.preventDefault();
 
-        const response = await request(`/api/hardware/locker/open?id=${locker.id}`, {method: "POST"});
+        const response = await Hardware.lockerOpen(locker.id);
         if (!response.ok)
             return;
 

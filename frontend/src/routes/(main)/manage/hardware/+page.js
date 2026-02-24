@@ -1,13 +1,8 @@
-import request from "$lib/api/api.js";
-import {checkAuthorization} from "$lib/utils.js";
+import {Lockers} from "$lib/api";
 
 export async function load({url}) {
+    const response = await Lockers.getCollection();
+    const lockers = await response.json();
 
-    const response = await request("/api/lockers");
-    checkAuthorization(response, url.pathname);
-
-    if (response.ok) {
-        const lockerData = await response.json();
-        return {lockers: lockerData}
-    }
+    return {lockers: lockers}
 }

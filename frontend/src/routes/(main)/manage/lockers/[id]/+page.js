@@ -1,4 +1,4 @@
-import request from "$lib/api/api.js";
+import {Lockers} from "$lib/api";
 
 export async function load({params}) {
     const locker = await getLocker(params.id)
@@ -6,6 +6,6 @@ export async function load({params}) {
 }
 
 async function getLocker(id) {
-    const response = await request(`/api/lockers/${id}`);
+    const response = await Lockers.get(id);
     return await response.json();
 }

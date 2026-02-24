@@ -8,7 +8,7 @@
     import timeGridPlugin from '@fullcalendar/timegrid';
     import listPlugin from '@fullcalendar/list';
     import deLocale from '@fullcalendar/core/locales/de';
-    import request from '$lib/api/api.js';
+    import request from '$lib/api/API.js';
     import DevicebookingTable from "$lib/components/DevicebookingTable.svelte";
     import {convertEventToFrontend, fetchDeviceBookings} from "$lib/utils.js";
     import {deviceBookingsPath} from "$lib/backend.js";

@@ -1,5 +1,5 @@
-export default async function request(url, options = {}) {
-    const response = await fetch(url, options);
+export async function request(endpoint, options = {}) {
+    const response = await fetch(endpoint, options);
     if (response.status !== 401)
         return response;
 
@@ -7,5 +7,5 @@ export default async function request(url, options = {}) {
     if (refreshResponse.status !== 204)
         return response;
 
-    return fetch(url, options);
+    return fetch(endpoint, options);
 }

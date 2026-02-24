@@ -1,4 +1,4 @@
-import request from './api/api';
+import {request} from './api/./API.js';
 import {dev} from '$app/environment';
 import {error, redirect} from '@sveltejs/kit';
 import {hardwarePath, itemBookingsPath, roomBookingsPath} from '$lib/backend';

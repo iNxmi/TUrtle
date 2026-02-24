@@ -2,7 +2,7 @@
     import {Button, Checkbox, Input, Select, Textarea} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
     import Altcha from '$lib/components/Altcha.svelte';
-    import request from "$lib/api/api.js";
+    import {SupportTickets} from "$lib/api";
     import Markdown from "$lib/components/Markdown.svelte";
     import Card from "$lib/components/Card.svelte";
 
@@ -42,11 +42,7 @@
             altchaToken: $state.snapshot(altchaToken)
         }
 
-        const response = await request("/api/support-tickets", {
-            method: "POST",
-            body: JSON.stringify(payload),
-            headers: {"Content-Type": "application/json"}
-        });
+        const response = await SupportTickets.create(payload);
     }
 </script>
 

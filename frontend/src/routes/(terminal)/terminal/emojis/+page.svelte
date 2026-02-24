@@ -1,5 +1,5 @@
 <script>
-    import request from "$lib/api/api.js";
+    import {Hardware} from "$lib/api";
 
     import {Hr} from "flowbite-svelte";
 
@@ -47,15 +47,8 @@
     async function submit() {
         shuffle();
 
-        const payload = {
-            emojis: code.join("")
-        };
-
-        const response = await request("/api/hardware/door/emojis", {
-            method: "POST",
-            body: JSON.stringify(payload),
-            headers: {"Content-Type": "application/json"}
-        });
+        const emojis = code.join("");
+        const response = await Hardware.doorEmojis(emojis);
 
         success = response.ok
 

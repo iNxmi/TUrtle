@@ -1,15 +1,5 @@
-import request from "$lib/api/api.js";
+import {ItemCategories, Items} from "$lib/api";
 import {getPage} from "$lib/utils.js";
-
-async function getCategories() {
-    const response = await request("/api/item-categories");
-    return response.json();
-}
-
-async function getItems() {
-    const response = await request("/api/items");
-    return response.json();
-}
 
 export async function load({url}) {
     const page = await getPage(url, "/api/item-bookings")
@@ -21,4 +11,14 @@ export async function load({url}) {
         categories: categories,
         items: items
     };
+}
+
+async function getCategories() {
+    const response = await ItemCategories.getCollection();
+    return response.json();
+}
+
+async function getItems() {
+    const response = await Items.getCollection();
+    return response.json();
 }

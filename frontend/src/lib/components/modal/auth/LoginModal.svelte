@@ -3,7 +3,7 @@
     import PasswordInput from "$lib/components/PasswordInput.svelte";
     import Altcha from "$lib/components/Altcha.svelte"
     import {m} from '$lib/paraglide/messages.js';
-    import request from '$lib/api/api.js';
+    import {Auth} from "$lib/api";
     import {invalidateAll} from '$app/navigation';
 
     let {
@@ -32,11 +32,12 @@
         };
 
         loading = true;
-        const response = await request("/api/auth/login", {
-            method: "POST",
-            body: JSON.stringify(payload),
-            headers: {"Content-Type": "application/json"}
-        });
+        const response = await Auth.login(payload);
+        // const response = await request("/api/auth/login", {
+        //     method: "POST",
+        //     body: JSON.stringify(payload),
+        //     headers: {"Content-Type": "application/json"}
+        // });
         loading = false;
 
         //TODO replace by local checks and interpretation as exceptions are given in english only and only for dev/api purposes.

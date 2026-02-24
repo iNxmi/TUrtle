@@ -3,7 +3,7 @@
     import {m} from "$lib/paraglide/messages.js";
     import Calendar from "$lib/components/Calendar.svelte"
     import Timepicker from "$lib/components/Timepicker.svelte";
-    import request from "$lib/api/api.js";
+    import {ItemBookings} from "$lib/api";
     import {invalidateAll} from "$app/navigation";
 
     let {
@@ -23,7 +23,10 @@
         if (itemId === null)
             return [];
 
-        const response = await request(`/api/item-bookings?rsql=item.id==${itemId}`);
+        const response = await ItemBookings.getCollection({
+            rsql: `item.id==${itemId}`
+        });
+
         const json = await response.json();
 
         return json.map(event => ({
@@ -58,11 +61,7 @@
             end: end.toISOString()
         };
 
-        const response = await request("/api/item-bookings", {
-            method: "POST",
-            body: JSON.stringify(payload),
-            headers: {"Content-Type": "application/json"}
-        });
+        const response = await ItemBookings.create(payload);
 
         if (!response.ok)
             return;

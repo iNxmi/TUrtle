@@ -1,4 +1,4 @@
-import request from "$lib/api/api.js";
+import {ItemBookings} from "$lib/api";
 
 export async function load({params}) {
     const booking = await getItemBooking(params.id);
@@ -6,6 +6,6 @@ export async function load({params}) {
 }
 
 async function getItemBooking(id) {
-    const response = await request(`/api/item-bookings/${id}`);
+    const response = await ItemBookings.get(id);
     return await response.json();
 }

@@ -1,4 +1,4 @@
-import request from "$lib/api/api.js";
+import {Roles, Users} from "$lib/api";
 
 export async function load({params}) {
     const user = await getUser(params.id);
@@ -11,11 +11,11 @@ export async function load({params}) {
 }
 
 async function getUser(id) {
-    const response = await request(`/api/users/${id}`);
+    const response = await Users.get(id);
     return await response.json();
 }
 
 async function getRoles() {
-    const response = await request("/api/roles");
+    const response = await Roles.getCollection();
     return await response.json();
 }

@@ -1,4 +1,4 @@
-import request from "$lib/api/api.js";
+import {SupportTickets} from "$lib/api";
 
 export async function load({params}) {
     const ticket = await getSupportTicket(params.id);
@@ -6,6 +6,6 @@ export async function load({params}) {
 }
 
 async function getSupportTicket(id) {
-    const response = await request(`/api/support-tickets/${id}`);
+    const response = await SupportTickets.get(id);
     return await response.json();
 }

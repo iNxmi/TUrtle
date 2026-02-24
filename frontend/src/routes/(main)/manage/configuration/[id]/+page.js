@@ -1,4 +1,4 @@
-import request from "$lib/api/api.js";
+import {Configuration} from "$lib/api";
 
 export async function load({params}) {
     const configuration = await getConfiguration(params.id);
@@ -6,6 +6,6 @@ export async function load({params}) {
 }
 
 async function getConfiguration(id) {
-    const response = await request(`/api/configuration/${id}`);
+    const response = await Configuration.get(id);
     return await response.json();
 }

@@ -1,4 +1,4 @@
-import request from "$lib/api/api.js";
+import {ItemCategories} from "$lib/api";
 
 export async function load({params}) {
     const category = await getItemCategory(params.id);
@@ -6,6 +6,6 @@ export async function load({params}) {
 }
 
 async function getItemCategory(id) {
-    const response = await request(`/api/item-categories/${id}`);
+    const response = await ItemCategories.get(id);
     return await response.json()
 }

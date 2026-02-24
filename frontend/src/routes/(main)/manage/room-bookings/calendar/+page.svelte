@@ -2,7 +2,7 @@
     import {getContext} from 'svelte';
     import {dev} from '$app/environment';
     import {fade} from 'svelte/transition';
-    import request from '$lib/api/api.js';
+    import {request} from '$lib/api/API.js';
     import {between, convertEventToBackend, convertEventToFrontend, fetchRoomBookings} from '$lib/utils.js';
     import {Button, Datepicker, Heading, P, Textarea, Timepicker, Toggle} from 'flowbite-svelte';
     import WhitelistDropdown from '$lib/components/WhitelistDropdown.svelte';

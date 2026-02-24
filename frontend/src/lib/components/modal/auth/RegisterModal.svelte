@@ -2,7 +2,7 @@
     import {A, Button, Checkbox, Heading, Hr, Input, Modal} from "flowbite-svelte";
     import PasswordInput from "$lib/components/PasswordInput.svelte";
     import {m} from '$lib/paraglide/messages.js';
-    import request from "$lib/api/api.js";
+    import {Users} from "$lib/api";
     import Altcha from "$lib/components/Altcha.svelte";
     import {invalidateAll} from "$app/navigation";
 
@@ -31,11 +31,7 @@
             altchaToken: $state.snapshot(altchaToken)
         };
 
-        const response = await request("/api/users", {
-            method: "POST",
-            body: JSON.stringify(payload),
-            headers: {"Content-Type": "application/json"}
-        });
+        const response = await Users.create(payload);
 
         if (response.status !== 201)
             return;

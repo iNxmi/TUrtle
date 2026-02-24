@@ -1,4 +1,4 @@
-import request from "$lib/api/api.js";
+import {Altcha, Auth, Permissions} from "$lib/api";
 
 export const prerender = false;
 export const ssr = false;
@@ -18,7 +18,7 @@ export async function load() {
 }
 
 async function getPermissions() {
-    const response = await request("/api/permissions");
+    const response = await Permissions.permissions();
     if (!response.ok)
         return [];
 
@@ -26,7 +26,7 @@ async function getPermissions() {
 }
 
 async function getUser() {
-    const response = await request("/api/auth/me");
+    const response = await Auth.me();
     if (!response.ok)
         return null;
 
@@ -34,7 +34,7 @@ async function getUser() {
 }
 
 async function getIsTrustedDevice() {
-    const response = await request("/api/altcha/trusted");
+    const response = await Altcha.trusted();
     if (!response.ok)
         return false;
 

@@ -1,7 +1,7 @@
-import request from "$lib/api/api.js";
+import {Content} from "$lib/api";
 
 export async function load() {
-    const response = await request("/api/content/imprint");
+    const response = await Content.imprint();
     const payload = await response.text();
 
     return {content: payload};

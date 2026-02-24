@@ -1,4 +1,4 @@
-import request from "$lib/api/api.js";
+import {ItemBookings, Items, Lockers} from "$lib/api";
 
 export async function load({params}) {
     const booking = await getBooking(params.id);
@@ -13,19 +13,16 @@ export async function load({params}) {
 }
 
 async function getBooking(id) {
-    const url = `/api/item-bookings/${id}`;
-    const response = await request(url);
+    const response = await ItemBookings.get(id);
     return await response.json();
 }
 
 async function getItem(id) {
-    const url = `/api/items/${id}`;
-    const response = await request(url);
+    const response = await Items.get(id);
     return await response.json();
 }
 
 async function getLocker(id) {
-    const url = `/api/lockers/${id}`;
-    const response = await request(url);
+    const response = await Lockers.get(id);
     return await response.json();
 }
