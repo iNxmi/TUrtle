@@ -148,6 +148,10 @@
 
   "manage_items_label_id": "ID",
   "manage_items_label_name": "Name",
+  "manage_items_label_description": "Description",
+  "manage_items_label_needs_confirmation": "Needs Confirmation",
+  "manage_items_label_locker_id": "Locker ID",
+  "manage_items_label_category_id": "Category ID",
   "manage_items_label_acquired_at": "Acquired At",
   "manage_items_label_updated_at": "Updated At",
   "manage_items_label_created_at": "Created At",

@@ -1,15 +1,11 @@
 import request from "$lib/api/api.js";
 
 export async function load({params}) {
-    const deviceResponse = await request(`/api/items/${params.id}`);
+    const item = await getItem(params.id);
+    return {item: item};
+}
 
-    if (deviceResponse.ok) {
-        const device = await deviceResponse.json();
-        const categoryResponse = await request(`/api/item-categories/${device.category}`);
-
-        if (categoryResponse.ok) {
-            const category = await categoryResponse.json();
-            return {device, category}
-        }
-    }
+async function getItem(id) {
+    const response = await request(`/api/items/${id}`);
+    return await response.json();
 }

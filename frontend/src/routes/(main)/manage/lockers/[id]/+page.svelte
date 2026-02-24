@@ -1,6 +1,6 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
-    import {Button, Input, ButtonGroup} from "flowbite-svelte";
+    import {Input} from "flowbite-svelte";
     import Card from "$lib/components/Card.svelte";
 
     let {data} = $props();
