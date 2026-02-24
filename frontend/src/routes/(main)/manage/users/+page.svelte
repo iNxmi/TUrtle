@@ -13,6 +13,7 @@
         {field: "firstName", label: m.manage_users_label_first_name()},
         {field: "lastName", label: m.manage_users_label_last_name()},
         {field: "email", label: m.manage_users_label_email()},
+        {field: "emojis", label: m.manage_users_label_emojis(), enabled: false},
         {
             field: "updatedAt",
             label: m.manage_users_label_updated_at(),
