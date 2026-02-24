@@ -214,6 +214,9 @@
 
   "manage_faq_label_id": "ID",
   "manage_faq_label_name": "Name",
+  "manage_faq_label_title": "Title",
+  "manage_faq_label_content": "Content",
+  "manage_faq_label_enabled": "Enabled",
   "manage_faq_label_updated_at": "Created At",
   "manage_faq_label_created_at": "Created At",
 

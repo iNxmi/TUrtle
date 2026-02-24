@@ -9,10 +9,12 @@
 
 <div class="flex flex-col gap-5">
     <Accordion class="bg-background-secondary dark:border-none" multiple>
-        {#each all as faq, index}
+        {#each all as faq}
             <AccordionItem>
                 {#snippet header()}
-                    {`${index + 1}. ${faq.title}`}
+                    <span>
+                        {faq.id}. {faq.title} ({new Date(faq.updatedAt).toLocaleDateString()})
+                    </span>
                 {/snippet}
                 <Markdown content={faq.content}/>
             </AccordionItem>

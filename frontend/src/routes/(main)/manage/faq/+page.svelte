@@ -1,12 +1,15 @@
 <script>
     import {m} from '$lib/paraglide/messages.js';
     import TableView from "$lib/components/TableView.svelte"
+    import {goto} from "$app/navigation";
 
     const {data} = $props();
 
     const columns = [
         {field: "id", label: m.manage_faq_label_id(), enabled: false},
         {field: "name", label: m.manage_faq_label_name()},
+        {field: "title", label: m.manage_faq_label_title()},
+        {field: "enabled", label: m.manage_faq_label_enabled()},
         {
             field: "updatedAt",
             label: m.manage_faq_label_updated_at(),
@@ -24,4 +27,5 @@
 
 <TableView columns={columns}
            contentPage={data.page}
+           onItemClicked={(item) => goto(`/manage/faq/${item.id}`)}
 />
