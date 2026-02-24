@@ -109,7 +109,7 @@
                     {/if}
 
                     {#if !hideAdd}
-                        <Button class="hover:cursor-pointer" color="green" onclick={() => onCreate?.()}
+                        <Button class="hover:cursor-pointer" color="primary" onclick={() => onCreate?.()}
                                 disabled={disableAdd}>
                             <PlusOutline/>
                         </Button>

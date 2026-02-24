@@ -48,9 +48,15 @@
                          disabled/>
         </div>
 
-        <div>
-            <span>{m.manage_users_label_created_at()}</span>
-            <Input type="text" value={(new Date(user.createdAt)).toLocaleString()} disabled/>
+        <div class="flex gap-5">
+            <div class="flex-1">
+                <span>{m.manage_users_label_created_at()}</span>
+                <Input type="text" value={(new Date(user.createdAt)).toLocaleString()} disabled/>
+            </div>
+            <div class="flex-1">
+                <span>{m.manage_users_label_updated_at()}</span>
+                <Input type="text" value={(new Date(user.updatedAt)).toLocaleString()} disabled/>
+            </div>
         </div>
     </form>
 </Card>

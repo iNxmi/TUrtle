@@ -1,6 +1,7 @@
 <script>
     import {m} from '$lib/paraglide/messages.js';
     import TableView from "$lib/components/TableView.svelte"
+    import {goto} from "$app/navigation";
 
     const {data} = $props();
 
@@ -9,13 +10,13 @@
         {field: "name", label: m.manage_roles_label_name()},
         {
             field: "updatedAt",
-            label: m.manage_users_label_updated_at(),
+            label: m.manage_roles_label_updated_at(),
             transform: (value) => new Date(value).toLocaleString(),
             enabled: false
         },
         {
             field: "createdAt",
-            label: m.manage_users_label_created_at(),
+            label: m.manage_roles_label_created_at(),
             transform: (value) => new Date(value).toLocaleString(),
             enabled: false
         }
@@ -25,4 +26,5 @@
 <TableView endpoint="/manage/roles"
            columns={columns}
            contentPage={data.page}
+           onItemClicked={(item) => goto(`/manage/roles/${item.id}`)}
 />
