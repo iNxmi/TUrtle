@@ -1,6 +1,6 @@
 import {request} from "./API.js";
 
-export class ItemCategories {
+export class SupportTicketUrgencies {
 
     static async create(payload) {
         return request("/api/support-ticket-urgencies", {

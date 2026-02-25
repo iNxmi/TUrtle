@@ -148,6 +148,18 @@
         href: "/manage/support-tickets",
         icon: UserHeadsetSolid
     }, {
+        permissions: ["MANAGE_SUPPORT_TICKET_CATEGORIES"],
+        label: m.main_navigation_item_manage_support_ticket_categories(),
+        keys: ["/manage/support-ticket-categories"],
+        href: "/manage/support-ticket-categories",
+        icon: UserHeadsetSolid
+    }, {
+        permissions: ["MANAGE_SUPPORT_TICKETS"],
+        label: m.main_navigation_item_manage_support_ticket_urgencies(),
+        keys: ["/manage/support-ticket-urgencies"],
+        href: "/manage/support-ticket-urgencies",
+        icon: UserHeadsetSolid
+    }, {
         permissions: ["MANAGE_EXCEPTIONS"],
         label: m.main_navigation_item_manage_exceptions(),
         keys: ["/manage/exceptions"],

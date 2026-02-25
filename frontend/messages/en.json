@@ -29,6 +29,8 @@
   "main_navigation_item_manage_statistic_queries": "Statistic Queries",
   "main_navigation_item_manage_room_bookings": "Room Bookings",
   "main_navigation_item_manage_support_tickets": "Support Tickets",
+  "main_navigation_item_manage_support_ticket_categories": "Support Ticket Categories",
+  "main_navigation_item_manage_support_ticket_urgencies": "Support Ticket Urgencies",
   "main_navigation_item_manage_exceptions": "Exceptions",
   "main_navigation_item_manage_roles": "Roles",
   "main_navigation_item_manage_templates": "Templates",
@@ -170,6 +172,11 @@
   "manage_item_categories_label_name": "Name",
   "manage_item_categories_label_updated_at": "Updated At",
   "manage_item_categories_label_created_at": "Created At",
+
+  "manage_support_ticket_categories_label_id": "ID",
+  "manage_support_ticket_categories_label_name": "Name",
+  "manage_support_ticket_categories_label_updated_at": "Updated At",
+  "manage_support_ticket_categories_label_created_at": "Created At",
 
   "manage_item_bookings_label_id": "ID",
   "manage_item_bookings_label_user_id": "User ID",
