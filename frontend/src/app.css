@@ -110,6 +110,11 @@
     font-display: swap;
 }
 
+div {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-background) var(--color-background-secondary);
+}
+
 select option {
     font-family: 'Inter', sans-serif;
 }
@@ -173,11 +178,11 @@ select option {
     }
 }
 
-.dark .fc {
+  .fc {
     div {
         color: var(--color-text);
     }
-}
+} 
 
 .overflow-y-scroll {
     scrollbar-color: #c2c2c2 #ffffff;
@@ -264,7 +269,7 @@ select option {
         display: none;
     }
 
-    html {
+    /* html {
         @apply text-text;
-    }
+    } */
 }
