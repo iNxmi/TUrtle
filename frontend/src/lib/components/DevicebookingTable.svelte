@@ -8,7 +8,7 @@
     let selectedReservationIndex = $state();
 
     let bookingInfo = $derived(reservations ? reservations.map((reservation) => {
-        const device = devices.find((device) => reservation.itemId === device.id);
+        const device = items.find((device) => reservation.itemId === device.id);
         return {
             deviceName: device.name,
             start: new Date(reservation.start),
@@ -49,32 +49,32 @@
                     class="hover:cursor-pointer h-20 bg-gray-50 dark:bg-gray-700 border-3 border-orange-400! rounded-lg dark:border-gray-800 shadow grid grid-flow-row grid-rows-1 grid-cols-4">
                 <div class="place-self-center">
                     <div class="flex flex-col text-center"><span class="text-sm text-muted">_Device_</span><span
-                            class="font-bold text-lg dark:text-white">{reservation.deviceName}</span></div>
+                            class="font-bold text-lg dtext-text">{reservation.deviceName}</span></div>
                 </div>
                 <div class="place-self-center">
-                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Start date_</span><span class="font-bold text-lg dark:text-white">{dt.format(reservation.start)}</span></div>
+                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Start date_</span><span class="font-bold text-lg text-text">{dt.format(reservation.start)}</span></div>
                 </div>
                 <div class="place-self-center">
-                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_EndDate_</span><span class="font-bold text-lg dark:text-white">{dt.format(reservation.end)}</span></div>
+                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_EndDate_</span><span class="font-bold text-lg text-text">{dt.format(reservation.end)}</span></div>
                 </div>
                 <div class="place-self-center">
-                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Locker_</span><span class="font-bold text-lg dark:text-white">{reservation.locker}</span></div>
+                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Locker_</span><span class="font-bold text-lg dtext-text">{reservation.locker}</span></div>
                 </div>
             </button>
         {:else if reservation.status === 'COLLECTED'}
             <button onclick={() => handleReservationInteraction(i)}
                     class="h-20 bg-gray-50 dark:bg-gray-700 border rounded-lg border-gray-100 dark:border-gray-800 shadow grid grid-flow-row grid-rows-1 grid-cols-4">
                 <div class="place-self-center">
-                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Device_</span><span class="font-bold text-lg dark:text-white">{reservation.deviceName}</span></div>
+                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Device_</span><span class="font-bold text-lg text-text">{reservation.deviceName}</span></div>
                 </div>
                 <div class="place-self-center">
-                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Start date_</span><span class="font-bold text-lg dark:text-white">{dt.format(reservation.start)}</span></div>
+                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Start date_</span><span class="font-bold text-lg text-text">{dt.format(reservation.start)}</span></div>
                 </div>
                 <div class="place-self-center">
-                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_EndDate_</span><span class="font-bold text-lg dark:text-white">{dt.format(reservation.end)}</span></div>
+                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_EndDate_</span><span class="font-bold text-lg text-text">{dt.format(reservation.end)}</span></div>
                 </div>
                 <div class="place-self-center">
-                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Locker_</span><span class="font-bold text-lg dark:text-white">{reservation.locker}</span></div>
+                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Locker_</span><span class="font-bold text-lg text-text">{reservation.locker}</span></div>
                 </div>
             </button>
         {:else if reservation.status === 'REQUESTED'}
@@ -88,32 +88,32 @@
                     </div>
                 </div>
                 <div class="place-self-center">
-                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Start date_</span><span class="font-bold text-lg dark:text-white">{dt.format(reservation.start)}</span></div>
+                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Start date_</span><span class="font-bold text-lg text-text">{dt.format(reservation.start)}</span></div>
                 </div>
                 <div class="place-self-center">
-                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_EndDate_</span><span class="font-bold text-lg dark:text-white">{dt.format(reservation.end)}</span></div>
+                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_EndDate_</span><span class="font-bold text-lg text-text">{dt.format(reservation.end)}</span></div>
                 </div>
                 <div class="place-self-center">
-                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Locker_</span><span class="font-bold text-lg dark:text-white">{reservation.locker}</span></div>
+                    <div class="flex flex-col text-center"><span class="text-sm text-muted">_Locker_</span><span class="font-bold text-lg text-text">{reservation.locker}</span></div>
                 </div>
             </div>
         {:else}
             <div class="h-20 bg-gray-50 dark:bg-gray-700 border rounded-lg border-gray-100 dark:border-gray-800 shadow grid grid-flow-row grid-rows-1 grid-cols-4">
                 <div class="place-self-center">
                     <div class="flex flex-col text-center"><span class="text-sm text-muted">_Device_</span><span
-                            class="font-bold text-lg dark:text-white">{reservation.deviceName}</span></div>
+                            class="font-bold text-lg text-text">{reservation.deviceName}</span></div>
                 </div>
                 <div class="place-self-center">
                     <div class="flex flex-col text-center"><span class="text-sm text-muted">_Start date_</span><span
-                            class="font-bold text-lg dark:text-white">{dt.format(reservation.start)}</span></div>
+                            class="font-bold text-lg text-text">{dt.format(reservation.start)}</span></div>
                 </div>
                 <div class="place-self-center">
                     <div class="flex flex-col text-center"><span class="text-sm text-muted">_EndDate_</span><span
-                            class="font-bold text-lg dark:text-white">{dt.format(reservation.end)}</span></div>
+                            class="font-bold text-lg text-text">{dt.format(reservation.end)}</span></div>
                 </div>
                 <div class="place-self-center">
                     <div class="flex flex-col text-center"><span class="text-sm text-muted">_Locker_</span><span
-                            class="font-bold text-lg dark:text-white">{reservation.locker}</span></div>
+                            class="font-bold text-lg text-text">{reservation.locker}</span></div>
                 </div>
             </div>
         {/if}
