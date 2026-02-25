@@ -17,6 +17,7 @@
         calendar = new Calendar(element, {
             plugins: [timeGridPlugin, dayGridPlugin, listPlugin],
             initialView: "dayGridMonth",
+            allDaySlot: false,
             height: height,
             headerToolbar: {
                 left: 'prev,next today',
