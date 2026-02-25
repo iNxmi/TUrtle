@@ -7,7 +7,9 @@
         columns = [],
         contentPage,
         onCreate,
-        onItemClicked
+        onItemClicked,
+        class: className = "",
+        ...rest
     } = $props();
 
     let items = $derived.by(() => {
@@ -26,7 +28,8 @@
     let searchParams = $derived(page.url.searchParams);
 </script>
 
-<TUrtleTable columns={columns}
+<TUrtleTable class={`flex-1 max-h-full ${className}`}
+             columns={columns}
              items={contentPage.content}
              page={pageInfo}
 
@@ -76,5 +79,7 @@
 
              hideAdd={!onCreate}
              onCreate={onCreate}
+
+             {...rest}
 />
  

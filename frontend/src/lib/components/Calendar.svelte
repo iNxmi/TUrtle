@@ -7,7 +7,9 @@
     import listPlugin from '@fullcalendar/list';
 
     let {
-        sources = $bindable([])
+        sources = $bindable([]),
+        class: className = "",
+        ...rest
     } = $props();
 
     let element = $state(null);
@@ -39,4 +41,4 @@
     });
 </script>
 
-<div bind:this={element} class="w-full h-full"></div>
+<div bind:this={element} class={`w-full h-full ${className}`} {...rest}></div>

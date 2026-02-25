@@ -136,6 +136,11 @@
   "imprint_title": "Imprint",
   "about_title": "About",
 
+  "user_dashboard_title_current_item_bookings": "Current Item Bookings",
+  "user_dashboard_title_current_room_bookings": "Current Room Bookings",
+  "user_dashboard_content_no_current_item_bookings": "No current item bookings.",
+  "user_dashboard_content_no_current_room_bookings": "No current room bookings.",
+
   "user_profile_label_username": "Username",
   "user_profile_label_first_name": "First Name",
   "user_profile_label_last_name": "Last Name",

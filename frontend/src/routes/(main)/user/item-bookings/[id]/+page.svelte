@@ -1,44 +1,54 @@
 <script>
-    import UnlockLockerModal from "$lib/components/modal/UnlockLockerModal.svelte";
-    import {Button, Input, div} from "flowbite-svelte";
+    import {m} from "$lib/paraglide/messages.js";
+    import {Input} from "flowbite-svelte";
+    import Card from "$lib/components/Card.svelte";
 
     let {data} = $props();
-    let booking = data.booking;
-    let item = data.item;
-    let locker = data.locker;
-
-    let modal = $state(false);
+    let booking = $derived(data.booking);
 </script>
 
-<form class="flex flex-col gap-5">
-    <div>
-        <span>_ID_</span>
-        <Input type="text" value={booking.id} disabled/>
-    </div>
-
-    <div>
-        <span>_item_</span>
-        <Input type="text" value={item.name} disabled/>
-    </div>
-
-    <div class="flex gap-5">
-        <div class="flex-1">
-            <span>_start_</span>
-            <Input type="text" value={booking.start} disabled/>
+<Card>
+    <form class="flex flex-col gap-5">
+        <div>
+            <span>{m.manage_item_bookings_label_id()}</span>
+            <Input type="text" value={booking.id} disabled/>
         </div>
 
-        <div class="flex-1">
-            <span>_end_</span>
-            <Input type="text" value={booking.end} disabled/>
+        <div>
+            <span>{m.manage_item_bookings_label_item_id()}</span>
+            <Input type="text" value={booking.itemId} disabled/>
         </div>
-    </div>
 
-    <div>
-        <span>_status_</span>
-        <Input type="text" value={booking.status} disabled/>
-    </div>
+        <div>
+            <span>{m.manage_item_bookings_label_user_id()}</span>
+            <Input type="text" value={booking.userId} disabled/>
+        </div>
 
-    <Button onclick={() => modal = true}>Unlock Locker</Button>
-</form>
+        <div class="flex gap-5">
+            <div class="flex-1">
+                <span>{m.manage_item_bookings_label_start()}</span>
+                <Input type="text" value={(new Date(booking.start)).toLocaleString()} disabled/>
+            </div>
+            <div class="flex-1">
+                <span>{m.manage_item_bookings_label_end()}</span>
+                <Input type="text" value={(new Date(booking.end)).toLocaleString()} disabled/>
+            </div>
+        </div>
 
-<UnlockLockerModal bind:open={modal} locker={locker}/>
+        <div>
+            <span>{m.manage_item_bookings_label_status()}</span>
+            <Input type="text" value={booking.status} disabled/>
+        </div>
+
+        <div class="flex gap-5">
+            <div class="flex-1">
+                <span>{m.manage_item_bookings_label_created_at()}</span>
+                <Input type="text" value={(new Date(booking.createdAt)).toLocaleString()} disabled/>
+            </div>
+            <div class="flex-1">
+                <span>{m.manage_item_bookings_label_updated_at()}</span>
+                <Input type="text" value={(new Date(booking.updatedAt)).toLocaleString()} disabled/>
+            </div>
+        </div>
+    </form>
+</Card>

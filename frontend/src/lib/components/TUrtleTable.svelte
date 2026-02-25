@@ -17,11 +17,11 @@
     } from 'flowbite-svelte';
 
     import {
-        AngleLeftOutline,
-        AngleRightOutline,
         ChevronDoubleLeftOutline,
         ChevronDoubleRightOutline,
         ChevronDownOutline,
+        ChevronLeftOutline,
+        ChevronRightOutline,
         ChevronSortOutline,
         ChevronUpOutline,
         PlusOutline,
@@ -64,14 +64,17 @@
         disableAdd = false,
         disableReload = false,
         disablePagination = false,
-        disableSearch = true
+        disableSearch = true,
+
+        class: className = "",
+        ...rest
     } = $props();
 
     let activeColumns = $state(Object.fromEntries(columns.map(column => [column.field, column.enabled !== false])));
     let search = $state("");
 </script>
 
-<Card class="min-w-full min-h-full overflow-auto dark:border-none">
+<Card class={`min-w-full dark:border-none ${className}`}>
     {#if !hideSearch || !hideAdd || !hideReload}
         <div class="flex gap-2 justify-between p-3">
             <div class="flex-1 flex">
@@ -121,8 +124,8 @@
         <Hr class="m-0 p-0"/>
     {/if}
 
-    <Table hoverable>
-        <TableHead color="default">
+    <Table divClass="grow" hoverable>
+        <TableHead>
             {#each columns as column}
                 {#if activeColumns[column.field] === true}
                     <TableHeadCell class="hover:cursor-pointer" onclick={() => onColumnClicked?.(column)}>
@@ -169,7 +172,8 @@
             {#if !hideCount}
                 <ButtonGroup>
                     <Button disabled>
-                        {page.number * page.size + 1} - {Math.min((page.number + 1) * page.size, page.totalElements)}
+                        {page.number * page.size + 1}
+                        - {Math.min((page.number + 1) * page.size, page.totalElements)}
                         ({page.totalElements})
                     </Button>
                 </ButtonGroup>
@@ -184,7 +188,7 @@
 
                     <Button class="hover:cursor-pointer disabled:cursor-not-allowed" disabled={page.number <= 0}
                             onclick={() => onPreviousPage?.()}>
-                        <AngleLeftOutline/>
+                        <ChevronLeftOutline/>
                     </Button>
 
                     <Button disabled>
@@ -193,7 +197,7 @@
 
                     <Button class="hover:cursor-pointer disabled:cursor-not-allowed"
                             disabled={page.number >= page.totalPages - 1} onclick={() => onNextPage?.()}>
-                        <AngleRightOutline/>
+                        <ChevronRightOutline/>
                     </Button>
 
                     <Button class="hover:cursor-pointer disabled:cursor-not-allowed"

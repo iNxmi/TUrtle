@@ -43,7 +43,7 @@
         keys: ["/contact"],
         href: "/contact",
         icon: UserHeadsetSolid
-    }].sort((a, b) => a.href.localeCompare(b.href));
+    }];
 
     const userItems = $derived([{
         label: m.main_navigation_item_user_dashboard(),
@@ -66,8 +66,7 @@
         keys: ["/user/profile"],
         href: "/user/profile",
         icon: UserSolid
-    }].filter(item => user != null && (!item.permissions || item.permissions.some(p => permissions.includes(p))))
-        .sort((a, b) => a.href.localeCompare(b.href)));
+    }].filter(item => user != null && (!item.permissions || item.permissions.some(p => permissions.includes(p)))));
 
     const manageItems = $derived([{
         permissions: ["MANAGE_USERS"],
