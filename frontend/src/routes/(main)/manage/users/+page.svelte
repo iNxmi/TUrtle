@@ -38,5 +38,5 @@
 />
 
 {#if modal}
-    <CreateUserModal bind:open={modal}/>
+    <CreateUserModal bind:open={modal} statusList={data.status}/>
 {/if}

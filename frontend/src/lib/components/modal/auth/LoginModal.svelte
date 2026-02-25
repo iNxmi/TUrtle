@@ -56,12 +56,12 @@
         <Hr class="m-0 p-0"/>
 
         <div>
-            <span>{m.modal_login_label_username_or_email()}</span>
+            <div>{m.modal_login_label_username_or_email()}</div>
             <Input name="input_email_or_username" type="text" bind:value={username} required/>
         </div>
 
         <div>
-            <span>{m.modal_login_label_password()}</span>
+            <div>{m.modal_login_label_password()}</div>
             <PasswordInput name="input_password" bind:value={password} required/>
         </div>
 
@@ -69,7 +69,7 @@
             <div class="flex flex-col justify-center">
                 <Checkbox name="input_remember_me" bind:checked={rememberMe}/>
             </div>
-            <span>{m.modal_login_label_remember_me({days: 30})}</span>
+            <div>{m.modal_login_label_remember_me({days: 30})}</div>
         </div>
 
         {#if !isTrusted}
@@ -77,7 +77,7 @@
         {/if}
 
         {#if error?.trim()}
-            <span class="text-red-400 text-justify">{error}</span>
+            <div class="text-red-400 text-justify">{error}</div>
         {/if}
 
         <Button name="button_submit" type="submit">

@@ -50,33 +50,33 @@
         <Hr class="m-0 p-0"/>
 
         <div>
-            <span>{m.modal_register_label_username()}</span>
+            <div>{m.modal_register_label_username()}</div>
             <Input name="input_username" bind:value={username} type="text" required/>
         </div>
 
         <div class="flex gap-5">
             <div class="flex-1">
-                <span>{m.modal_register_label_first_name()}</span>
+                <div>{m.modal_register_label_first_name()}</div>
                 <Input name="input_first_name" bind:value={firstName} type="text" required/>
             </div>
             <div class="flex-1">
-                <span>{m.modal_register_label_last_name()}</span>
+                <div>{m.modal_register_label_last_name()}</div>
                 <Input name="input_last_name" bind:value={lastName} type="text" required/>
             </div>
         </div>
 
         <div>
-            <span>{m.modal_register_label_email()}</span>
+            <div>{m.modal_register_label_email()}</div>
             <Input name="input_email" bind:value={email} type="email" required/>
         </div>
 
         <div class="flex gap-5">
             <div class="flex-1">
-                <span>{m.modal_register_label_password()}</span>
+                <div>{m.modal_register_label_password()}</div>
                 <PasswordInput name="input_password" bind:value={password} required/>
             </div>
             <div class="flex-1">
-                <span>{m.modal_register_label_password_repeat()}</span>
+                <div>{m.modal_register_label_password_repeat()}</div>
                 <PasswordInput name="input_password_repeat" bind:value={passwordRepeat} required/>
             </div>
         </div>
@@ -85,7 +85,7 @@
             <div class="flex flex-col justify-center">
                 <Checkbox name="input_tos" required/>
             </div>
-            <span>{m.modal_register_label_i_agree_to_tos()}</span>
+            <div>{m.modal_register_label_i_agree_to_tos()}</div>
         </div>
 
         {#if !isTrusted}

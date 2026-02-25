@@ -84,17 +84,17 @@
         <div class="flex gap-5">
             <form class="shrink flex flex-col gap-5" onsubmit={submit}>
                 <div>
-                    <span>{m.modal_user_create_room_booking_label_title()}</span>
+                    <div>{m.modal_user_create_room_booking_label_title()}</div>
                     <Input bind:value={title} required/>
                 </div>
 
                 <div>
-                    <span>{m.modal_user_create_room_booking_label_description()}</span>
+                    <div>{m.modal_user_create_room_booking_label_description()}</div>
                     <Textarea bind:value={description} required/>
                 </div>
 
                 <div>
-                    <span>{m.modal_user_create_room_booking_label_start()}</span>
+                    <div>{m.modal_user_create_room_booking_label_start()}</div>
                     <div class="flex flex-col gap-1">
                         <Datepicker bind:value={start} required/>
                         <Timepicker bind:value={start} required/>
@@ -102,7 +102,7 @@
                 </div>
 
                 <div>
-                    <span>{m.modal_user_create_room_booking_label_end()}</span>
+                    <div>{m.modal_user_create_room_booking_label_end()}</div>
                     <div class="flex flex-col gap-1">
                         <Datepicker bind:value={end} required/>
                         <Timepicker bind:value={end} required/>
@@ -110,7 +110,7 @@
                 </div>
 
                 <div>
-                    <span>{m.modal_user_create_room_booking_label_accessibility()}</span>
+                    <div>{m.modal_user_create_room_booking_label_accessibility()}</div>
                     <Select bind:value={access} items={accessItems} required/>
                 </div>
 

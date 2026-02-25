@@ -5,7 +5,7 @@
     import {Roles} from "$lib/api";
     import {onMount} from "svelte";
     import {invalidateAll} from "$app/navigation";
-    import {stat} from "node:fs";
+    import {Users} from "$lib/api";
 
     let {
         open = $bindable(false),
@@ -27,7 +27,7 @@
         value: status,
         name: status
     })))
-    let status = $state("");
+    let status = $state("PENDING_VERIFICATION");
 
     let passwordRepeat = $state("");
     let input = $state({
@@ -63,47 +63,49 @@
         <Hr class="m-0 p-0"/>
 
         <div>
-            <span>{m.modal_manage_create_user_label_username()}</span>
+            <div>{m.modal_manage_create_user_label_username()}</div>
             <Input name="input_username" type="text" bind:value={input.username} required/>
         </div>
 
         <div class="flex gap-5">
             <div class="flex-1">
-                <span>{m.modal_manage_create_user_label_first_name()}</span>
+                <div>{m.modal_manage_create_user_label_first_name()}</div>
                 <Input name="input_first_name" type="text" bind:value={input.firstName} required/>
             </div>
             <div class="flex-1">
-                <span>{m.modal_manage_create_user_label_last_name()}</span>
+                <div>{m.modal_manage_create_user_label_last_name()}</div>
                 <Input name="input_last_name" type="text" bind:value={input.lastName} required/>
             </div>
         </div>
 
         <div>
-            <span>{m.modal_manage_create_user_label_email()}</span>
+            <div>{m.modal_manage_create_user_label_email()}</div>
             <Input name="input_email" type="email" bind:value={input.email} required/>
         </div>
 
         <div class="flex gap-5">
             <div class="flex-1">
-                <span>{m.modal_manage_create_user_label_password()}</span>
+                <div>{m.modal_manage_create_user_label_password()}</div>
                 <PasswordInput name="input_password" type="password" bind:value={input.password} required/>
             </div>
             <div class="flex-1">
-                <span>{m.modal_manage_create_user_label_password_repeat()}</span>
+                <div>{m.modal_manage_create_user_label_password_repeat()}</div>
                 <PasswordInput name="input_password_repeat" type="password" bind:value={passwordRepeat} required/>
             </div>
         </div>
 
         <div>
-            <span>{m.modal_manage_create_user_label_roles()}</span>
+            <div>{m.modal_manage_create_user_label_roles()}</div>
             <MultiSelect name="input_roles" items={roleItems} bind:value={input.roleIds} required/>
         </div>
 
         <div>
-            <span>{m.modal_manage_create_user_label_status()}</span>
+            <div>{m.modal_manage_create_user_label_status()}</div>
             <Select name="input_status" items={statusItems} bind:value={input.status} required/>
         </div>
 
-        <Button name="button_submit" type="submit">{m.modal_manage_create_user_button()}</Button>
+        <Button name="button_submit" type="submit">
+            {m.modal_manage_create_user_button()}
+        </Button>
     </form>
 </Modal>

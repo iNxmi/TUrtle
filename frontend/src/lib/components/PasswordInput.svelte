@@ -9,6 +9,7 @@
     } = $props();
 
     let visible = $state(false);
+
     function toggle(event) {
         event.preventDefault();
         visible = !visible;
@@ -17,13 +18,11 @@
 
 <ButtonGroup class="w-full">
     <Input bind:disabled={disabled} bind:value={value} type={visible ? "text" : "password"} required={required}/>
-    <InputAddon>
-        <button type="button" onclick={toggle}>
-            {#if visible}
-                <EyeOutline/>
-            {:else}
-                <EyeSlashOutline/>
-            {/if}
-        </button>
+    <InputAddon onclick={toggle}>
+        {#if visible}
+            <EyeOutline/>
+        {:else}
+            <EyeSlashOutline/>
+        {/if}
     </InputAddon>
 </ButtonGroup>
