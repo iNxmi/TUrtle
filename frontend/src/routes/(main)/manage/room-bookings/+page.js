@@ -1,15 +1,24 @@
-import request from '$lib/api/api';
-import { usersPath } from '$lib/backend.js';
+import {getPage} from "$lib/utils.js";
+import {RoomBookings} from "$lib/api";
 
-export async function load(){
+export async function load({url}) {
+    const page = await getPage(url, "/api/room-bookings")
+    const access = await getAccess();
+    const status = await getStatus();
 
-    const response = await request(usersPath);
+    return {
+        page: page,
+        access: access,
+        status: status
+    };
+}
 
-    let users = [];
-    if(response.ok){
+async function getAccess() {
+    const response = await RoomBookings.access();
+    return await response.json();
+}
 
-        users = await response.json();
-    }
-
-    return {users};
+async function getStatus() {
+    const response = await RoomBookings.status();
+    return await response.json();
 }
