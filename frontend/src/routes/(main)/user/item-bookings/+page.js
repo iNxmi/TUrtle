@@ -1,4 +1,4 @@
-import {ItemCategories, Items} from "$lib/api";
+import {ItemCategories, Items, ItemBookings} from "$lib/api";
 import {getPage} from "$lib/utils.js";
 
 export async function load({url}) {
@@ -9,16 +9,10 @@ export async function load({url}) {
     return { itemBookings, categories, items};
 }
 
-async function getCategories() {
-    const response = await ItemCategories.getCollection();
-    return response.json();
+async function getItemBookings(){
+    const response = await ItemBookings.getCollection('rsql=status!=COMPLETED,status!=CANCELLED');
+    return await response.json();
 }
-
-async function getItems() {
-    const response = await Items.getCollection();
-    return response.json();
-}
-
 async function getCategories() {
     const response = await ItemCategories.getCollection();
     return response.json();
