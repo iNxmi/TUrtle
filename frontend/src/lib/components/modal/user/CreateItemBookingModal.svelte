@@ -123,7 +123,7 @@
                 </div>
             </form>
 
-            <Calendar sources={sources} class="grow"/>
+            <Calendar sources={sources} height={700} class="grow"/>
         </div>
     </div>
 </Modal>
