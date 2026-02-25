@@ -20,7 +20,8 @@
         UserCircleOutline,
         UserHeadsetSolid,
         UsersGroupSolid,
-        UserSolid
+        UserSolid,
+        DatabaseOutline
     } from "flowbite-svelte-icons";
 
     let {data, children} = $props();
@@ -110,6 +111,12 @@
         keys: ["/manage/audit-logs"],
         href: "/manage/audit-logs",
         icon: BookOpenSolid
+    }, {
+        permissions: ["MANAGE_STATISTIC_QUERIES"],
+        label: m.main_navigation_item_manage_statistic_queries(),
+        keys: ["/manage/statistic-queries"],
+        href: "/manage/statistic-queries",
+        icon: DatabaseOutline
     }, {
         permissions: [
             "MANAGE_EMAIL_TEMPLATES",
