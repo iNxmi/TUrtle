@@ -1,6 +1,7 @@
 import {request} from './api/./API.js';
 import {dev} from '$app/environment';
 import {error, redirect} from '@sveltejs/kit';
+import { RoomBookings } from './api/RoomBookings.js';
 
 export async function getPage(url, endpoint) {
     const parameters = new URLSearchParams()
@@ -83,9 +84,7 @@ export function convertEventToFrontend(backendEvent, creator) {
 }
 
 export async function fetchRoomBookings(info) {
-    const url = roomBookingsPath + `?rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`
-    const response = await request(url);
-
+    const response = await RoomBookings.getCollection(`rsql=start>=${encodeURIComponent(info.startStr)};end<=${encodeURIComponent(info.endStr)}`);
     if (!response.ok)
         return false;
 
