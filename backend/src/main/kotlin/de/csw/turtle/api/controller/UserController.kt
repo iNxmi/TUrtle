@@ -80,6 +80,9 @@ class UserController(
         return ResponseEntity.created(location).body(dto)
     }
 
+    @GetMapping("/enum/status")
+    fun getStatus() = Status.entries.toSortedSet()
+
     @GetMapping("/{variable}")
     override fun get(
         @AuthenticationPrincipal user: UserEntity?,

@@ -10,6 +10,14 @@ export class RoomBookings {
         });
     }
 
+    static async status() {
+        return request("/api/room-bookings/enum/status")
+    }
+
+    static async access() {
+        return request("/api/room-bookings/enum/access")
+    }
+
     static async get(id) {
         return request(`/api/room-bookings/${id}`);
     }

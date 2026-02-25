@@ -5,6 +5,7 @@ import de.csw.turtle.api.dto.create.CreateRoleRequest
 import de.csw.turtle.api.dto.get.GetRoleResponse
 import de.csw.turtle.api.dto.patch.PatchRoleRequest
 import de.csw.turtle.api.entity.RoleEntity
+import de.csw.turtle.api.entity.RoleEntity.Type
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.RoleService
@@ -54,6 +55,9 @@ class RoleController(
         val dto = GetRoleResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
+
+    @GetMapping("/enum/type")
+    fun getType() = Type.entries.toSortedSet()
 
     @GetMapping("/{variable}")
     override fun get(

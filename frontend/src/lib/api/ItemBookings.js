@@ -10,6 +10,10 @@ export class ItemBookings {
         });
     }
 
+    static async status() {
+        return request("/api/item-bookings/enum/status");
+    }
+
     static async get(id) {
         return request(`/api/item-bookings/${id}`);
     }

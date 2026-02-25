@@ -2,6 +2,14 @@ import {request} from "./API.js";
 
 export class Configuration {
 
+    static async key() {
+        return request("/api/configuration/enum/key")
+    }
+
+    static async type() {
+        return request("/api/configuration/enum/type")
+    }
+
     static async get(id) {
         return request(`/api/configuration/${id}`);
     }

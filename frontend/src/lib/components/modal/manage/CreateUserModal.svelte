@@ -5,9 +5,11 @@
     import {Roles} from "$lib/api";
     import {onMount} from "svelte";
     import {invalidateAll} from "$app/navigation";
+    import {stat} from "node:fs";
 
     let {
-        open = $bindable(false)
+        open = $bindable(false),
+        statusList = []
     } = $props();
 
     let roleItems = $state([]);
@@ -21,15 +23,11 @@
         return await response.json();
     }
 
-    let statusItems = [
-        {value: "ARCHIVED", name: "Archived"},
-        {value: "PENDING_VERIFICATION", name: "Pending Verification"},
-        {value: "ACTIVE", name: "Active"},
-        {value: "DELETED", name: "Deleted"},
-        {value: "PENDING_APPROVAL", name: "Pending Approval"},
-        {value: "REJECTED", name: "Rejected"},
-        {value: "SUSPENDED", name: "Suspended"},
-    ];
+    let statusItems = $derived(statusList.map((status) => ({
+        value: status,
+        name: status
+    })))
+    let status = $state("");
 
     let passwordRepeat = $state("");
     let input = $state({

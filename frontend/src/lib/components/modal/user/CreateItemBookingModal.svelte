@@ -8,11 +8,20 @@
 
     let {
         open = $bindable(false),
-        categories = [],
-        items = []
+        categoryList = [],
+        itemList = []
     } = $props();
 
+    let categoryItems = $derived(categoryList.map((category) => ({
+        value: category.id,
+        name: category.name
+    })));
     let categoryId = $state(null);
+
+    let itemItems = $derived(itemList.filter((item) => item.categoryId === categoryId).map((item) => ({
+        value: item.id,
+        name: item.name
+    })));
     let itemId = $state(null);
 
     const now = new Date();
@@ -82,17 +91,17 @@
         <div class="flex gap-5">
             <form class="shrink flex flex-col gap-5" onsubmit={submit}>
                 <div>
-                    <span>{m.modal_user_create_item_booking_label_category()}</span>
-                    <Select bind:value={categoryId} items={categories} required/>
+                    <div>{m.modal_user_create_item_booking_label_category()}</div>
+                    <Select bind:value={categoryId} items={categoryItems} onchange={() => itemId = null} required/>
                 </div>
 
                 <div>
-                    <span>{m.modal_user_create_item_booking_label_item()}</span>
-                    <Select disabled={categoryId === null} bind:value={itemId} items={items} required/>
+                    <div>{m.modal_user_create_item_booking_label_item()}</div>
+                    <Select disabled={categoryId === null} bind:value={itemId} items={itemItems} required/>
                 </div>
 
                 <div>
-                    <span>{m.modal_user_create_item_booking_label_start()}</span>
+                    <div>{m.modal_user_create_item_booking_label_start()}</div>
                     <div class="flex flex-col gap-1">
                         <Datepicker disabled={itemId === null} bind:value={start}/>
                         <Timepicker disabled={itemId === null} bind:value={start}/>
@@ -100,7 +109,7 @@
                 </div>
 
                 <div>
-                    <span>{m.modal_user_create_item_booking_label_end()}</span>
+                    <div>{m.modal_user_create_item_booking_label_end()}</div>
                     <div class="flex flex-col gap-1">
                         <Datepicker disabled={itemId === null} bind:value={end}/>
                         <Timepicker disabled={itemId === null} bind:value={end}/>

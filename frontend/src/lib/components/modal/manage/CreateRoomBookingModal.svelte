@@ -7,31 +7,25 @@
     import {invalidateAll} from "$app/navigation";
 
     let {
-        open = $bindable(false)
+        open = $bindable(false),
+        accessList = [],
+        statusList = []
     } = $props();
 
     let title = $state("");
     let description = $state("");
 
-    const accessibilities = [{
-        value: "LOCKED",
-        name: "Locked"
-    }, {
-        value: "UNLOCKED",
-        name: "Unlocked"
-    }, {
-        value: "WHITELIST",
-        name: "Whitelist"
-    }];
-    let accessibility = $state("UNLOCKED");
+    let accessItems = $derived(accessList.map((access) => ({
+        value: access,
+        name: access
+    })));
+    let access = $state("UNLOCKED");
 
-    const statuses = [
-        {value: "REQUESTED", name:"Requested"},
-        {value: "APPROVED", name:"Approved"},
-        {value: "REJECTED", name:"Rejected"},
-        {value: "CANCELLED", name:"Cancelled"},
-        {value: "COMPLETED", name:"Completed"},
-    ]
+    //TODO replace by backend call
+    let statusItems = $derived(statusList.map((access) => ({
+        value: access,
+        name: access
+    })));
     let status = $state("REQUESTED");
 
     const now = new Date();
@@ -74,8 +68,8 @@
             description: description,
             start: start.toISOString(),
             end: end.toISOString(),
-            accessibility: accessibility,
-            status : status
+            access: access,
+            status: status
         };
 
         const response = await RoomBookings.create(payload);
@@ -126,17 +120,17 @@
 
                 <div>
                     <div>{m.modal_manage_create_room_booking_label_accessibility()}</div>
-                    <Select items={accessibilities} bind:value={accessibility} required/>
+                    <Select items={accessItems} bind:value={access} required/>
                 </div>
 
-<!--               TODO-->
-                <div class="border border-dotted">
-                    TODO: Select users
+                <!--TODO-->
+                <div class="border border-dashed p-2 rounded-md">
+                    TODO: Whitelist Selector
                 </div>
 
                 <div>
                     <div>{m.modal_manage_create_room_booking_label_status()}</div>
-                    <Select items={statuses} bind:value={status} required/>
+                    <Select items={statusItems} bind:value={status} required/>
                 </div>
 
                 <div class="grow flex flex-col justify-end">

@@ -26,16 +26,6 @@
         }
     ];
 
-    const categories = $derived(data.categories.map(category => ({
-        value: category.id,
-        name: category.name
-    })));
-
-    const items = $derived(data.items.map(item => ({
-        value: item.id,
-        name: item.name
-    })));
-
     let modal = $state(false);
 </script>
 
@@ -45,5 +35,5 @@
 />
 
 {#if modal}
-    <CreateRoomBookingModal bind:open={modal}/>
+    <CreateRoomBookingModal bind:open={modal} accessList={data.access}/>
 {/if}

@@ -2,7 +2,7 @@ package de.csw.turtle.api.service
 
 import de.csw.turtle.api.entity.ConfigurationEntity
 import de.csw.turtle.api.entity.RoomBookingEntity
-import de.csw.turtle.api.entity.RoomBookingEntity.Accessibility
+import de.csw.turtle.api.entity.RoomBookingEntity.Access
 import de.csw.turtle.api.event.CreatedRoomBookingEvent
 import de.csw.turtle.api.event.PatchedRoomBookingEvent
 import de.csw.turtle.api.exception.HttpException
@@ -33,7 +33,7 @@ class RoomBookingService(
         start: Instant,
         end: Instant,
         description: String,
-        accessibility: Accessibility,
+        access: Access,
         whitelistedUserIds: Set<Long>,
         status: RoomBookingEntity.Status
     ): RoomBookingEntity {
@@ -74,7 +74,7 @@ class RoomBookingService(
             start = start,
             end = end,
             description = description,
-            accessibility = accessibility,
+            access = access,
             whitelistedUsers = whitelistedUserIds.map { userRepository.findById(it).get() }.toMutableSet(),
             status = status
         )
@@ -94,7 +94,7 @@ class RoomBookingService(
         start: Instant? = null,
         end: Instant? = null,
         description: String? = null,
-        accessibility: Accessibility? = null,
+        access: Access? = null,
         whitelistIds: Set<Long>? = null,
         status: RoomBookingEntity.Status? = null
     ): RoomBookingEntity {
@@ -149,7 +149,7 @@ class RoomBookingService(
         start?.let { entity.start = it }
         end?.let { entity.end = it }
         description?.let { entity.description = it }
-        accessibility?.let { entity.accessibility = it }
+        access?.let { entity.access = it }
         whitelistIds?.let { ids ->
             val users = ids.map { userRepository.findById(it).get() }
 

@@ -10,6 +10,10 @@ export class ContentTemplates {
         });
     }
 
+    static async type() {
+        return request("/api/content-templates/enum/type")
+    }
+
     static async get(id) {
         return request(`/api/content-templates/${id}`);
     }

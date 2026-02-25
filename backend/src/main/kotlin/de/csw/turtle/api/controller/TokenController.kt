@@ -3,6 +3,7 @@ package de.csw.turtle.api.controller
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.get.GetTokenResponse
 import de.csw.turtle.api.entity.TokenEntity
+import de.csw.turtle.api.entity.TokenEntity.Type
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.TokenService
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.*
 class TokenController(
     private val tokenService: TokenService
 ) : GetController<TokenEntity, String, GetTokenResponse> {
+
+    @GetMapping("/enum/type")
+    fun getType() = Type.entries.toSortedSet()
 
     @GetMapping("/{variable}")
     override fun get(

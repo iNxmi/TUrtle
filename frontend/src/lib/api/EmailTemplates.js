@@ -10,6 +10,10 @@ export class EmailTemplates {
         });
     }
 
+    static async type() {
+        return request("/api/email-templates/enum/type");
+    }
+
     static async get(id) {
         return request(`/api/email-templates/${id}`);
     }

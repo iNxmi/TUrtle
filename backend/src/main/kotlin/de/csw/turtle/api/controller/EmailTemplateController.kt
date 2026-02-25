@@ -5,6 +5,7 @@ import de.csw.turtle.api.dto.create.CreateEmailTemplateRequest
 import de.csw.turtle.api.dto.get.GetEmailTemplateResponse
 import de.csw.turtle.api.dto.patch.PatchEmailTemplateRequest
 import de.csw.turtle.api.entity.EmailTemplateEntity
+import de.csw.turtle.api.entity.EmailTemplateEntity.Type
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.EmailTemplateService
@@ -55,6 +56,9 @@ class EmailTemplateController(
         val dto = GetEmailTemplateResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
+
+    @GetMapping("/enum/type")
+    fun getType() = Type.entries.toSortedSet()
 
     @GetMapping("/{variable}")
     override fun get(

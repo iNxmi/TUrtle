@@ -2,6 +2,10 @@ import {request} from "./API.js";
 
 export class Tokens {
 
+    static async type() {
+        return request("/api/tokens/enum/type")
+    }
+
     static async get(id) {
         return request(`/api/tokens/${id}`);
     }

@@ -4,8 +4,6 @@
     import CreateRoomBookingModal from "$lib/components/modal/manage/CreateRoomBookingModal.svelte";
     import {goto} from "$app/navigation";
 
-    ;
-
     const {data} = $props();
 
     const columns = [
@@ -45,4 +43,4 @@
            onItemClicked={(item) => goto(`/manage/room-bookings/${item.id}`)}
 />
 
-<CreateRoomBookingModal bind:open={modal}/>
+<CreateRoomBookingModal bind:open={modal} accessList={data.access} statusList={data.status}/>

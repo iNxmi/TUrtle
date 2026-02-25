@@ -10,6 +10,10 @@ export class Users {
         });
     }
 
+    static async status() {
+        return request("/api/users/enum/status")
+    }
+
     static async get(id) {
         return request(`/api/users/${id}`);
     }

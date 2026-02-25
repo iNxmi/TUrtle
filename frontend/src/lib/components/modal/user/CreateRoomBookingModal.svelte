@@ -7,23 +7,18 @@
     import {invalidateAll} from "$app/navigation";
 
     let {
-        open = $bindable(false)
+        open = $bindable(false),
+        accessList = []
     } = $props();
 
     let title = $state("");
     let description = $state("");
 
-    const accessibilities = [{
-        value: "LOCKED",
-        name: "Locked"
-    }, {
-        value: "UNLOCKED",
-        name: "Unlocked"
-    }, {
-        value: "WHITELIST",
-        name: "Whitelist"
-    }];
-    let accessibility = $state("UNLOCKED");
+    let accessItems = $state(accessList.map((access) => ({
+        value: access,
+        name: access
+    })));
+    let access = $state("");
 
     const now = new Date();
     let start = $state(new Date(now));
@@ -65,11 +60,10 @@
             description: description,
             start: start.toISOString(),
             end: end.toISOString(),
-            accessibility: accessibility
+            access: access
         };
 
         const response = await RoomBookings.create(payload);
-
         if (!response.ok)
             return;
 
@@ -117,7 +111,12 @@
 
                 <div>
                     <span>{m.modal_user_create_room_booking_label_accessibility()}</span>
-                    <Select bind:value={accessibility} items={accessibilities} required/>
+                    <Select bind:value={access} items={accessItems} required/>
+                </div>
+
+                <!--TODO-->
+                <div class="border border-dashed p-2 rounded-md">
+                    TODO: Whitelist Selector
                 </div>
 
                 <div class="grow flex flex-col justify-end">

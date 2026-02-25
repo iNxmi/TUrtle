@@ -5,6 +5,7 @@ import de.csw.turtle.api.dto.create.CreateContentTemplateRequest
 import de.csw.turtle.api.dto.get.GetContentTemplateResponse
 import de.csw.turtle.api.dto.patch.PatchContentTemplateRequest
 import de.csw.turtle.api.entity.ContentTemplateEntity
+import de.csw.turtle.api.entity.ContentTemplateEntity.Type
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.ContentTemplateService
@@ -54,6 +55,9 @@ class ContentTemplateController(
         val dto = GetContentTemplateResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
+
+    @GetMapping("/enum/type")
+    fun getType() = Type.entries.toSortedSet()
 
     @GetMapping("/{variable}")
     override fun get(

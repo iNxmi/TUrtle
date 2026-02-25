@@ -26,7 +26,7 @@ class RoomBookingEntity(
     var description: String,
 
     @Enumerated(EnumType.STRING)
-    var accessibility: Accessibility = Accessibility.LOCKED,
+    var access: Access = Access.LOCKED,
 
     @ManyToMany
     @JoinTable(
@@ -47,7 +47,7 @@ class RoomBookingEntity(
 
 ) : CRUDEntity {
 
-    enum class Accessibility {
+    enum class Access {
         LOCKED,
         WHITELIST,
         UNLOCKED
@@ -78,7 +78,7 @@ class RoomBookingEntity(
         start = start,
         end = end,
         description = description,
-        accessibility = accessibility,
+        access = access,
         whitelistedUsers = whitelistedUsers.toMutableSet(),
         status = status,
         updatedAt = updatedAt,

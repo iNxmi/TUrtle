@@ -47,5 +47,5 @@
 />
 
 {#if modal}
-    <CreateItemBookingModal bind:open={modal} {categories} {items}/>
+    <CreateItemBookingModal bind:open={modal} categoryList={data.categories} itemList={data.items}/>
 {/if}

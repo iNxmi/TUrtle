@@ -5,6 +5,7 @@ import de.csw.turtle.api.dto.create.CreateRoomBookingRequest
 import de.csw.turtle.api.dto.get.GetRoomBookingResponse
 import de.csw.turtle.api.dto.patch.PatchRoomBookingRequest
 import de.csw.turtle.api.entity.RoomBookingEntity
+import de.csw.turtle.api.entity.RoomBookingEntity.Access
 import de.csw.turtle.api.entity.RoomBookingEntity.Status
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
@@ -57,7 +58,7 @@ class RoomBookingController(
             start = request.start,
             end = request.end,
             description = request.description,
-            accessibility = request.accessibility,
+            access = request.access,
             whitelistedUserIds = request.whitelistedUserIds ?: setOf(),
             status = status
         )
@@ -66,6 +67,12 @@ class RoomBookingController(
         val dto = GetRoomBookingResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
+
+    @GetMapping("/enum/access")
+    fun getAccessibility() = Access.entries.toSortedSet()
+
+    @GetMapping("/enum/status")
+    fun getStatus() = Status.entries.toSortedSet()
 
     @GetMapping("/{variable}")
     override fun get(
@@ -149,7 +156,7 @@ class RoomBookingController(
             start = request.start,
             end = request.end,
             description = request.description,
-            accessibility = request.accessibility,
+            access = request.access,
             whitelistIds = request.whitelistedUserIds,
             status = status
         )

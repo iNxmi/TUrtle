@@ -5,6 +5,7 @@ import de.csw.turtle.api.dto.get.GetConfigurationResponse
 import de.csw.turtle.api.dto.patch.PatchConfigurationRequest
 import de.csw.turtle.api.entity.ConfigurationEntity
 import de.csw.turtle.api.entity.ConfigurationEntity.Key
+import de.csw.turtle.api.entity.ConfigurationEntity.Type
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.ConfigurationService
@@ -23,6 +24,12 @@ class ConfigurationController(
     private val configurationService: ConfigurationService
 ) : GetController<ConfigurationEntity, String, GetConfigurationResponse>,
     PatchController<ConfigurationEntity, PatchConfigurationRequest, GetConfigurationResponse> {
+
+    @GetMapping("/enum/key")
+    fun getKey() = Key.entries.toSortedSet()
+
+    @GetMapping("/enum/type")
+    fun getType() = Type.entries.toSortedSet()
 
     @GetMapping("/{variable}")
     override fun get(

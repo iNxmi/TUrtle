@@ -10,6 +10,10 @@ export class Roles {
         });
     }
 
+    static async type() {
+        return request("/api/roles/enum/type")
+    }
+
     static async get(id) {
         return request(`/api/roles/${id}`);
     }

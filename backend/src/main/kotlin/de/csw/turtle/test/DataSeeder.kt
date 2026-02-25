@@ -83,7 +83,7 @@ class DataSeeder(
                     description = "this is the very long description",
                     start = start,
                     end = end,
-                    accessibility = randomEnum(),
+                    access = randomEnum(),
                     whitelistedUserIds = setOf(),
                     status = randomEnum()
                 )
