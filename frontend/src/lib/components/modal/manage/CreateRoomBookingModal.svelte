@@ -25,6 +25,15 @@
     }];
     let accessibility = $state("UNLOCKED");
 
+    const statuses = [
+        {value: "REQUESTED", name:"Requested"},
+        {value: "APPROVED", name:"Approved"},
+        {value: "REJECTED", name:"Rejected"},
+        {value: "CANCELLED", name:"Cancelled"},
+        {value: "COMPLETED", name:"Completed"},
+    ]
+    let status = $state("REQUESTED");
+
     const now = new Date();
     let start = $state(new Date(now));
     let end = $state(new Date(now));
@@ -65,11 +74,11 @@
             description: description,
             start: start.toISOString(),
             end: end.toISOString(),
-            accessibility: accessibility
+            accessibility: accessibility,
+            status : status
         };
 
         const response = await RoomBookings.create(payload);
-
         if (!response.ok)
             return;
 
@@ -82,7 +91,7 @@
     <div class="flex flex-col gap-5">
 
         <Heading tag="h3" class="text-center">
-            {m.modal_user_create_room_booking_title()}
+            {m.modal_manage_create_room_booking_title()}
         </Heading>
 
         <Hr class="m-0 p-0"/>
@@ -90,17 +99,17 @@
         <div class="flex gap-5">
             <form class="shrink flex flex-col gap-5" onsubmit={submit}>
                 <div>
-                    <span>{m.modal_user_create_room_booking_label_title()}</span>
+                    <div>{m.modal_manage_create_room_booking_label_title()}</div>
                     <Input bind:value={title} required/>
                 </div>
 
                 <div>
-                    <span>{m.modal_user_create_room_booking_label_description()}</span>
+                    <div>{m.modal_manage_create_room_booking_label_description()}</div>
                     <Textarea bind:value={description} required/>
                 </div>
 
                 <div>
-                    <span>{m.modal_user_create_room_booking_label_start()}</span>
+                    <div>{m.modal_manage_create_room_booking_label_start()}</div>
                     <div class="flex flex-col gap-1">
                         <Datepicker bind:value={start} required/>
                         <Timepicker bind:value={start} required/>
@@ -108,7 +117,7 @@
                 </div>
 
                 <div>
-                    <span>{m.modal_user_create_room_booking_label_end()}</span>
+                    <div>{m.modal_manage_create_room_booking_label_end()}</div>
                     <div class="flex flex-col gap-1">
                         <Datepicker bind:value={end} required/>
                         <Timepicker bind:value={end} required/>
@@ -116,13 +125,23 @@
                 </div>
 
                 <div>
-                    <span>{m.modal_user_create_room_booking_label_accessibility()}</span>
-                    <Select bind:value={accessibility} items={accessibilities} required/>
+                    <div>{m.modal_manage_create_room_booking_label_accessibility()}</div>
+                    <Select items={accessibilities} bind:value={accessibility} required/>
+                </div>
+
+<!--               TODO-->
+                <div class="border border-dotted">
+                    TODO: Select users
+                </div>
+
+                <div>
+                    <div>{m.modal_manage_create_room_booking_label_status()}</div>
+                    <Select items={statuses} bind:value={status} required/>
                 </div>
 
                 <div class="grow flex flex-col justify-end">
                     <Button class="w-full" type="submit">
-                        {m.modal_user_create_room_booking_button()}
+                        {m.modal_manage_create_room_booking_button()}
                     </Button>
                 </div>
             </form>

@@ -1,7 +1,10 @@
 <script>
     import {m} from '$lib/paraglide/messages.js';
     import TableView from "$lib/components/TableView.svelte"
+    import CreateRoomBookingModal from "$lib/components/modal/manage/CreateRoomBookingModal.svelte";
     import {goto} from "$app/navigation";
+
+    ;
 
     const {data} = $props();
 
@@ -32,9 +35,14 @@
             enabled: false
         }
     ];
+
+    let modal = $state(false);
 </script>
 
 <TableView columns={columns}
            contentPage={data.page}
+           onCreate={() => modal = true}
            onItemClicked={(item) => goto(`/manage/room-bookings/${item.id}`)}
 />
+
+<CreateRoomBookingModal bind:open={modal}/>

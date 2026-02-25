@@ -57,6 +57,15 @@
   "modal_user_create_room_booking_label_accessibility": "Accessibility",
   "modal_user_create_room_booking_button": "Submit",
 
+  "modal_manage_create_room_booking_title": "Create Room Booking",
+  "modal_manage_create_room_booking_label_title": "Title",
+  "modal_manage_create_room_booking_label_description": "Description",
+  "modal_manage_create_room_booking_label_start": "Start",
+  "modal_manage_create_room_booking_label_end": "End",
+  "modal_manage_create_room_booking_label_accessibility": "Accessibility",
+  "modal_manage_create_room_booking_label_status": "Status",
+  "modal_manage_create_room_booking_button": "Submit",
+
   "modal_manage_create_user_title": "Create User",
   "modal_manage_create_user_label_username": "Username",
   "modal_manage_create_user_label_first_name": "First Name",
