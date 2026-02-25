@@ -4,9 +4,10 @@
     import CreateItemBookingModal from "$lib/components/modal/user/CreateItemBookingModal.svelte";
     import DevicebookingTable from "$lib/components/DevicebookingTable.svelte";
 	import { DatabaseOutline } from "flowbite-svelte-icons";
-    import { Button } from 'flowbite-svelte';
+    import { Button, Tabs, TabItem } from 'flowbite-svelte';
+	import { goto } from "$app/navigation";
 
-    const {data} = $props();
+    let {data} = $props();
 
     let reservations = $derived(data.itemBookings);
     let items = $derived(data.items);
@@ -52,10 +53,17 @@
     let modal = $state(false);
 </script>
 
-<div class="flex justify-end">
-    <Button onclick={() => modal = true}>_New Booking_</Button>
+<div>
+    <Tabs classes={{content: "flex flex-col gap-3 min-h-[calc(100svh-300px)]"}} tabStyle="underline">
+        <TabItem classes={{button: "cursor-pointer"}} title='_Current Bookings_' open>
+            <div class="flex justify-end">
+                <Button class="cursor-pointer" onclick={() => modal = true}>_New Booking_</Button>
+            </div>
+            <DevicebookingTable {reservations} {items}/>
+        </TabItem>
+        <TabItem classes={{button: "cursor-pointer"}} title="_All Bookings_" onclick={() => goto('/user/item-bookings/all', {invalidate: ['/user/item-bookings/all']})}/>
+    </Tabs>
 </div>
-<DevicebookingTable {reservations} {items}/>
 <!-- <TableView columns={columns}
            contentPage={data.page}
            onCreate={() => modal = true}

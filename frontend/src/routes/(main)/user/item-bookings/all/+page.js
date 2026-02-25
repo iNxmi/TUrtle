@@ -1,3 +1,2 @@
 import { create } from "$lib/page";
-import { itemBookingsPath } from "$lib/backend";
-export const load = create(itemBookingsPath);
+export const load = create('/api/item-bookings');

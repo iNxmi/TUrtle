@@ -1,17 +1,12 @@
-import {getPage} from "$lib/utils.js";
-import {RoomBookings} from "$lib/api";
+import {  Users } from "$lib/api";
+export async function load(){
 
-export async function load({url}) {
-    const page = await getPage(url, "/api/room-bookings")
-    const access = await getAccess();
+    const userResponse = await Users.getCollection();
 
-    return {
-        page: page,
-        access: access
-    };
-}
+    let users;
+    if(userResponse.ok){
+        users = await userResponse.json();
+    }
+    return{users}
 
-async function getAccess() {
-    const response = await RoomBookings.access()
-    return await response.json();
 }

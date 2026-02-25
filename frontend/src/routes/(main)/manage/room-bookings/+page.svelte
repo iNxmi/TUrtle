@@ -1,8 +1,8 @@
 <script>
-    import {getContext, onMount} from 'svelte';
+    import {getContext} from 'svelte';
     import {dev} from '$app/environment';
     import {fade} from 'svelte/transition';
-    import {request} from '$lib/api/API';
+    import {request} from '$lib/api/API.js';
     import {between, convertEventToBackend, convertEventToFrontend, fetchRoomBookings} from '$lib/utils.js';
     import {Button, Datepicker, Heading, P, Textarea, Timepicker, Toggle} from 'flowbite-svelte';
     import WhitelistDropdown from '$lib/components/WhitelistDropdown.svelte';
@@ -17,7 +17,6 @@
 
     let {data} = $props();
 
-    let modal = $state(false);
     let creator = $derived(selectedEvent ? [selectedEvent.extendedProps.creator] : data.user.id);
     let currentUser = $derived(data.user);
     let users = $derived(data.users);
@@ -29,7 +28,7 @@
     })));
 
     let successRequest = $state(false);
-    let calendar = $state(undefined);
+    let calendar = $state();
     let eventCard;
 
     let whitelistDisableOverride = $derived(selectedEvent.extendedProps.openToEveryone);
@@ -55,10 +54,10 @@
         useWhitelist = false;
     }
 
-    /* let localeFunction =  */
+    let localeFunction = getContext('locale');
 
-    let localeString = getContext('locale');/* $derived(localeFunction()) */;
-    let selectedEvent = $state(null);
+    let localeString = getContext('locale');
+    let selectedEvent = $state();
 
     let startDate = $derived(selectedEvent.start);
     let endDate = $derived(selectedEvent.end);
@@ -99,7 +98,7 @@
     });
 
     let calendarEl = $state();
-    onMount(() => {
+    $effect(() => {
             if (currentTab === '/room-bookings') {
                 /* function initCalendar(){ */
                 calendarEl = document.getElementById('calendar');
@@ -333,31 +332,94 @@
             user.lastName.toLowerCase().includes(searchTerm.toLowerCase())
     }
 
+    /* $effect(() => {
+        if(selectedEvent && calendar) console.log("Test "+ "EventDate: "+JSON.stringify($state.snapshot(eventDate)));
+
+            calendar.getEventById(selectedEvent.id).setEnd(eventDate);
+    }); */
+
     $effect(() => {
-        if(/* selectedEvent & & */calendar) {
-
-            /* calendar.getEventById(selectedEvent.id).setEnd(eventDate);  */
-            calendar.setOption('locale', localeString === 'en' ? 'en-us' : localeString);
-    }
-    });
-
-     /* $effect(() => {
-        if(calendar){
-           
-        } 
-            
+        if (calendar) {
             if (localeString === 'en') {
                 calendar.setOption('locale', 'en-us');
             } else {
                 calendar.setOption('locale', localeString);
-            } 
-    }); */
+            }
+        }
+    });
 </script>
 
-<TableView columns={columns}
-           contentPage={data.page}
-           onCreate={() => modal = true}
-           onItemClicked={(item) => goto(`/manage/room-bookings/${item.id}`)}
-/>
+<div class="flex flex-col xl:flex-row  gap-2">
+    <div bind:this={calendarEl} class="grow" id="calendar"></div>
+    <div bind:this={eventCard}
+         class=" bg-white border rounded-lg w-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-row xl:flex-col mt-17 p-5 gap-5">
+        {#if selectedEvent}
+            <div class="flex flex-col sm:flex-row justify-between h-10">
+                <input type="text" class="text-2xl w-9/10 h-full mr-auto dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2
+							 focus:ring-csw border-hidden outline-hidden focus:outline-hidden" bind:value={eventTitle}
+                       disabled={creator[0] !== currentUser.id}/>
+                <button class="h-full w-10 inline-flex justify-end items-center cursor-pointer"
+                        onclick={removeEvent}>
+                    <TrashBinSolid class="text-red-500 h-6/10 w-6/10 hover:text-red-700"></TrashBinSolid>
+                </button>
+            </div>
+            <div>_Creator_
+                <WhitelistDropdown disabled={creator[0] !== currentUser.id} users={dropdownUsers}
+                                   bind:value={creator} single {displayFunction} {sortFunction}
+                                   {filterFunction}/>
+            </div>
+            <div class="space-y-2"><span>_Start_</span>
+                <Datepicker disabled={creator[0] !== currentUser.id}
+                            monthBtnSelected="bg-csw! hover:text-white!" bind:value={startDate}></Datepicker>
+                <Timepicker disabled={creator[0] !== currentUser.id} divClass="shadow-none!"
+                            bind:value={startTime}/>
+            </div>
+            <div class="space-y-2"><span>_End_</span>
+                <Datepicker disabled={creator[0] !== currentUser.id}
+                            monthBtnSelected="bg-csw! hover:text-white!" bind:value={endDate}></Datepicker>
+                <Timepicker disabled={creator[0] !== currentUser.id} divClass="shadow-none!"
+                            bind:value={endTime}/>
+            </div>
+            <div for="description" class="mb-0">_Description_
+                <Textarea disabled={creator[0] !== currentUser.id} id="description"
+                          placeholder="_Sample description_" rows={3} class="w-full"
+                          bind:value={eventDescription}/>
+            </div>
+            <Toggle disabled={creator[0] !== currentUser.id} size="small"
+                    bind:checked={whitelistDisableOverride} onchange={setOpenToEveryone}>_Open to everyone_
+            </Toggle>
+            <Toggle disabled={whitelistDisableOverride || creator[0] !== currentUser.id} size="small"
+                    bind:checked={useWhitelist}>_Use whitelist_
+            </Toggle>
+            {#if useWhitelist}
+                <WhitelistDropdown disabled={creator[0] !== currentUser.id} users={dropdownUsers}
+                                   bind:value={eventWhitelist} {sortFunction} {displayFunction}
+                                   {filterFunction}/>
 
-<CreateRoomBookingModal bind:open={modal} accessList={data.access} statusList={data.status}/>
+            {/if}
+            {#if selectedEvent.extendedProps.status === 'REQUESTED'}
+                <Button color='green' onclick={approveEvent}>_Approve_</Button>
+                <Button color='red' onclick={denyEvent}>_Deny_</Button>
+            {:else}
+                <Button class="cursor-pointer" onclick={saveEvent}
+                        disabled={creator[0] !== currentUser.id}>_save_
+                </Button>
+            {/if}
+            {#if successRequest}
+                <p out:fade class={(successRequest.ok ? "text-green-600" : "text-red-500")+" text-xs"}>
+                    {successRequest.ok ? "_Event successfully saved_" : "An error uccured, please try again"}
+                </p>
+            {/if}
+        {:else}
+            <div class="flex flex-col h-full justify-center items-center">
+                <Heading tag="h4" class="text-gray-500! dark:text-gray-400!">
+                    _select_
+                </Heading>
+                <P class="text-gray-400 dark:text-gray-500! mb-2.5">_or_</P>
+                <Button onclick={createEvent}>_new booking_</Button>
+            </div>
+        {/if}
+    </div>
+</div>
+
+<svelte:window on:click={onPageClick}/>

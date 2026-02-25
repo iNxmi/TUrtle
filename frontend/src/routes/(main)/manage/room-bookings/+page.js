@@ -1,15 +1,12 @@
-import {request} from '$lib/api/API';
-import { usersPath } from '$lib/backend.js';
-
+import {  Users } from "$lib/api";
 export async function load(){
 
-    const response = await request(usersPath);
+    const userResponse = await Users.getCollection();
 
-    let users = [];
-    if(response.ok){
-
-        users = await response.json();
+    let users;
+    if(userResponse.ok){
+        users = await userResponse.json();
     }
+    return{users}
 
-    return {users};
 }
