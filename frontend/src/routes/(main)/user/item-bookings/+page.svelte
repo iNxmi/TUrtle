@@ -2,29 +2,18 @@
     import TableView from "$lib/components/TableView.svelte";
     import {m} from "$lib/paraglide/messages.js";
     import CreateItemBookingModal from "$lib/components/modal/user/CreateItemBookingModal.svelte";
-    import DevicebookingTable from "$lib/components/DevicebookingTable.svelte";
-	import { DatabaseOutline } from "flowbite-svelte-icons";
-    import { Button } from 'flowbite-svelte';
 
     const {data} = $props();
 
-    let reservations = $derived(data.itemBookings);
-    let items = $derived(data.items);
     const categories = $derived(data.categories.map(category => ({
         value: category.id,
         name: category.name
     })));
 
-    let newBookingItems = $derived(data.items.map((item) => ({
+    const items = $derived(data.items.map(item => ({
         value: item.id,
         name: item.name
-    }))
-    );
-
-    /* const items = $derived(data.items.map(item => ({
-        value: item.id,
-        name: item.name
-    }))); */
+    })));
 
     const columns = [
         {field: "id", label: m.user_item_bookings_label_id()},
@@ -52,14 +41,10 @@
     let modal = $state(false);
 </script>
 
-<div class="flex justify-end">
-    <Button onclick={() => modal = true}>_New Booking_</Button>
-</div>
-<DevicebookingTable {reservations} {items}/>
-<!-- <TableView columns={columns}
+<TableView columns={columns}
            contentPage={data.page}
            onCreate={() => modal = true}
-/> -->
+/>
 
 {#if modal}
     <CreateItemBookingModal bind:open={modal} categoryList={data.categories} itemList={data.items}/>
