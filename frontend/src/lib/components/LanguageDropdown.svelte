@@ -1,6 +1,7 @@
 <script>
     import {Arab, De, Es, Fr, Hu, Jp, Ro, Ru, Us, Vi} from "svelte-flag-icons";
     import {Dropdown, DropdownDivider, DropdownGroup, DropdownHeader, DropdownItem} from "flowbite-svelte";
+    import { setContext } from "svelte";
     import {setLocale} from "$lib/paraglide/runtime.js";
 
     const languages = [
@@ -21,9 +22,10 @@
         languages.find(item => item.value === initialValue)
     );
     $effect(async () => {
-        if(!selected)
+        if(!selected){
             return;
-
+        }
+        setContext('locale', selected.value);
         setLocale(selected.value);
     })
 </script>
