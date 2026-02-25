@@ -1,7 +1,7 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
     import {Hardware} from "$lib/api";
-    import {Button, Modal} from "flowbite-svelte";
+    import {Button, Modal, Tooltip} from "flowbite-svelte";
     import {QuestionCircleSolid} from "flowbite-svelte-icons";
 
     let {
@@ -36,6 +36,7 @@
             <Button color="red" onclick={unlock}>
                 {m.modal_door_button_unlock()}
             </Button>
+            <Tooltip>_Opens the door if connected to CSW WiFi_</Tooltip>
             <Button color="alternative" onclick={() => open = false}>
                 {m.modal_door_button_cancel()}
             </Button>
