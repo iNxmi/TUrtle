@@ -5,7 +5,7 @@ import de.csw.turtle.api.dto.create.CreateSupportTicketRequest
 import de.csw.turtle.api.dto.get.GetSupportTicketResponse
 import de.csw.turtle.api.dto.patch.PatchSupportTicketRequest
 import de.csw.turtle.api.entity.SupportTicketEntity
-import de.csw.turtle.api.entity.SupportTicketEntity.*
+import de.csw.turtle.api.entity.SupportTicketEntity.Status
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.AltchaService
@@ -52,8 +52,8 @@ class SupportTicketController(
         }
 
         val entity = supportTicketService.create(
-            urgency = request.urgency,
-            category = request.category,
+            urgencyId = request.urgencyId,
+            categoryId = request.categoryId,
             email = request.email,
             subject = request.subject,
             content = request.content,
@@ -67,12 +67,6 @@ class SupportTicketController(
 
     @GetMapping("/enum/status")
     fun getStatus() = Status.entries.toSortedSet()
-
-    @GetMapping("/enum/urgency")
-    fun getUrgency() = Urgency.entries.toSortedSet()
-
-    @GetMapping("/enum/category")
-    fun getCategory() = Category.entries.toSortedSet()
 
     @GetMapping("/{variable}")
     override fun get(
@@ -155,8 +149,8 @@ class SupportTicketController(
 
         val entity = supportTicketService.patch(
             id = id,
-            urgency = request.urgency,
-            category = request.category,
+            urgencyId = request.urgencyId,
+            categoryId = request.categoryId,
             email = request.email,
             subject = request.subject,
             content = request.content,

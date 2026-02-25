@@ -1,5 +1,7 @@
 package de.csw.turtle.test
 
+import de.csw.turtle.api.repository.SupportTicketCategoryRepository
+import de.csw.turtle.api.repository.SupportTicketUrgencyRepository
 import de.csw.turtle.api.service.*
 import de.csw.turtle.api.service.locker.LockerService
 import io.github.serpro69.kfaker.Faker
@@ -22,7 +24,9 @@ class DataSeeder(
     private val supportTicketService: SupportTicketService,
     private val roleService: RoleService,
     private val roomBookingService: RoomBookingService,
-    private val userService: UserService
+    private val userService: UserService,
+    private val supportTicketCategoryRepository: SupportTicketCategoryRepository,
+    private val supportTicketUrgencyRepository: SupportTicketUrgencyRepository
 ) {
 
     private val faker = Faker()
@@ -104,8 +108,8 @@ class DataSeeder(
 
             try {
                 supportTicketService.create(
-                    urgency = randomEnum(),
-                    category = randomEnum(),
+                    urgencyId = floor(supportTicketUrgencyRepository.count() * Math.random()).toLong(),
+                    categoryId = floor(supportTicketCategoryRepository.count() * Math.random()).toLong(),
                     email = email,
                     subject = subject,
                     content = content,

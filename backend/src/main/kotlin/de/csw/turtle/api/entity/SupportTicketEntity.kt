@@ -10,11 +10,13 @@ class SupportTicketEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long = 0,
 
-    @Enumerated(EnumType.STRING)
-    var urgency: Urgency,
+    @ManyToOne
+    @JoinColumn(name = "urgency_id")
+    var urgency: SupportTicketUrgencyEntity,
 
-    @Enumerated(EnumType.STRING)
-    var category: Category,
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    var category: SupportTicketCategoryEntity,
 
     var email: String,
 
@@ -33,20 +35,6 @@ class SupportTicketEntity(
     override val createdAt: Instant = Instant.now()
 
 ) : CRUDEntity {
-
-    enum class Urgency {
-        LOW,
-        MEDIUM,
-        HIGH,
-        CRITICAL
-    }
-
-    enum class Category {
-        TECHNICAL,
-        BILLING,
-        GENERAL,
-        OTHER
-    }
 
     enum class Status {
         OPEN,

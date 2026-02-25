@@ -16,26 +16,24 @@
     const {data} = $props();
     let content = $derived(data.content);
 
-    const urgencies = [
-        {value: "LOW", name: m.modal_contact_urgency_low()},
-        {value: "MEDIUM", name: m.modal_contact_urgency_medium()},
-        {value: "HIGH", name: m.modal_contact_urgency_high()},
-        {value: "CRITICAL", name: m.modal_contact_urgency_critical()}
-    ];
+    const urgencyItems = $derived(data.urgencies.map((urgency) => ({
+        value: urgency.id,
+        name: urgency.name
+    })));
+    let urgencyId = $state();
 
-    const categories = [
-        {value: "TECHNICAL", name: m.modal_contact_category_technical()},
-        {value: "BILLING", name: m.modal_contact_category_billing()},
-        {value: "GENERAL", name: m.modal_contact_category_general()},
-        {value: "OTHER", name: m.modal_contact_category_other()}
-    ];
+    const categoryItems = $derived(data.categories.map((category) => ({
+        value: category.id,
+        name: category.name
+    })));
+    let categoryId = $state();
 
     async function send(event) {
         event.preventDefault();
 
         const payload = {
-            urgency: $state.snapshot(urgency),
-            category: $state.snapshot(category),
+            urgencyId: $state.snapshot(urgencyId),
+            categoryId: $state.snapshot(categoryId),
             email: $state.snapshot(email),
             subject: $state.snapshot(subject),
             content: $state.snapshot(ticketContent),
@@ -50,37 +48,45 @@
     <Markdown {content}/>
 </Card>
 
-<form class="bg-background-secondary rounded-2xl shadow-sm/30 p-5 flex flex-col gap-5" onsubmit={send}>
-    <div class="flex gap-5">
-        <div class="flex flex-1 flex-col">
-            <span>{m.modal_contact_label_urgency()}</span>
-            <Select bind:value={urgency} items={urgencies} required/>
+<Card>
+    <form class="flex flex-col gap-5" onsubmit={send}>
+        <div class="flex gap-5">
+            <div class="flex flex-1 flex-col">
+                <div>{m.modal_contact_label_urgency()}</div>
+                <Select bind:value={urgencyId} items={urgencyItems} required/>
+            </div>
+            <div class="flex flex-1 flex-col">
+                <div>{m.modal_contact_label_category()}</div>
+                <Select bind:value={categoryId} items={categoryItems} required/>
+            </div>
         </div>
-        <div class="flex flex-1 flex-col">
-            <span>{m.modal_contact_label_category()}</span>
-            <Select bind:value={category} items={categories} required/>
+
+        <div>
+            <div>{m.modal_contact_label_email()}</div>
+            <Input bind:value={email} type="email" required/>
         </div>
-    </div>
 
-    <div>
-        <span>{m.modal_contact_label_email()}</span>
-        <Input bind:value={email} type="email" required/>
-    </div>
+        <div>
+            <div>{m.modal_contact_label_subject()}</div>
+            <Input bind:value={subject} type="text" required/>
+        </div>
 
-    <div>
-        <span>{m.modal_contact_label_subject()}</span>
-        <Input bind:value={subject} type="text" required/>
-    </div>
+        <div>
+            <div>{m.modal_contact_label_content()}</div>
+            <Textarea bind:value={ticketContent} class="w-full" placeholder={m.modal_contact_placeholder_content()}
+                      required rows="12"/>
+        </div>
 
-    <div>
-        <span>{m.modal_contact_label_content()}</span>
-        <Textarea bind:value={ticketContent} class="w-full" placeholder={m.modal_contact_placeholder_content()}
-                  required rows="12"/>
-    </div>
+        <div class="flex">
+            <div class="flex flex-col justify-center">
+                <Checkbox name="input_tos" required/>
+            </div>
+            <div>{m.modal_contact_label_i_agree_to_tos()}</div>
+        </div>
 
-    <Checkbox required>{m.modal_contact_label_i_agree_to_tos()}</Checkbox>
 
-    <Altcha bind:value={altchaToken}/>
+        <Altcha bind:value={altchaToken}/>
 
-    <Button type="submit">{m.modal_contact_button()}</Button>
-</form>
+        <Button type="submit">{m.modal_contact_button()}</Button>
+    </form>
+</Card>

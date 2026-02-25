@@ -10,14 +10,6 @@ export class SupportTickets {
         });
     }
 
-    static async category() {
-        return request("/api/support-tickets/enum/category")
-    }
-
-    static async urgency() {
-        return request("/api/support/tickets/enum/urgency")
-    }
-
     static async status() {
         return request("/api/support-tickets/enum/status")
     }

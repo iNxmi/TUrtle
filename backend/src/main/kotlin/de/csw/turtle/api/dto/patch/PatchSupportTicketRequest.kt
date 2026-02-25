@@ -3,8 +3,8 @@ package de.csw.turtle.api.dto.patch
 import de.csw.turtle.api.entity.SupportTicketEntity
 
 data class PatchSupportTicketRequest(
-    val urgency: SupportTicketEntity.Urgency? = null,
-    val category: SupportTicketEntity.Category? = null,
+    val urgencyId: Long? = null,
+    val categoryId: Long? = null,
     val email: String? = null,
     val subject: String? = null,
     val content: String? = null,

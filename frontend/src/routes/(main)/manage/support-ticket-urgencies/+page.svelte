@@ -6,17 +6,17 @@
     let {data} = $props();
 
     const columns = [
-        {field: "id", label: m.manage_support_ticket_categories_label_id(), enabled: false},
-        {field: "name", label: m.manage_support_ticket_categories_label_name()},
+        {field: "id", label: m.manage_support_ticket_urgencies_label_id(), enabled: false},
+        {field: "name", label: m.manage_support_ticket_urgencies_label_name()},
         {
             field: "updatedAt",
-            label: m.manage_support_ticket_categories_label_updated_at(),
+            label: m.manage_support_ticket_urgencies_label_updated_at(),
             transform: (value) => new Date(value).toLocaleString(),
             enabled: false
         },
         {
             field: "createdAt",
-            label: m.manage_support_ticket_categories_label_created_at(),
+            label: m.manage_support_ticket_urgencies_label_created_at(),
             transform: (value) => new Date(value).toLocaleString(),
             enabled: false
         }

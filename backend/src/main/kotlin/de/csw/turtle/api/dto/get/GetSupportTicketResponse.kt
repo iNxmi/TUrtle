@@ -6,8 +6,8 @@ import java.time.Instant
 data class GetSupportTicketResponse(
     override val id: Long?,
 
-    val urgency: SupportTicketEntity.Urgency?,
-    val category: SupportTicketEntity.Category?,
+    val urgencyId: Long?,
+    val categoryId: Long?,
     val email: String?,
     val subject: String?,
     val content: String?,
@@ -20,8 +20,8 @@ data class GetSupportTicketResponse(
     constructor(entity: SupportTicketEntity) : this(
         id = entity.id,
 
-        urgency = entity.urgency,
-        category = entity.category,
+        urgencyId = entity.urgency.id,
+        categoryId = entity.category.id,
         email = entity.email,
         subject = entity.subject,
         content = entity.content,

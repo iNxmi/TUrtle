@@ -6,21 +6,15 @@
     let {data} = $props();
     let ticket = $derived(data.ticket);
 
-    //TODO get urgencies from backend
-    const urgencies = [
-        {value: "LOW", name: m.modal_contact_urgency_low()},
-        {value: "MEDIUM", name: m.modal_contact_urgency_medium()},
-        {value: "HIGH", name: m.modal_contact_urgency_high()},
-        {value: "CRITICAL", name: m.modal_contact_urgency_critical()}
-    ];
+    const urgencyItems = $derived(data.urgencies.map((urgency) => ({
+        value: urgency.id,
+        name: urgency.name
+    })));
 
-    //TODO get categories from backend
-    const categories = [
-        {value: "TECHNICAL", name: m.modal_contact_category_technical()},
-        {value: "BILLING", name: m.modal_contact_category_billing()},
-        {value: "GENERAL", name: m.modal_contact_category_general()},
-        {value: "OTHER", name: m.modal_contact_category_other()}
-    ];
+    const categoryItems = $derived(data.categories.map((category) => ({
+        value: category.id,
+        name: category.name
+    })));
 </script>
 
 <Card>
@@ -33,12 +27,12 @@
         <div class="flex gap-5">
             <div class="flex-1">
                 <span>{m.manage_support_tickets_label_urgency()}</span>
-                <Select items={urgencies} value={ticket.urgency} disabled/>
+                <Select items={urgencyItems} value={ticket.urgencyId} disabled/>
             </div>
 
             <div class="flex-1">
                 <span>{m.manage_support_tickets_label_category()}</span>
-                <Select items={categories} value={ticket.category} disabled/>
+                <Select items={categoryItems} value={ticket.categoryId} disabled/>
             </div>
         </div>
 

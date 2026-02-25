@@ -8,8 +8,16 @@
     const columns = [
         {field: "id", label: m.manage_support_tickets_label_id(), enabled: false},
         {field: "status", label: m.manage_support_tickets_label_status()},
-        {field: "urgency", label: m.manage_support_tickets_label_urgency()},
-        {field: "category", label: m.manage_support_tickets_label_category()},
+        {
+            field: "urgencyId",
+            label: m.manage_support_tickets_label_urgency(),
+            transform: (item) => data.urgencies.find((a) => a.id === item).name
+        },
+        {
+            field: "categoryId",
+            label: m.manage_support_tickets_label_category(),
+            transform: (item) => data.categories.find((a) => a.id === item).name
+        },
         {field: "subject", label: m.manage_support_tickets_label_subject()},
         {field: "email", label: m.manage_support_tickets_label_email()},
         {
