@@ -7,8 +7,7 @@
     import listPlugin from '@fullcalendar/list';
 
     let {
-        sources = $bindable([]),
-        height
+        sources = $bindable([])
     } = $props();
 
     let element = $state(null);
@@ -17,7 +16,6 @@
         calendar = new Calendar(element, {
             plugins: [timeGridPlugin, dayGridPlugin, listPlugin],
             initialView: "dayGridMonth",
-            height: height,
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
