@@ -2,7 +2,7 @@
     import {getContext, onMount} from 'svelte';
     import {dev} from '$app/environment';
     import {fade} from 'svelte/transition';
-    import request from '$lib/api/api.js';
+    import {request} from '$lib/api/API';
     import {between, convertEventToBackend, convertEventToFrontend, fetchRoomBookings} from '$lib/utils.js';
     import {Button, Datepicker, Heading, P, Textarea, Timepicker, Toggle} from 'flowbite-svelte';
     import WhitelistDropdown from '$lib/components/WhitelistDropdown.svelte';
@@ -17,6 +17,7 @@
 
     let {data} = $props();
 
+    let modal = $state(false);
     let creator = $derived(selectedEvent ? [selectedEvent.extendedProps.creator] : data.user.id);
     let currentUser = $derived(data.user);
     let users = $derived(data.users);

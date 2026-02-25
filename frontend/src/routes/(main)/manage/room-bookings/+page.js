@@ -1,4 +1,4 @@
-import request from '$lib/api/api';
+import {request} from '$lib/api/API';
 import { usersPath } from '$lib/backend.js';
 
 export async function load(){
