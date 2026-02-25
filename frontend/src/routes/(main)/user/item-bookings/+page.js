@@ -1,7 +1,6 @@
 import {ItemCategories, Items, ItemBookings} from "$lib/api";
-import {getPage} from "$lib/utils.js";
 
-export async function load({url}) {
+export async function load() {
     const itemBookings = await getItemBookings();
     const categories = await getCategories();
     const items = await getItems();

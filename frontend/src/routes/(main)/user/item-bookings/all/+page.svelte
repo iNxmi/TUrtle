@@ -28,7 +28,7 @@
             transform: (item) => new Date(item).toLocaleString()
         }
     ];
-</script>
+</script> 
 <div>
     <Tabs tabStyle="underline">
         <TabItem classes={{button: "cursor-pointer"}} title='_Current Bookings_' onclick={() => goto('/user/item-bookings', {invalidate: ['/user/item-bookings']})}/>
