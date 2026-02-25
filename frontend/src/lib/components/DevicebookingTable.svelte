@@ -2,7 +2,7 @@
     import UnlockLockerModal from "./modal/UnlockLockerModal.svelte";
     import {getContext} from "svelte";
 
-    let {reservations, items} = $props();
+    let {reservations, devices} = $props();
     let showOpenLockerModal = $state(false);
     let locker = $state();
     let selectedReservationIndex = $state();
