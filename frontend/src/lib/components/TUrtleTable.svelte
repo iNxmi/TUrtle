@@ -71,7 +71,7 @@
     let search = $state("");
 </script>
 
-<Card class="min-w-full min-h-full overflow-auto dark:border-none">
+<Card class="min-w-full overflow-auto dark:border-none">
     {#if !hideSearch || !hideAdd || !hideReload}
         <div class="flex gap-2 justify-between p-3">
             <div class="flex-1 flex">

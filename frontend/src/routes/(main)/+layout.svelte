@@ -199,8 +199,8 @@
                 showLogoutButton={user !== null}
     />
 
-    <div class="w-full bg-background max-h-svh overflow-y-auto">
-        <div class="flex flex-col gap-5 min-h-svh p-5">
+    <div class="w-full flex flex-col gap-5 justify-between bg-background max-h-svh overflow-y-auto">
+        <div class="flex flex-col gap-5 grow p-5">
             <Breadcrumbs/>
 
             <ConfirmProvider>
