@@ -14,12 +14,14 @@
     }];
 </script>
 
-<Tabs bind:selected={key}>
-    {#each items as item}
-        <a href={item.href}>
-            <TabItem key={item.href} title={item.title}>
-                {@render children?.()}
-            </TabItem>
-        </a>
-    {/each}
-</Tabs>
+<div>
+    <Tabs bind:selected={key}>
+        {#each items as item}
+            <a href={item.href}>
+                <TabItem key={item.href} title={item.title}>
+                    {@render children?.()}
+                </TabItem>
+            </a>
+        {/each}
+    </Tabs>
+</div>

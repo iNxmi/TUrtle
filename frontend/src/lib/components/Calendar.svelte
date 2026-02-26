@@ -8,6 +8,7 @@
 
     let {
         sources = $bindable([]),
+        onEventClicked,
         class: className = "",
         ...rest
     } = $props();
@@ -32,7 +33,16 @@
         if (calendar === null)
             return
 
-        calendar.getEventSources().forEach(source => source.remove());
+        calendar.setOption("eventClick", (info) => {
+            onEventClicked?.(info);
+        });
+    });
+
+    $effect(() => {
+        if (calendar === null)
+            return
+
+        calendar.removeAllEventSources();
         sources.forEach(source => calendar.addEventSource(source));
     });
 

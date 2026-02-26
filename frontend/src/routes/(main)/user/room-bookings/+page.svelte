@@ -38,7 +38,8 @@
     let events = $derived(bookings.map((booking) => ({
         title: booking.title,
         start: booking.start,
-        end: booking.end
+        end: booking.end,
+        href: `/user/room-bookings/${booking.id}`
     })));
 
     let sources = $derived([{
@@ -51,7 +52,7 @@
 
 <div class="flex-1 flex flex-col xl:flex-row gap-5">
     <Card class="flex-1">
-        <Calendar bind:sources={sources}/>
+        <Calendar bind:sources={sources} onEventClicked={(info) => goto(info.event.extendedProps.href)}/>
     </Card>
 
     <div class="flex-1 flex">

@@ -15,7 +15,8 @@
     let roomBookingEvents = $derived(roomBookings.map((booking) => ({
         title: booking.title,
         start: booking.start,
-        end: booking.end
+        end: booking.end,
+        href: `/user/room-bookings/${booking.id}`
     })));
     let roomAccess = $derived(data.roomAccess);
 
@@ -28,16 +29,16 @@
     let itemBookingEvents = $derived(itemBookings.map((booking) => ({
         title: itemMap[booking.itemId].name,
         start: booking.start,
-        end: booking.end
+        end: booking.end,
+        href: `/user/item-bookings/${booking.id}`
     })));
 
-
-
-
     let sources = $derived([{
+        id: "itemBookings",
         events: itemBookingEvents,
         color: "cyan"
     }, {
+        id: "roomBookings",
         events: roomBookingEvents,
         color: "orange"
     }]);
@@ -62,7 +63,7 @@
 
 <div class="flex-1 flex flex-col 2xl:flex-row gap-5">
     <Card class="flex-1">
-        <Calendar bind:sources={sources}/>
+        <Calendar bind:sources={sources} onEventClicked={(info) => goto(info.event.extendedProps.href)}/>
     </Card>
 
     <div class="flex-1 flex flex-col gap-5">
