@@ -6,6 +6,6 @@
     } = $props()
 </script>
 
-<div class={`bg-background-secondary rounded-xl p-5 ${className}`} {...rest}>
+<div class={`bg-background-secondary rounded-xl p-5 shadow-md/20 ${className}`} {...rest}>
     {@render children?.()}
 </div>

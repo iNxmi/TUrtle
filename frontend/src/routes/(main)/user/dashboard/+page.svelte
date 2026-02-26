@@ -54,7 +54,7 @@
     </Card>
 {/if}
 
-<div class="flex-1 flex sm:flex-col 2xl:flex-row gap-5">
+<div class="flex-1 flex flex-col 2xl:flex-row gap-5">
     <Card class="flex-1">
         <Calendar bind:sources={sources}/>
     </Card>
