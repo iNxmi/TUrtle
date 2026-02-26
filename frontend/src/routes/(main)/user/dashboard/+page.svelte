@@ -7,19 +7,9 @@
     import CreateRoomBookingModal from "$lib/components/modal/user/CreateRoomBookingModal.svelte";
     import CreateItemBookingModal from "$lib/components/modal/user/CreateItemBookingModal.svelte";
     import {goto} from "$app/navigation";
+    import _ from "lodash";
 
     let {data} = $props();
-
-    let access = $derived(data.access);
-    let categories = $derived(data.categories);
-    let items = $derived(data.items);
-
-    let itemBookings = $derived(data.itemBookings);
-    let itemBookingEvents = $derived(itemBookings.map((booking) => ({
-        title: items.find((a) => a.id === booking.itemId).name,
-        start: booking.start,
-        end: booking.end
-    })));
 
     let roomBookings = $derived(data.roomBookings);
     let roomBookingEvents = $derived(roomBookings.map((booking) => ({
@@ -27,6 +17,22 @@
         start: booking.start,
         end: booking.end
     })));
+    let roomAccess = $derived(data.roomAccess);
+
+    let items = $derived(data.items);
+
+    let itemMap = $derived(_.keyBy(items, "id"));
+    let itemCategories = $derived(data.itemCategories);
+
+    let itemBookings = $derived(data.itemBookings);
+    let itemBookingEvents = $derived(itemBookings.map((booking) => ({
+        title: itemMap[booking.itemId].name,
+        start: booking.start,
+        end: booking.end
+    })));
+
+
+
 
     let sources = $derived([{
         events: itemBookingEvents,
@@ -78,7 +84,7 @@
                 <div class="flex flex-col gap-2">
                     {#each itemBookings as booking}
                         <ButtonGroup>
-                            <Input value={`${items.find((a) => a.id === booking.itemId).name} (${booking.itemId})`} disabled/>
+                            <Input value={`${itemMap[booking.itemId].name} (${booking.itemId})`} disabled/>
                             <Button onclick={() => goto(`/user/item-bookings/${booking.id}`)}>
                                 <ArrowRightOutline/>
                             </Button>
@@ -131,9 +137,9 @@
 </div>
 
 {#if createItemBookingModal}
-    <CreateItemBookingModal bind:open={createItemBookingModal} categoryList={categories} itemList={items}/>
+    <CreateItemBookingModal bind:open={createItemBookingModal} categoryList={itemCategories} itemList={items}/>
 {/if}
 
 {#if createRoomBookingModal}
-    <CreateRoomBookingModal bind:open={createRoomBookingModal} accessList={access}/>
+    <CreateRoomBookingModal bind:open={createRoomBookingModal} accessList={roomAccess}/>
 {/if}

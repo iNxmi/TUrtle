@@ -5,7 +5,8 @@
         EditOutline,
         FloppyDiskAltOutline,
         ShareNodesOutline,
-        UndoOutline
+        UndoOutline,
+        TrashBinOutline
     } from "flowbite-svelte-icons";
     import {m} from '$lib/paraglide/messages.js';
     import Card from "$lib/components/Card.svelte";
@@ -184,33 +185,41 @@
         </form>
     </Card>
 
-    <Card class="flex lg:flex-col gap-5">
-        <ButtonGroup>
-            <Button color="alternative" class="w-full" onclick={clipboard}>
-                <Tooltip trigger="click">
-                    _copied_
-                </Tooltip>
-                <ShareNodesOutline/>
-            </Button>
-        </ButtonGroup>
+    <Card class="flex lg:flex-col gap-5 justify-between">
+        <div class="flex lg:flex-col gap-5">
+            <ButtonGroup>
+                <Button color="alternative" class="w-full" onclick={clipboard}>
+                    <Tooltip trigger="click">
+                        _copied_
+                    </Tooltip>
+                    <ShareNodesOutline/>
+                </Button>
+            </ButtonGroup>
 
-        <ButtonGroup>
-            {#if edit === true}
-                <Button color="orange" onclick={save} disabled={saveLoading === true}>
-                    {#if saveLoading === true}
-                        <Spinner/>
-                    {:else}
-                        <FloppyDiskAltOutline/>
-                    {/if}
+            <ButtonGroup>
+                {#if edit === true}
+                    <Button color="orange" onclick={save} disabled={saveLoading === true}>
+                        {#if saveLoading === true}
+                            <Spinner/>
+                        {:else}
+                            <FloppyDiskAltOutline/>
+                        {/if}
+                    </Button>
+                    <Button onclick={cancel}>
+                        <CloseOutline/>
+                    </Button>
+                {:else}
+                    <Button color="orange" onclick={() => edit = true}>
+                        <EditOutline/>
+                    </Button>
+                {/if}
+            </ButtonGroup>
+        </div>
+
+            <ButtonGroup>
+                <Button color="red" class="w-full" onclick={clipboard}>
+                    <TrashBinOutline/>
                 </Button>
-                <Button onclick={cancel}>
-                    <CloseOutline/>
-                </Button>
-            {:else}
-                <Button color="orange" onclick={() => edit = true}>
-                    <EditOutline/>
-                </Button>
-            {/if}
-        </ButtonGroup>
+            </ButtonGroup>
     </Card>
 </div>

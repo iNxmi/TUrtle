@@ -3,38 +3,39 @@ import {ItemBookings, ItemCategories, Items, RoomBookings} from "$lib/api";
 export async function load({parent}) {
     const data = await parent();
 
+    const items = await getItems();
+    const itemCategories = await getItemCategories();
     const itemBookings = await getItemBookings(data.user.id);
+
+    const roomAccess = await getAccess();
     const roomBookings = await getRoomBookings(data.user.id);
 
-    const items = await getItems();
-    const categories = await getItemCategories();
-    const access = await getAccess();
-
     return {
-        itemBookings: itemBookings,
-        roomBookings: roomBookings,
         items: items,
-        categories: categories,
-        access: access
+        itemCategories: itemCategories,
+        itemBookings: itemBookings,
+
+        roomBookings: roomBookings,
+        roomAccess: roomAccess
     };
 }
 
 async function getItemBookings(userId) {
     const response = await ItemBookings.getCollection({
         rsql: `user.id==${userId}`
-    })
+    });
     return await response.json();
 }
 
 async function getRoomBookings(userId) {
     const response = await RoomBookings.getCollection({
         rsql: `user.id==${userId}`
-    })
+    });
     return await response.json();
 }
 
 async function getItems() {
-    const response = await Items.getCollection()
+    const response = await Items.getCollection();
     return await response.json();
 }
 

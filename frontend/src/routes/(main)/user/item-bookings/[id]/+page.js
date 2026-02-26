@@ -7,7 +7,8 @@ export async function load({params}) {
 
     return {
         booking: booking,
-        locker: locker
+        locker: locker,
+        item: item
     };
 }
 

@@ -3,6 +3,8 @@
     import {m} from "$lib/paraglide/messages.js";
     import CreateRoomBookingModal from "$lib/components/modal/user/CreateRoomBookingModal.svelte";
     import {goto} from "$app/navigation";
+    import Calendar from "$lib/components/Calendar.svelte";
+    import Card from "$lib/components/Card.svelte";
 
     const {data} = $props();
 
@@ -32,14 +34,34 @@
         }
     ];
 
+    let bookings = $derived(data.bookings);
+    let events = $derived(bookings.map((booking) => ({
+        title: booking.title,
+        start: booking.start,
+        end: booking.end
+    })));
+
+    let sources = $derived([{
+        events: events,
+        color: "orange"
+    }]);
+
     let modal = $state(false);
 </script>
 
-<TableView columns={columns}
-           contentPage={data.page}
-           onCreate={() => modal = true}
-           onItemClicked={(item) => goto(`/user/room-bookings/${item.id}`)}
-/>
+<div class="flex-1 flex flex-col xl:flex-row gap-5">
+    <Card class="flex-1">
+        <Calendar bind:sources={sources}/>
+    </Card>
+
+    <div class="flex-1 flex">
+        <TableView columns={columns}
+                   contentPage={data.page}
+                   onCreate={() => modal = true}
+                   onItemClicked={(item) => goto(`/user/room-bookings/${item.id}`)}
+        />
+    </div>
+</div>
 
 {#if modal}
     <CreateRoomBookingModal bind:open={modal} accessList={data.access}/>
