@@ -1,5 +1,5 @@
 <script>
-    import Navigation from "$lib/components/Navigation.svelte";
+    import SideNavigation from "$lib/components/SideNavigation.svelte";
     import Footer from "$lib/components/Footer.svelte";
     import ConfirmProvider from '$lib/components/ConfirmProvider.svelte';
     import {m} from "$lib/paraglide/messages.js";
@@ -192,11 +192,11 @@
 </script>
 
 <div class="flex">
-    <Navigation logoRedirect="/"
-                header={header}
-                categories={categories}
-                isTrusted={data.isTrustedDevice}
-                showLogoutButton={user !== null}
+    <SideNavigation logoRedirect="/"
+                    header={header}
+                    categories={categories}
+                    isTrusted={data.isTrustedDevice}
+                    showLogoutButton={user !== null}
     />
 
     <div class="w-full flex flex-col gap-5 justify-between bg-background max-h-svh overflow-y-auto">

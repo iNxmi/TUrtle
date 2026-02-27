@@ -30,7 +30,7 @@
         UserAddOutline
     } from "flowbite-svelte-icons";
 
-    const {
+    let {
         logoRedirect = "/",
         header = null,
         categories = [],
