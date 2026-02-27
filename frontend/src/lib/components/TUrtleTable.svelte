@@ -67,7 +67,7 @@
         disableSearch = true
     } = $props();
 
-    let activeColumns = $state(Object.fromEntries(columns.map(column => [column.field, column.enabled !== false])));
+    let activeColumns = $derived(Object.fromEntries(columns.map(column => [column.field, column.enabled !== false])));
     let search = $state("");
 </script>
 
