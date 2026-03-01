@@ -8,10 +8,11 @@
         onchange = false,
         value = $bindable(),
         single = false,
-        sortFunction,
-        displayFunction,
-        filterFunction,
-        disabled = false
+        sortFunction = (x,y) => {return x - y},
+        displayFunction = (x) => {return x.name},
+        filterFunction = (x) => {return true},
+        disabled = false,
+        children
     } = $props();
     let searchTerm = $state("");
     let clickProtected = $state(false);
@@ -36,7 +37,7 @@
         if (value.includes(select.value)) {
             clearOption(select);
         } else if (!value.includes(select.value)) {
-            value = single ? [select.value] : [...value, select.value];
+            value = single ? select.value : [...value, select.value];
         }
         if (!equal(oldValue, value)) {
             triggerChange();
@@ -195,6 +196,7 @@
                 </Badge>
             {/each}
         {/if}
+        
     </span>
     <div class="ms-auto flex items-center gap-2">
         {#if selectUsers.length}
@@ -205,6 +207,7 @@
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d={show ? "m1 5 4-4 4 4" : "m9 1-4 4-4-4"}/>
         </svg>
+        {@render children?.()}
     </div>
 
     {#if show}
