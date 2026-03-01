@@ -2,20 +2,33 @@
     import {TabItem, Tabs} from "flowbite-svelte";
     import {page} from "$app/state";
 
-    let {children} = $props();
-    let key = $derived(page.url.pathname);
+    /*
+    Example Items:
 
     const items = [{
-        title: "Email",
+        title: "Email Templates",
         href: "/manage/email-templates"
     }, {
-        title: "Content",
+        title: "Content Templates",
         href: "/manage/content-templates"
+    }, {
+        title: "FAQ",
+        href: "/manage/faq"
     }];
+     */
+
+    let {
+        children,
+        items = [],
+        class: className = "",
+        ...rest
+    } = $props();
+
+    let key = $derived(page.url.pathname);
 </script>
 
-<div>
-    <Tabs bind:selected={key}>
+<div class={className} {...rest}>
+    <Tabs contentClass="p-0" bind:selected={key}>
         {#each items as item}
             <a href={item.href}>
                 <TabItem key={item.href} title={item.title}>

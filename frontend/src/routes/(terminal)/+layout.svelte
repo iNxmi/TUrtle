@@ -1,5 +1,5 @@
 <script>
-    import Navigation from "$lib/components/Navigation.svelte";
+    import SideNavigation from "$lib/components/SideNavigation.svelte";
     import {
         AppleFullOutline,
         ExclamationCircleOutline,
@@ -51,7 +51,7 @@
 </script>
 
 <div class="flex">
-    <Navigation
+    <SideNavigation
             logoRedirect="/terminal/emojis"
             categories={categories}
             hideDoorButton
