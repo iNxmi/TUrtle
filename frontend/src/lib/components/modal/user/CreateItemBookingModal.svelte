@@ -1,5 +1,5 @@
 <script>
-    import {Button, Datepicker, Heading, Hr, Modal, Select} from "flowbite-svelte";
+    import {Button, Datepicker, Heading, Hr, Modal, Select, Spinner} from "flowbite-svelte";
     import {m} from "$lib/paraglide/messages.js";
     import Calendar from "$lib/components/Calendar.svelte"
     import Timepicker from "$lib/components/Timepicker.svelte";
@@ -27,6 +27,9 @@
     const now = new Date();
     let start = $state(new Date(now));
     let end = $state(new Date(now));
+
+    let loading = $state(false);
+    let error = $state("");
 
     async function getEvents(itemId) {
         if (itemId === null)
@@ -63,6 +66,7 @@
 
     async function submit(event) {
         event.preventDefault();
+        error = "";
 
         const payload = {
             itemId: itemId,
@@ -70,11 +74,15 @@
             end: end.toISOString()
         };
 
+        loading = true;
         const response = await ItemBookings.create(payload);
+        loading = false;
 
-        if (!response.ok)
+        if (!response.ok) {
+            const json = await response.json();
+            error = json.message;
             return;
-
+        }
         await invalidateAll();
         open = false;
     }
@@ -116,9 +124,17 @@
                     </div>
                 </div>
 
+                {#if error?.trim()}
+                    <div class="text-red-400 text-justify">{error}</div>
+                {/if}
+
                 <div class="grow flex flex-col justify-end">
                     <Button class="w-full" type="submit">
-                        {m.modal_user_create_item_booking_button()}
+                        {#if loading === true}
+                            <Spinner size="5"/>
+                        {:else}
+                            {m.modal_user_create_item_booking_button()}
+                        {/if}
                     </Button>
                 </div>
             </form>

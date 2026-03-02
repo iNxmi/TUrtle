@@ -1,5 +1,5 @@
 <script>
-    import {Button, Checkbox, Input, Select, Textarea} from 'flowbite-svelte';
+    import {Button, Checkbox, Input, Select, Textarea, Spinner} from 'flowbite-svelte';
     import {m} from '$lib/paraglide/messages.js';
     import Altcha from '$lib/components/Altcha.svelte';
     import {SupportTickets} from "$lib/api";
@@ -16,6 +16,9 @@
     const {data} = $props();
     let content = $derived(data.content);
 
+    let loading = $state(false);
+    let error = $state("");
+
     const urgencyItems = $derived(data.urgencies.map((urgency) => ({
         value: urgency.id,
         name: urgency.name
@@ -30,6 +33,7 @@
 
     async function send(event) {
         event.preventDefault();
+        error = "";
 
         const payload = {
             urgencyId: $state.snapshot(urgencyId),
@@ -40,7 +44,15 @@
             altchaToken: $state.snapshot(altchaToken)
         }
 
+        loading = true;
         const response = await SupportTickets.create(payload);
+        loading = false;
+
+        if(!response.ok) {
+            const json = await response.json();
+            error = json.message;
+        }
+
     }
 </script>
 
@@ -84,9 +96,19 @@
             <div>{m.modal_contact_label_i_agree_to_tos()}</div>
         </div>
 
+        {#if error?.trim()}
+            <div class="text-red-400 text-justify">{error}</div>
+        {/if}
+
 
         <Altcha bind:value={altchaToken}/>
 
-        <Button type="submit">{m.modal_contact_button()}</Button>
+        <Button type="submit">
+            {#if loading === true}
+                <Spinner size="5"/>
+            {:else}
+                {m.modal_contact_button()}
+            {/if}
+        </Button>
     </form>
 </Card>

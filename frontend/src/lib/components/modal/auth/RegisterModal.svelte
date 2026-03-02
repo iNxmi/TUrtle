@@ -1,10 +1,12 @@
 <script>
-	import { A, Button, Checkbox, Heading, Hr, Input, Modal } from 'flowbite-svelte';
+	import { A, Button, Checkbox, Heading, Hr, Input, Modal, Spinner } from 'flowbite-svelte';
 	import PasswordInput from '$lib/components/PasswordInput.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 	import { Users } from '$lib/api';
 	import Altcha from '$lib/components/Altcha.svelte';
 	import { invalidateAll } from '$app/navigation';
+
+	let loading = $state(false);
 
 	let username = $state('');
 	let firstName = $state('');
@@ -14,11 +16,13 @@
 	let passwordRepeat = $state('');
 	let altchaToken = $state('');
 
+	let error = $state("");
+
 	let { isTrusted = false, open = $bindable(false) } = $props();
 
 	async function register(event) {
 		event.preventDefault();
-		error = '';
+		error = "";
 
 		const payload = {
 			username: $state.snapshot(username),
@@ -29,7 +33,9 @@
 			altchaToken: $state.snapshot(altchaToken)
 		};
 
+		loading = true;
 		const response = await Users.create(payload);
+		loading = false;
 
 		if (response.status !== 201) {
 			const json = await response.json();
@@ -97,9 +103,13 @@
 			<div class="text-red-400 text-justify">{error}</div>
 		{/if}
 
-		<Button name="button_submit" type="submit" class="w-full cursor-pointer"
-			>{m.modal_register_button()}</Button
-		>
+		<Button name="button_submit" type="submit" class="w-full cursor-pointer">
+			{#if loading === true}
+				<Spinner size="5"/>
+			{:else}
+			      {m.modal_register_button()}
+			{/if}
+		</Button>
 
 		<div class="flex">
 			<A href="/auth/login" class="text-blue-700 hover:underline dark:text-blue-500">

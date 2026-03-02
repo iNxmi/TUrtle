@@ -1,5 +1,5 @@
 <script>
-    import {Button, Modal} from 'flowbite-svelte';
+    import {Button, Modal, Spinner} from 'flowbite-svelte';
     import {Hardware} from '$lib/api';
     import {QuestionCircleSolid} from "flowbite-svelte-icons";
 
@@ -8,12 +8,22 @@
         locker
     } = $props();
 
+    let loading = $state(false);
+    let error = $state("");
+
     async function unlock(event) {
         event.preventDefault();
+        error = "";
 
+        loading = true;
         const response = await Hardware.lockerOpen(locker.id);
-        if (!response.ok)
+        loading = false;
+
+        if (!response.ok) {
+            const json = await response.json();
+            error = json.message;
             return;
+        }
 
         open = false;
     }
@@ -34,9 +44,18 @@
             by unlocking you agree to the following tos
         </h3>
 
+        {#if error.trim()}
+            <div class="text-red-400 text-justify">{error}</div>
+        {/if}
+
+        //TODO change button text
         <div class="flex gap-2">
             <Button color="red" onclick={unlock}>
-                _Unlock_
+                {#if loading === true}
+                    <Spinner size="5"/>
+                {:else}
+                    _Unlock_
+                {/if}
             </Button>
             <Button color="alternative" onclick={() => open = false}>
                 _Cancel_

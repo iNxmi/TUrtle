@@ -1,5 +1,5 @@
 <script>
-    import {Button, Heading, Hr, Input, Modal, MultiSelect, Select} from "flowbite-svelte";
+    import {Button, Heading, Hr, Input, Modal, MultiSelect, Select, Spinner} from "flowbite-svelte";
     import PasswordInput from "$lib/components/PasswordInput.svelte";
     import {m} from "$lib/paraglide/messages.js";
     import {Roles} from "$lib/api";
@@ -40,14 +40,24 @@
         password: ""
     })
 
+    let loading = $state(false);
+    let error = $state("");
+
     async function submit(event) {
         event.preventDefault()
+        error = "";
 
         const payload = $state.snapshot(input);
-        const response = await Users.create(payload);
 
-        if (response.status !== 201)
+        loading = true;
+        const response = await Users.create(payload);
+        loading = false;
+
+        if (response.status !== 201) {
+            const json = await response.json();
+            error = json.message;
             return;
+        }
 
         await invalidateAll();
         open = false;
@@ -104,8 +114,16 @@
             <Select name="input_status" items={statusItems} bind:value={input.status} required/>
         </div>
 
+        {#if error?.trim()}
+            <div class="text-red-400 text-justify">{error}</div>
+        {/if}
+
         <Button name="button_submit" type="submit">
-            {m.modal_manage_create_user_button()}
+            {#if loading === true}
+                <Spinner size="5"/>
+            {:else}
+                {m.modal_manage_create_user_button()}
+            {/if}
         </Button>
     </form>
 </Modal>

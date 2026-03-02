@@ -1,5 +1,5 @@
 <script>
-    import {Button, Datepicker, Heading, Hr, Input, Modal, Select, Textarea} from "flowbite-svelte";
+    import {Button, Datepicker, Heading, Hr, Input, Modal, Select, Textarea, Spinner} from "flowbite-svelte";
     import {m} from "$lib/paraglide/messages.js";
     import Calendar from "$lib/components/Calendar.svelte"
     import Timepicker from "$lib/components/Timepicker.svelte";
@@ -23,6 +23,9 @@
     const now = new Date();
     let start = $state(new Date(now));
     let end = $state(new Date(now));
+
+    let loading = $state(false);
+    let error = $state("");
 
     async function getEvents() {
         const response = await RoomBookings.getCollection();
@@ -54,6 +57,7 @@
 
     async function submit(event) {
         event.preventDefault();
+        error = "";
 
         const payload = {
             title: title,
@@ -63,9 +67,15 @@
             access: access
         };
 
+        loading = true;
         const response = await RoomBookings.create(payload);
-        if (!response.ok)
+        loading = false;
+
+        if (!response.ok) {
+            const json = await response.json();
+            error = json.message;
             return;
+        }
 
         await invalidateAll();
         open = false;
@@ -119,9 +129,17 @@
                     TODO: Whitelist Selector
                 </div>
 
+                {#if error.trim()}
+                    <div class="text-red-400 text-justify">{error}</div>
+                {/if}
+
                 <div class="grow flex flex-col justify-end">
                     <Button class="w-full" type="submit">
-                        {m.modal_user_create_room_booking_button()}
+                        {#if loading === true}
+                            <Spinner size="5"/>
+                        {:else}
+                            {m.modal_user_create_room_booking_button()}
+                        {/if}
                     </Button>
                 </div>
             </form>

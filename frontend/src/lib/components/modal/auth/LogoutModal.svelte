@@ -1,5 +1,5 @@
 <script>
-    import {Button, Heading, Hr, Modal} from "flowbite-svelte";
+    import {Button, Heading, Hr, Modal, Spinner} from "flowbite-svelte";
     import {Auth} from "$lib/api";
     import {goto, invalidateAll} from "$app/navigation";
     import {m} from "$lib/paraglide/messages.js";
@@ -8,10 +8,15 @@
         open = $bindable(false)
     } = $props()
 
+    let loading = $state(false);
+
     async function logout(event) {
         event.preventDefault()
 
+        loading = true;
         const response = await Auth.logout();
+        loading = false;
+
         if (response.status !== 204)
             return;
 
@@ -35,7 +40,11 @@
 
         <div class="flex gap-2 justify-center">
             <Button name="button_logout" color="red" onclick={logout}>
-                {m.modal_logout_button_logout()}
+                {#if loading === true}
+                    <Spinner size="5"/>
+                {:else}
+                    {m.modal_logout_button_logout()}
+                {/if}
             </Button>
             <Button name="button_cancel" color="alternative" onclick={() => open = false}>
                 {m.modal_logout_button_cancel()}
