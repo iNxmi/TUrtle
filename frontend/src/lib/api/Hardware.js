@@ -13,11 +13,11 @@ export class Hardware {
     }
 
     static async doorOpen() {
-        return request("/api/hardware/door/open");
+        return request("/api/hardware/door/open", {method: "POST"});
     }
 
     static async lockerOpen(id) {
-        return request(`/api/hardware/locker/open?id=${id}`);
+        return request(`/api/hardware/locker/open?id=${id}`, {method: "POST"});
     }
 
 }

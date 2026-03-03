@@ -1,4 +1,4 @@
-import {Altcha, Auth, Permissions} from "$lib/api";
+import {Altcha, Connection, Auth, Permissions} from "$lib/api";
 
 export const prerender = false;
 export const ssr = false;
@@ -6,15 +6,18 @@ export const ssr = false;
 export async function load() {
     const user = await getUser();
     const permissions = await getPermissions();
-    const isTrustedDevice = await getIsTrustedDevice();
-    const isLocalNetwork = await getIsLocalNetwork();
+    const connection = await getConnection();
 
     return {
         user: user,
         permissions: permissions,
-        isTrustedDevice: isTrustedDevice,
-        isLocalNetwork: isLocalNetwork
+        connection: connection
     };
+}
+
+async function getConnection() {
+    const response = await Connection.get();
+    return await response.json();
 }
 
 async function getPermissions() {
@@ -31,18 +34,4 @@ async function getUser() {
         return null;
 
     return await response.json();
-}
-
-async function getIsTrustedDevice() {
-    const response = await Altcha.trusted();
-    if (!response.ok)
-        return false;
-
-    const json = await response.json();
-    return json.trusted;
-}
-
-//TODO implement backend endpoint for checking if local
-async function getIsLocalNetwork() {
-    return true;
 }
