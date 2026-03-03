@@ -84,12 +84,12 @@
  *
  * ```[{prop1}, {prop2}, [{prop3}, {prop4}], {prop5}]```
  -->
-{#snippet textWithLabel(property, i,j)}
+{#snippet textWithLabel(property)}
 <div class="flex-1">
     <span class="font-bold text-muted">{property.name}</span>
-    {#if property.endpoint}
+    {#if property.href}
         <div class="w-full h-11 p-2.5 border border-gray-600/70 bg-gray-700/70 rounded-lg items-center text-text">
-            <a href={`${property.endpoint}`} class="text-orange-400">{property.value}</a>
+            <a href={property.href} class="text-orange-400">{property.value}</a>
         </div>
     {:else if Array.isArray(property.value)}
         {#each property.value as item}
@@ -132,15 +132,15 @@
             <span class="font-bold text-2xl text-text text-center">{`${title} ID: ${page.params.id}`}</span>
         </div>
         <div class="flex flex-col gap-5">
-            {#each finalEntity as property, i (property.id)}
+            {#each finalEntity as property (property.id)}
                 {#if property.group}
                     <div class="flex gap-5">
-                        {#each property.group as singleProperty, j (singleProperty.id)}
-                            {@render textWithLabel(singleProperty, i, j)}
+                        {#each property.group as singleProperty (singleProperty.id)}
+                            {@render textWithLabel(singleProperty)}
                         {/each} 
                     </div>
                 {:else}
-                    {@render textWithLabel(property, i)}
+                    {@render textWithLabel(property)}
                 {/if}
             {/each}
         </div>
