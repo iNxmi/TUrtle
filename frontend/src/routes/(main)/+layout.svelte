@@ -74,7 +74,7 @@
             "MANAGE_USERS",
             "MANAGE_ROLES"
         ],
-        label: "_User Management_",
+        label: m.main_navigation_item_manage_user_management(),
         keys: [
             "/manage/users",
             "/manage/roles"
@@ -87,7 +87,7 @@
             "MANAGE_ITEM_CATEGORIES",
             "MANAGE_LOCKERS"
         ],
-        label: "_Item Management_",
+        label: m.main_navigation_item_manage_item_management(),
         keys: [
             "/manage/items",
             "manage/item-categories",
@@ -100,7 +100,7 @@
             "MANAGE_ROOM_BOOKINGS",
             "MANAGE_ITEM_BOOKINGS"
         ],
-        label: "_Bookings_",
+        label: m.main_navigation_item_manage_bookings(),
         keys: [
             "/manage/room-bookings",
             "/manage/item-bookings"
@@ -114,7 +114,7 @@
             "MANAGE_EXCEPTIONS",
             "MANAGE_STATISTIC_QUERIES"
         ],
-        label: "_Administration_",
+        label: m.main_navigation_item_manage_administration(),
         keys: [
             "/manage/audit-logs",
             "/manage/configuration",
@@ -129,7 +129,7 @@
             "MANAGE_CONTENT_TEMPLATES",
             "MANAGE_FAQ"
         ],
-        label: "_Content_",
+        label: m.main_navigation_item_manage_content(),
         keys: [
             "/manage/email-templates",
             "/manage/content-templates",
@@ -142,7 +142,7 @@
             "MANAGE_SUPPORT_TICKETS",
             "MANAGE_SUPPORT_TICKET_CATEGORIES"
         ],
-        label: "_Support_",
+        label: m.main_navigation_item_manage_support(),
         keys: [
             "/manage/support-tickets",
             "/manage/support-ticket-categories",

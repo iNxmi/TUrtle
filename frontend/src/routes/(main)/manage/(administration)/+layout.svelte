@@ -1,19 +1,20 @@
 <script>
     import TabNavigation from "$lib/components/TabNavigation.svelte";
+    import {m} from '$lib/paraglide/messages.js';
 
     let {children} = $props();
 
     const items = [{
-        title: "_Audit Logs_",
+        title: m.main_navigation_item_manage_audit_logs(),
         href: "/manage/audit-logs"
     }, {
-        title: "_Configuration_",
+        title: m.main_navigation_item_manage_configuration(),
         href: "/manage/configuration"
     }, {
-        title: "_Exceptions_",
+        title: m.main_navigation_item_manage_exceptions(),
         href: "/manage/exceptions"
     }, {
-        title: "_Statistic Queries_",
+        title: m.main_navigation_item_manage_statistic_queries(),
         href: "/manage/statistic-queries"
     }];
 </script>

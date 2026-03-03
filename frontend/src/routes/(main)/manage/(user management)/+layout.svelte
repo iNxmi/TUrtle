@@ -1,13 +1,14 @@
 <script>
     import TabNavigation from "$lib/components/TabNavigation.svelte";
+    import {m} from '$lib/paraglide/messages.js';
 
     let {children} = $props();
 
     const items = [{
-        title: "_Users_",
+        title: m.main_navigation_item_manage_users(),
         href: "/manage/users"
     }, {
-        title: "_Roles_",
+        title: m.main_navigation_item_manage_roles(),
         href: "/manage/roles"
     }];
 </script>

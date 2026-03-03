@@ -1,16 +1,17 @@
 <script>
     import TabNavigation from "$lib/components/TabNavigation.svelte";
+    import {m} from '$lib/paraglide/messages.js';
 
     let {children} = $props();
 
     const items = [{
-        title: "_Email Templates_",
+        title: m.main_navigation_item_manage_email_templates(),
         href: "/manage/email-templates"
     }, {
-        title: "_Content Templates_",
+        title: m.main_navigation_item_manage_content_templates(),
         href: "/manage/content-templates"
     }, {
-        title: "_FAQ_",
+        title: m.main_navigation_item_manage_faq(),
         href: "/manage/faq"
     }];
 </script>
