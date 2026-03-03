@@ -8,7 +8,9 @@
 
     let {
         sources = $bindable([]),
-        height
+        onEventClicked,
+        class: className = "",
+        ...rest
     } = $props();
 
     let element = $state(null);
@@ -17,8 +19,6 @@
         calendar = new Calendar(element, {
             plugins: [timeGridPlugin, dayGridPlugin, listPlugin],
             initialView: "dayGridMonth",
-            allDaySlot: false,
-            height: height,
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
@@ -33,7 +33,16 @@
         if (calendar === null)
             return
 
-        calendar.getEventSources().forEach(source => source.remove());
+        calendar.setOption("eventClick", (info) => {
+            onEventClicked?.(info);
+        });
+    });
+
+    $effect(() => {
+        if (calendar === null)
+            return
+
+        calendar.removeAllEventSources();
         sources.forEach(source => calendar.addEventSource(source));
     });
 
@@ -42,4 +51,4 @@
     });
 </script>
 
-<div bind:this={element} class="w-full h-full"></div>
+<div bind:this={element} class={`w-full h-full ${className}`} {...rest}></div>

@@ -1,18 +1,30 @@
-import {ItemCategories, Items, ItemBookings} from "$lib/api";
 import {getPage} from "$lib/utils.js";
+import {ItemBookings, ItemCategories, Items} from "$lib/api";
 
-export async function load({url}) {
-    const itemBookings = await getItemBookings();
+export async function load({url, parent}) {
+    const data = await parent();
+    const user = data.user;
+
+    const page = await getPage(url, "/api/item-bookings", `user.id==${user.id}`)
     const categories = await getCategories();
     const items = await getItems();
+    const bookings = await getItemBookings(user.id);
 
-    return { itemBookings, categories, items};
+    return {
+        page: page,
+        categories: categories,
+        items: items,
+        bookings: bookings
+    };
 }
 
-async function getItemBookings(){
-    const response = await ItemBookings.getCollection('rsql=status!=COMPLETED,status!=CANCELLED');
+async function getItemBookings(userId) {
+    const response = await ItemBookings.getCollection({
+        rsql: `user.id==${userId}`
+    })
     return await response.json();
 }
+
 async function getCategories() {
     const response = await ItemCategories.getCollection();
     return response.json();

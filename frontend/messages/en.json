@@ -146,6 +146,11 @@
   "imprint_title": "Imprint",
   "about_title": "About",
 
+  "user_dashboard_title_current_item_bookings": "Current Item Bookings",
+  "user_dashboard_title_current_room_bookings": "Current Room Bookings",
+  "user_dashboard_content_no_current_item_bookings": "No current item bookings.",
+  "user_dashboard_content_no_current_room_bookings": "No current room bookings.",
+
   "user_profile_label_username": "Username",
   "user_profile_label_first_name": "First Name",
   "user_profile_label_last_name": "Last Name",
@@ -154,9 +159,10 @@
   "user_profile_label_created_at": "Created At",
 
   "user_item_bookings_label_id": "ID",
-  "user_item_bookings_label_item_id": "Item ID",
+  "user_item_bookings_label_item": "Item",
   "user_item_bookings_label_start": "Start",
   "user_item_bookings_label_end": "End",
+  "user_item_bookings_label_status": "Status",
   "user_item_bookings_label_updated_at": "Updated At",
   "user_item_bookings_label_created_at": "Created At",
 

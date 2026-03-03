@@ -1,7 +1,7 @@
 <script>
-    import {Breadcrumb, BreadcrumbItem} from "flowbite-svelte";
+    import {Breadcrumb, BreadcrumbItem, Tooltip} from "flowbite-svelte";
     import {page} from "$app/state";
-import Card from "$lib/components/Card.svelte";
+    import Card from "$lib/components/Card.svelte";
 
     let breadcrumbs = $derived(getBreadcrumbs(page.url.pathname))
 
@@ -37,6 +37,13 @@ import Card from "$lib/components/Card.svelte";
             )
             .join(" ");
     }
+
+    async function clipboard(event) {
+        event.preventDefault();
+
+        const url = window.location.href;
+        await navigator.clipboard.writeText(url);
+    }
 </script>
 
 <Card>
@@ -44,6 +51,11 @@ import Card from "$lib/components/Card.svelte";
         {#each breadcrumbs as breadcrumb, index}
             {#if index === 0}
                 <BreadcrumbItem href={breadcrumb.href} home>
+                    <span class="font-bold">{breadcrumb.name}</span>
+                </BreadcrumbItem>
+            {:else if index === breadcrumbs.length - 1}
+                <BreadcrumbItem class="hover:cursor-pointer" onclick={clipboard}>
+                    <Tooltip trigger="click" placement="bottom">_copied_</Tooltip>
                     <span class="font-bold">{breadcrumb.name}</span>
                 </BreadcrumbItem>
             {:else}

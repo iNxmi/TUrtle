@@ -44,7 +44,7 @@
         keys: ["/contact"],
         href: "/contact",
         icon: UserHeadsetSolid
-    }].sort((a, b) => a.href.localeCompare(b.href));
+    }];
 
     const userItems = $derived([{
         label: m.main_navigation_item_user_dashboard(),
@@ -67,8 +67,7 @@
         keys: ["/user/profile"],
         href: "/user/profile",
         icon: UserSolid
-    }].filter(item => user != null && (!item.permissions || item.permissions.some(p => permissions.includes(p))))
-        .sort((a, b) => a.href.localeCompare(b.href)));
+    }].filter(item => user != null && (!item.permissions || item.permissions.some(p => permissions.includes(p)))));
 
     const manageItems = $derived([{
         permissions: [
@@ -170,7 +169,6 @@
     let header = $derived(user !== null ? `${user.firstName} ${user.lastName}` : null);
 </script>
 
-
 <div class="flex">
     <SideNavigation logoRedirect="/"
                     header={header}
@@ -180,8 +178,8 @@
                     showLogoutButton={user !== null}
     />
 
-    <div class="w-full flex flex-col gap-5 justify-between bg-background max-h-svh overflow-y-auto">
-        <div class="flex flex-col gap-5 grow p-5">
+    <div class="w-full bg-background max-h-svh overflow-y-auto">
+        <div class="flex flex-col gap-5 min-h-svh p-5">
             <Breadcrumbs/>
 
             <ConfirmProvider>

@@ -1,18 +1,18 @@
-import {ItemBookings, Items, Lockers} from "$lib/api";
+import {ItemBookings, Lockers, Items} from "$lib/api";
 
 export async function load({params}) {
-    const booking = await getBooking(params.id);
+    const booking = await getItemBooking(params.id);
     const item = await getItem(booking.itemId);
     const locker = await getLocker(item.lockerId);
 
     return {
         booking: booking,
-        item: item,
-        locker: locker
+        locker: locker,
+        item: item
     };
 }
 
-async function getBooking(id) {
+async function getItemBooking(id) {
     const response = await ItemBookings.get(id);
     return await response.json();
 }

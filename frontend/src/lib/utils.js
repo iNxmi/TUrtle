@@ -3,7 +3,7 @@ import {dev} from '$app/environment';
 import {error, redirect} from '@sveltejs/kit';
 import { RoomBookings } from './api/RoomBookings.js';
 
-export async function getPage(url, endpoint) {
+export function getPageParameters(url) {
     const parameters = new URLSearchParams()
 
     // TODO temporary disabled because of backend incompatibility
@@ -15,6 +15,39 @@ export async function getPage(url, endpoint) {
     //
     //     parameters.set("rsql", rsql)
     // }
+
+    const pageNumber = url.searchParams.get("pageNumber") || "0";
+    parameters.set("pageNumber", pageNumber)
+
+    const pageSize = url.searchParams.get("pageSize");
+    if (pageSize != null)
+        parameters.set("pageSize", pageSize)
+
+    const sortProperty = url.searchParams.get("sortProperty");
+    if (sortProperty != null)
+        parameters.set("sortProperty", sortProperty)
+
+    const sortDirection = url.searchParams.get("sortDirection");
+    if (sortDirection != null)
+        parameters.set("sortDirection", sortDirection)
+
+    return Object.fromEntries(parameters.entries());
+}
+
+export async function getPage(url, endpoint, baseRsql) {
+    const parameters = new URLSearchParams()
+
+    // TODO temporary disabled because of backend incompatibility
+    const search = url.searchParams.get("search");
+    let searchRsql
+    if (search != null)
+        searchRsql = properties.map(
+            property => `${property}=ilike=${search}`
+        ).join(",")
+
+    const rsql = searchRsql?.trim() ? `(${baseRsql});(${searchRsql})` : baseRsql
+    if (rsql?.trim())
+        parameters.set("rsql", rsql);
 
     const pageNumber = url.searchParams.get("pageNumber") || "0";
     parameters.set("pageNumber", pageNumber)

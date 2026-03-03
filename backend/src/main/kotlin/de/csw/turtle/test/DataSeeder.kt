@@ -82,7 +82,7 @@ class DataSeeder(
 
             try {
                 roomBookingService.create(
-                    userId = userService.getByUsername("admin").id,
+                    userId = floor(userService.count() * Math.random()).toLong(),
                     title = "${service.count()}: this is an event",
                     description = "this is the very long description",
                     start = start,

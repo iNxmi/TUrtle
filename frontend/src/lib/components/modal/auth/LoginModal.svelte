@@ -4,7 +4,7 @@
     import Altcha from "$lib/components/Altcha.svelte"
     import {m} from '$lib/paraglide/messages.js';
     import {Auth} from "$lib/api";
-    import {invalidateAll} from '$app/navigation';
+    import {goto, invalidateAll} from '$app/navigation';
 
     let {
         isTrusted = false,
@@ -43,6 +43,7 @@
         }
 
         await invalidateAll()
+        await goto("/user/dashboard")
         open = false
     }
 </script>

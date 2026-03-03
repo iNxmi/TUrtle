@@ -60,8 +60,8 @@
     <Markdown {content}/>
 </Card>
 
-<Card>
-    <form class="flex flex-col gap-5" onsubmit={send}>
+<Card class="flex flex-col">
+    <form class="flex-1 flex flex-col gap-5" onsubmit={send}>
         <div class="flex gap-5">
             <div class="flex flex-1 flex-col">
                 <div>{m.modal_contact_label_urgency()}</div>
@@ -85,8 +85,8 @@
 
         <div>
             <div>{m.modal_contact_label_content()}</div>
-            <Textarea bind:value={ticketContent} class="w-full" placeholder={m.modal_contact_placeholder_content()}
-                      required rows="12"/>
+            <Textarea class="flex-1 w-full" bind:value={ticketContent}
+                      placeholder={m.modal_contact_placeholder_content()} required/>
         </div>
 
         <div class="flex">
@@ -96,12 +96,11 @@
             <div>{m.modal_contact_label_i_agree_to_tos()}</div>
         </div>
 
+        <Altcha bind:value={altchaToken}/>
+
         {#if error?.trim()}
             <div class="text-red-400 text-justify">{error}</div>
         {/if}
-
-
-        <Altcha bind:value={altchaToken}/>
 
         <Button type="submit">
             {#if loading === true}
