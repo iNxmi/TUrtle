@@ -17,7 +17,8 @@
         SidebarDropdownItem,
         SidebarDropdownWrapper,
         SidebarGroup,
-        Span
+        Span,
+        Tooltip
     } from "flowbite-svelte";
 
     import {
@@ -148,11 +149,14 @@
                             {/if}
 
                             {#if !hideDoorButton}
-                                <Button disabled={!isLocalNetwork} name="button_open_door" color="alternative" class="flex-1" onclick={() => (openDoorModal = true)}>
-                                    <LockOpenOutline/>
-                                </Button>
+                            <Button id="doorButton" disabled={!isLocalNetwork} name="button_open_door" color="alternative" class="flex-1" onclick={() => (openDoorModal = true)}>
+                                <LockOpenOutline/>
+                            </Button>
                             {/if}
                         </ButtonGroup>
+                        {#if !isLocalNetwork}
+                        <Tooltip triggeredBy="#doorButton">_You have to be in the local WIFI to open the door_</Tooltip>
+                        {/if}
                     </div>
                 {/if}
 
