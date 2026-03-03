@@ -4,11 +4,11 @@
     let {children} = $props();
 
     const items = [{
-        title: "Item Bookings",
-        href: "/manage/item-bookings"
-    }, {
-        title: "Room Bookings",
+        title: "_Room Bookings_",
         href: "/manage/room-bookings"
+    }, {
+        title: "_Item Bookings_",
+        href: "/manage/item-bookings"
     }];
 </script>
 

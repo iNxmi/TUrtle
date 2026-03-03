@@ -4,16 +4,16 @@
     let {children} = $props();
 
     const items = [{
-        title: "Audit Logs",
+        title: "_Audit Logs_",
         href: "/manage/audit-logs"
     }, {
-        title: "Configuration",
+        title: "_Configuration_",
         href: "/manage/configuration"
     }, {
-        title: "Exceptions",
+        title: "_Exceptions_",
         href: "/manage/exceptions"
     }, {
-        title: "Statistic Queries",
+        title: "_Statistic Queries_",
         href: "/manage/statistic-queries"
     }];
 </script>

@@ -4,13 +4,13 @@
     let {children} = $props();
 
     const items = [{
-        title: "Item Categories",
-        href: "/manage/item-categories",
+        title: "_Items_",
+        href: "/manage/items",
     }, {
-        title: "Items",
-        href: "/manage/items"
+        title: "_Item Categories_",
+        href: "/manage/item-categories"
     }, {
-        title: "Lockers",
+        title: "_Lockers_",
         href: "/manage/lockers"
     }];
 </script>

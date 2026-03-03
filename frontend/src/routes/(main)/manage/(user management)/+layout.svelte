@@ -4,10 +4,10 @@
     let {children} = $props();
 
     const items = [{
-        title: "Users",
+        title: "_Users_",
         href: "/manage/users"
     }, {
-        title: "Roles",
+        title: "_Roles_",
         href: "/manage/roles"
     }];
 </script>

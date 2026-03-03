@@ -70,107 +70,85 @@
         .sort((a, b) => a.href.localeCompare(b.href)));
 
     const manageItems = $derived([{
-        permissions: ["MANAGE_USERS"],
-        label: m.main_navigation_item_manage_users(),
-        keys: ["/manage/users"],
+        permissions: [
+            "MANAGE_USERS",
+            "MANAGE_ROLES"
+        ],
+        label: "_User Management_",
+        keys: [
+            "/manage/users",
+            "/manage/roles"
+        ],
         href: "/manage/users",
         icon: UsersGroupSolid
     }, {
-        permissions: ["MANAGE_ROLES"],
-        label: m.main_navigation_item_manage_roles(),
-        keys: ["/manage/roles"],
-        href: "/manage/roles",
-        icon: UsersGroupSolid
-    }, {
-        permissions: ["MANAGE_ITEMS"],
-        label: m.main_navigation_item_manage_items(),
-        keys: ["/manage/items"],
+        permissions: [
+            "MANAGE_ITEMS",
+            "MANAGE_ITEM_CATEGORIES",
+            "MANAGE_LOCKERS"
+        ],
+        label: "_Item Management_",
+        keys: [
+            "/manage/items",
+            "manage/item-categories",
+            "manage/locker"
+        ],
         href: "/manage/items",
         icon: ClipboardSolid
     }, {
-        permissions: ["MANAGE_ITEM_CATEGORIES"],
-        label: m.main_navigation_item_manage_item_categories(),
-        keys: ["/manage/item-categories"],
-        href: "/manage/item-categories",
-        icon: ClipboardSolid
-    }, {
-        permissions: ["MANAGE_ROOM_BOOKINGS"],
-        label: m.main_navigation_item_manage_room_bookings(),
-        keys: ["/manage/room-bookings"],
+        permissions: [
+            "MANAGE_ROOM_BOOKINGS",
+            "MANAGE_ITEM_BOOKINGS"
+        ],
+        label: "_Bookings_",
+        keys: [
+            "/manage/room-bookings",
+            "/manage/item-bookings"
+        ],
         href: "/manage/room-bookings",
         icon: CalendarEditSolid
     }, {
-        permissions: ["MANAGE_ITEM_BOOKINGS"],
-        label: m.main_navigation_item_manage_item_bookings(),
-        keys: ["/manage/item-bookings"],
-        href: "/manage/item-bookings",
-        icon: CalendarEditSolid
-    }, {
-        permissions: ["MANAGE_AUDIT_LOGS"],
-        label: m.main_navigation_item_manage_audit_logs(),
-        keys: ["/manage/audit-logs"],
+        permissions: [
+            "MANAGE_AUDIT_LOGS",
+            "MANAGE_CONFIGURATIONS",
+            "MANAGE_EXCEPTIONS",
+            "MANAGE_STATISTIC_QUERIES"
+        ],
+        label: "_Administration_",
+        keys: [
+            "/manage/audit-logs",
+            "/manage/configuration",
+            "/manage/exceptions",
+            "/manage/statistic-queries"
+        ],
         href: "/manage/audit-logs",
         icon: BookOpenSolid
-    }, {
-        permissions: ["MANAGE_STATISTIC_QUERIES"],
-        label: m.main_navigation_item_manage_statistic_queries(),
-        keys: ["/manage/statistic-queries"],
-        href: "/manage/statistic-queries",
-        icon: DatabaseOutline
-    }, {
+    },{
         permissions: [
             "MANAGE_EMAIL_TEMPLATES",
-            "MANAGE_CONTENT_TEMPLATES"
+            "MANAGE_CONTENT_TEMPLATES",
+            "MANAGE_FAQ"
         ],
-        label: m.main_navigation_item_manage_templates(),
+        label: "_Content_",
         keys: [
             "/manage/email-templates",
-            "/manage/content-templates"
+            "/manage/content-templates",
+            "/manage/faq"
         ],
         href: "/manage/email-templates",
         icon: FilePasteSolid
     }, {
-        permissions: ["MANAGE_FAQ"],
-        label: m.main_navigation_item_manage_faq(),
-        keys: ["/manage/faq"],
-        href: "/manage/faq",
-        icon: FilePasteSolid
-    }, {
-        permissions: ["MANAGE_LOCKERS"],
-        label: m.main_navigation_item_manage_lockers(),
-        keys: ["/manage/lockers"],
-        href: "/manage/lockers",
-        icon: PaperClipOutline
-    }, {
-        permissions: ["MANAGE_SUPPORT_TICKETS"],
-        label: m.main_navigation_item_manage_support_tickets(),
-        keys: ["/manage/support-tickets"],
+        permissions: [
+            "MANAGE_SUPPORT_TICKETS",
+            "MANAGE_SUPPORT_TICKET_CATEGORIES"
+        ],
+        label: "_Support_",
+        keys: [
+            "/manage/support-tickets",
+            "/manage/support-ticket-categories",
+            "/manage/support-ticket-urgencies",],
         href: "/manage/support-tickets",
         icon: UserHeadsetSolid
-    }, {
-        permissions: ["MANAGE_SUPPORT_TICKET_CATEGORIES"],
-        label: m.main_navigation_item_manage_support_ticket_categories(),
-        keys: ["/manage/support-ticket-categories"],
-        href: "/manage/support-ticket-categories",
-        icon: UserHeadsetSolid
-    }, {
-        permissions: ["MANAGE_SUPPORT_TICKETS"],
-        label: m.main_navigation_item_manage_support_ticket_urgencies(),
-        keys: ["/manage/support-ticket-urgencies"],
-        href: "/manage/support-ticket-urgencies",
-        icon: UserHeadsetSolid
-    }, {
-        permissions: ["MANAGE_EXCEPTIONS"],
-        label: m.main_navigation_item_manage_exceptions(),
-        keys: ["/manage/exceptions"],
-        href: "/manage/exceptions",
-        icon: BugSolid
-    }, {
-        permissions: ["MANAGE_CONFIGURATION"],
-        label: m.main_navigation_item_manage_configuration(),
-        keys: ["/manage/configuration"],
-        href: "/manage/configuration",
-        icon: AdjustmentsVerticalSolid
     }].filter(item => !item.permissions || item.permissions.some(p => permissions.includes(p)))
         .sort((a, b) => a.href.localeCompare(b.href)));
 
@@ -190,6 +168,7 @@
 
     let header = $derived(user !== null ? `${user.firstName} ${user.lastName}` : null);
 </script>
+
 
 <div class="flex">
     <SideNavigation logoRedirect="/"
