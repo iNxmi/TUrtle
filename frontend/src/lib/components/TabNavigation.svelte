@@ -31,7 +31,7 @@
     <Tabs contentClass="p-0" bind:selected={key}>
         {#each items as item}
             <a href={item.href}>
-                <TabItem key={item.href} title={item.title}>
+                <TabItem open={key.includes(item.href)} key={item.href} title={item.title}>
                     {@render children?.()}
                 </TabItem>
             </a>
