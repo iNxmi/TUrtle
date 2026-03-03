@@ -89,7 +89,7 @@
     <span class="font-bold text-muted">{property.name}</span>
     {#if property.endpoint}
         <div class="w-full h-11 p-2.5 border border-gray-600/70 bg-gray-700/70 rounded-lg items-center text-text">
-            <a href={`/manage${endpoint}`} class="text-orange-400">{property.value}</a>
+            <a href={`${property.endpoint}`} class="text-orange-400">{property.value}</a>
         </div>
     {:else if Array.isArray(property.value)}
         {#each property.value as item}
