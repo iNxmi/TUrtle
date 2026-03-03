@@ -6,8 +6,4 @@ export class Altcha {
         return request("/api/altcha/challenge");
     }
 
-    static async trusted() {
-        return request("/api/altcha/trusted");
-    }
-
 }

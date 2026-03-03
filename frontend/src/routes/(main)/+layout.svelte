@@ -27,6 +27,7 @@
     let {data, children} = $props();
     let permissions = $derived(data.permissions);
     let user = $derived(data.user);
+    let connection = $derived(data.connection);
 
     const publicItems = [{
         label: m.main_navigation_item_public_home(),
@@ -195,7 +196,8 @@
     <SideNavigation logoRedirect="/"
                     header={header}
                     categories={categories}
-                    isTrusted={data.isTrustedDevice}
+                    isTrusted={connection.trusted}
+                    isLocalNetwork={connection.local}
                     showLogoutButton={user !== null}
     />
 
