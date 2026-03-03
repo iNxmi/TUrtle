@@ -112,7 +112,7 @@
 
 div {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-background) var(--color-background-secondary);
+    scrollbar-color: var(--color-gray-400) var(--color-background-secondary);
 }
 
 select option {

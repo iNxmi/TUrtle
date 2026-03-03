@@ -4,14 +4,14 @@
     let {children} = $props();
 
     const items = [{
-        title: "_Email Templates_",
-        href: "/manage/email-templates"
+        title: "_Items_",
+        href: "/manage/items",
     }, {
-        title: "_Content Templates_",
-        href: "/manage/content-templates"
+        title: "_Item Categories_",
+        href: "/manage/item-categories"
     }, {
-        title: "_FAQ_",
-        href: "/manage/faq"
+        title: "_Lockers_",
+        href: "/manage/lockers"
     }];
 </script>
 

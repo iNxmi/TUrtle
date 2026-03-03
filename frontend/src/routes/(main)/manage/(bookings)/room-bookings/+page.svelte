@@ -354,6 +354,7 @@
     }); */
 </script>
 
+<!--
 <TableView columns={columns}
            contentPage={data.page}
            onCreate={() => modal = true}
@@ -361,3 +362,4 @@
 />
 
 <CreateRoomBookingModal bind:open={modal} accessList={data.access} statusList={data.status}/>
+-->
