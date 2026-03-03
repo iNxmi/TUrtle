@@ -136,6 +136,8 @@
   "modal_contact_placeholder_content": "Describe your issue...",
   "modal_contact_button": "Submit",
 
+  "modal_door_unlock_tooltip": "You have to be in the local WIFI to open the door",
+
   "faq_title": "Frequently Asked Questions",
   "faq_label_problem_not_solved": "Problem not solved? Contact us.",
 

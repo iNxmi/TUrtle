@@ -155,7 +155,7 @@
                             {/if}
                         </ButtonGroup>
                         {#if !isLocalNetwork}
-                        <Tooltip triggeredBy="#doorButton">_You have to be in the local WIFI to open the door_</Tooltip>
+                        <Tooltip triggeredBy="#doorButton">{m.modal_door_unlock_tooltip()}</Tooltip>
                         {/if}
                     </div>
                 {/if}
