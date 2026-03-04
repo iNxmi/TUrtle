@@ -25,29 +25,29 @@
 <form class="flex flex-col gap-5">
     <div class="flex flex-row justify-between">
         <div class="flex flex-col">
-            <span>{m.admin_templates_id__id_label()}</span>
+            <span>{m.manage_content_templates_label_id()}</span>
             {template.id}
         </div>
 
         <Button class="cursor-pointer" onclick={saveTemplate}>_Save_</Button>
     </div>
     <div>
-        <span>{m.admin_templates_id__name_label()}</span>
+        <span>{m.manage_content_templates_label_name()}</span>
         <Input type="text" value={template.name}/>
     </div>
 
     <div>
-        <span>{m.admin_templates_id__description_label()}</span>
+        <span>{m.manage_content_templates_label_description()}</span>
         <Textarea class="w-full" value={template.description}/>
     </div>
 
     <div>
-        <span>{m.admin_templates_id__content_label()}</span>
+        <span>{m.manage_content_templates_label_content()}</span>
         <MarkdownEditor class="w-full" {content}/>
     </div>
 
     <div>
-        <span>{m.admin_templates_id__created_at_label()}</span>
+        <span>{m.manage_content_templates_label_created_at()}</span>
         <Input type="text" value={(new Date(template.createdAt)).toLocaleString()} disabled/>
     </div>
 </form>
