@@ -3,6 +3,8 @@
     import TableView from "$lib/components/TableView.svelte"
     import CreateRoomBookingModal from "$lib/components/modal/manage/CreateRoomBookingModal.svelte";
     import {goto} from "$app/navigation";
+    import Calendar from "$lib/components/Calendar.svelte";
+    import Card from "$lib/components/Card.svelte";
 
     const {data} = $props();
 
@@ -34,13 +36,18 @@
         }
     ];
 
-    let modal = $state(false);
+    let sources = [];
 </script>
 
-<TableView columns={columns}
-           contentPage={data.page}
-           onCreate={() => modal = true}
-           onItemClicked={(item) => goto(`/manage/room-bookings/${item.id}`)}
-/>
+<div class="flex-1 flex flex-col 2xl:flex-row gap-5">
+    <Card class="flex-1">
+        <Calendar bind:sources={sources} onEventClicked={(info) => goto(info.event.extendedProps.href)}/>
+    </Card>
 
-<CreateRoomBookingModal bind:open={modal} accessList={data.access} statusList={data.status}/>
+    <div class="flex-1 flex">
+        <TableView columns={columns}
+                   contentPage={data.page}
+                   onItemClicked={(item) => goto(`/manage/room-bookings/${item.id}`)}
+        />
+    </div>
+</div>

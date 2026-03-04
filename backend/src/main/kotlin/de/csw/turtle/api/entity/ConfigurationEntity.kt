@@ -41,11 +41,13 @@ class ConfigurationEntity(
         USER_EMAIL_TRUSTED,
         USER_PASSWORD_REGEX,
 
+        ALTCHA_ENABLED,
         ALTCHA_SECRET,
         ALTCHA_MAX_NUMBER,
         ALTCHA_DURATION,
         ALTCHA_TRUSTED_IPS,
 
+        DOOR_DEBUG_ENABLED,
         DOOR_OPEN_DURATION,
         DOOR_SCHEDULE_START,
         DOOR_SCHEDULE_END,
@@ -55,6 +57,7 @@ class ConfigurationEntity(
         DOOR_SSH_USERNAME,
         DOOR_SSH_PASSWORD,
 
+        LOCKER_DEBUG_ENABLED,
         LOCKER_SCHEDULE_START,
         LOCKER_SCHEDULE_END,
         LOCKER_SSH_COMMAND,

@@ -75,6 +75,7 @@ class DefaultConfiguration(
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{10,}\$"
         }
 
+        setDefault(Key.ALTCHA_ENABLED, Type.BOOLEAN) { false } //TODO Change in prod
         setDefault(Key.ALTCHA_SECRET, Type.STRING) { randomBase64() }
         setDefault(Key.ALTCHA_MAX_NUMBER, Type.LONG) { 100_000L }
         setDefault(Key.ALTCHA_DURATION, Type.DURATION) { Duration.ofMinutes(3) }
@@ -83,6 +84,7 @@ class DefaultConfiguration(
             objectMapper.writeValueAsString(set)
         }
 
+        setDefault(Key.DOOR_DEBUG_ENABLED, Type.BOOLEAN) { true } //TODO Change for prod
         setDefault(Key.DOOR_OPEN_DURATION, Type.DURATION, PUBLIC) { Duration.ofSeconds(5) }
         setDefault(Key.DOOR_SCHEDULE_START, Type.TIME, PUBLIC) { LocalTime.of(6, 0) }
         setDefault(Key.DOOR_SCHEDULE_END, Type.TIME, PUBLIC) { LocalTime.of(22, 0) }
@@ -93,6 +95,7 @@ class DefaultConfiguration(
         setDefault(Key.DOOR_SSH_USERNAME, Type.STRING) { "" }
         setDefault(Key.DOOR_SSH_PASSWORD, Type.STRING) { "" }
 
+        setDefault(Key.LOCKER_DEBUG_ENABLED, Type.BOOLEAN) { true } //TODO change for prod
         setDefault(Key.LOCKER_SCHEDULE_START, Type.TIME, PUBLIC) { LocalTime.of(6, 0) }
         setDefault(Key.LOCKER_SCHEDULE_END, Type.TIME, PUBLIC) { LocalTime.of(22, 0) }
         //thymeleaf simple template

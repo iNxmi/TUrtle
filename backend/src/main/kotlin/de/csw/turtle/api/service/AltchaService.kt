@@ -31,6 +31,10 @@ class AltchaService(
 
     @Transactional
     fun isTrusted(ipAddress: String): Boolean {
+        val isAltchaEnabled = configurationService.getTyped<Boolean>(Key.ALTCHA_ENABLED)
+        if (!isAltchaEnabled)
+            return true
+
         val trustedIps = configurationService.getTyped<List<String>>(Key.ALTCHA_TRUSTED_IPS)
         return trustedIps.contains(ipAddress)
     }

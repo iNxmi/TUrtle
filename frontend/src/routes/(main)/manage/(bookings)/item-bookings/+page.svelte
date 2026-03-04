@@ -2,6 +2,8 @@
     import {m} from '$lib/paraglide/messages.js';
     import TableView from "$lib/components/TableView.svelte"
     import {goto} from "$app/navigation";
+    import Card from "$lib/components/Card.svelte";
+    import Calendar from "$lib/components/Calendar.svelte";
 
     const {data} = $props();
 
@@ -31,9 +33,23 @@
             enabled: false
         }
     ];
+
+    let sources = [];
 </script>
 
-<TableView columns={columns}
-           contentPage={data.page}
-           onItemClicked={(item) => goto(`/manage/item-bookings/${item.id}`)}
-/>
+<div class="flex-1 flex flex-col 2xl:flex-row gap-5">
+    <Card class="flex-1">
+        <Calendar bind:sources={sources} onEventClicked={(info) => goto(info.event.extendedProps.href)}/>
+    </Card>
+
+    <div class="flex-1 flex">
+        <TableView columns={columns}
+                   contentPage={data.page}
+                   onItemClicked={(item) => goto(`/manage/item-bookings/${item.id}`)}
+        />
+    </div>
+</div>
+
+<!--{#if modal}-->
+<!--    <CreateItemBookingModal bind:open={modal} categoryList={data.categories} itemList={data.items}/>-->
+<!--{/if}-->
