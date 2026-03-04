@@ -1,66 +1,80 @@
 <script>
-    import {page} from '$app/state';
-    import { Button, Input} from 'flowbite-svelte';
-    import { PenSolid, FloppyDiskAltSolid } from 'flowbite-svelte-icons';
-    import {ItemBookings} from '$lib/api';
-    import WhitelistDropdown from './WhitelistDropdown.svelte';
+    import Card from "$lib/components/Card.svelte";
+    import _ from "lodash";
+    import {Button, ButtonGroup, Spinner, Tooltip} from 'flowbite-svelte';
+    import {
+        CloseOutline,
+        EditOutline,
+        FloppyDiskAltOutline,
+        ShareNodesOutline,
+        TrashBinOutline,
+        UndoOutline
+    } from 'flowbite-svelte-icons';
+    import {invalidateAll} from "$app/navigation";
 
-    let {title, entity} = $props();
-    
-    let formattedEntity = $derived.by(() => {
-        
-        let id = 0;
-        let tempEntity = [];
-        
-        entity.content.forEach((property) => {
-            
-            if(Array.isArray(property)){
-                let groupId = 0;
-                let group = [];
-                for(let i = 0; i < property.length; i++){
-                    group.push({...property[i], id: groupId});
-                    groupId++;
-                }
-                
-                tempEntity.push({group: group, id: id});
-                id++;
-            } else {
-                tempEntity.push({...property, id: id});
-                id++;
-            }
-        });
-        
-        return tempEntity;
-    });
-    
-    let finalEntity = $state(formattedEntity);
-    
-    let endpoint = $derived(entity.endpoint);
-    
-    async function saveEntity(property){
-        
-        let value = property.value;
-        if(Array.isArray(property.value)){
-            value = value[0];
-        } else if(property.inputType === 'datetime-local'){
-            
-            value = new Date(value);
-        }
-        let payload = {};
-        
-        payload[property.key] = value;
-        
-        ItemBookings.patch(page.params.id, payload);
+    let {
+        id,
+        title,
+        items,
+        onPatch
+    } = $props();
+
+    const flatItems = $derived(_.flattenDeep(items));
+
+    const initialValues = _.reduce(flatItems, (acc, item) => {
+        if (item.field && item.props?.value !== undefined)
+            acc[item.field] = item.props.value;
+
+        return acc;
+    }, {});
+
+    alert(JSON.stringify(initialValues, null, 2));
+
+    let updatedValues = $state(structuredClone(initialValues));
+
+    function difference(dominant, submissive) {
+        const result = {};
+
+        for (const key in submissive)
+            if (!_.isEqual(submissive[key], dominant[key]))
+                result[key] = dominant[key];
+
+        return result;
     }
-    
-    function toggleEditMode(property){
-        
-        if(property.editMode){
-            saveEntity(property);
-        }
-        property.editMode = !property.editMode;
+
+    async function patch(event) {
+        event.preventDefault();
+
+        loading = true;
+        const payload = difference(updatedValues, initialValues);
+        const response = await onPatch(id, payload);
+        loading = false;
+
+        if (response.ok !== true)
+            alert(JSON.stringify(response, null, 2));
+
+        await invalidateAll();
+        edit = false;
     }
+
+    async function cancel(event) {
+        event.preventDefault();
+
+        await invalidateAll();
+        edit = false;
+    }
+
+    async function clipboard(event) {
+        event.preventDefault();
+
+        const url = window.location.href;
+        await navigator.clipboard.writeText(url);
+    }
+
+    let edit = $state(false);
+    let loading = $state(false);
 </script>
+
 <!--
  * @component
  * A component for displaying database entries.
@@ -84,65 +98,73 @@
  *
  * ```[{prop1}, {prop2}, [{prop3}, {prop4}], {prop5}]```
  -->
-{#snippet textWithLabel(property)}
-<div class="flex-1">
-    <span class="font-bold text-muted">{property.name}</span>
-    {#if property.href}
-        <div class="w-full h-11 p-2.5 border border-gray-600/70 bg-gray-700/70 rounded-lg items-center text-text">
-            <a href={property.href} class="text-orange-400">{property.value}</a>
-        </div>
-    {:else if Array.isArray(property.value)}
-        {#each property.value as item}
-        <p>{item}</p>
-            {/each}
-        {:else}
-            {#if property.isEditable}
-                {#if property.editMode}
-                    {#if property.enum}
-                        <WhitelistDropdown users={property.enum} bind:value={property.value} single>
-                            <FloppyDiskAltSolid onclick={() => toggleEditMode(property)} class="hover:text-csw cursor-pointer"/>
-                        </WhitelistDropdown>     
-                    {:else}
-                        <Input bind:value={property.value} type={property.inputType || "text"} onclick={() => saveEntity(property.key)}>
-                            {#snippet right()}
-                                <FloppyDiskAltSolid onclick={() => toggleEditMode(property)} class="hover:text-csw cursor-pointer"/>
-                            {/snippet}
-                        </Input>
-                    {/if}
-                {:else}
-                    <div class="block relative w-full h-11 rtl:text-right opacity-70 px-2.5 py-2.5 border border-gray-300 dark:border-gray-600  bg-gray-50  dark:bg-gray-700 rounded-lg text-text">{property.value}
-                        <div class="flex absolute inset-y-0 items-center text-gray-500 dark:text-gray-400 end-0 p-2.5">
-                            <PenSolid onclick={() => toggleEditMode(property)} class="hover:text-csw cursor-pointer"/>
-                        </div>
-                    </div>
-                {/if}
-            {:else}
-                <div class="w-full h-11 p-2.5 border opacity-70 border-gray-600 bg-gray-700 rounded-lg items-center text-text">
-                        {property.value}
-                </div>
+
+{#snippet editable(property, edit)}
+    {@const Component = property.component}
+    <div class="flex-1 flex flex-col">
+        <div>{property.label}</div>
+        <ButtonGroup class="flex-1">
+            <Component class="disabled:cursor-default" bind:value={updatedValues[property.field]} {...property.props}
+                       disabled={!(edit === true && property.editable === true)}/>
+            {#if edit === true && property.editable === true}
+                <Button disabled={updatedValues[property.field] === initialValues[property.field]} onclick={() => updatedValues[property.field] = initialValues[property.field]}>
+                    <UndoOutline/>
+                </Button>
             {/if}
-        {/if}
+        </ButtonGroup>
     </div>
 {/snippet}
 
-<div class="flex flex-col justify-center items-center">
-    <div class="w-full flex flex-col bg-white border rounded-lg max-w-2xl border-gray-200 dark:bg-gray-800 dark:border-gray-700 shadow-md  p-5 grow"
-         size="lg">
-        <div class="flex flex-row justify-center">
-            <span class="font-bold text-2xl text-text text-center">{`${title} ID: ${page.params.id}`}</span>
-        </div>
-        <div class="flex flex-col gap-5">
-            {#each finalEntity as property (property.id)}
-                {#if property.group}
-                    <div class="flex gap-5">
-                        {#each property.group as singleProperty (singleProperty.id)}
-                            {@render textWithLabel(singleProperty)}
-                        {/each} 
-                    </div>
+<div class="flex gap-5">
+    <Card class="grow flex flex-col gap-5">
+        {#each items as item}
+            {#if Array.isArray(item)}
+                <div class="flex gap-5">
+                    {#each item as subItem}
+                        {@render editable(subItem, edit)}
+                    {/each}
+                </div>
+            {:else}
+                {@render editable(item, edit)}
+            {/if}
+        {/each}
+    </Card>
+
+    <Card class="flex lg:flex-col gap-5 justify-between">
+        <div class="flex lg:flex-col gap-5">
+            <ButtonGroup>
+                <Button color="alternative" class="w-full" onclick={clipboard}>
+                    <Tooltip trigger="click">
+                        _copied_
+                    </Tooltip>
+                    <ShareNodesOutline/>
+                </Button>
+            </ButtonGroup>
+
+            <ButtonGroup>
+                {#if edit === true}
+                    <Button color="orange" disabled={loading === true} onclick={patch}>
+                        {#if loading === true}
+                            <Spinner size="5"/>
+                        {:else}
+                            <FloppyDiskAltOutline/>
+                        {/if}
+                    </Button>
+                    <Button onclick={cancel}>
+                        <CloseOutline/>
+                    </Button>
                 {:else}
-                    {@render textWithLabel(property)}
+                    <Button color="orange" onclick={() => edit = true}>
+                        <EditOutline/>
+                    </Button>
                 {/if}
-            {/each}
+            </ButtonGroup>
         </div>
-    </div>
+
+        <ButtonGroup>
+            <Button color="red" class="w-full">
+                <TrashBinOutline/>
+            </Button>
+        </ButtonGroup>
+    </Card>
 </div>
