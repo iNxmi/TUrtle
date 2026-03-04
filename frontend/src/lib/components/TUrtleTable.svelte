@@ -125,7 +125,7 @@
         <Hr class="m-0 p-0"/>
     {/if}
 
-    <Table divClass="grow" hoverable>
+    <Table classes={{div: "grow"}} hoverable>
         <TableHead>
             {#each columns as column}
                 {#if activeColumns[column.field] === true}
