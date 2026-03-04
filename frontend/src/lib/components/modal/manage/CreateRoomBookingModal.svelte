@@ -2,7 +2,7 @@
     import {Button, Datepicker, Heading, Hr, Input, Modal, Select, Textarea} from "flowbite-svelte";
     import {m} from "$lib/paraglide/messages.js";
     import Calendar from "$lib/components/Calendar.svelte"
-    import Timepicker from "$lib/components/Timepicker.svelte";
+    import TimePicker from "$lib/components/TimePicker.svelte";
     import {RoomBookings} from "$lib/api";
     import {invalidateAll} from "$app/navigation";
 
@@ -106,7 +106,7 @@
                     <div>{m.modal_manage_create_room_booking_label_start()}</div>
                     <div class="flex flex-col gap-1">
                         <Datepicker bind:value={start} required/>
-                        <Timepicker bind:value={start} required/>
+                        <TimePicker bind:value={start} required/>
                     </div>
                 </div>
 
@@ -114,7 +114,7 @@
                     <div>{m.modal_manage_create_room_booking_label_end()}</div>
                     <div class="flex flex-col gap-1">
                         <Datepicker bind:value={end} required/>
-                        <Timepicker bind:value={end} required/>
+                        <TimePicker bind:value={end} required/>
                     </div>
                 </div>
 

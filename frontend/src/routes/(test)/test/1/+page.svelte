@@ -1,5 +1,6 @@
 <script>
     import ItemDetailsPage from "$lib/components/ItemDetailsPage.svelte";
+    import DateTimePicker from "$lib/components/DateTimePicker.svelte";
     import {Input, Select} from "flowbite-svelte";
     import {ItemBookings} from "$lib/api";
 
@@ -36,7 +37,7 @@
         label: "Start",
         field: "start",
         editable: true,
-        component: Input,
+        component: DateTimePicker,
         props: {
             value: new Date(data.itemBooking.start),
         }
@@ -44,7 +45,7 @@
         label: "End",
         field: "end",
         editable: true,
-        component: Input,
+        component: DateTimePicker,
         props: {
             value: new Date(data.itemBooking.end)
         }
@@ -74,4 +75,4 @@
     }]]);
 </script>
 
-<ItemDetailsPage id={data.itemBooking.id} items={items} onPatch={(id, payload) => ItemBookings.patch(id, payload)}/>
+<ItemDetailsPage items={items} onPatch={(payload) => ItemBookings.patch(data.itemBooking.id, payload)}/>

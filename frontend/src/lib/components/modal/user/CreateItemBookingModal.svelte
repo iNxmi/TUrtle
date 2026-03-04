@@ -2,7 +2,7 @@
     import {Button, Datepicker, Heading, Hr, Modal, Select, Spinner} from "flowbite-svelte";
     import {m} from "$lib/paraglide/messages.js";
     import Calendar from "$lib/components/Calendar.svelte"
-    import Timepicker from "$lib/components/Timepicker.svelte";
+    import TimePicker from "$lib/components/TimePicker.svelte";
     import {ItemBookings} from "$lib/api";
     import {invalidateAll} from "$app/navigation";
 
@@ -112,7 +112,7 @@
                     <div>{m.modal_user_create_item_booking_label_start()}</div>
                     <div class="flex flex-col gap-1">
                         <Datepicker disabled={itemId === null} bind:value={start}/>
-                        <Timepicker disabled={itemId === null} bind:value={start}/>
+                        <TimePicker disabled={itemId === null} bind:value={start}/>
                     </div>
                 </div>
 
@@ -120,7 +120,7 @@
                     <div>{m.modal_user_create_item_booking_label_end()}</div>
                     <div class="flex flex-col gap-1">
                         <Datepicker disabled={itemId === null} bind:value={end}/>
-                        <Timepicker disabled={itemId === null} bind:value={end}/>
+                        <TimePicker disabled={itemId === null} bind:value={end}/>
                     </div>
                 </div>
 

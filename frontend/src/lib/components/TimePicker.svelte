@@ -2,8 +2,9 @@
     import {Timepicker} from "flowbite-svelte";
 
     let {
-        disabled = false,
-        value = $bindable(new Date())
+        value = $bindable(new Date()),
+        class: className = "",
+        ...rest
     } = $props();
 
     let time = $state(format(value));
@@ -37,4 +38,4 @@
     });
 </script>
 
-<Timepicker disabled={disabled} bind:value={time}/>
+<Timepicker type="default" inputClass="rounded-l-none" divClass={`w-full ${className}`} bind:value={time} {...rest}/>

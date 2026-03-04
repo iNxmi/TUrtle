@@ -13,7 +13,6 @@
     import {invalidateAll} from "$app/navigation";
 
     let {
-        id,
         title,
         items,
         onPatch
@@ -27,8 +26,6 @@
 
         return acc;
     }, {});
-
-    alert(JSON.stringify(initialValues, null, 2));
 
     let updatedValues = $state(structuredClone(initialValues));
 
@@ -47,7 +44,7 @@
 
         loading = true;
         const payload = difference(updatedValues, initialValues);
-        const response = await onPatch(id, payload);
+        const response = await onPatch(payload);
         loading = false;
 
         if (response.ok !== true)
@@ -99,15 +96,16 @@
  * ```[{prop1}, {prop2}, [{prop3}, {prop4}], {prop5}]```
  -->
 
-{#snippet editable(property, edit)}
+{#snippet input(property, edit)}
     {@const Component = property.component}
     <div class="flex-1 flex flex-col">
         <div>{property.label}</div>
         <ButtonGroup class="flex-1">
-            <Component class="disabled:cursor-default" bind:value={updatedValues[property.field]} {...property.props}
-                       disabled={!(edit === true && property.editable === true)}/>
+            {@const enabled = (edit === true && property.editable === true)}
+            <Component bind:value={updatedValues[property.field]} disabled={!enabled} {...property.props} />
             {#if edit === true && property.editable === true}
-                <Button disabled={updatedValues[property.field] === initialValues[property.field]} onclick={() => updatedValues[property.field] = initialValues[property.field]}>
+                {@const isEqual = _.isEqual(updatedValues[property.field], initialValues[property.field])}
+                <Button disabled={isEqual} onclick={() => updatedValues[property.field] = initialValues[property.field]}>
                     <UndoOutline/>
                 </Button>
             {/if}
@@ -121,11 +119,11 @@
             {#if Array.isArray(item)}
                 <div class="flex gap-5">
                     {#each item as subItem}
-                        {@render editable(subItem, edit)}
+                        {@render input(subItem, edit)}
                     {/each}
                 </div>
             {:else}
-                {@render editable(item, edit)}
+                {@render input(item, edit)}
             {/if}
         {/each}
     </Card>

@@ -70,11 +70,12 @@
         ...rest
     } = $props();
 
-    let activeColumns = $derived(Object.fromEntries(columns.map(column => [column.field, column.enabled !== false])));
+    //needs to be state in order to be changed by user
+    let activeColumns = $state(Object.fromEntries(columns.map(column => [column.field, column.enabled !== false])));
     let search = $state("");
 </script>
 
-<Card class={`min-w-full dark:border-none ${className}`}>
+<Card class={`min-w-full dark:border-none ${className}`} {...rest}>
     {#if !hideSearch || !hideAdd || !hideReload}
         <div class="flex gap-2 justify-between p-3">
             <div class="flex-1 flex">
