@@ -57,6 +57,7 @@
     async function cancel(event) {
         event.preventDefault();
 
+        await invalidateAll();
         updatedValues = structuredClone(initialValues);
         edit = false;
     }

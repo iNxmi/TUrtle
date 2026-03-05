@@ -178,11 +178,11 @@ select option {
     }
 }
 
-  .fc {
+.fc {
     div {
         color: var(--color-text);
     }
-} 
+}
 
 .overflow-y-scroll {
     scrollbar-color: #c2c2c2 #ffffff;

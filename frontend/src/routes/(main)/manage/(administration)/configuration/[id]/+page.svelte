@@ -30,7 +30,7 @@
         }
     }, {
         label: m.manage_configuration_label_value(),
-        field: "permissions",
+        field: "value",
         editable: true,
         component: Input,
         props: {
