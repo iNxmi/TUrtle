@@ -26,6 +26,9 @@ class EmailTemplateService(
     ): EmailTemplateEntity {
         if (repository.findByName(name) != null)
             throw HttpException.Conflict("Email template with name '$name' already exists.")
+        
+        if (type != null && repository.findByType(type) != null)
+            throw HttpException.Conflict("Email template with type '$type' already exists.")
 
         val entity = EmailTemplateEntity(
             name = name,
@@ -52,6 +55,9 @@ class EmailTemplateService(
         if (name != null)
             if (repository.findByName(name) != null)
                 throw HttpException.Conflict("Email template with name '$name' already exists.")
+                
+        if (type != null && repository.findByType(type) != null)
+            throw HttpException.Conflict("Email template with type '$type' already exists.")
 
         name?.let { entity.name = it }
         description?.let { entity.description = it }
