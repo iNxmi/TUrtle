@@ -1,5 +1,6 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
+
   "terminal_navigation_item_emojis": "Emoji",
   "terminal_navigation_item_counter_strike": "Counter Strike",
   "terminal_navigation_item_qr_code": "Cod QR",
@@ -7,6 +8,7 @@
   "terminal_navigation_item_report": "Raportează o problemă",
   "terminal_navigation_category_open": "Deschide",
   "terminal_navigation_category_help": "Ajutor",
+
   "main_navigation_button_login": "Autentificare",
   "main_navigation_button_register": "Înregistrare",
   "main_navigation_button_logout": "Deconectare",
@@ -44,17 +46,20 @@
   "main_navigation_item_manage_item_management": "Gestionare obiecte",
   "main_navigation_item_manage_support": "Suport",
   "main_navigation_item_manage_user_management": "Gestionare utilizatori",
+
   "footer_about": "Despre",
   "footer_imprint": "Amprentă",
   "footer_tos": "Termeni de serviciu",
   "footer_gdpr": "Regulamentul general privind protecția datelor",
   "footer_contact": "Contact",
+
   "modal_user_create_item_booking_title": "Creează rezervare obiect",
   "modal_user_create_item_booking_label_category": "Categorie",
   "modal_user_create_item_booking_label_item": "Obiect",
   "modal_user_create_item_booking_label_start": "Început",
   "modal_user_create_item_booking_label_end": "Sfârșit",
   "modal_user_create_item_booking_button": "Trimite",
+
   "modal_user_create_room_booking_title": "Creează rezervare sală",
   "modal_user_create_room_booking_label_title": "Titlu",
   "modal_user_create_room_booking_label_description": "Descriere",
@@ -62,6 +67,7 @@
   "modal_user_create_room_booking_label_end": "Sfârșit",
   "modal_user_create_room_booking_label_accessibility": "Accesibilitate",
   "modal_user_create_room_booking_button": "Trimite",
+
   "modal_manage_create_room_booking_title": "Creează rezervare sală",
   "modal_manage_create_room_booking_label_title": "Titlu",
   "modal_manage_create_room_booking_label_description": "Descriere",
@@ -70,6 +76,7 @@
   "modal_manage_create_room_booking_label_accessibility": "Accesibilitate",
   "modal_manage_create_room_booking_label_status": "Status",
   "modal_manage_create_room_booking_button": "Trimite",
+
   "modal_manage_create_user_title": "Creează utilizator",
   "modal_manage_create_user_label_username": "Nume de utilizator",
   "modal_manage_create_user_label_first_name": "Prenume",
@@ -80,14 +87,17 @@
   "modal_manage_create_user_label_roles": "Roluri",
   "modal_manage_create_user_label_status": "Status",
   "modal_manage_create_user_button": "Creează",
+
   "modal_door_title": "Deblochezi ușa?",
   "modal_door_content": "Va trebui să fii conectat la rețeaua locală ('csw_intern') pentru ca această acțiune să funcționeze.",
   "modal_door_button_unlock": "Deblochează",
   "modal_door_button_cancel": "Anulează",
+
   "modal_logout_title": "Deconectare",
   "modal_logout_content": "Sigur vrei să te deconectezi?",
   "modal_logout_button_logout": "Deconectare",
   "modal_logout_button_cancel": "Anulează",
+
   "modal_login_title": "Autentificare în TUrtle",
   "modal_login_label_username_or_email": "E-mail sau nume de utilizator",
   "modal_login_label_password": "Parolă",
@@ -95,6 +105,7 @@
   "modal_login_label_no_account": "Nu ai cont? Înregistrează-te aici.",
   "modal_login_label_remember_me": "Ține-mă minte ({days} zile)",
   "modal_login_button": "Autentificare",
+
   "modal_register_title": "Înregistrare în TUrtle",
   "modal_register_label_username": "Nume de utilizator",
   "modal_register_label_first_name": "Prenume",
@@ -106,6 +117,7 @@
   "modal_register_label_password_repeat": "Repetă parola",
   "modal_register_label_already_have_a_account": "Ai deja un cont? Autentifică-te aici.",
   "modal_register_button": "Înregistrare",
+
   "modal_contact_title": "Creează un tichet de suport",
   "modal_contact_label_urgency": "Urgență",
   "modal_contact_label_category": "Categorie",
@@ -123,23 +135,29 @@
   "modal_contact_category_other": "Altele",
   "modal_contact_placeholder_content": "Descrie problema ta...",
   "modal_contact_button": "Trimite",
+
   "modal_door_unlock_tooltip": "Trebuie să fii în rețeaua WiFi locală pentru a deschide ușa",
+
   "faq_title": "Întrebări frecvente",
   "faq_label_problem_not_solved": "Problemă nerezolvată? Contactează-ne.",
+
   "tos_title": "Termeni de serviciu",
   "gdpr_title": "Regulamentul general privind protecția datelor",
   "imprint_title": "Amprentă",
   "about_title": "Despre",
+
   "user_dashboard_title_current_item_bookings": "Rezervări obiecte active",
   "user_dashboard_title_current_room_bookings": "Rezervări săli active",
   "user_dashboard_content_no_current_item_bookings": "Nicio rezervare de obiect activă.",
   "user_dashboard_content_no_current_room_bookings": "Nicio rezervare de sală activă.",
+
   "user_profile_label_username": "Nume de utilizator",
   "user_profile_label_first_name": "Prenume",
   "user_profile_label_last_name": "Nume de familie",
   "user_profile_label_roles": "Roluri",
   "user_profile_label_email": "E-mail",
   "user_profile_label_created_at": "Creat la",
+
   "user_item_bookings_label_id": "ID",
   "user_item_bookings_label_item": "Obiect",
   "user_item_bookings_label_start": "Început",
@@ -147,6 +165,7 @@
   "user_item_bookings_label_status": "Status",
   "user_item_bookings_label_updated_at": "Actualizat la",
   "user_item_bookings_label_created_at": "Creat la",
+
   "user_room_bookings_label_id": "ID",
   "user_room_bookings_label_title": "Titlu",
   "user_room_bookings_label_description": "Descriere",
@@ -154,6 +173,7 @@
   "user_room_bookings_label_end": "Sfârșit",
   "user_room_bookings_label_updated_at": "Actualizat la",
   "user_room_bookings_label_created_at": "Creat la",
+
   "manage_items_label_id": "ID",
   "manage_items_label_name": "Nume",
   "manage_items_label_description": "Descriere",
@@ -163,18 +183,22 @@
   "manage_items_label_acquired_at": "Achiziționat la",
   "manage_items_label_updated_at": "Actualizat la",
   "manage_items_label_created_at": "Creat la",
+
   "manage_item_categories_label_id": "ID",
   "manage_item_categories_label_name": "Nume",
   "manage_item_categories_label_updated_at": "Actualizat la",
   "manage_item_categories_label_created_at": "Creat la",
+
   "manage_support_ticket_categories_label_id": "ID",
   "manage_support_ticket_categories_label_name": "Nume",
   "manage_support_ticket_categories_label_updated_at": "Actualizat la",
   "manage_support_ticket_categories_label_created_at": "Creat la",
+
   "manage_support_ticket_urgencies_label_id": "ID",
   "manage_support_ticket_urgencies_label_name": "Nume",
   "manage_support_ticket_urgencies_label_updated_at": "Actualizat la",
   "manage_support_ticket_urgencies_label_created_at": "Creat la",
+
   "manage_item_bookings_label_id": "ID",
   "manage_item_bookings_label_user": "Utilizator",
   "manage_item_bookings_label_item": "Obiect",
@@ -183,6 +207,7 @@
   "manage_item_bookings_label_status": "Status",
   "manage_item_bookings_label_updated_at": "Actualizat la",
   "manage_item_bookings_label_created_at": "Creat la",
+
   "manage_room_bookings_label_id": "ID",
   "manage_room_bookings_label_user": "Utilizator",
   "manage_room_bookings_label_title": "Titlu",
@@ -194,6 +219,7 @@
   "manage_room_bookings_label_status": "Status",
   "manage_room_bookings_label_updated_at": "Actualizat la",
   "manage_room_bookings_label_created_at": "Creat la",
+
   "manage_configuration_label_id": "ID",
   "manage_configuration_label_key": "Cheie",
   "manage_configuration_label_type": "Tip",
@@ -201,6 +227,7 @@
   "manage_configuration_label_visibility": "Vizibilitate",
   "manage_configuration_label_updated_at": "Actualizat la",
   "manage_configuration_label_created_at": "Creat la",
+
   "manage_users_label_id": "ID",
   "manage_users_label_username": "Nume de utilizator",
   "manage_users_label_status": "Status",
@@ -211,6 +238,7 @@
   "manage_users_label_emojis": "Emoji",
   "manage_users_label_updated_at": "Actualizat la",
   "manage_users_label_created_at": "Creat la",
+
   "manage_lockers_label_id": "ID",
   "manage_lockers_label_name": "Nume",
   "manage_lockers_label_index": "Index",
@@ -218,12 +246,14 @@
   "manage_lockers_label_locked": "Blocat",
   "manage_lockers_label_updated_at": "Actualizat la",
   "manage_lockers_label_created_at": "Creat la",
+
   "manage_roles_label_id": "ID",
   "manage_roles_label_name": "Nume",
   "manage_roles_label_type": "Tip",
   "manage_roles_label_permissions": "Permisiuni",
   "manage_roles_label_updated_at": "Actualizat la",
   "manage_roles_label_created_at": "Creat la",
+
   "manage_support_tickets_label_id": "ID",
   "manage_support_tickets_label_urgency": "Urgență",
   "manage_support_tickets_label_category": "Categorie",
@@ -233,6 +263,7 @@
   "manage_support_tickets_label_email": "E-mail",
   "manage_support_tickets_label_updated_at": "Actualizat la",
   "manage_support_tickets_label_created_at": "Creat la",
+
   "manage_faq_label_id": "ID",
   "manage_faq_label_name": "Nume",
   "manage_faq_label_title": "Titlu",
@@ -240,6 +271,7 @@
   "manage_faq_label_enabled": "Activat",
   "manage_faq_label_updated_at": "Actualizat la",
   "manage_faq_label_created_at": "Creat la",
+
   "manage_exceptions_label_id": "ID",
   "manage_exceptions_label_endpoint": "Punct final",
   "manage_exceptions_label_exception": "Excepție",
@@ -247,6 +279,7 @@
   "manage_exceptions_label_stack_trace": "Urma stivei",
   "manage_exceptions_label_updated_at": "Actualizat la",
   "manage_exceptions_label_created_at": "Creat la",
+
   "manage_audit_logs_label_id": "ID",
   "manage_audit_logs_label_user_id": "ID Utilizator",
   "manage_audit_logs_label_ip_address": "Adresă IP",
@@ -255,6 +288,7 @@
   "manage_audit_logs_label_status": "Status",
   "manage_audit_logs_label_updated_at": "Actualizat la",
   "manage_audit_logs_label_created_at": "Creat la",
+
   "manage_email_templates_label_id": "ID",
   "manage_email_templates_label_name": "Nume",
   "manage_email_templates_label_type": "Tip",
@@ -263,6 +297,7 @@
   "manage_email_templates_label_content": "Conținut",
   "manage_email_templates_label_created_at": "Creat la",
   "manage_email_templates_label_updated_at": "Actualizat la",
+
   "manage_content_templates_label_id": "ID",
   "manage_content_templates_label_name": "Nume",
   "manage_content_templates_label_type": "Tip",

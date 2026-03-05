@@ -1,5 +1,6 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
+
   "terminal_navigation_item_emojis": "Emojik",
   "terminal_navigation_item_counter_strike": "Counter Strike",
   "terminal_navigation_item_qr_code": "QR-kód",
@@ -7,6 +8,7 @@
   "terminal_navigation_item_report": "Probléma jelentése",
   "terminal_navigation_category_open": "Megnyitás",
   "terminal_navigation_category_help": "Súgó",
+
   "main_navigation_button_login": "Bejelentkezés",
   "main_navigation_button_register": "Regisztráció",
   "main_navigation_button_logout": "Kijelentkezés",
@@ -44,17 +46,20 @@
   "main_navigation_item_manage_item_management": "Tárgykezelés",
   "main_navigation_item_manage_support": "Támogatás",
   "main_navigation_item_manage_user_management": "Felhasználókezelés",
+
   "footer_about": "Rólunk",
   "footer_imprint": "Impresszum",
   "footer_tos": "Felhasználási feltételek",
   "footer_gdpr": "Általános adatvédelmi rendelet",
   "footer_contact": "Kapcsolat",
+
   "modal_user_create_item_booking_title": "Tárgyfoglalás létrehozása",
   "modal_user_create_item_booking_label_category": "Kategória",
   "modal_user_create_item_booking_label_item": "Tárgy",
   "modal_user_create_item_booking_label_start": "Kezdés",
   "modal_user_create_item_booking_label_end": "Befejezés",
   "modal_user_create_item_booking_button": "Küldés",
+
   "modal_user_create_room_booking_title": "Szobafoglalás létrehozása",
   "modal_user_create_room_booking_label_title": "Cím",
   "modal_user_create_room_booking_label_description": "Leírás",
@@ -62,6 +67,7 @@
   "modal_user_create_room_booking_label_end": "Befejezés",
   "modal_user_create_room_booking_label_accessibility": "Akadálymentesítés",
   "modal_user_create_room_booking_button": "Küldés",
+
   "modal_manage_create_room_booking_title": "Szobafoglalás létrehozása",
   "modal_manage_create_room_booking_label_title": "Cím",
   "modal_manage_create_room_booking_label_description": "Leírás",
@@ -70,6 +76,7 @@
   "modal_manage_create_room_booking_label_accessibility": "Akadálymentesítés",
   "modal_manage_create_room_booking_label_status": "Állapot",
   "modal_manage_create_room_booking_button": "Küldés",
+
   "modal_manage_create_user_title": "Felhasználó létrehozása",
   "modal_manage_create_user_label_username": "Felhasználónév",
   "modal_manage_create_user_label_first_name": "Keresztnév",
@@ -80,14 +87,17 @@
   "modal_manage_create_user_label_roles": "Szerepkörök",
   "modal_manage_create_user_label_status": "Állapot",
   "modal_manage_create_user_button": "Létrehozás",
+
   "modal_door_title": "Ajtó kinyitása?",
   "modal_door_content": "A helyi hálózaton ('csw_intern') kell lennie, hogy ez a művelet működjön.",
   "modal_door_button_unlock": "Kinyitás",
   "modal_door_button_cancel": "Mégse",
+
   "modal_logout_title": "Kijelentkezés",
   "modal_logout_content": "Biztosan ki szeretne jelentkezni?",
   "modal_logout_button_logout": "Kijelentkezés",
   "modal_logout_button_cancel": "Mégse",
+
   "modal_login_title": "Bejelentkezés a TUrtle-be",
   "modal_login_label_username_or_email": "E-mail vagy felhasználónév",
   "modal_login_label_password": "Jelszó",
@@ -95,6 +105,7 @@
   "modal_login_label_no_account": "Nincs fiókja? Regisztráljon itt.",
   "modal_login_label_remember_me": "Emlékezzen rám ({days} nap)",
   "modal_login_button": "Bejelentkezés",
+
   "modal_register_title": "Regisztráció a TUrtle-be",
   "modal_register_label_username": "Felhasználónév",
   "modal_register_label_first_name": "Keresztnév",
@@ -106,6 +117,7 @@
   "modal_register_label_password_repeat": "Jelszó ismétlése",
   "modal_register_label_already_have_a_account": "Már van fiókja? Jelentkezzen be itt.",
   "modal_register_button": "Regisztráció",
+
   "modal_contact_title": "Támogatási jegy létrehozása",
   "modal_contact_label_urgency": "Sürgősség",
   "modal_contact_label_category": "Kategória",
@@ -123,23 +135,29 @@
   "modal_contact_category_other": "Egyéb",
   "modal_contact_placeholder_content": "Írja le a problémáját...",
   "modal_contact_button": "Küldés",
+
   "modal_door_unlock_tooltip": "A helyi WiFi-hez kell csatlakoznia az ajtó kinyitásához",
+
   "faq_title": "Gyakran ismételt kérdések",
   "faq_label_problem_not_solved": "Nem oldódott meg a probléma? Lépjen kapcsolatba velünk.",
+
   "tos_title": "Felhasználási feltételek",
   "gdpr_title": "Általános adatvédelmi rendelet",
   "imprint_title": "Impresszum",
   "about_title": "Rólunk",
+
   "user_dashboard_title_current_item_bookings": "Aktuális tárgyfoglalások",
   "user_dashboard_title_current_room_bookings": "Aktuális szobafoglalások",
   "user_dashboard_content_no_current_item_bookings": "Nincsenek aktuális tárgyfoglalások.",
   "user_dashboard_content_no_current_room_bookings": "Nincsenek aktuális szobafoglalások.",
+
   "user_profile_label_username": "Felhasználónév",
   "user_profile_label_first_name": "Keresztnév",
   "user_profile_label_last_name": "Vezetéknév",
   "user_profile_label_roles": "Szerepkörök",
   "user_profile_label_email": "E-mail",
   "user_profile_label_created_at": "Létrehozva",
+
   "user_item_bookings_label_id": "ID",
   "user_item_bookings_label_item": "Tárgy",
   "user_item_bookings_label_start": "Kezdés",
@@ -147,6 +165,7 @@
   "user_item_bookings_label_status": "Állapot",
   "user_item_bookings_label_updated_at": "Frissítve",
   "user_item_bookings_label_created_at": "Létrehozva",
+
   "user_room_bookings_label_id": "ID",
   "user_room_bookings_label_title": "Cím",
   "user_room_bookings_label_description": "Leírás",
@@ -154,6 +173,7 @@
   "user_room_bookings_label_end": "Befejezés",
   "user_room_bookings_label_updated_at": "Frissítve",
   "user_room_bookings_label_created_at": "Létrehozva",
+
   "manage_items_label_id": "ID",
   "manage_items_label_name": "Név",
   "manage_items_label_description": "Leírás",
@@ -163,18 +183,22 @@
   "manage_items_label_acquired_at": "Beszerzés dátuma",
   "manage_items_label_updated_at": "Frissítve",
   "manage_items_label_created_at": "Létrehozva",
+
   "manage_item_categories_label_id": "ID",
   "manage_item_categories_label_name": "Név",
   "manage_item_categories_label_updated_at": "Frissítve",
   "manage_item_categories_label_created_at": "Létrehozva",
+
   "manage_support_ticket_categories_label_id": "ID",
   "manage_support_ticket_categories_label_name": "Név",
   "manage_support_ticket_categories_label_updated_at": "Frissítve",
   "manage_support_ticket_categories_label_created_at": "Létrehozva",
+
   "manage_support_ticket_urgencies_label_id": "ID",
   "manage_support_ticket_urgencies_label_name": "Név",
   "manage_support_ticket_urgencies_label_updated_at": "Frissítve",
   "manage_support_ticket_urgencies_label_created_at": "Létrehozva",
+
   "manage_item_bookings_label_id": "ID",
   "manage_item_bookings_label_user": "Felhasználó",
   "manage_item_bookings_label_item": "Tárgy",
@@ -183,6 +207,7 @@
   "manage_item_bookings_label_status": "Állapot",
   "manage_item_bookings_label_updated_at": "Frissítve",
   "manage_item_bookings_label_created_at": "Létrehozva",
+
   "manage_room_bookings_label_id": "ID",
   "manage_room_bookings_label_user": "Felhasználó",
   "manage_room_bookings_label_title": "Cím",
@@ -194,6 +219,7 @@
   "manage_room_bookings_label_status": "Állapot",
   "manage_room_bookings_label_updated_at": "Frissítve",
   "manage_room_bookings_label_created_at": "Létrehozva",
+
   "manage_configuration_label_id": "ID",
   "manage_configuration_label_key": "Kulcs",
   "manage_configuration_label_type": "Típus",
@@ -201,6 +227,7 @@
   "manage_configuration_label_visibility": "Láthatóság",
   "manage_configuration_label_updated_at": "Frissítve",
   "manage_configuration_label_created_at": "Létrehozva",
+
   "manage_users_label_id": "ID",
   "manage_users_label_username": "Felhasználónév",
   "manage_users_label_status": "Állapot",
@@ -211,6 +238,7 @@
   "manage_users_label_emojis": "Emojik",
   "manage_users_label_updated_at": "Frissítve",
   "manage_users_label_created_at": "Létrehozva",
+
   "manage_lockers_label_id": "ID",
   "manage_lockers_label_name": "Név",
   "manage_lockers_label_index": "Index",
@@ -218,12 +246,14 @@
   "manage_lockers_label_locked": "Zárolva",
   "manage_lockers_label_updated_at": "Frissítve",
   "manage_lockers_label_created_at": "Létrehozva",
+
   "manage_roles_label_id": "ID",
   "manage_roles_label_name": "Név",
   "manage_roles_label_type": "Típus",
   "manage_roles_label_permissions": "Jogosultságok",
   "manage_roles_label_updated_at": "Frissítve",
   "manage_roles_label_created_at": "Létrehozva",
+
   "manage_support_tickets_label_id": "ID",
   "manage_support_tickets_label_urgency": "Sürgősség",
   "manage_support_tickets_label_category": "Kategória",
@@ -233,6 +263,7 @@
   "manage_support_tickets_label_email": "E-mail",
   "manage_support_tickets_label_updated_at": "Frissítve",
   "manage_support_tickets_label_created_at": "Létrehozva",
+
   "manage_faq_label_id": "ID",
   "manage_faq_label_name": "Név",
   "manage_faq_label_title": "Cím",
@@ -240,6 +271,7 @@
   "manage_faq_label_enabled": "Engedélyezve",
   "manage_faq_label_updated_at": "Frissítve",
   "manage_faq_label_created_at": "Létrehozva",
+
   "manage_exceptions_label_id": "ID",
   "manage_exceptions_label_endpoint": "Végpont",
   "manage_exceptions_label_exception": "Kivétel",
@@ -247,6 +279,7 @@
   "manage_exceptions_label_stack_trace": "Veremnyom",
   "manage_exceptions_label_updated_at": "Frissítve",
   "manage_exceptions_label_created_at": "Létrehozva",
+
   "manage_audit_logs_label_id": "ID",
   "manage_audit_logs_label_user_id": "Felhasználó ID",
   "manage_audit_logs_label_ip_address": "IP-cím",
@@ -255,6 +288,7 @@
   "manage_audit_logs_label_status": "Állapot",
   "manage_audit_logs_label_updated_at": "Frissítve",
   "manage_audit_logs_label_created_at": "Létrehozva",
+
   "manage_email_templates_label_id": "ID",
   "manage_email_templates_label_name": "Név",
   "manage_email_templates_label_type": "Típus",
@@ -263,6 +297,7 @@
   "manage_email_templates_label_content": "Tartalom",
   "manage_email_templates_label_created_at": "Létrehozva",
   "manage_email_templates_label_updated_at": "Frissítve",
+
   "manage_content_templates_label_id": "ID",
   "manage_content_templates_label_name": "Név",
   "manage_content_templates_label_type": "Típus",

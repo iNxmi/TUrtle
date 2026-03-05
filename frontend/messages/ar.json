@@ -1,5 +1,6 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
+
   "terminal_navigation_item_emojis": "رموز تعبيرية",
   "terminal_navigation_item_counter_strike": "كاونتر سترايك",
   "terminal_navigation_item_qr_code": "رمز QR",
@@ -7,6 +8,7 @@
   "terminal_navigation_item_report": "الإبلاغ عن مشكلة",
   "terminal_navigation_category_open": "فتح",
   "terminal_navigation_category_help": "مساعدة",
+
   "main_navigation_button_login": "تسجيل الدخول",
   "main_navigation_button_register": "التسجيل",
   "main_navigation_button_logout": "تسجيل الخروج",
@@ -44,17 +46,20 @@
   "main_navigation_item_manage_item_management": "إدارة العناصر",
   "main_navigation_item_manage_support": "الدعم",
   "main_navigation_item_manage_user_management": "إدارة المستخدمين",
+
   "footer_about": "حول",
   "footer_imprint": "بيانات النشر",
   "footer_tos": "شروط الخدمة",
   "footer_gdpr": "اللائحة العامة لحماية البيانات",
   "footer_contact": "اتصل بنا",
+
   "modal_user_create_item_booking_title": "إنشاء حجز عنصر",
   "modal_user_create_item_booking_label_category": "الفئة",
   "modal_user_create_item_booking_label_item": "العنصر",
   "modal_user_create_item_booking_label_start": "البداية",
   "modal_user_create_item_booking_label_end": "النهاية",
   "modal_user_create_item_booking_button": "إرسال",
+
   "modal_user_create_room_booking_title": "إنشاء حجز غرفة",
   "modal_user_create_room_booking_label_title": "العنوان",
   "modal_user_create_room_booking_label_description": "الوصف",
@@ -62,6 +67,7 @@
   "modal_user_create_room_booking_label_end": "النهاية",
   "modal_user_create_room_booking_label_accessibility": "إمكانية الوصول",
   "modal_user_create_room_booking_button": "إرسال",
+
   "modal_manage_create_room_booking_title": "إنشاء حجز غرفة",
   "modal_manage_create_room_booking_label_title": "العنوان",
   "modal_manage_create_room_booking_label_description": "الوصف",
@@ -70,6 +76,7 @@
   "modal_manage_create_room_booking_label_accessibility": "إمكانية الوصول",
   "modal_manage_create_room_booking_label_status": "الحالة",
   "modal_manage_create_room_booking_button": "إرسال",
+
   "modal_manage_create_user_title": "إنشاء مستخدم",
   "modal_manage_create_user_label_username": "اسم المستخدم",
   "modal_manage_create_user_label_first_name": "الاسم الأول",
@@ -80,14 +87,17 @@
   "modal_manage_create_user_label_roles": "الأدوار",
   "modal_manage_create_user_label_status": "الحالة",
   "modal_manage_create_user_button": "إنشاء",
+
   "modal_door_title": "فتح الباب؟",
   "modal_door_content": "يجب أن تكون متصلاً بالشبكة المحلية ('csw_intern') لتعمل هذه العملية.",
   "modal_door_button_unlock": "فتح",
   "modal_door_button_cancel": "إلغاء",
+
   "modal_logout_title": "تسجيل الخروج",
   "modal_logout_content": "هل تريد حقاً تسجيل الخروج؟",
   "modal_logout_button_logout": "تسجيل الخروج",
   "modal_logout_button_cancel": "إلغاء",
+
   "modal_login_title": "تسجيل الدخول إلى TUrtle",
   "modal_login_label_username_or_email": "البريد الإلكتروني أو اسم المستخدم",
   "modal_login_label_password": "كلمة المرور",
@@ -95,6 +105,7 @@
   "modal_login_label_no_account": "ليس لديك حساب؟ سجّل هنا.",
   "modal_login_label_remember_me": "تذكرني ({days} يوم)",
   "modal_login_button": "تسجيل الدخول",
+
   "modal_register_title": "التسجيل في TUrtle",
   "modal_register_label_username": "اسم المستخدم",
   "modal_register_label_first_name": "الاسم الأول",
@@ -106,6 +117,7 @@
   "modal_register_label_password_repeat": "تكرار كلمة المرور",
   "modal_register_label_already_have_a_account": "لديك حساب بالفعل؟ سجّل الدخول هنا.",
   "modal_register_button": "التسجيل",
+
   "modal_contact_title": "إنشاء تذكرة دعم",
   "modal_contact_label_urgency": "الإلحاح",
   "modal_contact_label_category": "الفئة",
@@ -123,23 +135,29 @@
   "modal_contact_category_other": "أخرى",
   "modal_contact_placeholder_content": "صِف مشكلتك...",
   "modal_contact_button": "إرسال",
+
   "modal_door_unlock_tooltip": "يجب أن تكون متصلاً بشبكة الواي فاي المحلية لفتح الباب",
+
   "faq_title": "الأسئلة الشائعة",
   "faq_label_problem_not_solved": "لم تُحل المشكلة؟ تواصل معنا.",
+
   "tos_title": "شروط الخدمة",
   "gdpr_title": "اللائحة العامة لحماية البيانات",
   "imprint_title": "بيانات النشر",
   "about_title": "حول",
+
   "user_dashboard_title_current_item_bookings": "حجوزات العناصر الحالية",
   "user_dashboard_title_current_room_bookings": "حجوزات الغرف الحالية",
   "user_dashboard_content_no_current_item_bookings": "لا توجد حجوزات عناصر حالية.",
   "user_dashboard_content_no_current_room_bookings": "لا توجد حجوزات غرف حالية.",
+
   "user_profile_label_username": "اسم المستخدم",
   "user_profile_label_first_name": "الاسم الأول",
   "user_profile_label_last_name": "اسم العائلة",
   "user_profile_label_roles": "الأدوار",
   "user_profile_label_email": "البريد الإلكتروني",
   "user_profile_label_created_at": "تاريخ الإنشاء",
+
   "user_item_bookings_label_id": "المعرّف",
   "user_item_bookings_label_item": "العنصر",
   "user_item_bookings_label_start": "البداية",
@@ -147,6 +165,7 @@
   "user_item_bookings_label_status": "الحالة",
   "user_item_bookings_label_updated_at": "تاريخ التحديث",
   "user_item_bookings_label_created_at": "تاريخ الإنشاء",
+
   "user_room_bookings_label_id": "المعرّف",
   "user_room_bookings_label_title": "العنوان",
   "user_room_bookings_label_description": "الوصف",
@@ -154,6 +173,7 @@
   "user_room_bookings_label_end": "النهاية",
   "user_room_bookings_label_updated_at": "تاريخ التحديث",
   "user_room_bookings_label_created_at": "تاريخ الإنشاء",
+
   "manage_items_label_id": "المعرّف",
   "manage_items_label_name": "الاسم",
   "manage_items_label_description": "الوصف",
@@ -163,18 +183,22 @@
   "manage_items_label_acquired_at": "تاريخ الاقتناء",
   "manage_items_label_updated_at": "تاريخ التحديث",
   "manage_items_label_created_at": "تاريخ الإنشاء",
+
   "manage_item_categories_label_id": "المعرّف",
   "manage_item_categories_label_name": "الاسم",
   "manage_item_categories_label_updated_at": "تاريخ التحديث",
   "manage_item_categories_label_created_at": "تاريخ الإنشاء",
+
   "manage_support_ticket_categories_label_id": "المعرّف",
   "manage_support_ticket_categories_label_name": "الاسم",
   "manage_support_ticket_categories_label_updated_at": "تاريخ التحديث",
   "manage_support_ticket_categories_label_created_at": "تاريخ الإنشاء",
+
   "manage_support_ticket_urgencies_label_id": "المعرّف",
   "manage_support_ticket_urgencies_label_name": "الاسم",
   "manage_support_ticket_urgencies_label_updated_at": "تاريخ التحديث",
   "manage_support_ticket_urgencies_label_created_at": "تاريخ الإنشاء",
+
   "manage_item_bookings_label_id": "المعرّف",
   "manage_item_bookings_label_user": "المستخدم",
   "manage_item_bookings_label_item": "العنصر",
@@ -183,6 +207,7 @@
   "manage_item_bookings_label_status": "الحالة",
   "manage_item_bookings_label_updated_at": "تاريخ التحديث",
   "manage_item_bookings_label_created_at": "تاريخ الإنشاء",
+
   "manage_room_bookings_label_id": "المعرّف",
   "manage_room_bookings_label_user": "المستخدم",
   "manage_room_bookings_label_title": "العنوان",
@@ -194,6 +219,7 @@
   "manage_room_bookings_label_status": "الحالة",
   "manage_room_bookings_label_updated_at": "تاريخ التحديث",
   "manage_room_bookings_label_created_at": "تاريخ الإنشاء",
+
   "manage_configuration_label_id": "المعرّف",
   "manage_configuration_label_key": "المفتاح",
   "manage_configuration_label_type": "النوع",
@@ -201,6 +227,7 @@
   "manage_configuration_label_visibility": "الرؤية",
   "manage_configuration_label_updated_at": "تاريخ التحديث",
   "manage_configuration_label_created_at": "تاريخ الإنشاء",
+
   "manage_users_label_id": "المعرّف",
   "manage_users_label_username": "اسم المستخدم",
   "manage_users_label_status": "الحالة",
@@ -211,6 +238,7 @@
   "manage_users_label_emojis": "رموز تعبيرية",
   "manage_users_label_updated_at": "تاريخ التحديث",
   "manage_users_label_created_at": "تاريخ الإنشاء",
+
   "manage_lockers_label_id": "المعرّف",
   "manage_lockers_label_name": "الاسم",
   "manage_lockers_label_index": "الفهرس",
@@ -218,12 +246,14 @@
   "manage_lockers_label_locked": "مقفل",
   "manage_lockers_label_updated_at": "تاريخ التحديث",
   "manage_lockers_label_created_at": "تاريخ الإنشاء",
+
   "manage_roles_label_id": "المعرّف",
   "manage_roles_label_name": "الاسم",
   "manage_roles_label_type": "النوع",
   "manage_roles_label_permissions": "الصلاحيات",
   "manage_roles_label_updated_at": "تاريخ التحديث",
   "manage_roles_label_created_at": "تاريخ الإنشاء",
+
   "manage_support_tickets_label_id": "المعرّف",
   "manage_support_tickets_label_urgency": "الإلحاح",
   "manage_support_tickets_label_category": "الفئة",
@@ -233,6 +263,7 @@
   "manage_support_tickets_label_email": "البريد الإلكتروني",
   "manage_support_tickets_label_updated_at": "تاريخ التحديث",
   "manage_support_tickets_label_created_at": "تاريخ الإنشاء",
+
   "manage_faq_label_id": "المعرّف",
   "manage_faq_label_name": "الاسم",
   "manage_faq_label_title": "العنوان",
@@ -240,6 +271,7 @@
   "manage_faq_label_enabled": "مفعّل",
   "manage_faq_label_updated_at": "تاريخ التحديث",
   "manage_faq_label_created_at": "تاريخ الإنشاء",
+
   "manage_exceptions_label_id": "المعرّف",
   "manage_exceptions_label_endpoint": "نقطة النهاية",
   "manage_exceptions_label_exception": "الاستثناء",
@@ -247,6 +279,7 @@
   "manage_exceptions_label_stack_trace": "تتبع المكدس",
   "manage_exceptions_label_updated_at": "تاريخ التحديث",
   "manage_exceptions_label_created_at": "تاريخ الإنشاء",
+
   "manage_audit_logs_label_id": "المعرّف",
   "manage_audit_logs_label_user_id": "معرّف المستخدم",
   "manage_audit_logs_label_ip_address": "عنوان IP",
@@ -255,6 +288,7 @@
   "manage_audit_logs_label_status": "الحالة",
   "manage_audit_logs_label_updated_at": "تاريخ التحديث",
   "manage_audit_logs_label_created_at": "تاريخ الإنشاء",
+
   "manage_email_templates_label_id": "المعرّف",
   "manage_email_templates_label_name": "الاسم",
   "manage_email_templates_label_type": "النوع",
@@ -263,6 +297,7 @@
   "manage_email_templates_label_content": "المحتوى",
   "manage_email_templates_label_created_at": "تاريخ الإنشاء",
   "manage_email_templates_label_updated_at": "تاريخ التحديث",
+
   "manage_content_templates_label_id": "المعرّف",
   "manage_content_templates_label_name": "الاسم",
   "manage_content_templates_label_type": "النوع",
