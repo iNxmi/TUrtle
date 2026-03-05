@@ -97,15 +97,16 @@
  -->
 
 {#snippet field(property, edit)}
-    <div class="flex-1 flex flex-col">
+    <div class="flex flex-col">
         <div>{property.label}</div>
-        <ButtonGroup class="flex-1">
+        <ButtonGroup>
             {@const enabled = (edit === true && property.editable === true)}
             {@const Component = property.component}
-            <Component bind:value={updatedValues[property.field]} disabled={!enabled} {...property.props} />
+            <Component bind:value={updatedValues[property.field]} disabled={!enabled} {...property.props}/>
             {#if edit === true && property.editable === true}
                 {@const isEqual = _.isEqual(updatedValues[property.field], initialValues[property.field])}
-                <Button disabled={isEqual} onclick={() => updatedValues[property.field] = initialValues[property.field]}>
+                <Button disabled={isEqual}
+                        onclick={() => updatedValues[property.field] = initialValues[property.field]}>
                     <UndoOutline/>
                 </Button>
             {/if}
@@ -119,7 +120,9 @@
             {#if Array.isArray(item)}
                 <div class="flex gap-5">
                     {#each item as subItem}
-                        {@render field(subItem, edit)}
+                        <div class="flex-1">
+                            {@render field(subItem, edit)}
+                        </div>
                     {/each}
                 </div>
             {:else}

@@ -4,13 +4,23 @@
     import {goto} from "$app/navigation";
     import Card from "$lib/components/Card.svelte";
     import Calendar from "$lib/components/Calendar.svelte";
+    import _ from "lodash";
 
     const {data} = $props();
 
+    const usersById = $derived(_.keyBy(data.users, "id"));
+    const itemsById = $derived(_.keyBy(data.items, "id"));
+
     const columns = [
         {field: "id", label: m.manage_item_bookings_label_id(), enabled: false},
-        {field: "itemId", label: m.manage_item_bookings_label_item_id()},
-        {field: "userId", label: m.manage_item_bookings_label_user_id()},
+        {
+            field: "itemId", label: m.manage_item_bookings_label_item(),
+            transform: (value) => itemsById[value].name
+        },
+        {
+            field: "userId", label: m.manage_item_bookings_label_user(),
+            transform: (value) => usersById[value].username
+        },
         {field: "status", label: m.manage_item_bookings_label_status()},
         {
             field: "start", label: m.manage_item_bookings_label_start(),
