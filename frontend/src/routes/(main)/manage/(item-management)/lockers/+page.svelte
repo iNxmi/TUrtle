@@ -2,6 +2,7 @@
     import TableView from "$lib/components/TableView.svelte"
     import {m} from '$lib/paraglide/messages.js';
     import {goto} from "$app/navigation";
+    import CreateLockerModal from "$lib/components/modal/manage/CreateLockerModal.svelte";
 
     const {data} = $props();
 
@@ -24,9 +25,16 @@
             enabled: false
         }
     ];
+
+    let modal = $state(false);
 </script>
 
 <TableView columns={columns}
            contentPage={data.page}
            onItemClicked={(item) => goto(`/manage/lockers/${item.id}`)}
+           onCreate={() => modal = true}
 />
+
+{#if modal}
+    <CreateLockerModal bind:open={modal}/>
+{/if}
