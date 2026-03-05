@@ -1,8 +1,14 @@
 import {ContentTemplates} from "$lib/api";
 
 export async function load({params}) {
-    const response = await ContentTemplates.get(params.id);
-    const template = await response.json();
+    const template = await getContentTemplate(params.id);
 
-    return {template: template};
+    return {
+        template: template
+    };
+}
+
+async function getContentTemplate(id) {
+    const response = await ContentTemplates.get(id);
+    return await response.json();
 }
