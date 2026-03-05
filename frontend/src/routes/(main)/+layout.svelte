@@ -5,23 +5,19 @@
     import {m} from "$lib/paraglide/messages.js";
     import Breadcrumbs from "$lib/components/Breadcrumbs.svelte";
     import {
-        AdjustmentsVerticalSolid,
         BookOpenSolid,
-        BugSolid,
         CalendarEditSolid,
         ChartOutline,
         ClipboardSolid,
         FilePasteSolid,
         GlobeOutline,
         HomeSolid,
-        PaperClipOutline,
         QuestionCircleSolid,
         TerminalOutline,
         UserCircleOutline,
         UserHeadsetSolid,
         UsersGroupSolid,
-        UserSolid,
-        DatabaseOutline
+        UserSolid
     } from "flowbite-svelte-icons";
 
     let {data, children} = $props();
