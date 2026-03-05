@@ -2,6 +2,7 @@
     import {m} from "$lib/paraglide/messages.js";
     import {Input, Textarea} from "flowbite-svelte";
     import EntityPage from "$lib/components/EntityPage.svelte"
+    import {Faq} from "$lib/api";
 
     let {data} = $props();
     let faq = $derived(data.faq);
