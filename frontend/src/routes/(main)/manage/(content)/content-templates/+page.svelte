@@ -1,6 +1,8 @@
 <script>
     import {m} from '$lib/paraglide/messages.js';
     import TableView from "$lib/components/TableView.svelte"
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
     const {data} = $props();
 
@@ -26,4 +28,5 @@
 
 <TableView columns={columns}
            contentPage={data.page}
+           onItemClicked={(item) => goto(resolve(`/manage/content-templates/${item.id}`))}
 />

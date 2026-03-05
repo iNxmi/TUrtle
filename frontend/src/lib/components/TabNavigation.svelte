@@ -13,10 +13,10 @@
 </script>
 
 <div class={className} {...rest}>
-    <Tabs contentClass="p-0 bg-transparent!" bind:selected={key}>
-        {#each items as item}
+    <Tabs classes={{content: "p-0 bg-transparent!"}} bind:selected={key}>
+        {#each items as item (item.title)}
             <a href={item.href}>
-                <TabItem open={key.includes(item.href)} key={item.href} title={item.title}>
+                <TabItem classes={{button: "cursor-pointer"}} open={key.includes(item.href)} key={item.href} title={item.title}>
                     {@render children?.()}
                 </TabItem>
             </a>

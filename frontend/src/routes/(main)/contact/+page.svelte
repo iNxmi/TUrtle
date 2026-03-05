@@ -5,6 +5,7 @@
     import {SupportTickets} from "$lib/api";
     import Markdown from "$lib/components/Markdown.svelte";
     import Card from "$lib/components/Card.svelte";
+    import LinkNavigation from '$lib/components/LinkNavigation.svelte';
 
     let urgency = $state('');
     let category = $state('');
@@ -93,7 +94,7 @@
             <div class="flex flex-col justify-center">
                 <Checkbox name="input_tos" required/>
             </div>
-            <div>{m.modal_contact_label_i_agree_to_tos()}</div>
+            <div>{m.modal_contact_label_i_agree_to_tos()}<LinkNavigation href="/tos">_TOS_</LinkNavigation></div>
         </div>
 
         <Altcha bind:value={altchaToken}/>

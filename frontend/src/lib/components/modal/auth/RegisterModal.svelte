@@ -1,10 +1,12 @@
 <script>
-	import { A, Button, Checkbox, Heading, Hr, Input, Modal, Spinner } from 'flowbite-svelte';
+	import { A, Button, Checkbox, Heading, Hr, Input, Modal, Spinner, Popover } from 'flowbite-svelte';
 	import PasswordInput from '$lib/components/PasswordInput.svelte';
 	import { m } from '$lib/paraglide/messages.js';
-	import { Users } from '$lib/api';
+	import { Content, Users } from '$lib/api';
 	import Altcha from '$lib/components/Altcha.svelte';
 	import { invalidateAll } from '$app/navigation';
+	import LinkNavigation from '$lib/components/LinkNavigation.svelte';
+	import Markdown from '$lib/components/Markdown.svelte';
 
 	let loading = $state(false);
 
@@ -17,7 +19,15 @@
 	let altchaToken = $state('');
 
 	let error = $state("");
+	let tos;
+	async function getTOS(){
+	
+		const response = await Content.tos();
 
+		tos = await response.text();
+	}
+	
+	getTOS();
 	let { isTrusted = false, open = $bindable(false) } = $props();
 
 	async function register(event) {
@@ -92,7 +102,10 @@
 			<div class="flex flex-col justify-center">
 				<Checkbox name="input_tos" required />
 			</div>
-			<div>{m.modal_register_label_i_agree_to_tos()}</div>
+			<div>{m.modal_register_label_i_agree_to_tos()}
+				<LinkNavigation id="tos" href="/tos">_TOS_</LinkNavigation>
+					<Popover offset={50} reference="#register" triggeredBy="#tos" class="flex max-w-full max-h-full h-3/5 w-400 overflow-y-scroll"><Markdown content={tos}/></Popover>
+			</div>
 		</div>
 
 		{#if !isTrusted}
@@ -103,7 +116,7 @@
 			<div class="text-red-400 text-justify">{error}</div>
 		{/if}
 
-		<Button name="button_submit" type="submit" class="w-full cursor-pointer">
+		<Button id="register" name="button_submit" type="submit" class="w-full cursor-pointer">
 			{#if loading === true}
 				<Spinner size="5"/>
 			{:else}
