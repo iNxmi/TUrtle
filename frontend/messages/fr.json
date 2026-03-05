@@ -88,6 +88,14 @@
   "modal_manage_create_user_label_status": "Statut",
   "modal_manage_create_user_button": "Créer",
 
+  "modal_manage_create_email_template_title": "Créer un modèle d'e-mail",
+  "modal_manage_create_email_template_label_name": "Nom",
+  "modal_manage_create_email_template_label_description": "Description",
+  "modal_manage_create_email_template_label_subject": "Objet",
+  "modal_manage_create_email_template_label_content": "Contenu",
+  "modal_manage_create_email_template_label_type": "Type",
+  "modal_manage_create_email_template_button": "Créer",
+
   "modal_door_title": "Déverrouiller la porte ?",
   "modal_door_content": "Vous devez être connecté au réseau local ('csw_intern') pour que cette action fonctionne.",
   "modal_door_button_unlock": "Déverrouiller",

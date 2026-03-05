@@ -88,6 +88,14 @@
   "modal_manage_create_user_label_status": "Status",
   "modal_manage_create_user_button": "Create",
 
+  "modal_manage_create_email_template_title": "Create Email Template",
+  "modal_manage_create_email_template_label_name": "Name",
+  "modal_manage_create_email_template_label_description": "Description",
+  "modal_manage_create_email_template_label_subject": "Subject",
+  "modal_manage_create_email_template_label_content": "Content",
+  "modal_manage_create_email_template_label_type": "Type",
+  "modal_manage_create_email_template_button": "Create",
+
   "modal_door_title": "Unlock the door?",
   "modal_door_content": "You will need to be logged into the local network ('csw_intern') for this action to work.",
   "modal_door_button_unlock": "Unlock",
