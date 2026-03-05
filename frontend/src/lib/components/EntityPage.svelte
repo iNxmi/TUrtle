@@ -13,8 +13,7 @@
     import {invalidateAll} from "$app/navigation";
 
     let {
-        title,
-        items,
+        items = [],
         onPatch
     } = $props();
 
@@ -44,7 +43,7 @@
 
         loading = true;
         const payload = difference(updatedValues, initialValues);
-        const response = await onPatch(payload);
+        const response = await onPatch?.(payload);
         loading = false;
 
         if (response.ok !== true)

@@ -89,7 +89,7 @@
     {/if}
 
     <div class="flex flex-col gap-2 overflow-y-auto overflow-x-clip">
-        {#each categories as category}
+        {#each categories as category (category.label)}
             <SidebarDropdownWrapper
                     class="list-none"
                     classes={{ span: "font-bold text-text" }}
@@ -99,7 +99,7 @@
                 {#snippet icon()}
                     <category.icon class="text-text"/>
                 {/snippet}
-                {#each category.items as item}
+                {#each category.items as item (item.label)}
                     <SidebarDropdownItem href={item.href}>
                         {#snippet icon()}
                             <item.icon class="text-csw"/>

@@ -1,53 +1,95 @@
 <script>
-    import {Button, Input, Textarea} from "flowbite-svelte";
-    import {m} from '$lib/paraglide/messages.js';
-    import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
     import {ContentTemplates} from "$lib/api";
+    import EntityPage from "$lib/components/EntityPage.svelte";
+    import {m} from '$lib/paraglide/messages.js';
+    import { Input, Textarea} from "flowbite-svelte";
 
     let {data} = $props();
     let template = $derived(data.template);
 
-    let name = $derived(template.name);
-    let description = $derived(template.description);
-    let content = $derived(template.content);
-
-    let updatedTemplate = $derived({
-        name: name !== template.name ? name : undefined,
-        description,
-        content
-    });
-
-    async function saveTemplate() {
-        const response = await ContentTemplates.patch(template.id, updatedTemplate);
-    }
+    const items = [{
+        label: m.manage_content_templates_label_id(),
+        field: "id",
+        component: Input,
+        props: {
+            value: template.id
+        }
+    },{
+        label: m.manage_content_templates_label_name(),
+        field: "name",
+        editable: true,
+        component: Input,
+        props: {
+            value: template.name
+        }
+    },{
+        label: m.manage_content_templates_label_description(),
+        field: "description",
+        editable: true,
+        component: Textarea,
+        props: {
+            value: template.description
+        }
+    },{
+        label: m.manage_content_templates_label_content(),
+        field: "content",
+        editable: true,
+        component: Textarea,
+        props: {
+            value: template.content
+        }
+    },[{
+        label: m.manage_content_templates_label_created_at(),
+        field: "createdAt",
+        component: Input,
+        props: {
+            value: template.createdAt
+        }
+    },{
+        label: m.manage_content_templates_label_updated_at(),
+        field: "updatedAt",
+        component: Input,
+        props: {
+            value: template.updatedAt
+        }
+    }]];
 </script>
 
-<form class="flex flex-col gap-5">
-    <div class="flex flex-row justify-between">
-        <div class="flex flex-col">
-            <span>{m.manage_content_templates_label_id()}</span>
-            {template.id}
-        </div>
+<EntityPage items={items} onPatch={(payload) => ContentTemplates.patch(template.id, payload)}/>
 
-        <Button class="cursor-pointer" onclick={saveTemplate}>_Save_</Button>
-    </div>
-    <div>
-        <span>{m.manage_content_templates_label_name()}</span>
-        <Input type="text" value={template.name}/>
-    </div>
 
-    <div>
-        <span>{m.manage_content_templates_label_description()}</span>
-        <Textarea class="w-full" value={template.description}/>
-    </div>
 
-    <div>
-        <span>{m.manage_content_templates_label_content()}</span>
-        <MarkdownEditor class="w-full" {content}/>
-    </div>
 
-    <div>
-        <span>{m.manage_content_templates_label_created_at()}</span>
-        <Input type="text" value={(new Date(template.createdAt)).toLocaleString()} disabled/>
-    </div>
-</form>
+
+
+
+
+
+
+
+
+
+
+<!--<script>-->
+<!--    import {Button, Input, Textarea} from "flowbite-svelte";-->
+<!--    import {m} from '$lib/paraglide/messages.js';-->
+<!--    import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';-->
+<!--    import {ContentTemplates} from "$lib/api";-->
+
+<!--    let {data} = $props();-->
+<!--    let template = $derived(data.template);-->
+<!--</script>-->
+
+<!--<form class="flex flex-col gap-5">-->
+
+
+<!--    <div>-->
+<!--        <span>{m.manage_content_templates_label_content()}</span>-->
+<!--        <MarkdownEditor class="w-full" {content}/>-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--        <span>{m.manage_content_templates_label_created_at()}</span>-->
+<!--        <Input type="text" value={(new Date(template.createdAt)).toLocaleString()} disabled/>-->
+<!--    </div>-->
+<!--</form>-->
