@@ -1,5 +1,5 @@
 <script>
-    import {Button, Heading, Hr, Input, Modal, Select, Textarea, Spinner} from "flowbite-svelte";
+    import {Button, Heading, Hr, Input, Modal, Select, Spinner, Textarea} from "flowbite-svelte";
     import {m} from "$lib/paraglide/messages.js";
     import {EmailTemplates} from "$lib/api";
     import {invalidateAll} from "$app/navigation";
@@ -18,7 +18,7 @@
     let description = $state("");
     let subject = $state("");
     let content = $state("");
-    let type = $state("");
+    let type = $state(null);
 
     let loading = $state(false);
     let error = $state("");
@@ -64,8 +64,13 @@
         </div>
 
         <div>
+            <div>{m.modal_manage_create_email_template_label_type()}</div>
+            <Select items={typeItems} bind:value={type} clearable/>
+        </div>
+
+        <div>
             <div>{m.modal_manage_create_email_template_label_description()}</div>
-            <Textarea bind:value={description} required/>
+            <Textarea class="w-full" bind:value={description} required/>
         </div>
 
         <div>
@@ -75,12 +80,7 @@
 
         <div>
             <div>{m.modal_manage_create_email_template_label_content()}</div>
-            <Textarea bind:value={content} rows={10} required/>
-        </div>
-
-        <div>
-            <div>{m.modal_manage_create_email_template_label_type()}</div>
-            <Select items={typeItems} bind:value={type} required/>
+            <Textarea class="w-full" bind:value={content} rows={10} required/>
         </div>
 
         {#if error?.trim()}
