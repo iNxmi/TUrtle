@@ -200,8 +200,8 @@
   "manage_support_ticket_urgencies_label_created_at": "Created At",
 
   "manage_item_bookings_label_id": "ID",
-  "manage_item_bookings_label_user_id": "User ID",
-  "manage_item_bookings_label_item_id": "Item ID",
+  "manage_item_bookings_label_user": "User",
+  "manage_item_bookings_label_item": "Item",
   "manage_item_bookings_label_start": "Start",
   "manage_item_bookings_label_end": "End",
   "manage_item_bookings_label_status": "Status",
