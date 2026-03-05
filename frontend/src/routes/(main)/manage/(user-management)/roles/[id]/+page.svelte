@@ -1,44 +1,58 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
     import {Input, Textarea} from "flowbite-svelte";
-    import Card from "$lib/components/Card.svelte";
+    import EntityPage from "$lib/components/EntityPage.svelte";
+    import {Roles} from "$lib/api";
 
     let {data} = $props();
     let role = $derived(data.role);
+
+    const items = [{
+        label: m.manage_roles_label_id(),
+        field: "id",
+        component: Input,
+        props: {
+            value: role.id
+        }
+    }, {
+        label: m.manage_roles_label_name(),
+        field: "name",
+        editable: true,
+        component: Input,
+        props: {
+            value: role.name
+        }
+    }, {
+        label: m.manage_roles_label_type(),
+        field: "type",
+        editable: true,
+        component: Input,
+        props: {
+            value: role.type
+        }
+    }, {
+        label: m.manage_roles_label_permissions(),
+        field: "permissions",
+        editable: true,
+        component: Textarea,
+        props: {
+            value: JSON.stringify(role.permissions, null, 2)
+        }
+    }, [{
+        label: m.manage_roles_label_created_at(),
+        field: "createdAt",
+        component: Input,
+        props: {
+            value: role.createdAt
+        }
+    }, {
+        label: m.manage_roles_label_updated_at(),
+        field: "updatedAt",
+        component: Input,
+        props: {
+            value: role.updatedAt
+        }
+    }]];
 </script>
 
-<Card>
-    <form class="flex flex-col gap-5">
-        <div>
-            <span>{m.manage_roles_label_id()}</span>
-            <Input type="text" value={role.id} disabled/>
-        </div>
-
-        <div>
-            <span>{m.manage_roles_label_name()}</span>
-            <Input type="text" value={role.name} disabled/>
-        </div>
-
-        <div>
-            <span>{m.manage_roles_label_type()}</span>
-            <Input type="text" value={role.type} disabled/>
-        </div>
-
-        <!--TODO replace by multiselect-->
-        <div>
-            <span>{m.manage_roles_label_name()}</span>
-            <Textarea class="w-full" value={JSON.stringify(role.permissions, null, 2)} disabled/>
-        </div>
-
-        <div class="flex gap-5">
-            <div class="flex-1">
-                <span>{m.manage_roles_label_created_at()}</span>
-                <Input type="text" value={(new Date(role.createdAt)).toLocaleString()} disabled/>
-            </div>
-            <div class="flex-1">
-                <span>{m.manage_roles_label_updated_at()}</span>
-                <Input type="text" value={(new Date(role.updatedAt)).toLocaleString()} disabled/>
-            </div>
-        </div>
-    </form>
-</Card>
+<EntityPage items={items} onPatch={(payload) => Roles.patch(role.id, payload)}/>

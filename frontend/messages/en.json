@@ -250,6 +250,7 @@
   "manage_roles_label_id": "ID",
   "manage_roles_label_name": "Name",
   "manage_roles_label_type": "Type",
+  "manage_roles_label_permissions": "Permissions",
   "manage_roles_label_updated_at": "Updated At",
   "manage_roles_label_created_at": "Created At",
 
@@ -299,5 +300,5 @@
   "manage_content_templates_label_type": "Type",
   "manage_content_templates_label_description": "Description",
   "manage_content_templates_label_created_at": "Created At",
-  "manage_content_templates_label_content": "Text"
+  "manage_content_templates_label_content": "Content"
 }
