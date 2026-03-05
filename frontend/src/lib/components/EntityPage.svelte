@@ -114,7 +114,7 @@
     </div>
 {/snippet}
 
-<div class="flex gap-5">
+<div class="flex flex-col lg:flex-row gap-5">
     <Card class="grow flex flex-col gap-5">
         {#each items as item}
             {#if Array.isArray(item)}

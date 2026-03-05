@@ -4,11 +4,13 @@ export async function load({params}) {
     const ticket = await getSupportTicket(params.id);
     const urgencies = await getSupportTicketUrgencies();
     const categories = await getSupportTicketCategories();
+    const statuses = await getSupportTicketStatuses();
 
     return {
         ticket: ticket,
         urgencies: urgencies,
-        categories: categories
+        categories: categories,
+        statuses: statuses
     };
 }
 
@@ -24,5 +26,10 @@ async function getSupportTicketCategories() {
 
 async function getSupportTicketUrgencies() {
     const response = await SupportTicketUrgencies.getCollection();
+    return response.json();
+}
+
+async function getSupportTicketStatuses() {
+    const response = await SupportTickets.status();
     return response.json();
 }
