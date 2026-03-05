@@ -1,19 +1,24 @@
 <script>
     import {m} from '$lib/paraglide/messages.js';
     import TableView from "$lib/components/TableView.svelte"
-    import CreateRoomBookingModal from "$lib/components/modal/manage/CreateRoomBookingModal.svelte";
     import {goto} from "$app/navigation";
     import Calendar from "$lib/components/Calendar.svelte";
     import Card from "$lib/components/Card.svelte";
+    import _ from "lodash";
 
     const {data} = $props();
 
+    const usersById = $derived(_.keyBy(data.users, "id"));
+
     const columns = [
         {field: "id", label: m.manage_room_bookings_label_id(), enabled: false},
-        {field: "userId", label: m.manage_room_bookings_label_user_id()},
+        {
+            field: "userId", label: m.manage_room_bookings_label_user(),
+            transform: (value) => usersById[value].username
+        },
         {field: "title", label: m.manage_room_bookings_label_title()},
         {field: "status", label: m.manage_room_bookings_label_status()},
-        {field: "accessibility", label: m.manage_room_bookings_label_accessibility()},
+        {field: "access", label: m.manage_room_bookings_label_access()},
         {
             field: "start", label: m.manage_room_bookings_label_start(),
             transform: (value) => new Date(value).toLocaleString()
