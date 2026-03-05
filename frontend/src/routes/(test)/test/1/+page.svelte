@@ -1,5 +1,5 @@
 <script>
-    import ItemDetailsPage from "$lib/components/ItemDetailsPage.svelte";
+    import EntityPage from "$lib/components/EntityPage.svelte";
     import DateTimePicker from "$lib/components/DateTimePicker.svelte";
     import {Input, Select} from "flowbite-svelte";
     import {ItemBookings} from "$lib/api";
@@ -75,4 +75,4 @@
     }]]);
 </script>
 
-<ItemDetailsPage items={items} onPatch={(payload) => ItemBookings.patch(data.itemBooking.id, payload)}/>
+<EntityPage items={items} onPatch={(payload) => ItemBookings.patch(data.itemBooking.id, payload)}/>
