@@ -1,4 +1,4 @@
-import {ItemBookings, ItemCategories, Items, RoomBookings} from "$lib/api";
+import {ItemBookings, ItemCategories, Items, RoomBookings, Users} from "$lib/api";
 
 export async function load({parent}) {
     const data = await parent();
@@ -10,13 +10,17 @@ export async function load({parent}) {
     const roomAccess = await getAccess();
     const roomBookings = await getRoomBookings(data.user.id);
 
+    const users = await getUsers();
+
     return {
         items: items,
         itemCategories: itemCategories,
         itemBookings: itemBookings,
 
         roomBookings: roomBookings,
-        roomAccess: roomAccess
+        roomAccess: roomAccess,
+
+        users: users
     };
 }
 
@@ -46,5 +50,10 @@ async function getItemCategories() {
 
 async function getAccess() {
     const response = await RoomBookings.access();
+    return await response.json();
+}
+
+async function getUsers() {
+    const response = await Users.getCollection();
     return await response.json();
 }
