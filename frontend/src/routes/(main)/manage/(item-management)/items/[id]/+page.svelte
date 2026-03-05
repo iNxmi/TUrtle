@@ -1,58 +1,94 @@
 <script>
-    import {m} from "$lib/paraglide/messages.js";
-    import {Input, Textarea} from "flowbite-svelte";
-    import Card from "$lib/components/Card.svelte";
+    import {Input, Select, Textarea} from "flowbite-svelte";
+    import {m} from '$lib/paraglide/messages.js';
+    import {Items} from "$lib/api";
+    import EntityPage from "$lib/components/EntityPage.svelte";
 
     let {data} = $props();
     let item = $derived(data.item);
+
+    const categoryItems = $derived(data.categories.map((category) => ({
+        value: category.id,
+        name: category.name
+    })));
+
+    const lockerItems = $derived(data.lockers.map((locker) => ({
+        value: locker.id,
+        name: locker.name
+    })))
+
+    const items = $derived([{
+        label: m.manage_items_label_id(),
+        field: "id",
+        component: Input,
+        props: {
+            value: item.id
+        }
+    }, {
+        label: m.manage_items_label_name(),
+        field: "name",
+        editable: true,
+        component: Input,
+        props: {
+            value: item.name
+        }
+    }, {
+        label: m.manage_items_label_category(),
+        field: "categoryId",
+        editable: true,
+        component: Select,
+        props: {
+            value: item.categoryId,
+            items: categoryItems
+        }
+    }, {
+        label: m.manage_items_label_locker(),
+        field: "lockerId",
+        editable: true,
+        component: Select,
+        props: {
+            value: item.lockerId,
+            items: lockerItems
+        }
+    }, {
+        label: m.manage_items_label_description(),
+        field: "description",
+        editable: true,
+        component: Textarea,
+        props: {
+            value: item.description
+        }
+    }, {
+        label: m.manage_items_label_needs_confirmation(),
+        field: "needsConfirmation",
+        editable: true,
+        component: Input,
+        props: {
+            value: item.needsConfirmation
+        }
+    }, {
+        label: m.manage_items_label_acquired_at(),
+        field: "acquiredAt",
+        editable: true,
+        component: Input,
+        props: {
+            value: item.acquiredAt
+        }
+    }, [{
+        label: m.manage_items_label_created_at(),
+        field: "createdAt",
+        component: Input,
+        props: {
+            value: item.createdAt
+        }
+    }, {
+        label: m.manage_items_label_updated_at(),
+        field: "updatedAt",
+        component: Input,
+        props: {
+            value: item.updatedAt
+        }
+    }]]);
 </script>
 
-<Card>
-    <form class="flex flex-col gap-5">
-        <div>
-            <span>{m.manage_items_label_id()}</span>
-            <Input type="text" value={item.id} disabled/>
-        </div>
-
-        <div>
-            <span>{m.manage_items_label_name()}</span>
-            <Input type="text" value={item.name} disabled/>
-        </div>
-
-        <div>
-            <span>{m.manage_items_label_category_id()}</span>
-            <Input type="text" value={item.categoryId} disabled/>
-        </div>
-
-        <div>
-            <span>{m.manage_items_label_locker_id()}</span>
-            <Input type="text" value={item.lockerId} disabled/>
-        </div>
-
-        <div>
-            <span>{m.manage_items_label_description()}</span>
-            <Textarea class="w-full" value={item.description} disabled/>
-        </div>
-
-        <div class="flex-1">
-            <span>{m.manage_items_label_needs_confirmation()}</span>
-            <Input type="text" value={item.needsConfirmation} disabled/>
-        </div>
-
-        <div class="flex-1">
-            <span>{m.manage_items_label_acquired_at()}</span>
-            <Input type="text" value={(new Date(item.acquiredAt)).toLocaleString()} disabled/>
-        </div>
-
-        <div class="flex gap-5">
-            <div class="flex-1">
-                <span>{m.manage_items_label_created_at()}</span>
-                <Input type="text" value={(new Date(item.createdAt)).toLocaleString()} disabled/>
-            </div>
-            <div class="flex-1">
-                <span>{m.manage_items_label_updated_at()}</span>
-                <Input type="text" value={(new Date(item.updatedAt)).toLocaleString()} disabled/>
-            </div>
-        </div>
-    </form>
-</Card>
+<EntityPage items={items} onPatch={(payload) => Items.patch(item.id, payload)}/>

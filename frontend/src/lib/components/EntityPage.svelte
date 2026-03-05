@@ -97,12 +97,12 @@
  * ```[{prop1}, {prop2}, [{prop3}, {prop4}], {prop5}]```
  -->
 
-{#snippet input(property, edit)}
-    {@const Component = property.component}
+{#snippet field(property, edit)}
     <div class="flex-1 flex flex-col">
         <div>{property.label}</div>
         <ButtonGroup class="flex-1">
             {@const enabled = (edit === true && property.editable === true)}
+            {@const Component = property.component}
             <Component bind:value={updatedValues[property.field]} disabled={!enabled} {...property.props} />
             {#if edit === true && property.editable === true}
                 {@const isEqual = _.isEqual(updatedValues[property.field], initialValues[property.field])}
@@ -120,11 +120,11 @@
             {#if Array.isArray(item)}
                 <div class="flex gap-5">
                     {#each item as subItem}
-                        {@render input(subItem, edit)}
+                        {@render field(subItem, edit)}
                     {/each}
                 </div>
             {:else}
-                {@render input(item, edit)}
+                {@render field(item, edit)}
             {/if}
         {/each}
     </Card>

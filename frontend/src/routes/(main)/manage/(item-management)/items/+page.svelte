@@ -1,17 +1,28 @@
 <script>
     import TableView from '$lib/components/TableView.svelte';
+    import _ from "lodash";
     import {m} from "$lib/paraglide/messages.js";
     import {goto} from "$app/navigation";
 
+
     let {data} = $props();
+
+    const categoriesById = $derived(_.keyBy(data.categories, "id"));
+    const lockersById = $derived(_.keyBy(data.lockers, "id"));
 
     const columns = [
         {field: 'id', label: m.manage_items_label_id(), enabled: false},
         {field: 'name', label: m.manage_items_label_name()},
         {field: 'description', label: m.manage_items_label_description(), enabled: false},
         {field: 'needsConfirmation', label: m.manage_items_label_needs_confirmation(), enabled: false},
-        {field: 'categoryId', label: m.manage_items_label_category_id()},
-        {field: 'lockerId', label: m.manage_items_label_locker_id()},
+        {
+            field: 'categoryId', label: m.manage_items_label_category(),
+            transform: (id) => categoriesById[id].name
+        },
+        {
+            field: 'lockerId', label: m.manage_items_label_locker(),
+            transform: (id) => lockersById[id].name
+        },
         {
             field: 'acquiredAt',
             label: m.manage_items_label_acquired_at(),

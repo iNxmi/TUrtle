@@ -92,20 +92,3 @@
 </script>
 
 <EntityPage items={items} onPatch={(payload) => SupportTickets.patch(ticket.id, payload)}/>
-<!--<Card>-->
-<!--    <form class="flex flex-col gap-5">-->
-
-<!--        <div class="flex gap-5">-->
-<!--            <div class="flex-1">-->
-<!--                <span>{m.manage_support_tickets_label_urgency()}</span>-->
-<!--                <Select items={urgencyItems} value={ticket.urgencyId} disabled/>-->
-<!--            </div>-->
-
-<!--            <div class="flex-1">-->
-<!--                <span>{m.manage_support_tickets_label_category()}</span>-->
-<!--                <Select items={categoryItems} value={ticket.categoryId} disabled/>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--    </form>-->
-<!--</Card>-->

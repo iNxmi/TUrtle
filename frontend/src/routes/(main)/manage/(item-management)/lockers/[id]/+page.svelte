@@ -1,59 +1,66 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
-    import {Button, Input, Toggle} from "flowbite-svelte";
-    import {EditOutline, ShareNodesOutline} from "flowbite-svelte-icons";
-    import Card from "$lib/components/Card.svelte";
+    import {Input} from "flowbite-svelte";
+    import EntityPage from "$lib/components/EntityPage.svelte";
+    import {Lockers} from "$lib/api";
 
     let {data} = $props();
     let locker = $derived(data.locker);
+
+    const items = $derived([{
+        label: m.manage_lockers_label_id(),
+        field: "id",
+        component: Input,
+        props: {
+            value: locker.id
+        }
+    }, {
+        label: m.manage_lockers_label_name(),
+        field: "name",
+        editable: true,
+        component: Input,
+        props: {
+            value: locker.name
+        }
+    }, {
+        label: m.manage_lockers_label_index(),
+        field: "index",
+        editable: true,
+        component: Input,
+        props: {
+            value: locker.index
+        }
+    }, [{
+        label: m.manage_lockers_label_software_unlockable(),
+        field: "softwareUnlockable",
+        editable: true,
+        component: Input,
+        props: {
+            value: locker.softwareUnlockable
+        }
+    }, {
+        label: m.manage_lockers_label_locked(),
+        field: "locked",
+        editable: true,
+        component: Input,
+        props: {
+            value: locker.locked
+        }
+    }], [{
+        label: m.manage_item_categories_label_created_at(),
+        field: "createdAt",
+        component: Input,
+        props: {
+            value: locker.createdAt
+        }
+    }, {
+        label: m.manage_item_categories_label_updated_at(),
+        field: "updatedAt",
+        component: Input,
+        props: {
+            value: locker.updatedAt
+        }
+    }]]);
 </script>
 
-<div class="flex flex-col lg:flex-row gap-5">
-    <Card>
-        <div class="flex lg:flex-col gap-5">
-            <Button><ShareNodesOutline/></Button>
-            <Button><EditOutline/></Button>
-        </div>
-    </Card>
-
-    <Card class="grow">
-        <form class="flex flex-col gap-5">
-            <div>
-                <div>{m.manage_lockers_label_id()}</div>
-                <Input type="text" value={locker.id} disabled/>
-            </div>
-
-            <div>
-                <div>{m.manage_lockers_label_name()}</div>
-                <Input type="text" value={locker.name} disabled/>
-            </div>
-
-            <div>
-                <div>{m.manage_lockers_label_index()}</div>
-                <Input type="text" value={locker.index} disabled/>
-            </div>
-
-            <div class="flex gap-5">
-                <div class="flex-1">
-                    <div>{m.manage_lockers_label_software_unlockable()}</div>
-                    <Toggle checked={locker.softwareUnlockable} disabled/>
-                </div>
-                <div class="flex-1">
-                    <div>{m.manage_lockers_label_locked()}</div>
-                    <Toggle checked={locker.locked} disabled/>
-                </div>
-            </div>
-
-            <div class="flex gap-5">
-                <div class="flex-1">
-                    <div>{m.manage_lockers_label_created_at()}</div>
-                    <Input type="text" value={(new Date(locker.createdAt)).toLocaleString()} disabled/>
-                </div>
-                <div class="flex-1">
-                    <div>{m.manage_lockers_label_updated_at()}</div>
-                    <Input type="text" value={(new Date(locker.updatedAt)).toLocaleString()} disabled/>
-                </div>
-            </div>
-        </form>
-    </Card>
-</div>
+<EntityPage items={items} onPatch={(payload) => Lockers.patch(locker.id, payload)}/>
