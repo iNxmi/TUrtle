@@ -1,13 +1,18 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
-    import {Input, Textarea} from "flowbite-svelte";
+    import {Input, MultiSelect} from "flowbite-svelte";
     import EntityPage from "$lib/components/EntityPage.svelte";
     import {Roles} from "$lib/api";
 
     let {data} = $props();
     let role = $derived(data.role);
 
-    const items = [{
+    const permissionItems = $derived(data.permissions.map((permission) => ({
+        value: permission,
+        name: permission
+    })));
+
+    const items = $derived([{
         label: m.manage_roles_label_id(),
         field: "id",
         component: Input,
@@ -34,9 +39,10 @@
         label: m.manage_roles_label_permissions(),
         field: "permissions",
         editable: true,
-        component: Textarea,
+        component: MultiSelect,
         props: {
-            value: JSON.stringify(role.permissions, null, 2)
+            value: role.permissions,
+            items: permissionItems
         }
     }, [{
         label: m.manage_roles_label_created_at(),
@@ -52,7 +58,7 @@
         props: {
             value: role.updatedAt
         }
-    }]];
+    }]]);
 </script>
 
 <EntityPage items={items} onPatch={(payload) => Roles.patch(role.id, payload)}/>
