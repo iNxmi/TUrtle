@@ -1,5 +1,16 @@
 <script>
-    import {Button, Datepicker, Heading, Hr, Input, Modal, Select, Textarea, Spinner, MultiSelect} from "flowbite-svelte";
+    import {
+        Button,
+        Datepicker,
+        Heading,
+        Hr,
+        Input,
+        Modal,
+        MultiSelect,
+        Select,
+        Spinner,
+        Textarea
+    } from "flowbite-svelte";
     import {m} from "$lib/paraglide/messages.js";
     import Calendar from "$lib/components/Calendar.svelte"
     import TimePicker from "$lib/components/TimePicker.svelte";
@@ -71,7 +82,8 @@
             description: description,
             start: start.toISOString(),
             end: end.toISOString(),
-            access: access
+            access: access,
+            whitelistedUserIds: whitelistedUserIds
         };
 
         loading = true;
@@ -131,10 +143,10 @@
                     <Select bind:value={access} items={accessItems} required/>
                 </div>
 
-                <!--TODO-->
                 <div>
                     <div>{m.modal_user_create_room_booking_label_whitelist()}</div>
-                    <MultiSelect disabled={access !== "WHITELIST"} bind:value={whitelistedUserIds} items={userItems} required/>
+                    <MultiSelect disabled={access !== "WHITELIST"} bind:value={whitelistedUserIds} items={userItems}
+                                 required/>
                 </div>
 
                 {#if error.trim()}

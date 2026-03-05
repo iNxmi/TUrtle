@@ -1,11 +1,7 @@
 <script>
-    import {Button, Heading, Hr, Input, Modal, MultiSelect, Select, Spinner} from "flowbite-svelte";
-    import {m} from "$lib/paraglide/messages.js";
-    import {Roles, SupportTicketCategories} from "$lib/api";
-    import {onMount} from "svelte";
+    import {Button, Heading, Hr, Input, Modal, Spinner} from "flowbite-svelte";
+    import {SupportTicketCategories} from "$lib/api";
     import {invalidateAll} from "$app/navigation";
-    import {Users} from "$lib/api";
-    import PasswordInput from "$lib/components/PasswordInput.svelte";
 
     let {
         open = $bindable(false),

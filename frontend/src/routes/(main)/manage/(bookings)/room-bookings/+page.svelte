@@ -62,5 +62,5 @@
 </div>
 
 {#if modal === true}
-    <CreateRoomBookingModal bind:open={modal}/>
+    <CreateRoomBookingModal bind:open={modal} userList={data.users} accessList={data.access} statusList={data.status}/>
 {/if}

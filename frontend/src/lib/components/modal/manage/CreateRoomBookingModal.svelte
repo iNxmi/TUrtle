@@ -1,5 +1,16 @@
 <script>
-    import {Button, Datepicker, Heading, Hr, Input, Modal, Select, Textarea} from "flowbite-svelte";
+    import {
+        Button,
+        Datepicker,
+        Heading,
+        Hr,
+        Input,
+        Modal,
+        MultiSelect,
+        Select,
+        Spinner,
+        Textarea
+    } from "flowbite-svelte";
     import {m} from "$lib/paraglide/messages.js";
     import Calendar from "$lib/components/Calendar.svelte"
     import TimePicker from "$lib/components/TimePicker.svelte";
@@ -9,28 +20,38 @@
     let {
         open = $bindable(false),
         accessList = [],
+        userList = [],
         statusList = []
     } = $props();
 
     let title = $state("");
     let description = $state("");
 
-    let accessItems = $derived(accessList.map((access) => ({
+    let accessItems = $state(accessList.map((access) => ({
         value: access,
         name: access
     })));
-    let access = $state("UNLOCKED");
+    let access = $state("");
 
-    //TODO replace by backend call
-    let statusItems = $derived(statusList.map((access) => ({
-        value: access,
-        name: access
+    let statusItems = $state(statusList.map((status) => ({
+        value: status,
+        name: status
     })));
-    let status = $state("REQUESTED");
+    let status = $state("");
+
+    let userItems = $state(userList.map((user) => ({
+        value: user.id,
+        name: user.username
+    })));
+    let userId = $state(0);
+    let whitelistedUserIds = $state([]);
 
     const now = new Date();
     let start = $state(new Date(now));
     let end = $state(new Date(now));
+
+    let loading = $state(false);
+    let error = $state("");
 
     async function getEvents() {
         const response = await RoomBookings.getCollection();
@@ -62,6 +83,7 @@
 
     async function submit(event) {
         event.preventDefault();
+        error = "";
 
         const payload = {
             title: title,
@@ -69,12 +91,20 @@
             start: start.toISOString(),
             end: end.toISOString(),
             access: access,
-            status: status
+            status: status,
+            whitelistedUserIds: whitelistedUserIds,
+            userId: userId
         };
 
+        loading = true;
         const response = await RoomBookings.create(payload);
-        if (!response.ok)
+        loading = false;
+
+        if (!response.ok) {
+            const json = await response.json();
+            error = json.message;
             return;
+        }
 
         await invalidateAll();
         open = false;
@@ -92,6 +122,11 @@
 
         <div class="flex gap-5">
             <form class="shrink flex flex-col gap-5" onsubmit={submit}>
+                <div>
+                    <div>{m.modal_manage_create_room_booking_label_user()}</div>
+                    <Select bind:value={userId} items={userItems} required/>
+                </div>
+
                 <div>
                     <div>{m.modal_manage_create_room_booking_label_title()}</div>
                     <Input bind:value={title} required/>
@@ -119,23 +154,32 @@
                 </div>
 
                 <div>
-                    <div>{m.modal_manage_create_room_booking_label_accessibility()}</div>
-                    <Select items={accessItems} bind:value={access} required/>
+                    <div>{m.modal_manage_create_room_booking_label_access()}</div>
+                    <Select bind:value={access} items={accessItems} required/>
                 </div>
 
-                <!--TODO-->
-                <div class="border border-dashed p-2 rounded-md">
-                    TODO: Whitelist Selector
+                <div>
+                    <div>{m.modal_manage_create_room_booking_label_whitelist()}</div>
+                    <MultiSelect disabled={access !== "WHITELIST"} bind:value={whitelistedUserIds} items={userItems}
+                                 required/>
                 </div>
 
                 <div>
                     <div>{m.modal_manage_create_room_booking_label_status()}</div>
-                    <Select items={statusItems} bind:value={status} required/>
+                    <Select bind:value={status} items={statusItems} required/>
                 </div>
+
+                {#if error.trim()}
+                    <div class="text-red-400 text-justify">{error}</div>
+                {/if}
 
                 <div class="grow flex flex-col justify-end">
                     <Button class="w-full" type="submit">
-                        {m.modal_manage_create_room_booking_button()}
+                        {#if loading === true}
+                            <Spinner size="5"/>
+                        {:else}
+                            {m.modal_manage_create_room_booking_button()}
+                        {/if}
                     </Button>
                 </div>
             </form>
