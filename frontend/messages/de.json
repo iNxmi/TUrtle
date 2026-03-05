@@ -88,6 +88,14 @@
   "modal_manage_create_user_label_status": "Status",
   "modal_manage_create_user_button": "Erstellen",
 
+  "modal_manage_create_email_template_title": "E-Mail-Vorlage erstellen",
+  "modal_manage_create_email_template_label_name": "Name",
+  "modal_manage_create_email_template_label_description": "Beschreibung",
+  "modal_manage_create_email_template_label_subject": "Betreff",
+  "modal_manage_create_email_template_label_content": "Inhalt",
+  "modal_manage_create_email_template_label_type": "Typ",
+  "modal_manage_create_email_template_button": "Erstellen",
+
   "modal_door_title": "Tür entriegeln?",
   "modal_door_content": "Sie müssen im lokalen Netzwerk ('csw_intern') angemeldet sein, damit diese Aktion funktioniert.",
   "modal_door_button_unlock": "Entriegeln",

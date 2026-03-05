@@ -88,6 +88,14 @@
   "modal_manage_create_user_label_status": "Állapot",
   "modal_manage_create_user_button": "Létrehozás",
 
+  "modal_manage_create_email_template_title": "E-mail sablon létrehozása",
+  "modal_manage_create_email_template_label_name": "Név",
+  "modal_manage_create_email_template_label_description": "Leírás",
+  "modal_manage_create_email_template_label_subject": "Tárgy",
+  "modal_manage_create_email_template_label_content": "Tartalom",
+  "modal_manage_create_email_template_label_type": "Típus",
+  "modal_manage_create_email_template_button": "Létrehozás",
+
   "modal_door_title": "Ajtó kinyitása?",
   "modal_door_content": "A helyi hálózaton ('csw_intern') kell lennie, hogy ez a művelet működjön.",
   "modal_door_button_unlock": "Kinyitás",

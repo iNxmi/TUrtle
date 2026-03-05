@@ -2,6 +2,7 @@
     import {m} from '$lib/paraglide/messages.js';
     import TableView from "$lib/components/TableView.svelte"
     import {goto} from "$app/navigation";
+    import CreateEmailTemplateModal from "$lib/components/modal/manage/CreateEmailTemplateModal.svelte";
 
     const {data} = $props();
 
@@ -23,9 +24,16 @@
             enabled: false
         }
     ];
+
+    let modal = $state(false);
 </script>
 
 <TableView columns={columns}
            contentPage={data.page}
            onItemClicked={(item) => goto(`/manage/email-templates/${item.id}`)}
+           onCreate={() => modal = true}
 />
+
+{#if modal}
+    <CreateEmailTemplateModal bind:open={modal} typeList={data.type}/>
+{/if}

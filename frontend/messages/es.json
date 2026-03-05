@@ -88,6 +88,14 @@
   "modal_manage_create_user_label_status": "Estado",
   "modal_manage_create_user_button": "Crear",
 
+  "modal_manage_create_email_template_title": "Crear plantilla de correo",
+  "modal_manage_create_email_template_label_name": "Nombre",
+  "modal_manage_create_email_template_label_description": "Descripción",
+  "modal_manage_create_email_template_label_subject": "Asunto",
+  "modal_manage_create_email_template_label_content": "Contenido",
+  "modal_manage_create_email_template_label_type": "Tipo",
+  "modal_manage_create_email_template_button": "Crear",
+
   "modal_door_title": "¿Desbloquear la puerta?",
   "modal_door_content": "Deberá estar conectado a la red local ('csw_intern') para que esta acción funcione.",
   "modal_door_button_unlock": "Desbloquear",

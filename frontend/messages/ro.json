@@ -88,6 +88,14 @@
   "modal_manage_create_user_label_status": "Status",
   "modal_manage_create_user_button": "Creează",
 
+  "modal_manage_create_email_template_title": "Creează șablon e-mail",
+  "modal_manage_create_email_template_label_name": "Nume",
+  "modal_manage_create_email_template_label_description": "Descriere",
+  "modal_manage_create_email_template_label_subject": "Subiect",
+  "modal_manage_create_email_template_label_content": "Conținut",
+  "modal_manage_create_email_template_label_type": "Tip",
+  "modal_manage_create_email_template_button": "Creează",
+
   "modal_door_title": "Deblochezi ușa?",
   "modal_door_content": "Va trebui să fii conectat la rețeaua locală ('csw_intern') pentru ca această acțiune să funcționeze.",
   "modal_door_button_unlock": "Deblochează",

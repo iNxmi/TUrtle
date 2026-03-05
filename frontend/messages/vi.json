@@ -88,6 +88,14 @@
   "modal_manage_create_user_label_status": "Trạng thái",
   "modal_manage_create_user_button": "Tạo",
 
+  "modal_manage_create_email_template_title": "Tạo mẫu email",
+  "modal_manage_create_email_template_label_name": "Tên",
+  "modal_manage_create_email_template_label_description": "Mô tả",
+  "modal_manage_create_email_template_label_subject": "Chủ đề",
+  "modal_manage_create_email_template_label_content": "Nội dung",
+  "modal_manage_create_email_template_label_type": "Loại",
+  "modal_manage_create_email_template_button": "Tạo",
+
   "modal_door_title": "Mở khóa cửa?",
   "modal_door_content": "Bạn cần kết nối mạng nội bộ ('csw_intern') để thực hiện hành động này.",
   "modal_door_button_unlock": "Mở khóa",

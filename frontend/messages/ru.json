@@ -88,6 +88,14 @@
   "modal_manage_create_user_label_status": "Статус",
   "modal_manage_create_user_button": "Создать",
 
+  "modal_manage_create_email_template_title": "Создать шаблон электронной почты",
+  "modal_manage_create_email_template_label_name": "Название",
+  "modal_manage_create_email_template_label_description": "Описание",
+  "modal_manage_create_email_template_label_subject": "Тема",
+  "modal_manage_create_email_template_label_content": "Содержание",
+  "modal_manage_create_email_template_label_type": "Тип",
+  "modal_manage_create_email_template_button": "Создать",
+
   "modal_door_title": "Разблокировать дверь?",
   "modal_door_content": "Для выполнения этого действия необходимо быть подключённым к локальной сети ('csw_intern').",
   "modal_door_button_unlock": "Разблокировать",

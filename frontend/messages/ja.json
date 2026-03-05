@@ -88,6 +88,14 @@
   "modal_manage_create_user_label_status": "ステータス",
   "modal_manage_create_user_button": "作成",
 
+  "modal_manage_create_email_template_title": "メールテンプレートを作成",
+  "modal_manage_create_email_template_label_name": "名前",
+  "modal_manage_create_email_template_label_description": "説明",
+  "modal_manage_create_email_template_label_subject": "件名",
+  "modal_manage_create_email_template_label_content": "内容",
+  "modal_manage_create_email_template_label_type": "タイプ",
+  "modal_manage_create_email_template_button": "作成",
+
   "modal_door_title": "ドアを解錠しますか？",
   "modal_door_content": "この操作を行うには、ローカルネットワーク（'csw_intern'）に接続されている必要があります。",
   "modal_door_button_unlock": "解錠",

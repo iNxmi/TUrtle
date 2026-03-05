@@ -88,6 +88,14 @@
   "modal_manage_create_user_label_status": "الحالة",
   "modal_manage_create_user_button": "إنشاء",
 
+  "modal_manage_create_email_template_title": "إنشاء قالب بريد إلكتروني",
+  "modal_manage_create_email_template_label_name": "الاسم",
+  "modal_manage_create_email_template_label_description": "الوصف",
+  "modal_manage_create_email_template_label_subject": "الموضوع",
+  "modal_manage_create_email_template_label_content": "المحتوى",
+  "modal_manage_create_email_template_label_type": "النوع",
+  "modal_manage_create_email_template_button": "إنشاء",
+
   "modal_door_title": "فتح الباب؟",
   "modal_door_content": "يجب أن تكون متصلاً بالشبكة المحلية ('csw_intern') لتعمل هذه العملية.",
   "modal_door_button_unlock": "فتح",
