@@ -1,5 +1,16 @@
 <script>
-    import {Button, Datepicker, Heading, Hr, Input, Modal, Select, Textarea, Spinner} from "flowbite-svelte";
+    import {
+        Button,
+        Datepicker,
+        Heading,
+        Hr,
+        Input,
+        Modal,
+        MultiSelect,
+        Select,
+        Spinner,
+        Textarea
+    } from "flowbite-svelte";
     import {m} from "$lib/paraglide/messages.js";
     import Calendar from "$lib/components/Calendar.svelte"
     import TimePicker from "$lib/components/TimePicker.svelte";
@@ -8,7 +19,8 @@
 
     let {
         open = $bindable(false),
-        accessList = []
+        accessList = [],
+        userList = []
     } = $props();
 
     let title = $state("");
@@ -19,6 +31,12 @@
         name: access
     })));
     let access = $state("");
+
+    let userItems = $state(userList.map((user) => ({
+        value: user.id,
+        name: user.username
+    })));
+    let whitelistedUserIds = $state([])
 
     const now = new Date();
     let start = $state(new Date(now));
@@ -64,7 +82,8 @@
             description: description,
             start: start.toISOString(),
             end: end.toISOString(),
-            access: access
+            access: access,
+            whitelistedUserIds: whitelistedUserIds
         };
 
         loading = true;
@@ -120,13 +139,14 @@
                 </div>
 
                 <div>
-                    <div>{m.modal_user_create_room_booking_label_accessibility()}</div>
+                    <div>{m.modal_user_create_room_booking_label_access()}</div>
                     <Select bind:value={access} items={accessItems} required/>
                 </div>
 
-                <!--TODO-->
-                <div class="border border-dashed p-2 rounded-md">
-                    TODO: Whitelist Selector
+                <div>
+                    <div>{m.modal_user_create_room_booking_label_whitelist()}</div>
+                    <MultiSelect disabled={access !== "WHITELIST"} bind:value={whitelistedUserIds} items={userItems}
+                                 required/>
                 </div>
 
                 {#if error.trim()}

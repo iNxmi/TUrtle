@@ -11,6 +11,8 @@
 
     let {data} = $props();
 
+    let users = $derived(data.users);
+
     let roomBookings = $derived(data.roomBookings);
     let roomBookingEvents = $derived(roomBookings.map((booking) => ({
         title: booking.title,
@@ -142,5 +144,5 @@
 {/if}
 
 {#if createRoomBookingModal}
-    <CreateRoomBookingModal bind:open={createRoomBookingModal} accessList={roomAccess}/>
+    <CreateRoomBookingModal bind:open={createRoomBookingModal} accessList={roomAccess} userList={users}/>
 {/if}
