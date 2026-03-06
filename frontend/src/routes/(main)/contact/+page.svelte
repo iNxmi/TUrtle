@@ -94,7 +94,7 @@
             <div class="flex flex-col justify-center">
                 <Checkbox name="input_tos" required/>
             </div>
-            <div>{m.modal_contact_label_i_agree_to_tos()}<LinkNavigation href="/tos">_TOS_</LinkNavigation></div>
+            <div>{m.modal_contact_label_i_agree_to()}<LinkNavigation href="/tos">{m.modal_contact_label_tos()}</LinkNavigation></div>
         </div>
 
         <Altcha bind:value={altchaToken}/>
