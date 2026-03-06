@@ -15,7 +15,7 @@
         </div>
 
         <div>
-            <span>{m.manage_room_bookings_label_user_id()}</span>
+            <span>{m.manage_room_bookings_label_user()}</span>
             <Input type="text" value={booking.userId} disabled/>
         </div>
 
@@ -30,7 +30,7 @@
         </div>
 
         <div>
-            <span>{m.manage_room_bookings_label_accessibility()}</span>
+            <span>{m.manage_room_bookings_label_access()}</span>
             <Input type="text" value={booking.accessibility} disabled/>
         </div>
 
