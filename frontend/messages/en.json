@@ -149,6 +149,13 @@
   "modal_manage_create_support_ticket_urgency_label_name" : "Name",
   "modal_manage_create_support_ticket_urgency_button": "Create",
 
+  "modal_manage_create_content_template_title": "Create Content Template",
+  "modal_manage_create_content_template_label_name": "Name",
+  "modal_manage_create_content_template_label_description": "Description",
+  "modal_manage_create_content_template_label_content": "Content",
+  "modal_manage_create_content_template_label_type": "Type",
+  "modal_manage_create_content_template_button": "Create",
+
   "modal_door_title": "Unlock the door?",
   "modal_door_content": "You will need to be logged into the local network ('csw_intern') for this action to work.",
   "modal_door_button_unlock": "Unlock",
