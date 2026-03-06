@@ -49,7 +49,7 @@
 
         <div>
             <div>_CreateLockerIndex_</div>
-            <Input name="index" type="number" bind:value={input.Index} required/>
+            <Input name="index" type="number" bind:value={input.index} required/>
         </div>
 
         <div>
