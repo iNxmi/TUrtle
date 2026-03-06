@@ -16,7 +16,7 @@
         {icon: Es, name: "Español", value: "es"}
     ].sort((a, b) => a.value.localeCompare(b.value));
 
-    let initialValue = localStorage.getItem("PARAGLIDE_LOCALE") || "en";
+    let initialValue = localStorage.getItem("PARAGLIDE_LOCALE") || "de";
     let selected = $state(
         languages.find(item => item.value === initialValue)
     );
@@ -42,7 +42,7 @@
     {/if}
 
     <DropdownGroup class="h-48 overflow-y-auto">
-        {#each languages.filter(item => item.value !== selected.value) as language}
+        {#each languages.filter(item => item.value !== selected.value) as language (language.value)}
             <DropdownItem class="w-full" onclick={() => selected = language}>
                 <div class="flex gap-2 items-center">
                     <language.icon/>
