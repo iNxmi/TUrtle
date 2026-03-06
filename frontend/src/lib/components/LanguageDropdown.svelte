@@ -1,5 +1,5 @@
 <script>
-    import {Arab, De, Es, Fr, Hu, Jp, Ro, Ru, Us, Vi} from "svelte-flag-icons";
+    import {Arab, De, Es, Fr, Hu, Jp, Ro, Ru, Us, Vn} from "svelte-flag-icons";
     import {Dropdown, DropdownDivider, DropdownGroup, DropdownHeader, DropdownItem} from "flowbite-svelte";
     import {setLocale} from "$lib/paraglide/runtime.js";
 
@@ -9,7 +9,7 @@
         {icon: Jp, name: "日本語", value: "ja"},
         {icon: Arab, name: "عربي", value: "ar"},
         {icon: Ru, name: "Русский", value: "ru"},
-        {icon: Vi, name: "Tiếng Việt", value: "vi"},
+        {icon: Vn, name: "Tiếng Việt", value: "vi"},
         {icon: Hu, name: "Magyar", value: "hu"},
         {icon: Ro, name: "Română", value: "ro"},
         {icon: Fr, name: "Français", value: "fr"},
