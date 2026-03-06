@@ -30,10 +30,14 @@ class DataSeeder(
 ) {
 
     private val faker = Faker()
+    private val enabled = false
 
     @EventListener(ApplicationReadyEvent::class)
     @Order(1)
     fun seedUsers() {
+        if(!enabled)
+            return
+
         while (userService.count() < 64) {
             val firstName = faker.name.firstName()
             val lastName = faker.name.lastName()
@@ -69,6 +73,9 @@ class DataSeeder(
     @Order(2)
     @EventListener(ApplicationReadyEvent::class)
     fun seedRoomBookings() {
+        if(!enabled)
+            return
+
         val service = roomBookingService
         while (service.count() < 24) {
             // minutes * hours * days * weeks * months
@@ -98,6 +105,9 @@ class DataSeeder(
 
     @EventListener(ApplicationReadyEvent::class)
     fun seedSupportTickets() {
+        if(!enabled)
+            return
+
         while (supportTicketService.count() < 32) {
             val firstName = faker.name.firstName()
             val lastName = faker.name.lastName()
@@ -125,6 +135,9 @@ class DataSeeder(
     @Order(2)
     @EventListener(ApplicationReadyEvent::class)
     fun seedDevices() {
+        if(!enabled)
+            return
+
         if (itemService.count() > 0)
             return
 
