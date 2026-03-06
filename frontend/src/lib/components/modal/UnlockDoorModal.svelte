@@ -1,7 +1,7 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
     import {Hardware} from "$lib/api";
-    import {Button, Modal, Tooltip, Spinner} from "flowbite-svelte";
+    import {Button, Modal, Tooltip, Spinner, Hr} from "flowbite-svelte";
     import {QuestionCircleSolid} from "flowbite-svelte-icons";
 
     let {
@@ -29,14 +29,16 @@
     }
 </script>
 
-<Modal form bind:open={open} size="sm">
+<Modal form bind:open={open}>
     <div class="flex flex-col gap-5 align-center">
         <div class="flex gap-5 justify-center">
-            <QuestionCircleSolid class="h-12 w-12"/>
+            <QuestionCircleSolid class="h-10 w-10"/>
             <div class="flex flex-col justify-center">
                 <h1 class="text-lg font-bold">{m.modal_door_title()}</h1>
             </div>
         </div>
+
+        <Hr class="m-0 p-0"/>
 
         <h3 class="text-lg text-center">
             {m.modal_door_content()}
