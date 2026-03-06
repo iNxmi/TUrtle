@@ -1,0 +1,43 @@
+spring:
+  profiles:
+    active: dev
+
+  application:
+    name: TUrtleAPI
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DATASOURCE_SERVER}/${DATASOURCE_DATABASE}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+  mustache:
+    check-template-location: false
+
+server:
+  forward-headers-strategy: none
+
+springdoc:
+  api-docs:
+    path: /openapi/api-docs
+  swagger-ui:
+    url: /openapi/api-docs
+    path: /docs
+    operations-sorter: alpha
+    tagsSorter: alpha
