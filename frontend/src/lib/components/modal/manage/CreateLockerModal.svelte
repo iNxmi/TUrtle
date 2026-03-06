@@ -47,25 +47,27 @@
 
         <Hr class="m-0 p-0"/>
 
+        <div>
+            <div>{m.modal_manage_create_locker_label_name()}</div>
+            <Input name="name" type="text" bind:value={input.name} required/>
+        </div>
+
         <!--TODO remove arrows in input field -->
         <div>
             <div>{m.modal_manage_create_locker_label_index()}</div>
             <Input name="index" type="number" bind:value={input.index} required/>
         </div>
 
-        <div>
-            <div>{m.modal_manage_create_locker_label_name()}</div>
-            <Input name="name" type="text" bind:value={input.name} required/>
-        </div>
+        <div class="flex gap-5">
+            <div class="flex-1">
+                <div>{m.modal_manage_create_locker_label_isSoftwareUnlockable()}</div>
+                <Toggle class="max-w-min" name="isSoftwareUnlockable" bind:checked={input.isSoftwareUnlockable}/>
+            </div>
 
-        <div>
-            <div>{m.modal_manage_create_locker_label_isSoftwareUnlockable()}</div>
-            <Toggle name="isSoftwareUnlockable" bind:checked={input.isSoftwareUnlockable}/>
-        </div>
-
-        <div>
-            <div>{m.modal_manage_create_locker_label_locked()}</div>
-            <Toggle name="locked" bind:checked={input.locked}/>
+            <div class="flex-1">
+                <div>{m.modal_manage_create_locker_label_locked()}</div>
+                <Toggle class="max-w-min" name="locked" bind:checked={input.locked}/>
+            </div>
         </div>
 
         {#if error?.trim()}
