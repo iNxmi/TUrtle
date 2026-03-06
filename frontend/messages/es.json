@@ -88,6 +88,12 @@
   "modal_manage_create_user_label_status": "Estado",
   "modal_manage_create_user_button": "Crear",
 
+  "modal_manage_create_role_title": "Crear rol",
+  "modal_manage_create_role_label_name": "Nombre",
+  "modal_manage_create_role_label_permissions": "Permisos",
+  "modal_manage_create_role_label_type": "Tipo (Opcional)",
+  "modal_manage_create_role_button": "Crear",
+
   "modal_manage_create_email_template_title": "Crear plantilla de correo",
   "modal_manage_create_email_template_label_name": "Nombre",
   "modal_manage_create_email_template_label_description": "Descripción",

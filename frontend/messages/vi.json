@@ -88,6 +88,12 @@
   "modal_manage_create_user_label_status": "Trạng thái",
   "modal_manage_create_user_button": "Tạo",
 
+  "modal_manage_create_role_title": "Tạo vai trò",
+  "modal_manage_create_role_label_name": "Tên",
+  "modal_manage_create_role_label_permissions": "Quyền",
+  "modal_manage_create_role_label_type": "Loại (Tùy chọn)",
+  "modal_manage_create_role_button": "Tạo",
+
   "modal_manage_create_email_template_title": "Tạo mẫu email",
   "modal_manage_create_email_template_label_name": "Tên",
   "modal_manage_create_email_template_label_description": "Mô tả",

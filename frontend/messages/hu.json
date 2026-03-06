@@ -88,6 +88,12 @@
   "modal_manage_create_user_label_status": "Állapot",
   "modal_manage_create_user_button": "Létrehozás",
 
+  "modal_manage_create_role_title": "Szerepkör létrehozása",
+  "modal_manage_create_role_label_name": "Név",
+  "modal_manage_create_role_label_permissions": "Jogosultságok",
+  "modal_manage_create_role_label_type": "Típus (Opcionális)",
+  "modal_manage_create_role_button": "Létrehozás",
+
   "modal_manage_create_email_template_title": "E-mail sablon létrehozása",
   "modal_manage_create_email_template_label_name": "Név",
   "modal_manage_create_email_template_label_description": "Leírás",

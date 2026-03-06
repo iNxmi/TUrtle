@@ -116,6 +116,12 @@
   "modal_manage_create_user_label_status": "Status",
   "modal_manage_create_user_button": "Create",
 
+  "modal_manage_create_role_title": "Create Role",
+  "modal_manage_create_role_label_name": "Name",
+  "modal_manage_create_role_label_permissions": "Permissions",
+  "modal_manage_create_role_label_type": "Type (Optional)",
+  "modal_manage_create_role_button": "Create",
+
   "modal_manage_create_email_template_title": "Create Email Template",
   "modal_manage_create_email_template_label_name": "Name",
   "modal_manage_create_email_template_label_description": "Description",

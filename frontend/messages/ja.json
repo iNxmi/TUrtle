@@ -88,6 +88,12 @@
   "modal_manage_create_user_label_status": "ステータス",
   "modal_manage_create_user_button": "作成",
 
+  "modal_manage_create_role_title": "役割を作成",
+  "modal_manage_create_role_label_name": "名前",
+  "modal_manage_create_role_label_permissions": "権限",
+  "modal_manage_create_role_label_type": "タイプ（オプション）",
+  "modal_manage_create_role_button": "作成",
+
   "modal_manage_create_email_template_title": "メールテンプレートを作成",
   "modal_manage_create_email_template_label_name": "名前",
   "modal_manage_create_email_template_label_description": "説明",
