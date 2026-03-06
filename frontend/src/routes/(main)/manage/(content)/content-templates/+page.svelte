@@ -3,6 +3,7 @@
     import TableView from "$lib/components/TableView.svelte"
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+    import CreateContentTemplateModal from "$lib/components/modal/manage/CreateContentTemplateModal.svelte";
 
     const {data} = $props();
 
@@ -23,10 +24,17 @@
             transform: (value) => new Date(value).toLocaleString(),
             enabled: false
         }
-    ]
+    ];
+
+    let modal =$state(false);
 </script>
 
 <TableView columns={columns}
            contentPage={data.page}
            onItemClicked={(item) => goto(resolve(`/manage/content-templates/${item.id}`))}
+           onCreate={() => modal = true}
 />
+
+{#if modal}
+    <CreateContentTemplateModal bind:open={modal}/>
+{/if}
