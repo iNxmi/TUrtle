@@ -2,6 +2,7 @@
     import {Heading, Span} from "flowbite-svelte";
     import {page} from "$app/state";
     import {goto} from "$app/navigation";
+    import { resolve } from "$app/paths";
 
     const {path = "/"} = $props();
     let canRotate = $state(true);
@@ -18,7 +19,7 @@
         event.preventDefault();
 
         if (page.url.pathname !== path) {
-            goto(path, {invalidateAll: true});
+            goto(resolve(path), {invalidateAll: true});
             return;
         }
 

@@ -6,20 +6,12 @@
     import Card from "$lib/components/Card.svelte";
     import Calendar from "$lib/components/Calendar.svelte";
     import _ from "lodash";
+    import { resolve } from "$app/paths";
 
     const {data} = $props();
 
-    const categories = $derived(data.categories.map(category => ({
-        value: category.id,
-        name: category.name
-    })));
-
     let itemMap = $derived(_.keyBy(data.items, "id"));
-    const items = $derived(data.items.map(item => ({
-        value: item.id,
-        name: item.name
-    })));
-
+    
     const columns = [
         {field: "id", label: m.user_item_bookings_label_id(), enabled: false},
         {
@@ -66,14 +58,14 @@
 
 <div class="flex-1 flex flex-col 2xl:flex-row gap-5">
     <Card class="flex-1">
-        <Calendar bind:sources={sources} onEventClicked={(info) => goto(info.event.extendedProps.href)}/>
+        <Calendar bind:sources={sources} onEventClicked={(info) => goto(resolve(info.event.extendedProps.href))}/>
     </Card>
 
     <div class="flex-1 flex">
         <TableView columns={columns}
                    contentPage={data.page}
                    onCreate={() => modal = true}
-                   onItemClicked={(item) => goto(`/user/item-bookings/${item.id}`)}
+                   onItemClicked={(item) => goto(resolve(`/user/item-bookings/${item.id}`))}
         />
     </div>
 </div>

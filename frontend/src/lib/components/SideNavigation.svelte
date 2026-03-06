@@ -30,6 +30,7 @@
         SunOutline,
         UserAddOutline
     } from "flowbite-svelte-icons";
+	import { resolve } from "$app/paths";
 
     let {
         logoRedirect = "/",
@@ -46,7 +47,7 @@
         showLogoutButton = false
     } = $props()
 
-    let darkmode = $state(localStorage.getItem("darkmode") || false);
+    let darkmode = $state(localStorage.getItem("darkmode") || true);
 
     function toggleDarkMode() {
         darkmode = !darkmode;
@@ -81,7 +82,7 @@
     {#if header !== null}
         <SidebarGroup>
             <Heading tag="h5" class="text-center">
-                <Span class="text-csw">{header}</Span>
+                <a href={resolve("/user/profile")}><Span class="text-csw">{header}</Span></a>
             </Heading>
         </SidebarGroup>
 

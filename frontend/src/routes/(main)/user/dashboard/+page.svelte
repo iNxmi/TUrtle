@@ -2,12 +2,14 @@
     import Calendar from "$lib/components/Calendar.svelte";
     import Card from "$lib/components/Card.svelte";
     import {m} from "$lib/paraglide/messages";
-    import {Button, ButtonGroup, CloseButton, Heading, Hr, Input} from "flowbite-svelte";
+    import {ButtonGroup, CloseButton, Heading, Hr, Input} from "flowbite-svelte";
     import {ArrowRightOutline, PlusOutline} from "flowbite-svelte-icons";
     import CreateRoomBookingModal from "$lib/components/modal/user/CreateRoomBookingModal.svelte";
     import CreateItemBookingModal from "$lib/components/modal/user/CreateItemBookingModal.svelte";
     import {goto} from "$app/navigation";
     import _ from "lodash";
+    import { resolve } from "$app/paths";
+    import Button from "$lib/components/Button.svelte";
 
     let {data} = $props();
 
@@ -65,7 +67,7 @@
 
 <div class="flex-1 flex flex-col 2xl:flex-row gap-5">
     <Card class="flex-1">
-        <Calendar bind:sources={sources} onEventClicked={(info) => goto(info.event.extendedProps.href)}/>
+        <Calendar bind:sources={sources} onEventClicked={(info) => goto(resolve(info.event.extendedProps.href))}/>
     </Card>
 
     <div class="flex-1 flex flex-col gap-5">
@@ -75,7 +77,7 @@
                     {m.user_dashboard_title_current_item_bookings()}
                 </Heading>
                 <ButtonGroup>
-                    <Button color="green" onclick={() => createItemBookingModal = true}>
+                    <Button onclick={() => createItemBookingModal = true}>
                         <PlusOutline/>
                     </Button>
                 </ButtonGroup>
@@ -85,10 +87,10 @@
 
             {#if itemBookings.length > 0}
                 <div class="flex flex-col gap-2">
-                    {#each itemBookings as booking}
+                    {#each itemBookings as booking (booking.id)}
                         <ButtonGroup>
                             <Input value={`${itemMap[booking.itemId].name} (${booking.itemId})`} disabled/>
-                            <Button onclick={() => goto(`/user/item-bookings/${booking.id}`)}>
+                            <Button onclick={() => goto(resolve(`/user/item-bookings/${booking.id}`))}>
                                 <ArrowRightOutline/>
                             </Button>
                         </ButtonGroup>
@@ -108,21 +110,23 @@
                 <Heading tag="h3">
                     {m.user_dashboard_title_current_room_bookings()}
                 </Heading>
-                <ButtonGroup>
-                    <Button color="green" onclick={() => createRoomBookingModal = true}>
-                        <PlusOutline/>
-                    </Button>
-                </ButtonGroup>
+                {#if data.permissions.includes('MANAGE_ROOM_BOOKINGS')}
+                    <ButtonGroup>
+                        <Button onclick={() => createRoomBookingModal = true}>
+                            <PlusOutline/>
+                        </Button>
+                    </ButtonGroup>
+                {/if}
             </div>
 
             <Hr class="m-0 p-0"/>
 
             {#if roomBookings.length > 0}
                 <div class="flex flex-col gap-2">
-                    {#each roomBookings as booking}
+                    {#each roomBookings as booking (booking.id)}
                         <ButtonGroup>
                             <Input value={booking.title} disabled/>
-                            <Button onclick={() => goto(`/user/room-bookings/${booking.id}`)}>
+                            <Button onclick={() => goto(resolve(`/user/room-bookings/${booking.id}`))}>
                                 <ArrowRightOutline/>
                             </Button>
                         </ButtonGroup>
