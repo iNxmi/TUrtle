@@ -30,6 +30,8 @@
         TableRowOutline
     } from 'flowbite-svelte-icons';
 
+    import {m} from "$lib/paraglide/messages.js";
+
     //Example for columns prop,
     // const columns = [
     //     {field: "id", label: "ID", enabled: false},
@@ -95,7 +97,7 @@
 
             {#if !hideSearch}
                 <ButtonGroup disabled={disableSearch} class="flex-2">
-                    <Input placeholder="_search_" bind:value={search} disabled={disableSearch}/>
+                    <Input placeholder={m.turtle_table_search_placeholder()} bind:value={search} disabled={disableSearch}/>
 
                     <Button onclick={() => onSearch?.(search)}>
                         <SearchOutline/>
