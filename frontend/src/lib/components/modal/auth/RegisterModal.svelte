@@ -26,7 +26,7 @@
 
 		tos = await response.text();
 	}
-	
+
 	getTOS();
 	let { isTrusted = false, open = $bindable(false) } = $props();
 
@@ -104,7 +104,6 @@
 			</div>
 			<div>{m.modal_register_label_i_agree_to()}
 				<LinkNavigation id="tos" href="/tos">{m.modal_register_label_tos()}</LinkNavigation>
-					<Popover offset={50} reference="#register" triggeredBy="#tos" class="flex max-w-full max-h-full h-3/5 w-400 overflow-y-scroll"><Markdown content={tos}/></Popover>
 			</div>
 		</div>
 
@@ -120,7 +119,7 @@
 			{#if loading === true}
 				<Spinner size="5"/>
 			{:else}
-			      {m.modal_register_button()}
+				{m.modal_register_button()}
 			{/if}
 		</Button>
 
