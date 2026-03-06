@@ -3,7 +3,7 @@
     import _ from "lodash";
     import {m} from "$lib/paraglide/messages.js";
     import {goto} from "$app/navigation";
-
+    import CreateItemModal from "$lib/components/modal/manage/CreateItemModal.svelte";
 
     let {data} = $props();
 
@@ -41,9 +41,16 @@
             enabled: false
         }
     ];
+
+    let modal = $state(false);
 </script>
 
 <TableView columns={columns}
            contentPage={data.page}
            onItemClicked={(item) => goto(`/manage/items/${item.id}`)}
+           onCreate={() => modal = true}
 />
+
+{#if modal === true}
+    <CreateItemModal bind:open={modal} categoryList={data.categories} lockerList={data.lockers}/>
+{/if}

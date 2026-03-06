@@ -69,6 +69,22 @@
   "modal_manage_create_item_booking_label_end": "End",
   "modal_manage_create_item_booking_button": "Submit",
 
+  "modal_manage_create_item_title": "Create Item",
+  "modal_manage_create_item_label_category": "Category",
+  "modal_manage_create_item_label_locker": "Locker",
+  "modal_manage_create_item_label_description": "Description",
+  "modal_manage_create_item_label_name": "Name",
+  "modal_manage_create_item_label_needs_confirmation": "Needs Confirmation",
+  "modal_manage_create_item_label_acquired_at": "Acquired At",
+  "modal_manage_create_item_button": "Submit",
+
+  "modal_manage_create_faq_title": "Create FAQ",
+  "modal_manage_create_faq_label_name": "Name",
+  "modal_manage_create_faq_label_title": "Title",
+  "modal_manage_create_faq_label_content": "Content",
+  "modal_manage_create_faq_label_enabled": "Enabled",
+  "modal_manage_create_faq_button": "Submit",
+
   "modal_user_create_room_booking_title": "Create Room Booking",
   "modal_user_create_room_booking_label_title": "Title",
   "modal_user_create_room_booking_label_description": "Description",
@@ -113,6 +129,25 @@
   "modal_manage_create_email_template_label_content": "Content",
   "modal_manage_create_email_template_label_type": "Type",
   "modal_manage_create_email_template_button": "Create",
+
+  "modal_manage_create_locker_title": "Create Locker",
+  "modal_manage_create_locker_label_index": "Index",
+  "modal_manage_create_locker_label_name": "Name",
+  "modal_manage_create_locker_label_isSoftwareUnlockable": "Software Unlockable",
+  "modal_manage_create_locker_label_locked": "Locked",
+  "modal_manage_create_locker_button": "Create",
+
+  "modal_manage_create_item_category_title": "Create Item Category",
+  "modal_manage_create_item_category_label_name" : "Name",
+  "modal_manage_create_item_category_button": "Create",
+
+  "modal_manage_create_support_ticket_category_title": "Create Support Ticket Category",
+  "modal_manage_create_support_ticket_category_label_name" : "Name",
+  "modal_manage_create_support_ticket_category_button": "Create",
+
+  "modal_manage_create_support_ticket_urgency_title": "Create Support Ticket Urgency",
+  "modal_manage_create_support_ticket_urgency_label_name" : "Name",
+  "modal_manage_create_support_ticket_urgency_button": "Create",
 
   "modal_door_title": "Unlock the door?",
   "modal_door_content": "You will need to be logged into the local network ('csw_intern') for this action to work.",
