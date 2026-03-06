@@ -2,7 +2,8 @@
     import {m} from '$lib/paraglide/messages.js';
     import TableView from "$lib/components/TableView.svelte"
     import {goto} from "$app/navigation";
-	import { resolve } from '$app/paths';
+    import {resolve} from '$app/paths';
+    import CreateFaqModal from "$lib/components/modal/manage/CreateFaqModal.svelte";
 
     const {data} = $props();
 
@@ -24,9 +25,16 @@
             enabled: false
         }
     ];
+
+    let modal = $state(false);
 </script>
 
 <TableView columns={columns}
            contentPage={data.page}
            onItemClicked={(item) => goto(resolve(`/manage/faq/${item.id}`))}
+           onCreate={() => modal = true}
 />
+
+{#if modal === true}
+    <CreateFaqModal bind:open={modal}/>
+{/if}

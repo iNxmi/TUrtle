@@ -6,4 +6,6 @@ interface LockerRepository : CRUDRepository<LockerEntity> {
 
     fun findByIndex(index: Int): LockerEntity?
 
+    fun findByName(name: String): LockerEntity?
+
 }

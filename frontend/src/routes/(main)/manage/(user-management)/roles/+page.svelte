@@ -2,6 +2,7 @@
     import {m} from '$lib/paraglide/messages.js';
     import TableView from "$lib/components/TableView.svelte"
     import {goto} from "$app/navigation";
+    import CreateRoleModal from "$lib/components/modal/manage/CreateRoleModal.svelte";
 
     const {data} = $props();
 
@@ -22,10 +23,17 @@
             enabled: false
         }
     ]
+
+    let modal = $state(false);
 </script>
 
 <TableView endpoint="/manage/roles"
            columns={columns}
            contentPage={data.page}
            onItemClicked={(item) => goto(`/manage/roles/${item.id}`)}
+           onCreate={() => modal = true}
 />
+
+{#if modal}
+    <CreateRoleModal bind:open={modal} typeList={data.type} permissionList={data.permissions}/>
+{/if}

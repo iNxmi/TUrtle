@@ -88,6 +88,12 @@
   "modal_manage_create_user_label_status": "الحالة",
   "modal_manage_create_user_button": "إنشاء",
 
+  "modal_manage_create_role_title": "إنشاء دور",
+  "modal_manage_create_role_label_name": "الاسم",
+  "modal_manage_create_role_label_permissions": "الصلاحيات",
+  "modal_manage_create_role_label_type": "النوع (اختياري)",
+  "modal_manage_create_role_button": "إنشاء",
+
   "modal_manage_create_email_template_title": "إنشاء قالب بريد إلكتروني",
   "modal_manage_create_email_template_label_name": "الاسم",
   "modal_manage_create_email_template_label_description": "الوصف",

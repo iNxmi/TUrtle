@@ -88,6 +88,12 @@
   "modal_manage_create_user_label_status": "Статус",
   "modal_manage_create_user_button": "Создать",
 
+  "modal_manage_create_role_title": "Создать роль",
+  "modal_manage_create_role_label_name": "Название",
+  "modal_manage_create_role_label_permissions": "Разрешения",
+  "modal_manage_create_role_label_type": "Тип (Необязательно)",
+  "modal_manage_create_role_button": "Создать",
+
   "modal_manage_create_email_template_title": "Создать шаблон электронной почты",
   "modal_manage_create_email_template_label_name": "Название",
   "modal_manage_create_email_template_label_description": "Описание",

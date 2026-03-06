@@ -78,6 +78,13 @@
   "modal_manage_create_item_label_acquired_at": "Acquired At",
   "modal_manage_create_item_button": "Submit",
 
+  "modal_manage_create_faq_title": "Create FAQ",
+  "modal_manage_create_faq_label_name": "Name",
+  "modal_manage_create_faq_label_title": "Title",
+  "modal_manage_create_faq_label_content": "Content",
+  "modal_manage_create_faq_label_enabled": "Enabled",
+  "modal_manage_create_faq_button": "Submit",
+
   "modal_user_create_room_booking_title": "Create Room Booking",
   "modal_user_create_room_booking_label_title": "Title",
   "modal_user_create_room_booking_label_description": "Description",
@@ -108,6 +115,12 @@
   "modal_manage_create_user_label_roles": "Roles",
   "modal_manage_create_user_label_status": "Status",
   "modal_manage_create_user_button": "Create",
+
+  "modal_manage_create_role_title": "Create Role",
+  "modal_manage_create_role_label_name": "Name",
+  "modal_manage_create_role_label_permissions": "Permissions",
+  "modal_manage_create_role_label_type": "Type (Optional)",
+  "modal_manage_create_role_button": "Create",
 
   "modal_manage_create_email_template_title": "Create Email Template",
   "modal_manage_create_email_template_label_name": "Name",
