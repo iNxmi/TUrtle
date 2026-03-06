@@ -19,11 +19,20 @@
         UsersGroupSolid,
         UserSolid
     } from "flowbite-svelte-icons";
+	import { setContext } from "svelte";
 
     let {data, children} = $props();
     let permissions = $derived(data.permissions);
     let user = $derived(data.user);
     let connection = $derived(data.connection);
+
+    let businessHours = $state({
+        start: data.businessHours.start.value,
+        end: data.businessHours.end.value
+    });
+
+    setContext('businessHours', businessHours);
+    setContext('locale', localStorage.getItem("PARAGLIDE_LOCALE"));
 
     const publicItems = [{
         label: m.main_navigation_item_public_home(),
@@ -164,7 +173,6 @@
 
     let header = $derived(user !== null ? `${user.firstName} ${user.lastName}` : null);
 </script>
-
 <div class="flex">
     <SideNavigation logoRedirect="/"
                     header={header}

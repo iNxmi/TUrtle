@@ -1,4 +1,4 @@
-import {Altcha, Connection, Auth, Permissions} from "$lib/api";
+import {Connection, Auth, Permissions, Configuration} from "$lib/api";
 
 export const prerender = false;
 export const ssr = false;
@@ -7,11 +7,13 @@ export async function load() {
     const user = await getUser();
     const permissions = await getPermissions();
     const connection = await getConnection();
+    const businessHours = await getBusinessHours();
 
     return {
         user: user,
         permissions: permissions,
-        connection: connection
+        connection: connection,
+        businessHours: businessHours
     };
 }
 
@@ -34,4 +36,14 @@ async function getUser() {
         return null;
 
     return await response.json();
+}
+
+async function getBusinessHours(){
+    const startResponse = await Configuration.get("DOOR_SCHEDULE_START");
+    const endResponse = await Configuration.get("DOOR_SCHEDULE_END");
+
+    if(startResponse.ok && endResponse.ok){
+
+        return {start: await startResponse.json(), end: await endResponse.json()}
+    }
 }
