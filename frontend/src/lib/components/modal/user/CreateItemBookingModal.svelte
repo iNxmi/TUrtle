@@ -139,7 +139,7 @@
                 </div>
             </form>
 
-            <Calendar sources={sources} class="grow"/>
+            <Calendar aspectRatio={1.5} {sources} class="grow"/>
         </div>
     </div>
 </Modal>
