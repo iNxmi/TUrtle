@@ -16,6 +16,7 @@
 
     const {data} = $props();
     let content = $derived(data.content);
+    let isTrusted = $derived(data.connection?.trusted ?? false);
 
     let loading = $state(false);
     let error = $state("");
@@ -97,7 +98,9 @@
             <div>{m.modal_contact_label_i_agree_to()}<LinkNavigation href="/tos">{m.modal_contact_label_tos()}</LinkNavigation></div>
         </div>
 
-        <Altcha bind:value={altchaToken}/>
+        {#if !isTrusted}
+            <Altcha bind:value={altchaToken}/>
+        {/if}
 
         {#if error?.trim()}
             <div class="text-red-400 text-justify">{error}</div>
