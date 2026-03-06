@@ -42,28 +42,29 @@
 <Modal form bind:open={open} outsideclose={false}>
     <form onsubmit={submit} class="flex flex-col gap-5">
         <Heading tag="h3" class="text-center">
-            _CreateLocker_
+            {m.modal_manage_create_locker_title()}
         </Heading>
 
         <Hr class="m-0 p-0"/>
 
+        <!--TODO remove arrows in input field -->
         <div>
-            <div>_CreateLockerIndex_</div>
+            <div>{m.modal_manage_create_locker_label_index()}</div>
             <Input name="index" type="number" bind:value={input.index} required/>
         </div>
 
         <div>
-            <div>_CreateLockerName_</div>
+            <div>{m.modal_manage_create_locker_label_name()}</div>
             <Input name="name" type="text" bind:value={input.name} required/>
         </div>
 
         <div>
-            <div>_CreateLockerIsSoftwareUnlockable_</div>
+            <div>{m.modal_manage_create_locker_label_isSoftwareUnlockable()}</div>
             <Toggle name="isSoftwareUnlockable" bind:checked={input.isSoftwareUnlockable}/>
         </div>
 
         <div>
-            <div>_CreateLockerLocked_</div>
+            <div>{m.modal_manage_create_locker_label_locked()}</div>
             <Toggle name="locked" bind:checked={input.locked}/>
         </div>
 
@@ -75,7 +76,7 @@
             {#if loading === true}
                 <Spinner size="5"/>
             {:else}
-                _CreateLocker_
+                {m.modal_manage_create_locker_button()}
             {/if}
         </Button>
     </form>

@@ -1,5 +1,6 @@
 <script>
     import {Button, Heading, Hr, Input, Modal, Spinner} from "flowbite-svelte";
+    import {m} from "$lib/paraglide/messages.js";
     import {SupportTicketCategories} from "$lib/api";
     import {invalidateAll} from "$app/navigation";
 
@@ -38,13 +39,13 @@
 <Modal form bind:open={open} outsideclose={false}>
     <form onsubmit={submit} class="flex flex-col gap-5">
         <Heading tag="h3" class="text-center">
-            _CreateSupportTicketCategory_
+            {m.modal_manage_create_support_ticket_category_title()}
         </Heading>
 
         <Hr class="m-0 p-0"/>
 
         <div>
-            <div>_CreateTicketCategoryName_</div>
+            <div>{m.modal_manage_create_support_ticket_category_label_name()}</div>
             <Input name="name" type="text" bind:value={input.name} required/>
         </div>
 
@@ -56,7 +57,7 @@
             {#if loading === true}
                 <Spinner size="5"/>
             {:else}
-                _CreateSupportTicketCategory_
+                {m.modal_manage_create_support_ticket_category_button()}
             {/if}
         </Button>
     </form>

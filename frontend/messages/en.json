@@ -124,6 +124,25 @@
   "modal_manage_create_email_template_label_type": "Type",
   "modal_manage_create_email_template_button": "Create",
 
+  "modal_manage_create_locker_title": "Create Locker",
+  "modal_manage_create_locker_label_index": "Index",
+  "modal_manage_create_locker_label_name": "Name",
+  "modal_manage_create_locker_label_isSoftwareUnlockable": "Software Unlockable",
+  "modal_manage_create_locker_label_locked": "Locked",
+  "modal_manage_create_locker_button": "Create",
+
+  "modal_manage_create_item_category_title": "Create Item Category",
+  "modal_manage_create_item_category_label_name" : "Name",
+  "modal_manage_create_item_category_button": "Create",
+
+  "modal_manage_create_support_ticket_category_title": "Create Support Ticket Category",
+  "modal_manage_create_support_ticket_category_label_name" : "Name",
+  "modal_manage_create_support_ticket_category_button": "Create",
+
+  "modal_manage_create_support_ticket_urgency_title": "Create Support Ticket Urgency",
+  "modal_manage_create_support_ticket_urgency_label_name" : "Name",
+  "modal_manage_create_support_ticket_urgency_button": "Create",
+
   "modal_door_title": "Unlock the door?",
   "modal_door_content": "You will need to be logged into the local network ('csw_intern') for this action to work.",
   "modal_door_button_unlock": "Unlock",

@@ -39,13 +39,13 @@
 <Modal form bind:open={open} outsideclose={false}>
     <form onsubmit={submit} class="flex flex-col gap-5">
         <Heading tag="h3" class="text-center">
-            _CreateItemCategory_
+            {m.modal_manage_create_item_category_title()}
         </Heading>
 
         <Hr class="m-0 p-0"/>
 
         <div>
-            <div>_CreateItemCategoryName_</div>
+            <div>{m.modal_manage_create_item_category_label_name()}</div>
             <Input name="name" type="text" bind:value={input.name} required/>
         </div>
 
@@ -57,7 +57,7 @@
             {#if loading === true}
                 <Spinner size="5"/>
             {:else}
-                _CreateItemCategory_
+                {m.modal_manage_create_item_category_button()}
             {/if}
         </Button>
     </form>
