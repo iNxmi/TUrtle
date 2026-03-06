@@ -78,6 +78,13 @@
   "modal_manage_create_item_label_acquired_at": "Acquired At",
   "modal_manage_create_item_button": "Submit",
 
+  "modal_manage_create_faq_title": "Create FAQ",
+  "modal_manage_create_faq_label_name": "Name",
+  "modal_manage_create_faq_label_title": "Title",
+  "modal_manage_create_faq_label_content": "Content",
+  "modal_manage_create_faq_label_enabled": "Enabled",
+  "modal_manage_create_faq_button": "Submit",
+
   "modal_user_create_room_booking_title": "Create Room Booking",
   "modal_user_create_room_booking_label_title": "Title",
   "modal_user_create_room_booking_label_description": "Description",
