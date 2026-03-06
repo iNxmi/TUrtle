@@ -149,13 +149,14 @@
                             {/if}
 
                             {#if !hideDoorButton}
-                            <Button id="doorButton" disabled={!isLocalNetwork} name="button_open_door" color="alternative" class="flex-1" onclick={() => (openDoorModal = true)}>
-                                <LockOpenOutline/>
-                            </Button>
+                                <Button id="doorButton" disabled={!isLocalNetwork} name="button_open_door"
+                                        color="alternative" class="flex-1" onclick={() => (openDoorModal = true)}>
+                                    <LockOpenOutline/>
+                                </Button>
                             {/if}
                         </ButtonGroup>
                         {#if !isLocalNetwork}
-                        <Tooltip triggeredBy="#doorButton">{m.modal_door_unlock_tooltip()}</Tooltip>
+                            <Tooltip triggeredBy="#doorButton">{m.modal_door_unlock_tooltip()}</Tooltip>
                         {/if}
                     </div>
                 {/if}

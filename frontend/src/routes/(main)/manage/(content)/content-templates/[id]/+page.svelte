@@ -2,10 +2,16 @@
     import {ContentTemplates} from "$lib/api";
     import EntityPage from "$lib/components/EntityPage.svelte";
     import {m} from '$lib/paraglide/messages.js';
-    import {Input, Textarea} from "flowbite-svelte";
+    import {Input, Textarea, Select} from "flowbite-svelte";
 
     let {data} = $props();
+
     let template = $derived(data.template);
+
+    let typeItems = $derived(data.types.map((type) => ({
+        value: type,
+        name: type
+    })));
 
     const items = $derived([{
         label: m.manage_content_templates_label_id(),
@@ -37,6 +43,15 @@
         component: Textarea,
         props: {
             value: template.content
+        }
+    },{
+        label: m.manage_content_templates_label_type(),
+        field: "type",
+        editable: true,
+        component: Select,
+        props: {
+            value: template.type,
+            items: typeItems
         }
     }, [{
         label: m.manage_content_templates_label_created_at(),
