@@ -69,6 +69,15 @@
   "modal_manage_create_item_booking_label_end": "End",
   "modal_manage_create_item_booking_button": "Submit",
 
+  "modal_manage_create_item_title": "Create Item",
+  "modal_manage_create_item_label_category": "Category",
+  "modal_manage_create_item_label_locker": "Locker",
+  "modal_manage_create_item_label_description": "Description",
+  "modal_manage_create_item_label_name": "Name",
+  "modal_manage_create_item_label_needs_confirmation": "Needs Confirmation",
+  "modal_manage_create_item_label_acquired_at": "Acquired At",
+  "modal_manage_create_item_button": "Submit",
+
   "modal_user_create_room_booking_title": "Create Room Booking",
   "modal_user_create_room_booking_label_title": "Title",
   "modal_user_create_room_booking_label_description": "Description",
