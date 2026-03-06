@@ -1,19 +1,25 @@
 <script>
-    import {Button, Heading, Hr, Input, Modal, MultiSelect, Select, Spinner, Toggle} from "flowbite-svelte";
+    import {Button, Heading, Hr, Input, Modal, Select, Spinner, Textarea} from "flowbite-svelte";
     import {m} from "$lib/paraglide/messages.js";
     import {ContentTemplates} from "$lib/api";
     import {invalidateAll} from "$app/navigation";
 
     let {
         open = $bindable(false),
+        typeList = []
     } = $props();
 
     let input = $state({
         name: "",
         description: "",
         content: "",
-        type: "text"
+        type: ""
     })
+
+    let typeItems = $derived(typeList.map((type) => ({
+        value: type,
+        name: type
+    })));
 
     let loading = $state(false);
     let error = $state("");
@@ -59,12 +65,12 @@
 
         <div>
             <div>{m.modal_manage_create_content_template_label_content()}</div>
-            <Input name="content" type="text"bind:value={input.content}/>
+            <Textarea name="content" class="w-full" type="text" bind:value={input.content}/>
         </div>
 
         <div>
             <div>{m.modal_manage_create_content_template_label_type()}</div>
-            <Input name="type" bind:value={input.type}/>
+            <Select bind:value={input.type} items={typeItems}/>
         </div>
 
         {#if error?.trim()}

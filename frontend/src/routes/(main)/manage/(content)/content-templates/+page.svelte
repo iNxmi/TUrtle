@@ -1,8 +1,8 @@
 <script>
     import {m} from '$lib/paraglide/messages.js';
     import TableView from "$lib/components/TableView.svelte"
-	import { goto } from '$app/navigation';
-	import { resolve } from '$app/paths';
+    import {goto} from '$app/navigation';
+    import {resolve} from '$app/paths';
     import CreateContentTemplateModal from "$lib/components/modal/manage/CreateContentTemplateModal.svelte";
 
     const {data} = $props();
@@ -26,7 +26,7 @@
         }
     ];
 
-    let modal =$state(false);
+    let modal = $state(false);
 </script>
 
 <TableView columns={columns}
@@ -36,5 +36,5 @@
 />
 
 {#if modal}
-    <CreateContentTemplateModal bind:open={modal}/>
+    <CreateContentTemplateModal bind:open={modal} typeList={data.types}/>
 {/if}
