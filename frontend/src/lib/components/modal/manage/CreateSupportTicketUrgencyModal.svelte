@@ -39,13 +39,13 @@
 <Modal form bind:open={open} outsideclose={false}>
     <form onsubmit={submit} class="flex flex-col gap-5">
         <Heading tag="h3" class="text-center">
-            _CreateSupportTicketUrgency_
+            {m.modal_manage_create_support_ticket_urgency_title()}
         </Heading>
 
         <Hr class="m-0 p-0"/>
 
         <div>
-            <div>_CreateTicketUrgencyName_</div>
+            <div>{m.modal_manage_create_support_ticket_urgency_label_name()}</div>
             <Input name="name" type="text" bind:value={input.name} required/>
         </div>
 
@@ -57,7 +57,7 @@
             {#if loading === true}
                 <Spinner size="5"/>
             {:else}
-                _CreateSupportTicketUrgency_
+                {m.modal_manage_create_support_ticket_urgency_button()}
             {/if}
         </Button>
     </form>
