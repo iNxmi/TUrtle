@@ -28,6 +28,15 @@
         props: {
             value: template.name
         }
+    },{
+        label: m.manage_content_templates_label_type(),
+        field: "type",
+        editable: true,
+        component: Select,
+        props: {
+            value: template.type,
+            items: typeItems
+        }
     }, {
         label: m.manage_content_templates_label_description(),
         field: "description",
@@ -43,15 +52,6 @@
         component: Textarea,
         props: {
             value: template.content
-        }
-    },{
-        label: m.manage_content_templates_label_type(),
-        field: "type",
-        editable: true,
-        component: Select,
-        props: {
-            value: template.type,
-            items: typeItems
         }
     }, [{
         label: m.manage_content_templates_label_created_at(),
