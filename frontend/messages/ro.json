@@ -88,6 +88,12 @@
   "modal_manage_create_user_label_status": "Status",
   "modal_manage_create_user_button": "Creează",
 
+  "modal_manage_create_role_title": "Creează un rol",
+  "modal_manage_create_role_label_name": "Nume",
+  "modal_manage_create_role_label_permissions": "Permisiuni",
+  "modal_manage_create_role_label_type": "Tip (Opțional)",
+  "modal_manage_create_role_button": "Creează",
+
   "modal_manage_create_email_template_title": "Creează șablon e-mail",
   "modal_manage_create_email_template_label_name": "Nume",
   "modal_manage_create_email_template_label_description": "Descriere",
