@@ -173,6 +173,7 @@
 
     let header = $derived(user !== null ? `${user.firstName} ${user.lastName}` : null);
 </script>
+
 <div class="flex">
     <SideNavigation logoRedirect="/"
                     header={header}

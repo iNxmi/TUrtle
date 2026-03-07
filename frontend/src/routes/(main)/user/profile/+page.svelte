@@ -1,56 +1,106 @@
 <script>
     import {Input, MultiSelect} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
-    import Card from "$lib/components/Card.svelte";
+    import EntityPage from "$lib/components/EntityPage.svelte";
+    import {Users} from "$lib/api";
 
     let {data} = $props();
     let user = $derived(data.user);
-    let roles = $derived(data.roles);
+
+    let roleItems = $derived(data.roles.map((role) => ({
+        value: role.id,
+        name: role.name
+    })));
+
+    const items = $derived([{
+        label: m.manage_users_label_id(),
+        field: "id",
+        component: Input,
+        props: {
+            value: user.id
+        }
+    },{
+        label: m.manage_users_label_username(),
+        field: "username",
+        editable: true,
+        component: Input,
+        props: {
+            value: user.username
+        }
+    },{
+        label: m.manage_users_label_first_name(),
+        field: "firstName",
+        editable: true,
+        component: Input,
+        props: {
+            value: user.firstName
+        }
+    },{
+        label: m.manage_users_label_last_name(),
+        field: "lastName",
+        editable: true,
+        component: Input,
+        props: {
+            value: user.lastName
+        }
+    },{
+        label: m.manage_users_label_email(),
+        field: "email",
+        component: Input,
+        props: {
+            value: user.email
+        }
+    },{
+        label: m.manage_users_label_emojis(),
+        field: "emojis",
+        component: Input,
+        props: {
+            value: user.emojis
+        }
+    },{
+        label: m.manage_users_label_roles(),
+        field: "roles",
+        component: MultiSelect,
+        props: {
+            value: user.roleIds,
+            items: roleItems
+        }
+    },[{
+        label: m.manage_users_label_created_at(),
+        field: "createdAt",
+        component: Input,
+        props: {
+            value: user.createdAt
+        }
+    },{
+        label: m.manage_users_label_updated_at(),
+        field: "updatedAt",
+        component: Input,
+        props: {
+            value: user.updatedAt
+        }
+    }]]);
 </script>
 
-<Card>
-    <form class="flex flex-col gap-5">
-        <div>
-            <span>{m.manage_users_label_id()}</span>
-            <Input type="text" value={user.id} disabled/>
-        </div>
+<EntityPage items={items} onPatch={(payload) => Users.patch(user.id, payload)}/>
 
-        <div>
-            <span>{m.manage_users_label_username()}</span>
-            <Input type="text" value={user.username} disabled/>
-        </div>
+<!--<Card>-->
+<!--    <form class="flex flex-col gap-5">-->
 
-        <div class="flex gap-5">
-            <div class="flex-1">
-                <span>{m.manage_users_label_first_name()}</span>
-                <Input ype="text" value={user.firstName} disabled/>
-            </div>
+<!--        <div>-->
+<!--            <span>{m.manage_users_label_emojis()}</span>-->
+<!--            <Input type="text" value={user.emojis} disabled/>-->
+<!--        </div>-->
 
-            <div class="flex-1">
-                <span>{m.manage_users_label_last_name()}</span>
-                <Input type="text" value={user.lastName} disabled/>
-            </div>
-        </div>
+<!--        <div>-->
+<!--            <span>{m.manage_users_label_roles()}</span>-->
+<!--            <MultiSelect items={roles.map((role) => ({value: role.id, name: role.name}))} value={user.roleIds}-->
+<!--                         disabled/>-->
+<!--        </div>-->
 
-        <div>
-            <span>{m.manage_users_label_email()}</span>
-            <Input type="text" value={user.email} disabled/>
-        </div>
-
-        <div>
-            <span>{m.manage_users_label_emojis()}</span>
-            <Input type="text" value={user.emojis} disabled/>
-        </div>
-
-        <div>
-            <span>{m.manage_users_label_roles()}</span>
-            <MultiSelect items={roles.map((role) => ({value: role.id, name: role.name}))} value={user.roleIds}
-                         disabled/>
-        </div>
-
-        <div>
-            <span>{m.manage_users_label_created_at()}</span>
-            <Input type="text" value={(new Date(user.createdAt)).toLocaleString()} disabled/>
-        </div>
-    </form>
-</Card>
+<!--        <div>-->
+<!--            <span>{m.manage_users_label_created_at()}</span>-->
+<!--            <Input type="text" value={(new Date(user.createdAt)).toLocaleString()} disabled/>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</Card>-->

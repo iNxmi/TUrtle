@@ -1,4 +1,4 @@
-import {Connection, Auth, Permissions, Configuration} from "$lib/api";
+import {Auth, Configuration, Connection, Permissions} from "$lib/api";
 
 export const prerender = false;
 export const ssr = false;
@@ -38,12 +38,13 @@ async function getUser() {
     return await response.json();
 }
 
-async function getBusinessHours(){
+async function getBusinessHours() {
     const startResponse = await Configuration.get("DOOR_SCHEDULE_START");
     const endResponse = await Configuration.get("DOOR_SCHEDULE_END");
 
-    if(startResponse.ok && endResponse.ok){
-
-        return {start: await startResponse.json(), end: await endResponse.json()}
-    }
+    if (startResponse.ok && endResponse.ok)
+        return {
+            start: await startResponse.json(),
+            end: await endResponse.json()
+        }
 }

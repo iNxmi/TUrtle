@@ -2,7 +2,10 @@ import {Roles} from "$lib/api";
 
 export async function load() {
     const roles = await getRoles();
-    return {roles: roles};
+
+    return {
+        roles: roles
+    };
 }
 
 async function getRoles() {

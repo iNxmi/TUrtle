@@ -20,8 +20,8 @@
         if (response.status !== 204)
             return;
 
-        await invalidateAll();
         await goto("/");
+        await invalidateAll();
         open = false;
     }
 </script>

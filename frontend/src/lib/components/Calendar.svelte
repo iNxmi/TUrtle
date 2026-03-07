@@ -1,16 +1,15 @@
 <script>
-    import {onDestroy, onMount, getContext} from "svelte";
+    import {getContext, onDestroy, onMount} from "svelte";
 
     import {Calendar} from '@fullcalendar/core';
     import dayGridPlugin from '@fullcalendar/daygrid';
     import timeGridPlugin from '@fullcalendar/timegrid';
-    import listPlugin from '@fullcalendar/list';
 
     let {
         sources = $bindable([]),
         onEventClicked,
+        aspectRatio = 1.35,
         class: className = "",
-        aspectRatio = null,
         ...rest
     } = $props();
 
@@ -20,9 +19,9 @@
     let businessHours = getContext('businessHours');
     onMount(() => {
         calendar = new Calendar(element, {
-            plugins: [timeGridPlugin, dayGridPlugin, listPlugin],
+            plugins: [timeGridPlugin, dayGridPlugin],
             initialView: "dayGridMonth",
-            aspectRatio: aspectRatio || 1.35,
+            aspectRatio: aspectRatio,
             allDaySlot: false,
             firstDay: 1,
             businessHours: {
@@ -30,7 +29,7 @@
                 endTime: businessHours.end
             },
             headerToolbar: {
-                left: 'prev,next today',
+                left: 'prev,today,next',
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek'
             }
@@ -42,9 +41,8 @@
     let language = $state(getContext('locale'));
 
     $effect(() => {
-        if (calendar === null) {
+        if (calendar === null)
             return
-        }
 
         calendar.setOption('locale', language);
     })
@@ -70,4 +68,5 @@
         calendar?.destroy();
     });
 </script>
-    <div bind:this={element} class={`w-full h-full ${className}`} {...rest}></div>
+
+<div bind:this={element} class={`w-full h-full ${className}`} {...rest}></div>
