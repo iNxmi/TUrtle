@@ -42,7 +42,7 @@
 
     let bookings = $derived(data.bookings);
     let events = $derived(bookings.map((booking) => ({
-        title: booking.itemId,
+        title: data.items.find((item) => item.id === booking.itemId).name,
         start: booking.start,
         end: booking.end,
         href: `/user/item-bookings/${booking.id}`
