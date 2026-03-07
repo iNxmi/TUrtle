@@ -70,7 +70,7 @@
          alwaysOpen
          backdrop={false}
          position="static"
-         class="min-w-64 min-h-svh max-h-svh shadow-md/30"
+         class="min-w-68 min-h-svh max-h-svh shadow-md/30"
          classes={{div: "flex flex-col gap-2 h-full"}}
 >
     <div class="flex flex-col items-center justify-between">
@@ -174,14 +174,14 @@
                         </ButtonGroup>
                     {:else}
                         <ButtonGroup className="flex">
-                            <Button name="button_login" class="flex-1" onclick={() => loginModal = true}>
-                                <div class="flex gap-2 items-center">
+                            <Button name="button_login" class="flex-1 px-3" onclick={() => loginModal = true}>
+                                <div class="flex gap-1 items-center">
                                     <ArrowLeftToBracketOutline/>
                                     <Span>{m.main_navigation_button_login()}</Span>
                                 </div>
                             </Button>
-                            <Button name="button_register" class="flex-1" onclick={() => registerModal = true}>
-                                <div class="flex gap-2 items-center">
+                            <Button name="button_register" class="flex-1 px-3" onclick={() => registerModal = true}>
+                                <div class="flex gap-1 items-center">
                                     <UserAddOutline/>
                                     <Span>{m.main_navigation_button_register()}</Span>
                                 </div>
