@@ -6,6 +6,7 @@ import de.csw.turtle.api.dto.get.GetStatisticQueryResponse
 import de.csw.turtle.api.dto.patch.PatchStatisticQueryRequest
 import de.csw.turtle.api.entity.StatisticQueryEntity
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.StatisticQueryService
 import jakarta.servlet.http.HttpServletRequest
@@ -40,7 +41,7 @@ class StatisticQueryController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_STATISTIC_QUERIES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_STATISTIC_QUERIES))
             throw HttpException.Forbidden()
 
         val entity = statisticQueryService.create(
@@ -66,7 +67,7 @@ class StatisticQueryController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_STATISTIC_QUERIES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_STATISTIC_QUERIES))
             throw HttpException.Forbidden()
 
         val entity = statisticQueryService.getById(variable)
@@ -92,7 +93,7 @@ class StatisticQueryController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_STATISTIC_QUERIES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_STATISTIC_QUERIES))
             throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
@@ -124,7 +125,7 @@ class StatisticQueryController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_STATISTIC_QUERIES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_STATISTIC_QUERIES))
             throw HttpException.Forbidden()
 
         val entity = statisticQueryService.patch(
@@ -150,7 +151,7 @@ class StatisticQueryController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_STATISTIC_QUERIES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_STATISTIC_QUERIES))
             throw HttpException.Forbidden()
 
         if (!statisticQueryService.existsById(id))

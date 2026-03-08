@@ -4,6 +4,7 @@ import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.get.GetAuditLogResponse
 import de.csw.turtle.api.entity.AuditLogEntity
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.AuditLogService
 import jakarta.servlet.http.HttpServletRequest
@@ -35,11 +36,11 @@ class AuditLogController(
             throw HttpException.Unauthorized()
 
         val entity = auditLogService.getById(variable)
-            ?: throw HttpException.NotFound() //TODO
+            ?: throw HttpException.NotFound()
 
         if (!user.hasPermission(Permission.MANAGE_AUDIT_LOGS))
-            if (entity.user != user)
-                throw HttpException.Forbidden() //TODO
+            if (user.status != Status.ACTIVE || entity.user != user)
+                throw HttpException.Forbidden()
 
         val dto = GetAuditLogResponse(entity)
         return ResponseEntity.ok(dto)
@@ -60,6 +61,9 @@ class AuditLogController(
     ): ResponseEntity<Any> {
         if (user == null)
             throw HttpException.Unauthorized()
+
+        if (user.status != Status.ACTIVE)
+            throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)

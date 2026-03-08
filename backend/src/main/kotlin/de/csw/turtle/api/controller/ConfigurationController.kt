@@ -7,6 +7,7 @@ import de.csw.turtle.api.entity.ConfigurationEntity
 import de.csw.turtle.api.entity.ConfigurationEntity.Key
 import de.csw.turtle.api.entity.ConfigurationEntity.Type
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.ConfigurationService
 import jakarta.servlet.http.HttpServletRequest
@@ -55,7 +56,7 @@ class ConfigurationController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_CONFIGURATION))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_CONFIGURATION))
             throw HttpException.Forbidden()
 
         return ResponseEntity.ok(dto)
@@ -75,7 +76,7 @@ class ConfigurationController(
         httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
 
-        val specification = if (user == null || !user.hasPermission(Permission.MANAGE_CONFIGURATION)) {
+        val specification = if (user == null || user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_CONFIGURATION)) {
             Specification { root, _, builder ->
                 builder.equal(
                     root.get<ConfigurationEntity.Visibility>("visibility"),
@@ -114,7 +115,7 @@ class ConfigurationController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_CONFIGURATION))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_CONFIGURATION))
             throw HttpException.Forbidden()
 
         val entity = configurationService.patch(

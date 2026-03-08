@@ -62,6 +62,8 @@
     let logoutModal = $state(false);
     let registerModal = $state(false);
     let openDoorModal = $state(false);
+
+    let step = 1;
 </script>
 
 <Sidebar activeUrl={activeUrl}
@@ -180,7 +182,10 @@
                                     <Span>{m.main_navigation_button_login()}</Span>
                                 </div>
                             </Button>
-                            <Button name="button_register" class="flex-1 px-3" onclick={() => registerModal = true}>
+                            <Button name="button_register" class="flex-1 px-3" onclick={() => {
+                                step = 1
+                                registerModal = true
+                            }}>
                                 <div class="flex gap-1 items-center">
                                     <UserAddOutline/>
                                     <Span>{m.main_navigation_button_register()}</Span>
@@ -195,7 +200,16 @@
 </Sidebar>
 
 {#if loginModal}
-    <LoginModal bind:open={loginModal} isTrusted={isTrusted}/>
+    <LoginModal bind:open={loginModal} isTrusted={isTrusted} onStatusNotActive={(status) => {
+        if (status === "PENDING_VERIFICATION")
+            step = 2
+
+        if(status === "PENDING_APPROVAL")
+            step = 3
+
+        loginModal = false
+        registerModal = true
+    }}/>
 {/if}
 
 {#if logoutModal}
@@ -203,7 +217,7 @@
 {/if}
 
 {#if registerModal}
-    <RegisterModal bind:open={registerModal} isTrusted={isTrusted}/>
+    <RegisterModal bind:open={registerModal} isTrusted={isTrusted} initialStep={step}/>
 {/if}
 
 {#if openDoorModal}

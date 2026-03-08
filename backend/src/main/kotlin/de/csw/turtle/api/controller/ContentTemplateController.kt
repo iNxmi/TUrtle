@@ -7,6 +7,7 @@ import de.csw.turtle.api.dto.patch.PatchContentTemplateRequest
 import de.csw.turtle.api.entity.ContentTemplateEntity
 import de.csw.turtle.api.entity.ContentTemplateEntity.Type
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.ContentTemplateService
 import jakarta.servlet.http.HttpServletRequest
@@ -41,7 +42,7 @@ class ContentTemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
         val entity = contentTemplateService.create(
@@ -71,7 +72,7 @@ class ContentTemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
         val entity = contentTemplateService.getById(variable)
@@ -97,7 +98,7 @@ class ContentTemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
@@ -129,7 +130,7 @@ class ContentTemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
         val entity = contentTemplateService.patch(
@@ -156,7 +157,7 @@ class ContentTemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_GENERAL_TEMPLATES))
             throw HttpException.Forbidden()
 
         contentTemplateService.delete(id)

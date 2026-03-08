@@ -17,7 +17,7 @@
         const response = await Auth.logout();
         loading = false;
 
-        if (response.status !== 204)
+        if (!response.ok)
             return;
 
         await goto("/");

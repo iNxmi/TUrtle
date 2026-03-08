@@ -17,12 +17,7 @@ class CustomUserDetailsService(
         val user = userService.getByUsernameOrNull(username)
             ?: throw HttpException.Unauthorized()
 
-        return CustomUserDetails(
-            userId = user.id,
-            username = user.username,
-            password = user.passwordHash,
-            authorities = user.roles.flatMap { it.authorities() }.toSet()
-        )
+        return CustomUserDetails(user)
     }
 
 }

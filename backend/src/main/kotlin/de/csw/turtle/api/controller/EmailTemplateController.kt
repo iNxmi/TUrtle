@@ -7,6 +7,7 @@ import de.csw.turtle.api.dto.patch.PatchEmailTemplateRequest
 import de.csw.turtle.api.entity.EmailTemplateEntity
 import de.csw.turtle.api.entity.EmailTemplateEntity.Type
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.EmailTemplateService
 import jakarta.servlet.http.HttpServletRequest
@@ -41,7 +42,7 @@ class EmailTemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
         val entity = emailTemplateService.create(
@@ -72,7 +73,7 @@ class EmailTemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
         val entity = emailTemplateService.getById(variable)
@@ -98,7 +99,7 @@ class EmailTemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
@@ -130,7 +131,7 @@ class EmailTemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
         val entity = emailTemplateService.patch(
@@ -158,7 +159,7 @@ class EmailTemplateController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_EMAIL_TEMPLATES))
             throw HttpException.Forbidden()
 
         emailTemplateService.delete(id)

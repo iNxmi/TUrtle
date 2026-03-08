@@ -170,7 +170,7 @@
   "modal_logout_button_cancel": "Cancel",
 
   "modal_login_title": "Login to TUrtle",
-  "modal_login_label_username_or_email": "Email or Username",
+  "modal_login_label_email_or_username": "Email or Username",
   "modal_login_label_password": "Password",
   "modal_login_label_forgot_password": "Forgot Password?",
   "modal_login_label_no_account": "No account? Register here.",

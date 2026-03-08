@@ -6,6 +6,7 @@ import de.csw.turtle.api.dto.get.GetSupportTicketCategoryResponse
 import de.csw.turtle.api.dto.patch.PatchSupportTicketCategoryRequest
 import de.csw.turtle.api.entity.SupportTicketCategoryEntity
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.SupportTicketCategoryService
 import jakarta.servlet.http.HttpServletRequest
@@ -40,7 +41,7 @@ class SupportTicketCategoryController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKET_CATEGORIES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_SUPPORT_TICKET_CATEGORIES))
             throw HttpException.Forbidden()
 
         val entity = supportTicketCategoryService.create(
@@ -110,7 +111,7 @@ class SupportTicketCategoryController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKET_CATEGORIES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_SUPPORT_TICKET_CATEGORIES))
             throw HttpException.Forbidden()
 
         val entity = supportTicketCategoryService.patch(
@@ -134,7 +135,7 @@ class SupportTicketCategoryController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKET_CATEGORIES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_SUPPORT_TICKET_CATEGORIES))
             throw HttpException.Forbidden()
 
         supportTicketCategoryService.delete(id)

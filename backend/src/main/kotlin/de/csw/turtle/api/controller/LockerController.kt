@@ -6,6 +6,7 @@ import de.csw.turtle.api.dto.get.GetLockerResponse
 import de.csw.turtle.api.dto.patch.PatchLockerRequest
 import de.csw.turtle.api.entity.LockerEntity
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.locker.LockerService
 import jakarta.servlet.http.HttpServletRequest
@@ -40,7 +41,7 @@ class LockerController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_LOCKERS))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_LOCKERS))
             throw HttpException.Forbidden()
 
         val entity = lockerService.create(
@@ -113,7 +114,7 @@ class LockerController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_LOCKERS))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_LOCKERS))
             throw HttpException.Forbidden()
 
         val entity = lockerService.patch(
@@ -140,7 +141,7 @@ class LockerController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_LOCKERS))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_LOCKERS))
             throw HttpException.Forbidden()
 
         lockerService.delete(id)

@@ -45,6 +45,9 @@ class ItemBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
+        if(user.status != UserEntity.Status.ACTIVE)
+            throw HttpException.Forbidden()
+
         val item = itemService.getById(request.itemId)
             ?: throw HttpException.NotFound()
 
@@ -92,6 +95,9 @@ class ItemBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
+        if(user.status != UserEntity.Status.ACTIVE)
+            throw HttpException.Forbidden()
+
         val entity = itemBookingService.getById(variable)
             ?: throw HttpException.NotFound()
 
@@ -118,6 +124,9 @@ class ItemBookingController(
     ): ResponseEntity<Any> {
         if (user == null)
             throw HttpException.Unauthorized()
+
+        if(user.status != UserEntity.Status.ACTIVE)
+            throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -148,6 +157,9 @@ class ItemBookingController(
     ): ResponseEntity<GetItemBookingResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
+
+        if(user.status != UserEntity.Status.ACTIVE)
+            throw HttpException.Forbidden()
 
         val entity = itemBookingService.getById(id)
             ?: throw HttpException.NotFound()
@@ -203,6 +215,9 @@ class ItemBookingController(
     ): ResponseEntity<Void> {
         if (user == null)
             throw HttpException.Unauthorized()
+
+        if(user.status != UserEntity.Status.ACTIVE)
+            throw HttpException.Forbidden()
 
         val entity = itemBookingService.getById(id)
             ?: throw HttpException.NotFound()

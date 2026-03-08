@@ -42,7 +42,10 @@ class RoomBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.REQUEST_ROOM_BOOKINGS) && user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS))
+        if (user.status != UserEntity.Status.ACTIVE || (!user.hasPermission(Permission.REQUEST_ROOM_BOOKINGS) && !user.hasPermission(
+                Permission.MANAGE_ROOM_BOOKINGS
+            ))
+        )
             throw HttpException.Forbidden()
 
         var userId = user.id
@@ -85,6 +88,9 @@ class RoomBookingController(
     ): ResponseEntity<GetRoomBookingResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
+
+        if (user.status != UserEntity.Status.ACTIVE)
+            throw HttpException.Forbidden()
 
         val entity = roomBookingService.getById(variable)
             ?: throw HttpException.NotFound()
@@ -139,6 +145,9 @@ class RoomBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
+        if (user.status != UserEntity.Status.ACTIVE)
+            throw HttpException.Forbidden()
+
         roomBookingService.getById(id)
             ?: throw HttpException.NotFound()
 
@@ -177,7 +186,7 @@ class RoomBookingController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS))
+        if (user.status != UserEntity.Status.ACTIVE || !user.hasPermission(Permission.MANAGE_ROOM_BOOKINGS))
             throw HttpException.Forbidden()
 
         roomBookingService.delete(id)

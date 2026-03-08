@@ -20,9 +20,7 @@ class DefaultEmailTemplate(
     """.trimIndent()
 
     val usersVerify = """
-        To verify your account please click <a th:href="${'$'}{url}">here</a>.
-        <br>
-        If you don't verify in <span th:text="${'$'}{duration.toDays()}">duration.toDays()</span> Days (<span th:text="${'$'}{user.createdAt.plusMillis(duration.toMillis())}">user.createdAt.plusMillis(duration.toMillis())</span>), your account will be deleted.
+        This is your verification code: <span th:text="${'$'}{uuid}">uuid</span>.
     """.trimIndent()
 
     val roomBookingsCreated = """

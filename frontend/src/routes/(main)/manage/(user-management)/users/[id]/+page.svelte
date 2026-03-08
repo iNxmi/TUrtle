@@ -1,16 +1,20 @@
 <script>
-    import {Input, MultiSelect} from "flowbite-svelte";
+    import {Input, MultiSelect, Select} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
     import EntityPage from "$lib/components/EntityPage.svelte";
     import {Users} from "$lib/api";
 
     let {data} = $props();
     let user = $derived(data.user);
-    let roles = $derived(data.roles);
 
-    let roleItems = $derived(roles.map((role) => ({
+    let roleItems = $derived(data.roles.map((role) => ({
         value: role.id,
         name: role.name
+    })));
+
+    let statusItems = $derived(data.statuses.map((status) => ({
+        value: status,
+        name: status
     })));
 
     const items = $derived([{
@@ -69,6 +73,15 @@
         props: {
             value: user.roleIds,
             items: roleItems
+        }
+    }, {
+        label: m.manage_users_label_status(),
+        field: "status",
+        editable: true,
+        component: Select,
+        props: {
+            value: user.status,
+            items: statusItems
         }
     }, [{
         label: m.manage_users_label_created_at(),

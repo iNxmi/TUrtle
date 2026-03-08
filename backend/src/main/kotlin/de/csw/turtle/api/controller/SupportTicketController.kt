@@ -144,7 +144,7 @@ class SupportTicketController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
+        if (user.status != UserEntity.Status.ACTIVE || !user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
             throw HttpException.Forbidden()
 
         val entity = supportTicketService.patch(
@@ -173,7 +173,7 @@ class SupportTicketController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
+        if (user.status != UserEntity.Status.ACTIVE || !user.hasPermission(Permission.MANAGE_SUPPORT_TICKETS))
             throw HttpException.Forbidden()
 
         supportTicketService.delete(id)

@@ -4,13 +4,9 @@ import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.create.CreateUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.dto.patch.PatchUserRequest
-import de.csw.turtle.api.entity.RoleEntity.Type
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.service.AltchaService
-import de.csw.turtle.api.service.NetworkService
-import de.csw.turtle.api.service.RoleService
 import de.csw.turtle.api.service.UserService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -26,10 +22,7 @@ private const val ENDPOINT = "/api/users"
 @RestController
 @RequestMapping(ENDPOINT)
 class UserController(
-    private val userService: UserService,
-    private val altchaService: AltchaService,
-    private val networkService: NetworkService,
-    private val roleService: RoleService
+    private val userService: UserService
 ) : CreateController<UserEntity, CreateUserRequest, GetUserResponse>,
     GetController<UserEntity, String, GetUserResponse>,
     PatchController<UserEntity, PatchUserRequest, GetUserResponse>,
@@ -44,35 +37,21 @@ class UserController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<GetUserResponse> {
-        if (user == null) {
-            val ipAddress = networkService.getClientIp(httpRequest)
-            if (!altchaService.isTrusted(ipAddress))
-                if (request.altchaToken == null || !altchaService.isValid(request.altchaToken))
-                    throw HttpException.Forbidden("Invalid captcha token.")
-        } else if (!user.hasPermission(Permission.MANAGE_USERS))
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_USERS))
             throw HttpException.Forbidden()
-
-        val role = roleService.getByType(Type.STUDENT)
-            ?: throw HttpException.InternalServerError()
-
-        var emojis = userService.generateEmojis()
-        var status = Status.PENDING_VERIFICATION
-        var roleIds = setOf(role.id)
-        if (user != null) {
-            request.emojis?.let { emojis = it }
-            request.status?.let { status = it }
-            request.roleIds?.let { roleIds = it }
-        }
 
         val entity = userService.create(
             username = request.username,
             firstName = request.firstName,
             lastName = request.lastName,
             email = request.email,
-            emojis = emojis,
+            emojis = userService.generateEmojis(),
             password = request.password,
-            status = status,
-            roleIds = roleIds
+            status = request.status ?: Status.PENDING_VERIFICATION,
+            roleIds = request.roleIds ?: setOf(),
         )
 
         val location = URI.create("$ENDPOINT/${entity.id}")
@@ -126,7 +105,7 @@ class UserController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_USERS))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_USERS))
             throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
@@ -158,16 +137,14 @@ class UserController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (user.id != id && !user.hasPermission(Permission.MANAGE_USERS))
+        if (user.status != Status.ACTIVE || (user.id != id && !user.hasPermission(Permission.MANAGE_USERS)))
             throw HttpException.Forbidden()
 
-        var username: String? = null
         var roleIds: Set<Long>? = null
         var status: Status? = null
         var emojis: String? = null
         var email: String? = null
         if (user.hasPermission(Permission.MANAGE_USERS)) {
-            request.username?.let { username = it }
             request.roleIds?.let { roleIds = it }
             request.status?.let { status = it }
             request.emojis?.let { emojis = it }
@@ -176,7 +153,7 @@ class UserController(
 
         val entity = userService.patch(
             id = id,
-            username = username,
+            username = request.username,
             firstName = request.firstName,
             lastName = request.lastName,
             email = email,
@@ -203,7 +180,7 @@ class UserController(
             throw HttpException.Unauthorized()
 
         if (!user.hasPermission(Permission.MANAGE_USERS))
-            if (id != user.id)
+            if (user.status != Status.ACTIVE || id != user.id)
                 throw HttpException.Forbidden()
 
         userService.delete(id)

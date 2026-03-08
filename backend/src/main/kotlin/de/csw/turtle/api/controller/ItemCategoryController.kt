@@ -6,6 +6,7 @@ import de.csw.turtle.api.dto.get.GetItemCategoryResponse
 import de.csw.turtle.api.dto.patch.PatchItemCategoryRequest
 import de.csw.turtle.api.entity.ItemCategoryEntity
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.ItemCategoryService
 import jakarta.servlet.http.HttpServletRequest
@@ -40,7 +41,7 @@ class ItemCategoryController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
             throw HttpException.Forbidden()
 
         val entity = itemCategoryService.create(
@@ -110,7 +111,7 @@ class ItemCategoryController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
             throw HttpException.Forbidden()
 
         val entity = itemCategoryService.patch(
@@ -134,7 +135,7 @@ class ItemCategoryController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_ITEM_CATEGORIES))
             throw HttpException.Forbidden()
 
         itemCategoryService.delete(id)

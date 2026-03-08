@@ -4,6 +4,7 @@ import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.hardware.OpenDoorEmojisRequest
 import de.csw.turtle.api.entity.ConfigurationEntity.Key
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.*
 import de.csw.turtle.api.service.door.DoorControlService
@@ -37,7 +38,7 @@ class HardwareController(
         val user = userService.getByEmojis(request.emojis)
             ?: userService.getByEmojisLegacyFix(request.emojis)
 
-        if (user == null) {
+        if (user == null || user.status != Status.ACTIVE) {
             if (!networkService.isLocalNetwork(httpRequest))
                 throw HttpException.Forbidden("External network.")
 
@@ -56,7 +57,7 @@ class HardwareController(
         @AuthenticationPrincipal user: UserEntity?,
         request: HttpServletRequest
     ): ResponseEntity<String> {
-        if (user == null)
+        if (user == null || user.status != Status.ACTIVE)
             throw HttpException.Unauthorized()
 
         checkDoorPermissions(user, request)
@@ -74,6 +75,9 @@ class HardwareController(
     ): ResponseEntity<String> {
         if (user == null)
             throw HttpException.Unauthorized()
+
+        if(user.status != Status.ACTIVE )
+            throw HttpException.Forbidden()
 
         checkLockerPermissions(user, id, request)
 

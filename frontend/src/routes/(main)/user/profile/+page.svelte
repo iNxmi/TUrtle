@@ -83,24 +83,3 @@
 </script>
 
 <EntityPage items={items} onPatch={(payload) => Users.patch(user.id, payload)}/>
-
-<!--<Card>-->
-<!--    <form class="flex flex-col gap-5">-->
-
-<!--        <div>-->
-<!--            <span>{m.manage_users_label_emojis()}</span>-->
-<!--            <Input type="text" value={user.emojis} disabled/>-->
-<!--        </div>-->
-
-<!--        <div>-->
-<!--            <span>{m.manage_users_label_roles()}</span>-->
-<!--            <MultiSelect items={roles.map((role) => ({value: role.id, name: role.name}))} value={user.roleIds}-->
-<!--                         disabled/>-->
-<!--        </div>-->
-
-<!--        <div>-->
-<!--            <span>{m.manage_users_label_created_at()}</span>-->
-<!--            <Input type="text" value={(new Date(user.createdAt)).toLocaleString()} disabled/>-->
-<!--        </div>-->
-<!--    </form>-->
-<!--</Card>-->

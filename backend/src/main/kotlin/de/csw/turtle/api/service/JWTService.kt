@@ -74,7 +74,7 @@ class JWTService(
 
     enum class Type(val key: Key) {
         ACCESS(Key.JWT_DURATION_ACCESS),
-        REFRESH(Key.JWT_DURATION_REFRESH);
+        REFRESH(Key.JWT_DURATION_REFRESH)
     }
 
     data class Data(

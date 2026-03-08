@@ -1,10 +1,12 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.dto.auth.LoginUserRequest
-import de.csw.turtle.api.entity.EmailTemplateEntity
+import de.csw.turtle.api.dto.auth.RegisterUserRequest
 import de.csw.turtle.api.entity.ConfigurationEntity.Key
+import de.csw.turtle.api.entity.EmailTemplateEntity
 import de.csw.turtle.api.entity.TokenEntity.Type
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -23,7 +25,8 @@ class AuthService(
     private val emailService: EmailService
 ) {
 
-    data class TokenPair(
+    data class Authentication(
+        val user: UserEntity,
         val accessToken: String,
         val refreshToken: String
     )
@@ -31,7 +34,7 @@ class AuthService(
     @Transactional
     fun login(
         request: LoginUserRequest
-    ): TokenPair {
+    ): Authentication {
         val user = userService.getByEmailOrUsernameOrNull(request.emailOrUsername)
             ?: throw HttpException.Unauthorized("Invalid username or password.")
 
@@ -41,13 +44,42 @@ class AuthService(
         val accessToken = jwtService.generate(user.id, JWTService.Type.ACCESS)
         val refreshToken = jwtService.generate(user.id, JWTService.Type.REFRESH)
 
-        return TokenPair(accessToken, refreshToken)
+        return Authentication(
+            user = user,
+            accessToken = accessToken,
+            refreshToken = refreshToken
+        )
+    }
+
+    @Transactional
+    fun register(
+        request: RegisterUserRequest
+    ): Authentication {
+        val user = userService.create(
+            username = request.username,
+            firstName = request.firstName,
+            lastName = request.lastName,
+            email = request.email,
+            password = request.password,
+            emojis = userService.generateEmojis(),
+            status = Status.PENDING_VERIFICATION,
+            roleIds = setOf()
+        )
+
+        val accessToken = jwtService.generate(user.id, JWTService.Type.ACCESS)
+        val refreshToken = jwtService.generate(user.id, JWTService.Type.REFRESH)
+
+        return Authentication(
+            user = user,
+            accessToken = accessToken,
+            refreshToken = refreshToken
+        )
     }
 
     @Transactional
     fun refresh(
         refreshToken: String
-    ): TokenPair {
+    ): Authentication {
         if (jwtService.isExpired(refreshToken))
             throw HttpException.Unauthorized("Expired refresh token.")
 
@@ -57,20 +89,21 @@ class AuthService(
         if (data.type != JWTService.Type.REFRESH)
             throw HttpException.Unauthorized("Invalid refresh token.")
 
-        if (userService.getById(data.subject) == null)
-            throw HttpException.Unauthorized("Invalid refresh token.")
+        val user = userService.getById(data.subject)
+            ?: throw HttpException.Unauthorized("Invalid refresh token.")
 
         val accessToken = jwtService.generate(data.subject, JWTService.Type.ACCESS)
         val refreshToken = jwtService.generate(data.subject, JWTService.Type.REFRESH)
 
-        return TokenPair(accessToken, refreshToken)
+        return Authentication(
+            user = user,
+            accessToken = accessToken,
+            refreshToken = refreshToken
+        )
     }
 
     @Transactional
-    fun requestVerification(user: UserEntity) {
-        if (user.status != UserEntity.Status.PENDING_VERIFICATION)
-            return
-
+    fun requestVerification(user: UserEntity){
         val duration = configurationService.getTyped<Duration>(Key.USER_VERIFICATION_DURATION)
 
         val token = tokenService.create(
@@ -88,6 +121,8 @@ class AuthService(
             val duration = configurationService.getTyped<Duration>(Key.USER_VERIFICATION_DURATION)
 
             setVariable("user", updatedUser)
+            setVariable("uuid", token.uuid)
+            setVariable("fqdn", fqdn)
             setVariable("url", "https://$fqdn/api/auth/verify?uuid=${token.uuid}")
             setVariable("duration", duration)
             setVariable("expiration", updatedUser.createdAt.plusMillis(duration.toMillis()))

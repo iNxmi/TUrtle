@@ -6,6 +6,7 @@ import de.csw.turtle.api.dto.get.GetItemResponse
 import de.csw.turtle.api.dto.patch.PatchItemRequest
 import de.csw.turtle.api.entity.ItemEntity
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.ItemService
 import jakarta.servlet.http.HttpServletRequest
@@ -40,7 +41,7 @@ class ItemController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ITEMS))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_ITEMS))
             throw HttpException.Forbidden()
 
         val entity = itemService.create(
@@ -115,7 +116,7 @@ class ItemController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ITEMS))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_ITEMS))
             throw HttpException.Forbidden()
 
         val entity = itemService.patch(
@@ -144,7 +145,7 @@ class ItemController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ITEMS))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_ITEMS))
             throw HttpException.Forbidden()
 
         itemService.delete(id)

@@ -5,8 +5,16 @@ export class Auth {
     static async login(payload) {
         return request("/api/auth/login", {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(payload)
+            body: JSON.stringify(payload),
+            headers: {"Content-Type": "application/json"}
+        });
+    }
+
+    static async register(payload) {
+        return request("/api/auth/register", {
+            method: "POST",
+            body: JSON.stringify(payload),
+            headers: {"Content-Type": "application/json"}
         });
     }
 
@@ -22,17 +30,12 @@ export class Auth {
         return request("/api/auth/refresh", {method: "POST"});
     }
 
-    static async requestVerification(email) {
-        const payload = {email: email}
-        return request("/api/auth/request-verification", {
-            method: "POST",
-            body: JSON.stringify(payload),
-            headers: {"Content-Type": "application/json"}
-        });
+    static async requestVerification() {
+        return request("/api/auth/request-verification", {method: "POST"});
     }
 
     static async verify(uuid) {
-        return request(`/api/auth/verify?uuid=${uuid}`);
+        return request(`/api/auth/verify?uuid=${uuid}`,);
     }
 
 }

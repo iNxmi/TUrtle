@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/altcha")
 class AltchaController(
-    private val altchaService: AltchaService,
-    private val networkService: NetworkService
+    private val altchaService: AltchaService
 ) {
 
     @GetMapping("/challenge")

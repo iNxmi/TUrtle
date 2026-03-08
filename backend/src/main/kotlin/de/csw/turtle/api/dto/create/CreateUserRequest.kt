@@ -8,8 +8,6 @@ data class CreateUserRequest(
     val lastName: String,
     val email: String,
     val password: String,
-    val emojis: String? = null,
     val status: UserEntity.Status? = null,
-    val roleIds: Set<Long>? = null,
-    val altchaToken: String? = null
+    val roleIds: Set<Long>? = null
 ) : CreateRequest

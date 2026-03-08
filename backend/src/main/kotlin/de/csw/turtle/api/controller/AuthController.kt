@@ -1,11 +1,12 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.dto.auth.LoginUserRequest
-import de.csw.turtle.api.dto.auth.VerificationRequest
+import de.csw.turtle.api.dto.auth.RegisterUserRequest
 import de.csw.turtle.api.dto.get.GetUserResponse
 import de.csw.turtle.api.entity.ConfigurationEntity.Key
 import de.csw.turtle.api.entity.TokenEntity
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.*
 import de.csw.turtle.api.service.JWTService.Type
@@ -65,11 +66,14 @@ class AuthController(
     private fun getDuration(type: Type) = configurationService.getTyped<Duration>(type.key)
 
     @GetMapping("/me")
-    fun verify(
+    fun me(
         @AuthenticationPrincipal user: UserEntity?
     ): ResponseEntity<GetUserResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
+
+        if (user.status != Status.ACTIVE)
+            throw HttpException.Forbidden()
 
         val dto = GetUserResponse(user)
         return ResponseEntity.ok(dto)
@@ -80,39 +84,60 @@ class AuthController(
         @RequestBody request: LoginUserRequest,
         httpRequest: HttpServletRequest,
         response: HttpServletResponse
-    ): ResponseEntity<Void> {
+    ): ResponseEntity<GetUserResponse> {
         val ipAddress = networkService.getClientIp(httpRequest)
         if (!altchaService.isTrusted(ipAddress))
             if (request.altchaToken == null || !altchaService.isValid(request.altchaToken))
                 throw HttpException.Forbidden("Invalid captcha token.")
 
-        val tokens = authService.login(request)
+        val authentication = authService.login(request)
 
-        setCookie(COOKIE_NAME_ACCESS_TOKEN, tokens.accessToken, getDuration(Type.ACCESS), response)
+        setCookie(COOKIE_NAME_ACCESS_TOKEN, authentication.accessToken, getDuration(Type.ACCESS), response)
 
         val refreshTokenDuration = if (request.rememberMe) {
             getDuration(Type.REFRESH)
         } else null
 
-        setCookie(COOKIE_NAME_REFRESH_TOKEN, tokens.refreshToken, refreshTokenDuration, response)
+        setCookie(COOKIE_NAME_REFRESH_TOKEN, authentication.refreshToken, refreshTokenDuration, response)
 
-        return ResponseEntity.noContent().build()
+        val dto = GetUserResponse(authentication.user)
+        return ResponseEntity.ok(dto)
+    }
+
+    @PostMapping("/register")
+    fun register(
+        @RequestBody request: RegisterUserRequest,
+        httpRequest: HttpServletRequest,
+        response: HttpServletResponse
+    ): ResponseEntity<GetUserResponse> {
+        val ipAddress = networkService.getClientIp(httpRequest)
+        if (!altchaService.isTrusted(ipAddress))
+            if (request.altchaToken == null || !altchaService.isValid(request.altchaToken))
+                throw HttpException.Forbidden("Invalid captcha token.")
+
+        val authentication = authService.register(request)
+
+        setCookie(COOKIE_NAME_ACCESS_TOKEN, authentication.accessToken, getDuration(Type.ACCESS), response)
+
+        val dto = GetUserResponse(authentication.user)
+        return ResponseEntity.ok(dto)
     }
 
     @PostMapping("/refresh")
     fun refresh(
         request: HttpServletRequest,
         response: HttpServletResponse
-    ): ResponseEntity<Void> {
+    ): ResponseEntity<GetUserResponse> {
         val token = request.cookies?.find { it.name == COOKIE_NAME_REFRESH_TOKEN }?.value
             ?: throw HttpException.Unauthorized("Refresh token is required.")
 
-        val tokens = authService.refresh(token)
+        val authentication = authService.refresh(token)
 
-        setCookie(COOKIE_NAME_ACCESS_TOKEN, tokens.accessToken, getDuration(Type.ACCESS), response)
-        setCookie(COOKIE_NAME_REFRESH_TOKEN, tokens.refreshToken, getDuration(Type.REFRESH), response)
+        setCookie(COOKIE_NAME_ACCESS_TOKEN, authentication.accessToken, getDuration(Type.ACCESS), response)
+        setCookie(COOKIE_NAME_REFRESH_TOKEN, authentication.refreshToken, getDuration(Type.REFRESH), response)
 
-        return ResponseEntity.noContent().build()
+        val dto = GetUserResponse(authentication.user)
+        return ResponseEntity.ok(dto)
     }
 
     @PostMapping("/logout")
@@ -127,20 +152,27 @@ class AuthController(
 
     @PostMapping("/request-verification")
     fun requestVerification(
-        @RequestBody request: VerificationRequest
+        @AuthenticationPrincipal user: UserEntity?
     ): ResponseEntity<Void> {
-        val user = userService.getByEmailOrNull(request.email)
+        if (user == null)
+            throw HttpException.Unauthorized()
 
-        if (user != null)
-            authService.requestVerification(user)
+        if (user.status != Status.PENDING_VERIFICATION)
+            throw HttpException.Forbidden()
+
+        authService.requestVerification(user)
 
         return ResponseEntity.ok().build()
     }
 
     @GetMapping("/verify")
     fun verify(
+        @AuthenticationPrincipal user: UserEntity,
         @RequestParam uuid: String
     ): ResponseEntity<GetUserResponse> {
+        if (user.status != Status.PENDING_VERIFICATION)
+            throw HttpException.Forbidden()
+
         val token = tokenService.getByUuid(uuid)
             ?: throw HttpException.NotFound("No token with uuid '$uuid'.")
 
@@ -150,26 +182,16 @@ class AuthController(
         if (token.isExpired())
             throw HttpException.Unauthorized("Token expired.")
 
-        val user = userService.getByToken(token)
-            ?: throw HttpException.NotFound()
-
         userService.removeToken(user, token)
         tokenService.delete(token.id)
 
         val regexes = configurationService.getTyped<List<String>>(Key.USER_EMAIL_TRUSTED).map { Regex(it) }
         val isTrustedEmail = regexes.any { it.matches(user.email) }
-        val newStatus = if (isTrustedEmail) UserEntity.Status.ACTIVE else UserEntity.Status.PENDING_APPROVAL
+        val newStatus = if (isTrustedEmail) Status.ACTIVE else Status.PENDING_APPROVAL
 
         val entity = userService.patch(id = user.id, status = newStatus)
         val dto = GetUserResponse(entity)
         return ResponseEntity.ok(dto)
     }
-
-//    @PostMapping("/reset-password")
-//    fun reset(
-//        @RequestBody request: ResetUserPasswordRequest
-//    ) {
-//
-//    }
 
 }

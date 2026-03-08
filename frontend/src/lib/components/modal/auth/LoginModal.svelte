@@ -8,12 +8,13 @@
 
     let {
         isTrusted = false,
-        open = $bindable(false)
+        open = $bindable(false),
+        onStatusNotActive
     } = $props();
 
     let loading = $state(false);
 
-    let username = $state("");
+    let emailOrUsername = $state("");
     let password = $state("");
     let rememberMe = $state(false);
     let altchaToken = $state("");
@@ -25,20 +26,26 @@
         error = "";
 
         const payload = {
-            emailOrUsername: $state.snapshot(username),
-            password: $state.snapshot(password),
-            rememberMe: $state.snapshot(rememberMe),
-            altchaToken: $state.snapshot(altchaToken)
+            emailOrUsername: emailOrUsername,
+            password: password,
+            rememberMe: rememberMe,
+            altchaToken: altchaToken
         };
 
         loading = true;
         const response = await Auth.login(payload);
         loading = false;
 
+        const json = await response.json();
+
         //TODO replace by local checks and interpretation as exceptions are given in english only and only for dev/api purposes.
         if (!response.ok) {
-            const json = await response.json();
             error = json.message;
+            return;
+        }
+
+        if (json.status !== "ACTIVE") {
+            onStatusNotActive?.(json.status);
             return;
         }
 
@@ -57,8 +64,8 @@
         <Hr class="m-0 p-0"/>
 
         <div>
-            <div>{m.modal_login_label_username_or_email()}</div>
-            <Input name="input_email_or_username" type="text" bind:value={username} required/>
+            <div>{m.modal_login_label_email_or_username()}</div>
+            <Input name="input_email_or_username" type="text" bind:value={emailOrUsername} required/>
         </div>
 
         <div>

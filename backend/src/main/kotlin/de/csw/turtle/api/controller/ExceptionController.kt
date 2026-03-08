@@ -4,6 +4,7 @@ import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.get.GetExceptionResponse
 import de.csw.turtle.api.entity.ExceptionEntity
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.ExceptionService
 import jakarta.servlet.http.HttpServletRequest
@@ -33,7 +34,7 @@ class ExceptionController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EXCEPTIONS))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_EXCEPTIONS))
             throw HttpException.Forbidden()
 
         val entity = exceptionService.getById(variable)
@@ -59,7 +60,7 @@ class ExceptionController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EXCEPTIONS))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_EXCEPTIONS))
             throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
@@ -90,7 +91,7 @@ class ExceptionController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_EXCEPTIONS))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_EXCEPTIONS))
             throw HttpException.Forbidden()
 
         exceptionService.delete(id)

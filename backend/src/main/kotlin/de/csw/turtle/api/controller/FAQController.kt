@@ -6,6 +6,7 @@ import de.csw.turtle.api.dto.get.GetFAQResponse
 import de.csw.turtle.api.dto.patch.PatchFAQRequest
 import de.csw.turtle.api.entity.FAQEntity
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.FAQService
 import jakarta.servlet.http.HttpServletRequest
@@ -41,7 +42,7 @@ class FAQController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_FAQ))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_FAQ))
             throw HttpException.Forbidden()
 
         val entity = faqService.create(
@@ -69,7 +70,7 @@ class FAQController(
             ?: throw HttpException.NotFound()
 
         if (!entity.enabled)
-            if (user == null || !user.hasPermission(Permission.MANAGE_FAQ))
+            if (user == null || user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_FAQ))
                 throw HttpException.Unauthorized()
 
         val dto = GetFAQResponse(entity)
@@ -89,7 +90,7 @@ class FAQController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
-        val specification = if (user == null || !user.hasPermission(Permission.MANAGE_FAQ)) {
+        val specification = if (user == null || user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_FAQ)) {
             Specification { root, _, builder ->
                 builder.equal(root.get<Boolean>("enabled"), true)
             }
@@ -124,7 +125,7 @@ class FAQController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_FAQ))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_FAQ))
             throw HttpException.Forbidden()
 
         val entity = faqService.patch(
@@ -151,7 +152,7 @@ class FAQController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_FAQ))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_FAQ))
             throw HttpException.Forbidden()
 
         faqService.delete(id)

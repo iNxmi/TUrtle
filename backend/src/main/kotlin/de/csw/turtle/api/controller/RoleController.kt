@@ -7,6 +7,7 @@ import de.csw.turtle.api.dto.patch.PatchRoleRequest
 import de.csw.turtle.api.entity.RoleEntity
 import de.csw.turtle.api.entity.RoleEntity.Type
 import de.csw.turtle.api.entity.UserEntity
+import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.RoleService
 import jakarta.servlet.http.HttpServletRequest
@@ -42,7 +43,7 @@ class RoleController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ROLES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_ROLES))
             throw HttpException.Forbidden()
 
         val entity = roleService.create(
@@ -71,6 +72,9 @@ class RoleController(
         if (user == null)
             throw HttpException.Unauthorized()
 
+        if(user.status != Status.ACTIVE)
+            throw HttpException.Forbidden()
+
         val entity = roleService.getById(variable)
             ?: throw HttpException.NotFound()
 
@@ -97,6 +101,9 @@ class RoleController(
     ): ResponseEntity<Any> {
         if (user == null)
             throw HttpException.Unauthorized()
+
+        if(user.status != Status.ACTIVE)
+            throw HttpException.Forbidden()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -133,7 +140,7 @@ class RoleController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ROLES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_ROLES))
             throw HttpException.Forbidden()
 
         val entity = roleService.patch(
@@ -159,7 +166,7 @@ class RoleController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (!user.hasPermission(Permission.MANAGE_ROLES))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_ROLES))
             throw HttpException.Forbidden()
 
         roleService.delete(id)
