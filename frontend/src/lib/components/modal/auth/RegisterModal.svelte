@@ -11,7 +11,7 @@
         ProgressStepper,
         Spinner
     } from 'flowbite-svelte';
-    import {ArrowRightAltOutline, AwardOutline, BadgeCheckOutline, UserCircleOutline} from 'flowbite-svelte-icons';
+    import {BadgeCheckOutline, EnvelopeOutline, UserCircleOutline} from 'flowbite-svelte-icons';
     import PasswordInput from '$lib/components/PasswordInput.svelte';
     import {m} from '$lib/paraglide/messages.js';
     import {Auth} from '$lib/api';
@@ -33,13 +33,14 @@
 
     let {
         isTrusted = false,
+        onLoginHereClicked,
         open = $bindable(false),
         initialStep = 1
     } = $props();
 
     let step = $state(initialStep);
 
-    async function register(event) {
+    async function onRegister(event) {
         event.preventDefault();
         error = "";
 
@@ -62,25 +63,59 @@
             return;
         }
 
+        await Auth.requestVerification();
+        startCooldown();
+
         step = 2;
     }
 
-    async function verify(event) {
+    async function onSubmitVerification(event) {
         event.preventDefault();
         error = "";
 
         const response = await Auth.verify(verificationCode)
         const json = await response.json()
-        if(!response.ok) {
+        if (!response.ok) {
             error = json.message;
             return;
         }
 
-        if(json.status === "PENDING_APPROVAL")
+        if (json.status === "PENDING_APPROVAL")
             step = 3
 
-        if(json.status === "ACTIVE")
+        if (json.status === "ACTIVE")
             step = 4;
+    }
+
+    async function onResendVerification(event) {
+        event.preventDefault();
+        await Auth.requestVerification()
+    }
+
+    let resendTimer = null;
+    let cooldown = $state(0);
+
+    function startCooldown() {
+        cooldown = 300;
+
+        if (resendTimer)
+            clearInterval(resendTimer);
+
+        resendTimer = setInterval(() => {
+            cooldown--;
+
+            if (cooldown <= 0) {
+                clearInterval(resendTimer);
+                resendTimer = null;
+            }
+        }, 1000);
+    }
+
+    function formatCooldown(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+
+        return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     }
 
     const steps = [{
@@ -88,15 +123,101 @@
         icon: UserCircleOutline
     }, {
         id: 2,
-        icon: BadgeCheckOutline
+        icon: EnvelopeOutline
     }, {
         id: 3,
-        icon: ArrowRightAltOutline
-    }, {
-        id: 4,
-        icon: AwardOutline
+        icon: BadgeCheckOutline
     }];
 </script>
+
+{#snippet registration()}
+    <div class="flex flex-col gap-3">
+        <div>
+            <div>{m.modal_register_label_username()}</div>
+            <Input name="input_username" bind:value={username} type="text" required/>
+        </div>
+
+        <div class="flex gap-5">
+            <div class="flex-1">
+                <div>{m.modal_register_label_first_name()}</div>
+                <Input name="input_first_name" bind:value={firstName} type="text" required/>
+            </div>
+            <div class="flex-1">
+                <div>{m.modal_register_label_last_name()}</div>
+                <Input name="input_last_name" bind:value={lastName} type="text" required/>
+            </div>
+        </div>
+
+        <div>
+            <div>{m.modal_register_label_email()}</div>
+            <Input name="input_email" bind:value={email} type="email" required/>
+        </div>
+
+        <div class="flex gap-5">
+            <div class="flex-1">
+                <div>{m.modal_register_label_password()}</div>
+                <PasswordInput name="input_password" bind:value={password} required/>
+            </div>
+            <div class="flex-1">
+                <div>{m.modal_register_label_password_repeat()}</div>
+                <PasswordInput name="input_password_repeat" bind:value={passwordRepeat} required/>
+            </div>
+        </div>
+
+        <div class="flex">
+            <div class="flex flex-col justify-center">
+                <Checkbox name="input_tos" required/>
+            </div>
+            <div>{m.modal_register_label_i_agree_to()}
+                <LinkNavigation id="tos" href="/tos">{m.modal_register_label_tos()}</LinkNavigation>
+            </div>
+        </div>
+
+        {#if !isTrusted}
+            <Altcha name="input_altcha" bind:value={altchaToken}/>
+        {/if}
+
+        {#if error?.trim()}
+            <div class="text-red-400 text-justify">{error}</div>
+        {/if}
+
+        <Button id="register" name="button_submit" onclick={onRegister} class="w-full cursor-pointer">
+            {#if loading === true}
+                <Spinner size="5"/>
+            {:else}
+                {m.modal_register_button()}
+            {/if}
+        </Button>
+
+        <div class="flex">
+            <A onclick={() => onLoginHereClicked?.()} class="text-blue-700 hover:underline dark:text-blue-500">
+                {m.modal_register_label_already_have_a_account()}
+            </A>
+        </div>
+    </div>
+{/snippet}
+
+{#snippet verification()}
+    <div class="flex flex-col gap-3">
+        <div>_A Verification code has been sent to '<span class="font-bold">{email}</span>'._</div>
+
+        {#if error?.trim()}
+            <div class="text-red-400 text-justify">{error}</div>
+        {/if}
+
+        <ButtonGroup>
+            <Input bind:value={verificationCode}/>
+            <Button onclick={onSubmitVerification}>_Submit_</Button>
+            <Button onclick={onResendVerification} disabled={cooldown > 0}>
+                {#if cooldown > 0}
+                    {formatCooldown(cooldown)}
+                {:else}
+                    _Resend_
+                {/if}
+            </Button>
+        </ButtonGroup>
+    </div>
+{/snippet}
 
 <Modal bodyClass="flex flex-col gap-5" form bind:open outsideclose={false}>
     <Heading tag="h3" class="text-center m-0 p-0">
@@ -110,87 +231,11 @@
     <Hr class="m-0 p-0"/>
 
     {#if step === 1}
-        <div class="flex flex-col gap-3">
-            <div>
-                <div>{m.modal_register_label_username()}</div>
-                <Input name="input_username" bind:value={username} type="text" required/>
-            </div>
-
-            <div class="flex gap-5">
-                <div class="flex-1">
-                    <div>{m.modal_register_label_first_name()}</div>
-                    <Input name="input_first_name" bind:value={firstName} type="text" required/>
-                </div>
-                <div class="flex-1">
-                    <div>{m.modal_register_label_last_name()}</div>
-                    <Input name="input_last_name" bind:value={lastName} type="text" required/>
-                </div>
-            </div>
-
-            <div>
-                <div>{m.modal_register_label_email()}</div>
-                <Input name="input_email" bind:value={email} type="email" required/>
-            </div>
-
-            <div class="flex gap-5">
-                <div class="flex-1">
-                    <div>{m.modal_register_label_password()}</div>
-                    <PasswordInput name="input_password" bind:value={password} required/>
-                </div>
-                <div class="flex-1">
-                    <div>{m.modal_register_label_password_repeat()}</div>
-                    <PasswordInput name="input_password_repeat" bind:value={passwordRepeat} required/>
-                </div>
-            </div>
-
-            <div class="flex">
-                <div class="flex flex-col justify-center">
-                    <Checkbox name="input_tos" required/>
-                </div>
-                <div>{m.modal_register_label_i_agree_to()}
-                    <LinkNavigation id="tos" href="/tos">{m.modal_register_label_tos()}</LinkNavigation>
-                </div>
-            </div>
-
-            {#if !isTrusted}
-                <Altcha name="input_altcha" bind:value={altchaToken}/>
-            {/if}
-
-            {#if error?.trim()}
-                <div class="text-red-400 text-justify">{error}</div>
-            {/if}
-
-            <Button id="register" name="button_submit" onclick={register} class="w-full cursor-pointer">
-                {#if loading === true}
-                    <Spinner size="5"/>
-                {:else}
-                    {m.modal_register_button()}
-                {/if}
-            </Button>
-
-            <div class="flex">
-                <A href="/auth/login" class="text-blue-700 hover:underline dark:text-blue-500">
-                    {m.modal_register_label_already_have_a_account()}
-                </A>
-            </div>
-        </div>
+        {@render registration()}
     {:else if step === 2}
-        <div class="flex flex-col gap-3">
-            <div>_Please Verify your email address._ <span class="font-bold">{email}</span></div>
-
-            {#if error?.trim()}
-                <div class="text-red-400 text-justify">{error}</div>
-            {/if}
-
-            <ButtonGroup>
-                <Input placeholder="550e8400-e29b-41d4-a716-446655440000" bind:value={verificationCode}/>
-                <Button onclick={verify}>_Send_</Button>
-                <Button onclick={async () => await Auth.requestVerification()}>_Request_</Button>
-            </ButtonGroup>
-        </div>
+        {@render verification()}
     {:else if step === 3}
-        your registration was successful, an admin now has to accept your account
-    {:else if step === 4}
-        success, now login
+        _your registration was successful, an admin now has to accept your account_. if @tu-darmstadt.de email then u
+        can just log in now :)_
     {/if}
 </Modal>

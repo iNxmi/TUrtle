@@ -30,7 +30,7 @@
         SunOutline,
         UserAddOutline
     } from "flowbite-svelte-icons";
-	import { resolve } from "$app/paths";
+    import {resolve} from "$app/paths";
 
     let {
         logoRedirect = "/",
@@ -200,16 +200,30 @@
 </Sidebar>
 
 {#if loginModal}
-    <LoginModal bind:open={loginModal} isTrusted={isTrusted} onStatusNotActive={(status) => {
-        if (status === "PENDING_VERIFICATION")
-            step = 2
+    <LoginModal bind:open={loginModal}
+                isTrusted={isTrusted}
 
-        if(status === "PENDING_APPROVAL")
-            step = 3
+                onStatusNotActive={(status) => {
+                    if (status === "PENDING_VERIFICATION")
+                        step = 2
 
-        loginModal = false
-        registerModal = true
-    }}/>
+                    if(status === "PENDING_APPROVAL")
+                        step = 3
+
+                    loginModal = false;
+                    registerModal = true;
+                }}
+
+                onRegisterHereClicked={() => {
+                    loginModal = false;
+                    registerModal = true;
+                }}
+
+                onForgotPasswordClicked={() => {
+                    loginModal = false;
+                    alert("TODO: Implement");
+                }}
+    />
 {/if}
 
 {#if logoutModal}
@@ -217,7 +231,14 @@
 {/if}
 
 {#if registerModal}
-    <RegisterModal bind:open={registerModal} isTrusted={isTrusted} initialStep={step}/>
+    <RegisterModal bind:open={registerModal}
+                   isTrusted={isTrusted}
+                   initialStep={step}
+                   onLoginHereClicked={() => {
+                       registerModal = false;
+                       loginModal = true;
+                   }}
+    />
 {/if}
 
 {#if openDoorModal}

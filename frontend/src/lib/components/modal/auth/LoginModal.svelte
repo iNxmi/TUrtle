@@ -8,8 +8,10 @@
 
     let {
         isTrusted = false,
-        open = $bindable(false),
-        onStatusNotActive
+        onStatusNotActive,
+        onRegisterHereClicked,
+        onForgotPasswordClicked,
+        open = $bindable(false)
     } = $props();
 
     let loading = $state(false);
@@ -97,10 +99,10 @@
         </Button>
 
         <div class="flex justify-between">
-            <A href="/auth/register" class="text-blue-700 hover:underline dark:text-blue-500">
+            <A onclick={() => onRegisterHereClicked?.()} class="text-blue-700 hover:underline dark:text-blue-500">
                 {m.modal_login_label_no_account()}
             </A>
-            <A href="/frontend/static" class="text-blue-700 hover:underline dark:text-blue-500">
+            <A onclick={() => onForgotPasswordClicked?.()} class="text-blue-700 hover:underline dark:text-blue-500">
                 {m.modal_login_label_forgot_password()}
             </A>
         </div>

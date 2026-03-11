@@ -77,7 +77,7 @@
                     {m.user_dashboard_title_current_item_bookings()}
                 </Heading>
                 <ButtonGroup>
-                    <Button onclick={() => createItemBookingModal = true}>
+                    <Button color="" onclick={() => createItemBookingModal = true}>
                         <PlusOutline/>
                     </Button>
                 </ButtonGroup>
@@ -112,7 +112,7 @@
                 </Heading>
                 {#if data.permissions.includes('MANAGE_ROOM_BOOKINGS')}
                     <ButtonGroup>
-                        <Button onclick={() => createRoomBookingModal = true}>
+                        <Button color="" onclick={() => createRoomBookingModal = true}>
                             <PlusOutline/>
                         </Button>
                     </ButtonGroup>
