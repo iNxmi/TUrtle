@@ -11,8 +11,7 @@ class TokenEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long = 0,
 
-    @Column(unique = true)
-    val uuid: String,
+    val code: String,
 
     val duration: Duration,
 
@@ -43,7 +42,7 @@ class TokenEntity(
 
     override fun snapshot() = TokenEntity(
         id = id,
-        uuid = uuid,
+        code = code,
         duration = duration,
         type = type,
         updatedAt = updatedAt,

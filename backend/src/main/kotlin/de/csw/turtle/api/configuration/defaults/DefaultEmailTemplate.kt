@@ -13,30 +13,30 @@ class DefaultEmailTemplate(
     private val service: EmailTemplateService
 ) : CommandLineRunner {
 
-    val usersCreated = """
-        Welcome <span th:text="${'$'}{user.firstName}">user.firstName</span>,
+    val usersCreated = $$"""
+        Welcome <span th:text="${user.firstName}">user.firstName</span> <span th:text="${user.lastName}">user.lastName</span>,
         <br>
         You have successfully created your CSW account.
     """.trimIndent()
 
-    val usersVerify = """
-        This is your verification code: <span th:text="${'$'}{uuid}">uuid</span>.
+    val usersVerify = $$"""
+        This is your verification code: <span style="font-weight: bold;" th:text="${code}">code</span>
     """.trimIndent()
 
-    val roomBookingsCreated = """
+    val roomBookingsCreated = $$"""
         Your room booking has been created. 
         <br>
-        ID: <span th:text="${'$'}{booking.id}">booking.id</span>
+        ID: <span th:text="${booking.id}">booking.id</span>
         <br>
-        Status: <span th:text="${'$'}{booking.status}">booking.status</span>
+        Status: <span th:text="${booking.status}">booking.status</span>
     """.trimIndent()
 
-    val roomBookingsUpdated = """
+    val roomBookingsUpdated = $$"""
         Your room booking has been updated. 
         <br>
-        ID: <span th:text="${'$'}{post.id}">post.id</span>
+        ID: <span th:text="${post.id}">post.id</span>
         <br>
-        Status: <span th:text="${'$'}{pre.status}">pre.status</span> -> <span th:text="${'$'}{post.status}">post.status</span>
+        Status: <span th:text="${pre.status}">pre.status</span> -> <span th:text="${post.status}">post.status</span>
     """.trimIndent()
 
     private fun create(name: String, title: String, content: String, type: Type) {

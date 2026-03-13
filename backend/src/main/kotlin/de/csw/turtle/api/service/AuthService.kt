@@ -103,32 +103,32 @@ class AuthService(
     }
 
     @Transactional
-    fun requestVerification(user: UserEntity){
+    fun requestVerification(user: UserEntity) {
         val duration = configurationService.getTyped<Duration>(Key.USER_VERIFICATION_DURATION)
 
-        val token = tokenService.create(
+        val existingToken = user.tokens.firstOrNull { it.type == Type.VERIFICATION }
+        val token = existingToken ?: tokenService.create(
             type = Type.VERIFICATION,
             duration = duration
         )
 
-        val updatedUser = userService.addToken(user, token)
+        val updatedUser = if (existingToken == null) {
+            userService.addToken(user, token)
+        } else user
 
-        val emailTemplate = emailTemplateService.getByType(EmailTemplateEntity.Type.USER_VERIFICATION)
-            ?: throw HttpException.NotFound()
+        val template = emailTemplateService.getByType(EmailTemplateEntity.Type.USER_VERIFICATION)
+            ?: throw NoSuchElementException()
 
         val context = Context().apply {
-            val fqdn = configurationService.getTyped<String>(Key.GENERAL_FQDN)
             val duration = configurationService.getTyped<Duration>(Key.USER_VERIFICATION_DURATION)
 
             setVariable("user", updatedUser)
-            setVariable("uuid", token.uuid)
-            setVariable("fqdn", fqdn)
-            setVariable("url", "https://$fqdn/api/auth/verify?uuid=${token.uuid}")
+            setVariable("code", token.code)
             setVariable("duration", duration)
             setVariable("expiration", updatedUser.createdAt.plusMillis(duration.toMillis()))
         }
 
-        emailService.send(updatedUser.email, emailTemplate, context)
+        emailService.send(updatedUser.email, template, context)
     }
 
 }

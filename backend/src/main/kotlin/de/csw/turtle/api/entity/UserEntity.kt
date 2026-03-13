@@ -35,6 +35,7 @@ class UserEntity(
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "token_id")]
     )
+
     val tokens: MutableSet<TokenEntity> = mutableSetOf(),
 
     @ManyToMany

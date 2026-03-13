@@ -33,7 +33,7 @@ class AuthController(
 
     //todo replace cookie generation by more robust method
     private fun setCookie(name: String, value: String, duration: Duration?, response: HttpServletResponse) {
-        //Enable HTTPS only
+        //TODO Enable HTTPS only
         //cookie.secure = true
 
         val header = buildString {
@@ -168,13 +168,13 @@ class AuthController(
     @GetMapping("/verify")
     fun verify(
         @AuthenticationPrincipal user: UserEntity,
-        @RequestParam uuid: String
+        @RequestParam code: String
     ): ResponseEntity<GetUserResponse> {
         if (user.status != Status.PENDING_VERIFICATION)
             throw HttpException.Forbidden()
 
-        val token = tokenService.getByUuid(uuid)
-            ?: throw HttpException.NotFound("No token with uuid '$uuid'.")
+        val token = tokenService.getByCode(code)
+            ?: throw HttpException.NotFound("No token with code '$code'.")
 
         if (token.type != TokenEntity.Type.VERIFICATION)
             throw HttpException.BadRequest("Invalid token type.")

@@ -6,7 +6,7 @@ import java.time.Instant
 
 data class GetTokenResponse(
     override val id: Long,
-    val uuid: String,
+    val code: String,
     val duration: Duration,
     val type: TokenEntity.Type,
     override val updatedAt: Instant,
@@ -15,7 +15,7 @@ data class GetTokenResponse(
 
     constructor(token: TokenEntity) : this(
         id = token.id,
-        uuid = token.uuid,
+        code = token.code,
         duration = token.duration,
         type = token.type,
         updatedAt = token.updatedAt,

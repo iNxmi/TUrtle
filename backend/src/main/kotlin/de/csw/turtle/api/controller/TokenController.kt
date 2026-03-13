@@ -45,7 +45,7 @@ class TokenController(
         val entity = if (id != null) {
             tokenService.getById(id)
         } else {
-            tokenService.getByUuid(variable)
+            tokenService.getByCode(variable)
         } ?: throw HttpException.NotFound()
 
         val dto = GetTokenResponse(entity)
