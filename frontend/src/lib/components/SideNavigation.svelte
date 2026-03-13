@@ -1,7 +1,8 @@
 <script>
-    import RegisterModal from "$lib/components/modal/auth/RegisterModal.svelte"
-    import LoginModal from "$lib/components/modal/auth/LoginModal.svelte"
-    import LogoutModal from "$lib/components/modal/auth/LogoutModal.svelte"
+    import RegisterModal from "$lib/components/modal/auth/RegisterModal.svelte";
+    import ForgotPasswordModal from "$lib/components/modal/auth/ForgotPasswordModal.svelte";
+    import LoginModal from "$lib/components/modal/auth/LoginModal.svelte";
+    import LogoutModal from "$lib/components/modal/auth/LogoutModal.svelte";
     import UnlockDoorModal from "$lib/components/modal/UnlockDoorModal.svelte";
     import LanguageDropdown from "$lib/components/LanguageDropdown.svelte";
     import TUrtleLogo from "$lib/components/TUrtleLogo.svelte";
@@ -62,6 +63,7 @@
     let logoutModal = $state(false);
     let registerModal = $state(false);
     let openDoorModal = $state(false);
+    let forgotPasswordModal = $state(false);
 
     let step = 1;
 </script>
@@ -205,10 +207,10 @@
 
                 onStatusNotActive={(status) => {
                     if (status === "PENDING_VERIFICATION")
-                        step = 2
+                        step = 2;
 
                     if(status === "PENDING_APPROVAL")
-                        step = 3
+                        step = 3;
 
                     loginModal = false;
                     registerModal = true;
@@ -221,8 +223,14 @@
 
                 onForgotPasswordClicked={() => {
                     loginModal = false;
-                    alert("TODO: Implement");
+                    forgotPasswordModal = true;
                 }}
+    />
+{/if}
+
+{#if forgotPasswordModal}
+    <ForgotPasswordModal isTrusted={isTrusted}
+                         bind:open={forgotPasswordModal}
     />
 {/if}
 

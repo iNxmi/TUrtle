@@ -177,6 +177,10 @@
   "modal_login_label_remember_me": "Remember me ({days} Days)",
   "modal_login_button": "Login",
 
+  "modal_forgot_password_title": "Forgot Password?",
+  "modal_forgot_password_label_email": "Email",
+  "modal_forgot_password_button": "Submit",
+
   "modal_register_title": "Register to TUrtle",
   "modal_register_label_username": "Username",
   "modal_register_label_first_name": "First Name",
