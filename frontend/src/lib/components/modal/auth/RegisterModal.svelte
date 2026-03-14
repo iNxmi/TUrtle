@@ -18,7 +18,16 @@
     import Altcha from '$lib/components/Altcha.svelte';
     import LinkNavigation from '$lib/components/LinkNavigation.svelte';
 
-    let loading = $state(false);
+    let {
+        isTrusted = false,
+        onLoginHereClicked,
+        open = $bindable(false),
+        initialStep = 1,
+        initialSession,
+    } = $props();
+
+    let step = $state(initialStep);
+    let session = $state(initialSession);
 
     let username = $state('');
     let firstName = $state('');
@@ -27,18 +36,11 @@
     let password = $state('');
     let passwordRepeat = $state('');
     let altchaToken = $state('');
-    let verificationCode = $state("");
 
+    let code = $state("");
+
+    let loading = $state(false);
     let error = $state("");
-
-    let {
-        isTrusted = false,
-        onLoginHereClicked,
-        open = $bindable(false),
-        initialStep = 1
-    } = $props();
-
-    let step = $state(initialStep);
 
     async function onRegister(event) {
         event.preventDefault();
@@ -57,13 +59,13 @@
         const response = await Auth.register(payload);
         loading = false;
 
+        const json = await response.json();
         if (!response.ok) {
-            const json = await response.json();
             error = json.message;
             return;
         }
 
-        await Auth.requestVerification();
+        session = json.session;
         startCooldown();
 
         step = 2;
@@ -73,8 +75,9 @@
         event.preventDefault();
         error = "";
 
-        const response = await Auth.verify(verificationCode)
-        const json = await response.json()
+        const response = await Auth.submitAccountVerification(session, code)
+
+        const json = await response.json();
         if (!response.ok) {
             error = json.message;
             return;
@@ -89,7 +92,16 @@
 
     async function onResendVerification(event) {
         event.preventDefault();
-        await Auth.requestVerification()
+        error = "";
+
+        const response = await Auth.resendAccountVerification(session)
+        if (!response.ok) {
+            const json = await response.json()
+            error = json.message;
+            return;
+        }
+
+        startCooldown();
     }
 
     let resendTimer = null;
@@ -206,7 +218,7 @@
         {/if}
 
         <ButtonGroup>
-            <Input bind:value={verificationCode}/>
+            <Input bind:value={code}/>
             <Button onclick={onSubmitVerification}>_Submit_</Button>
             <Button onclick={onResendVerification} disabled={cooldown > 0}>
                 {#if cooldown > 0}

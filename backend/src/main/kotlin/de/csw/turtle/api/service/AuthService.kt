@@ -105,8 +105,7 @@ class AuthService(
         //TODO make duration system configuration
         val verificationSession = verificationSessionService.create(
             user = user,
-            type = Type.VERIFICATION,
-            duration = Duration.ofMinutes(10),
+            type = Type.VERIFICATION
         )
 
         return Authentication(
@@ -159,7 +158,7 @@ class AuthService(
     }
 
     @Transactional
-    fun verify(uuid: UUID, code: String) {
+    fun verify(uuid: UUID, code: String): UserEntity {
         val session = verificationSessionService.getByUuid(uuid)
             ?: throw HttpException.NotFound()
 
@@ -191,6 +190,8 @@ class AuthService(
             status = if (isTrustedEmail) Status.ACTIVE else Status.PENDING_APPROVAL
         )
         verificationSessionService.delete(session.id)
+
+        return user
     }
 
 }

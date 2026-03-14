@@ -65,7 +65,8 @@
     let openDoorModal = $state(false);
     let forgotPasswordModal = $state(false);
 
-    let step = 1;
+    let initialStep = 1;
+    let initialSession = "";
 </script>
 
 <Sidebar activeUrl={activeUrl}
@@ -185,7 +186,7 @@
                                 </div>
                             </Button>
                             <Button name="button_register" class="flex-1 px-3" onclick={() => {
-                                step = 1
+                                initialStep = 1
                                 registerModal = true
                             }}>
                                 <div class="flex gap-1 items-center">
@@ -205,12 +206,14 @@
     <LoginModal bind:open={loginModal}
                 isTrusted={isTrusted}
 
-                onStatusNotActive={(status) => {
+                onStatusNotActive={(status, session) => {
                     if (status === "PENDING_VERIFICATION")
-                        step = 2;
+                        initialStep = 2;
 
                     if(status === "PENDING_APPROVAL")
-                        step = 3;
+                        initialStep = 3;
+
+                    initialSession = session;
 
                     loginModal = false;
                     registerModal = true;
@@ -241,7 +244,8 @@
 {#if registerModal}
     <RegisterModal bind:open={registerModal}
                    isTrusted={isTrusted}
-                   initialStep={step}
+                   initialStep={initialStep}
+                   initialSession={initialSession}
                    onLoginHereClicked={() => {
                        registerModal = false;
                        loginModal = true;

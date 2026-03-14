@@ -19,6 +19,5 @@ export {StatisticQueries} from "./StatisticQueries.js";
 export {SupportTickets} from "./SupportTickets.js";
 export {SupportTicketCategories} from "./SupportTicketCategories.js";
 export {SupportTicketUrgencies} from "./SupportTicketUrgencies.js";
-export {Tokens} from "./Tokens.js";
 export {Users} from "./Users.js";
 export {Connection} from "./Connection.js";

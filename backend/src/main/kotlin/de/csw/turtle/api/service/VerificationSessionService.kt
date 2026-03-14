@@ -38,15 +38,14 @@ class VerificationSessionService(
     @Transactional
     fun create(
         user: UserEntity,
-        type: VerificationSessionEntity.Type,
-        duration: Duration
+        type: VerificationSessionEntity.Type
     ): VerificationSessionEntity {
         val code = generateCode()
         val entity = VerificationSessionEntity(
             user = user,
             type = type,
             codeHash = passwordEncoder.encode(code)!!,
-            duration = duration
+            expiresAt = Instant.now().plus(Duration.ofMinutes(15))
         )
 
         sendEmail(entity, code)
@@ -58,12 +57,17 @@ class VerificationSessionService(
     fun patch(
         id: Long,
         attempts: Int? = null,
-        code: String? = null
+        code: String? = null,
+        lastSentAt: Instant = Instant.now(),
     ): VerificationSessionEntity {
         val entity = repository.findById(id).get()
 
         attempts?.let { entity.attempts = it }
-        code?.let { entity.codeHash = passwordEncoder.encode(code)!! }
+        code?.let {
+            entity.codeHash = passwordEncoder.encode(code)!!
+            entity.expiresAt = Instant.now().plus(Duration.ofMinutes(15))
+        }
+        lastSentAt?.let { entity.lastSentAt = it }
 
         return repository.save(entity)
     }
@@ -82,6 +86,13 @@ class VerificationSessionService(
 
         entity.attempts = 0
         entity.lastSentAt = Instant.now()
+
+        patch(
+            id = entity.id,
+            code = code,
+            attempts = 0,
+            lastSentAt = Instant.now()
+        )
 
         repository.save(entity)
 

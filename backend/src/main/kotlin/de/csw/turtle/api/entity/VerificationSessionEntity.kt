@@ -23,11 +23,11 @@ class VerificationSessionEntity(
 
     var codeHash: String,
 
-    val duration: Duration,
-
     var attempts: Int = 0,
 
     var lastSentAt: Instant = Instant.MIN,
+
+    var expiresAt: Instant,
 
     //Instant.MIN will be replaced by createdAt in prePersist()
     override var updatedAt: Instant = Instant.MIN,
@@ -57,14 +57,14 @@ class VerificationSessionEntity(
         uuid = uuid,
         user = user,
         codeHash = codeHash,
-        duration = duration,
         attempts = attempts,
         type = type,
+        expiresAt = expiresAt,
         updatedAt = updatedAt,
         createdAt = createdAt
     )
 
-    fun isExpired(now: Instant = Instant.now()): Boolean = now.isAfter(createdAt.plus(duration))
+    fun isExpired(now: Instant = Instant.now()): Boolean = now.isAfter(expiresAt)
 
     fun canResend(cooldown: Duration, now: Instant = Instant.now()): Boolean =
         now.isAfter(lastSentAt.plus(cooldown))

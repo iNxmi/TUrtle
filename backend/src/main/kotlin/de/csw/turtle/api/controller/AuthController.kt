@@ -112,19 +112,21 @@ class AuthController(
 
     @PostMapping("/resend-account-verification")
     fun resendAccountVerification(
-        @RequestParam uuid: UUID
+        @RequestParam session: UUID
     ): ResponseEntity<Void> {
-        verificationSessionService.resend(uuid)
+        verificationSessionService.resend(session)
         return ResponseEntity.noContent().build()
     }
 
-    @GetMapping("/submit-account-verification")
-    fun accountVerification(
-        uuid: UUID,
+    @PostMapping("/submit-account-verification")
+    fun submitAccountVerification(
+        session: UUID,
         @RequestParam code: String
-    ): ResponseEntity<Void> {
-        authService.verify(uuid, code)
-        return ResponseEntity.ok().build()
+    ): ResponseEntity<GetUserResponse> {
+        val user = authService.verify(session, code)
+
+        val dto = GetUserResponse(user)
+        return ResponseEntity.ok(dto)
     }
 
 }
