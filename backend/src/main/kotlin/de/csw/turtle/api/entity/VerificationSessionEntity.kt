@@ -3,20 +3,31 @@ package de.csw.turtle.api.entity
 import jakarta.persistence.*
 import java.time.Duration
 import java.time.Instant
+import java.util.*
 
 @Entity
-@Table(name = "tokens")
-class TokenEntity(
+@Table(name = "verification_sessions")
+class VerificationSessionEntity(
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long = 0,
 
-    val code: String,
+    @Column(unique = true)
+    val uuid: UUID = UUID.randomUUID(),
 
-    val duration: Duration,
+    @ManyToOne
+    val user: UserEntity,
 
     @Enumerated(EnumType.STRING)
     val type: Type,
+
+    var codeHash: String,
+
+    val duration: Duration,
+
+    var attempts: Int = 0,
+
+    var lastSentAt: Instant = Instant.MIN,
 
     //Instant.MIN will be replaced by createdAt in prePersist()
     override var updatedAt: Instant = Instant.MIN,
@@ -33,6 +44,7 @@ class TokenEntity(
     @PrePersist
     fun prePersist() {
         updatedAt = createdAt
+        lastSentAt = createdAt
     }
 
     @PreUpdate
@@ -40,15 +52,21 @@ class TokenEntity(
         updatedAt = Instant.now()
     }
 
-    override fun snapshot() = TokenEntity(
+    override fun snapshot() = VerificationSessionEntity(
         id = id,
-        code = code,
+        uuid = uuid,
+        user = user,
+        codeHash = codeHash,
         duration = duration,
+        attempts = attempts,
         type = type,
         updatedAt = updatedAt,
         createdAt = createdAt
     )
 
-    fun isExpired(): Boolean = Instant.now().isAfter(createdAt.plus(duration))
+    fun isExpired(now: Instant = Instant.now()): Boolean = now.isAfter(createdAt.plus(duration))
+
+    fun canResend(cooldown: Duration, now: Instant = Instant.now()): Boolean =
+        now.isAfter(lastSentAt.plus(cooldown))
 
 }

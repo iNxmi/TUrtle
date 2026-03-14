@@ -29,14 +29,8 @@ class UserEntity(
     @Enumerated(EnumType.STRING)
     var status: Status,
 
-    @OneToMany
-    @JoinTable(
-        name = "user_tokens",
-        joinColumns = [JoinColumn(name = "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "token_id")]
-    )
-
-    val tokens: MutableSet<TokenEntity> = mutableSetOf(),
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val verificationSessions: MutableSet<VerificationSessionEntity> = mutableSetOf(),
 
     @ManyToMany
     @JoinTable(
@@ -98,7 +92,7 @@ class UserEntity(
         passwordHash = passwordHash,
         emojis = emojis,
         status = status,
-        tokens = tokens.toMutableSet(),
+        verificationSessions = verificationSessions.toMutableSet(),
         roles = roles.toMutableSet(),
         auditLogs = auditLogs.toMutableSet(),
         roomBookings = roomBookings.toMutableSet(),

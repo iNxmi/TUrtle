@@ -1,7 +1,7 @@
 package de.csw.turtle.api.service
 
 import de.csw.turtle.api.entity.ConfigurationEntity.Key
-import de.csw.turtle.api.entity.TokenEntity
+import de.csw.turtle.api.entity.VerificationSessionEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.event.CreatedUserEvent
 import de.csw.turtle.api.event.PatchedUserEvent
@@ -104,8 +104,6 @@ class UserService(
     fun getByStatusEqualsAndCreatedAtBefore(status: UserEntity.Status, cutoff: Instant): Set<UserEntity> =
         repository.findByStatusEqualsAndCreatedAtBefore(status, cutoff)
 
-    fun getByToken(token: TokenEntity): UserEntity? = repository.findByTokensContains(token)
-
     fun getByUsernameOrNull(username: String): UserEntity? = repository.findByUsername(username)
     fun getByUsername(username: String): UserEntity = getByUsernameOrNull(username)
         ?: throw HttpException.NotFound(username)
@@ -131,18 +129,6 @@ class UserService(
     fun getByEmailOrUsernameOrNull(value: String): UserEntity? = repository.findByEmailOrUsername(value, value)
     fun getByEmailOrUsername(value: String): UserEntity = getByEmailOrUsernameOrNull(value)
         ?: throw HttpException.NotFound(value)
-
-    @Transactional
-    fun addToken(user: UserEntity, token: TokenEntity): UserEntity {
-        user.tokens.add(token)
-        return repository.save(user)
-    }
-
-    @Transactional
-    fun removeToken(user: UserEntity, token: TokenEntity): UserEntity {
-        user.tokens.remove(token)
-        return repository.save(user)
-    }
 
     @Transactional
     fun patch(

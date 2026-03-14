@@ -1,6 +1,6 @@
 package de.csw.turtle.api.repository
 
-import de.csw.turtle.api.entity.TokenEntity
+import de.csw.turtle.api.entity.VerificationSessionEntity
 import de.csw.turtle.api.entity.UserEntity
 import java.time.Instant
 
@@ -11,7 +11,6 @@ interface UserRepository : CRUDRepository<UserEntity> {
     fun findByUsername(username: String): UserEntity?
     fun findByEmojis(emojis: String): UserEntity?
     fun findByStatusEqualsAndCreatedAtBefore(status: UserEntity.Status, cutoff: Instant): Set<UserEntity>
-    fun findByTokensContains(token: TokenEntity): UserEntity?
     fun existsByUsername(username: String): Boolean
 
     fun findByEmojisStartsWith(prefix: String): Set<UserEntity>

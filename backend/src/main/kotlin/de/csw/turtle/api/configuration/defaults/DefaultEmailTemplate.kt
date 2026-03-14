@@ -23,6 +23,10 @@ class DefaultEmailTemplate(
         This is your verification code: <span style="font-weight: bold;" th:text="${code}">code</span>
     """.trimIndent()
 
+    val usersResetPassword = $$"""
+        This is your password reset code: <span style="font-weight: bold;" th:text="${code}">code</span>
+    """.trimIndent()
+
     val roomBookingsCreated = $$"""
         Your room booking has been created. 
         <br>
@@ -49,7 +53,8 @@ class DefaultEmailTemplate(
     @Transactional
     override fun run(vararg args: String) {
         create("User Created", "CSW - Welcome to TUrtle", usersCreated, Type.USER_CREATED)
-        create("User Verification", "CSW - Please verify your account", usersVerify, Type.USER_VERIFICATION)
+        create("User Verification", "CSW - Verification", usersVerify, Type.USER_VERIFICATION)
+        create("User Password Reset", "CSW - Password Reset", usersResetPassword, Type.USER_PASSWORD_RESET)
 
         create("Room Booking Created", "CSW - Room Booking Created", roomBookingsCreated, Type.ROOM_BOOKING_CREATED)
         create("Room Booking Updated", "CSW - Room Booking Updated", roomBookingsUpdated, Type.ROOM_BOOKING_UPDATED)
