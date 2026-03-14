@@ -34,7 +34,7 @@ class HardwareController(
     fun door(
         @RequestBody request: OpenDoorEmojisRequest,
         httpRequest: HttpServletRequest
-    ): ResponseEntity<String> {
+    ): ResponseEntity<Void> {
         val user = userService.getByEmojis(request.emojis)
             ?: userService.getByEmojisLegacyFix(request.emojis)
 
@@ -48,23 +48,23 @@ class HardwareController(
         checkDoorPermissions(user, httpRequest)
 
         val duration = configurationService.getTyped<Duration>(Key.DOOR_OPEN_DURATION)
-        val response = doorControlService.trigger(duration)
-        return ResponseEntity.ok(response)
+        doorControlService.trigger(duration)
+        return ResponseEntity.ok().build()
     }
 
     @PostMapping("/door/open")
     fun door(
         @AuthenticationPrincipal user: UserEntity?,
         request: HttpServletRequest
-    ): ResponseEntity<String> {
+    ): ResponseEntity<Void> {
         if (user == null || user.status != Status.ACTIVE)
             throw HttpException.Unauthorized()
 
         checkDoorPermissions(user, request)
 
         val duration = configurationService.getTyped<Duration>(Key.DOOR_OPEN_DURATION)
-        val response = doorControlService.trigger(duration)
-        return ResponseEntity.ok(response)
+        doorControlService.trigger(duration)
+        return ResponseEntity.ok().build()
     }
 
     @PostMapping("/locker/open")
@@ -72,11 +72,11 @@ class HardwareController(
         @AuthenticationPrincipal user: UserEntity?,
         @RequestParam id: Long,
         request: HttpServletRequest
-    ): ResponseEntity<String> {
+    ): ResponseEntity<Void> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if(user.status != Status.ACTIVE )
+        if (user.status != Status.ACTIVE)
             throw HttpException.Forbidden()
 
         checkLockerPermissions(user, id, request)
@@ -84,8 +84,8 @@ class HardwareController(
         val locker = lockerService.getById(id)
             ?: throw HttpException.NotFound()
 
-        val response = lockerControlService.trigger(locker = locker)
-        return ResponseEntity.ok(response)
+        lockerControlService.trigger(locker = locker)
+        return ResponseEntity.ok().build()
     }
 
     private fun checkDoorPermissions(user: UserEntity, request: HttpServletRequest) {
