@@ -70,6 +70,8 @@
         session = json.session;
         startCooldown();
 
+        user = json.user
+
         step = 2;
     }
 
@@ -77,7 +79,9 @@
         event.preventDefault();
         error = "";
 
+        loading = true;
         const response = await Auth.submitAccountVerification(session, code)
+        loading = false;
 
         const json = await response.json();
         if (!response.ok) {
@@ -213,7 +217,7 @@
     <form class="flex flex-col gap-5" onsubmit={onSubmitVerification}>
         <div class="text-center">
             <div>{m.modal_register_label_verification()}</div>
-            <div class="font-bold">{email}</div>
+            <div class="font-bold">{user.email}</div>
         </div>
 
         {#if error?.trim()}
@@ -221,8 +225,15 @@
         {/if}
 
         <ButtonGroup>
-            <Input placeholder={m.modal_register_placeholder_verification()} bind:value={code} required/>
-            <Button type="button" onclick={onSubmitVerification}>{m.modal_register_button_verify()}</Button>
+            <Input placeholder={m.modal_register_placeholder_verification()} bind:value={code} required
+                   disabled={loading}/>
+            <Button type="button" onclick={onSubmitVerification}>
+                {#if loading === true}
+                    <Spinner size="5"/>
+                {:else}
+                    {m.modal_register_button_verify()}
+                {/if}
+            </Button>
             <Button type="submit" onclick={onResendVerification} disabled={cooldown > 0}>
                 {#if cooldown > 0}
                     {formatCooldown(cooldown)}
