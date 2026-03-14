@@ -11,14 +11,15 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
+import kotlin.time.measureTime
 
 @Service
-class UserCleanupSchedule(
+class DailySchedule(
     private val configurationService: ConfigurationService,
     private val userService: UserService
 ) {
 
-    private val logger = LoggerFactory.getLogger(UserCleanupSchedule::class.java)
+    private val logger = LoggerFactory.getLogger(DailySchedule::class.java)
 
     @Volatile
     private var ready = false
@@ -29,9 +30,23 @@ class UserCleanupSchedule(
     }
 
     @Scheduled(cron = "0 0 0 * * *")
-    fun deleteUnverifiedUsers() {
-        if (!ready)
+    fun daily() {
+        if (!ready) {
+            logger.info("Skipping daily schedule due to not being ready.")
             return
+        }
+
+        logger.info("Running daily schedule...")
+        val duration = run()
+        logger.info("Finished daily schedule in $duration")
+    }
+
+    private fun run() = measureTime {
+        deleteUnverifiedUsers()
+    }
+
+    private fun deleteUnverifiedUsers() {
+        logger.info("Running deletion of unverified users...")
 
         val duration = configurationService.getTyped<Duration>(Key.USER_VERIFICATION_DURATION)
         val cutoffTime = Instant.now().minus(duration)
@@ -41,7 +56,8 @@ class UserCleanupSchedule(
             return
 
         userService.deleteAll(unverifiedUsers)
-        logger.info("Users deleted: $unverifiedUsers")
+
+        logger.info("Deleted ${unverifiedUsers.size} unverified users.")
     }
 
 }

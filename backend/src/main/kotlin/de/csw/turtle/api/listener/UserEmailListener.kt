@@ -13,8 +13,7 @@ import org.thymeleaf.context.Context
 @Component
 class UserEmailListener(
     private val emailService: EmailService,
-    private val emailTemplateService: EmailTemplateService,
-    private val thymeleafService: ThymeleafService
+    private val emailTemplateService: EmailTemplateService
 ) {
 
     @Async
