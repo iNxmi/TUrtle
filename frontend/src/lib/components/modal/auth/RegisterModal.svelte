@@ -20,14 +20,16 @@
 
     let {
         isTrusted = false,
-        onLoginHereClicked,
+        onLoginRedirect,
         open = $bindable(false),
         initialStep = 1,
         initialSession,
+        initialUser,
     } = $props();
 
     let step = $state(initialStep);
     let session = $state(initialSession);
+    let user = $state(initialUser);
 
     let username = $state('');
     let firstName = $state('');
@@ -83,11 +85,9 @@
             return;
         }
 
-        if (json.status === "PENDING_APPROVAL")
-            step = 3
+        user = json
 
-        if (json.status === "ACTIVE")
-            step = 4;
+        step = 3
     }
 
     async function onResendVerification(event) {
@@ -143,7 +143,7 @@
 </script>
 
 {#snippet registration()}
-    <div class="flex flex-col gap-3">
+    <form class="flex flex-col gap-5" onsubmit={onRegister}>
         <div>
             <div>{m.modal_register_label_username()}</div>
             <Input name="input_username" bind:value={username} type="text" required/>
@@ -193,41 +193,60 @@
             <div class="text-red-400 text-justify">{error}</div>
         {/if}
 
-        <Button id="register" name="button_submit" onclick={onRegister} class="w-full cursor-pointer">
+        <Button type="submit" name="button_submit" class="w-full cursor-pointer">
             {#if loading === true}
                 <Spinner size="5"/>
             {:else}
-                {m.modal_register_button()}
+                {m.modal_register_button_register()}
             {/if}
         </Button>
 
         <div class="flex">
-            <A onclick={() => onLoginHereClicked?.()} class="text-blue-700 hover:underline dark:text-blue-500">
+            <A onclick={() => onLoginRedirect?.()} class="text-blue-700 hover:underline dark:text-blue-500">
                 {m.modal_register_label_already_have_a_account()}
             </A>
         </div>
-    </div>
+    </form>
 {/snippet}
 
 {#snippet verification()}
-    <div class="flex flex-col gap-3">
-        <div>_A Verification code has been sent to '<span class="font-bold">{email}</span>'._</div>
+    <form class="flex flex-col gap-5" onsubmit={onSubmitVerification}>
+        <div class="text-center">
+            <div>{m.modal_register_label_verification()}</div>
+            <div class="font-bold">{email}</div>
+        </div>
 
         {#if error?.trim()}
             <div class="text-red-400 text-justify">{error}</div>
         {/if}
 
         <ButtonGroup>
-            <Input bind:value={code}/>
-            <Button onclick={onSubmitVerification}>_Submit_</Button>
-            <Button onclick={onResendVerification} disabled={cooldown > 0}>
+            <Input placeholder={m.modal_register_placeholder_verification()} bind:value={code} required/>
+            <Button type="button" onclick={onSubmitVerification}>{m.modal_register_button_verify()}</Button>
+            <Button type="submit" onclick={onResendVerification} disabled={cooldown > 0}>
                 {#if cooldown > 0}
                     {formatCooldown(cooldown)}
                 {:else}
-                    _Resend_
+                    {m.modal_register_button_resend()}
                 {/if}
             </Button>
         </ButtonGroup>
+    </form>
+{/snippet}
+
+{#snippet conclusion()}
+    <div class="flex flex-col gap-5">
+        {#if user.status === "ACTIVE"}
+            <div class="text-center">
+                {m.modal_register_label_approved()}
+            </div>
+            <Button color="green" onclick={() => onLoginRedirect?.()}>{m.modal_register_button_login()}</Button>
+        {:else if user.status === "PENDING_APPROVAL"}
+            <div class="text-center">
+                {m.modal_register_label_pending_approval()}
+            </div>
+            <Button color="yellow" onclick={() => open = false}>{m.modal_register_button_ok()}</Button>
+        {/if}
     </div>
 {/snippet}
 
@@ -247,7 +266,6 @@
     {:else if step === 2}
         {@render verification()}
     {:else if step === 3}
-        _your registration was successful, an admin now has to accept your account_. if @tu-darmstadt.de email then u
-        can just log in now :)_
+        {@render conclusion()}
     {/if}
 </Modal>

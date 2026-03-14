@@ -48,7 +48,7 @@
 
         const user = json.user;
         if (user.status !== "ACTIVE") {
-            onStatusNotActive?.(user.status, json.session);
+            onStatusNotActive?.(user, json.session);
             return;
         }
 
