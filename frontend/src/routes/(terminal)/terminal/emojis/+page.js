@@ -1,18 +1,8 @@
-//TODO fix for prod
+import {Configuration} from "$lib/api";
+
 export async function load() {
-    // const response = await request(`/system-settings/emojis.all`);
-    // const payload = await response.json();
-    //
-    // return {emojis: payload.value};
+    const emojisResponse = await Configuration.value("EMOJIS_ALL")
+    const emojis = await emojisResponse.json()
 
-    const emojis = [
-        "😈", "😃", "🎩", "👽", "💩", "❤️",
-        "💎", "👂", "👍", "🐋", "🐶", "🐸",
-        "❄️", "🎉", "💿", "🍉", "☎️", "🎥",
-        "✂️", "⚽", "🚀", "💄", "🌂", "🍄",
-        "🍀", "🚗", "🍕", "🍔", "🍨", "💣",
-        "🐧", "💼", "🌍", "🐝", "🏠", "⏰"
-    ]
-
-    return {emojis}
+    return {emojis: emojis}
 }

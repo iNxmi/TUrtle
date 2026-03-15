@@ -1,13 +1,13 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
-    import {Input, Textarea} from "flowbite-svelte";
+    import {Input} from "flowbite-svelte";
     import EntityPage from "$lib/components/EntityPage.svelte";
     import {Configuration} from "$lib/api";
 
     let {data} = $props();
     let configuration = $derived(data.configuration);
 
-    const items = [{
+    const items = $derived([{
         label: m.manage_configuration_label_id(),
         field: "id",
         component: Input,
@@ -50,7 +50,7 @@
         props: {
             value: configuration.updatedAt
         }
-    }]];
+    }]]);
 </script>
 
 <EntityPage items={items} onPatch={(payload) => Configuration.patch(configuration.id, payload)}/>

@@ -27,8 +27,8 @@
     let connection = $derived(data.connection);
 
     let businessHours = $state({
-        start: data.businessHours.start.value,
-        end: data.businessHours.end.value
+        start: data.businessHours.start,
+        end: data.businessHours.end
     });
 
     setContext('businessHours', businessHours);

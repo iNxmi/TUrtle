@@ -39,8 +39,8 @@ async function getUser() {
 }
 
 async function getBusinessHours() {
-    const startResponse = await Configuration.get("DOOR_SCHEDULE_START");
-    const endResponse = await Configuration.get("DOOR_SCHEDULE_END");
+    const startResponse = await Configuration.value("DOOR_SCHEDULE_START");
+    const endResponse = await Configuration.value("DOOR_SCHEDULE_END");
 
     if (startResponse.ok && endResponse.ok)
         return {
