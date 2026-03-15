@@ -92,6 +92,16 @@
         await navigator.clipboard.writeText(url);
     }
 
+    async function redirect(enabled, href) {
+        if(!enabled)
+            return;
+
+        if(!href)
+            return;
+
+        await goto(href);
+    }
+
     let edit = $state(false);
     let loadingEdit = $state(false);
     let loadingRemove = $state(false);
@@ -103,7 +113,7 @@
         <ButtonGroup>
             {@const enabled = (edit === true && property.editable === true)}
             {@const Component = property.component}
-            <Component bind:value={updatedValues[property.field]} disabled={!enabled} {...property.props}/>
+            <Component onclick={() => redirect(property.href)} bind:value={updatedValues[property.field]} disabled={!enabled} {...property.props}/>
             {#if edit === true && property.editable === true}
                 {@const isEqual = _.isEqual(updatedValues[property.field], initialValues[property.field])}
                 <Button disabled={isEqual}
