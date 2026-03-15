@@ -1,5 +1,6 @@
 package de.csw.turtle.api.service
 
+import de.csw.turtle.api.entity.ConfigurationEntity
 import de.csw.turtle.api.entity.ItemBookingEntity
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.repository.ItemBookingRepository
@@ -13,7 +14,8 @@ import java.time.Instant
 class ItemBookingService(
     override val repository: ItemBookingRepository,
     private val userRepository: UserRepository,
-    private val itemRepository: ItemRepository
+    private val itemRepository: ItemRepository,
+    private val configurationService: ConfigurationService
 ) : CRUDService<ItemBookingEntity>() {
 
     fun getAllOverlapping(start: Instant, end: Instant, itemId: Long, id: Long): Set<ItemBookingEntity> =
@@ -21,6 +23,41 @@ class ItemBookingService(
 
     fun getCurrent(userId: Long, lockerId: Long): Set<ItemBookingEntity> =
         repository.findCurrent(Instant.now(), userId, lockerId)
+
+    // region Validation helpers
+
+    private fun requireUserExists(userId: Long) {
+        if (!userRepository.existsById(userId))
+            throw HttpException.BadRequest("User with ID '$userId' does not exist.")
+    }
+
+    private fun requireItemExists(itemId: Long) {
+        if (!itemRepository.existsById(itemId))
+            throw HttpException.BadRequest("Item with ID '$itemId' does not exist.")
+    }
+
+    private fun validateDateRange(start: Instant, end: Instant) {
+        if (start == end)
+            throw HttpException.BadRequest("Start '$start' cannot be the same as end '$end'.")
+        if (start.isAfter(end))
+            throw HttpException.BadRequest("Start '$start' cannot be after end '$end'.")
+    }
+
+    private fun validateNoItemOverlap(start: Instant, end: Instant, itemId: Long, excludedId: Long = -1L) {
+        if (getAllOverlapping(start, end, itemId, excludedId).isNotEmpty())
+            throw HttpException.Conflict("Item with ID '$itemId' is already booked between '$start' and '$end'")
+    }
+
+    private fun validateMaxSimultaneousBookings(userId: Long, start: Instant, end: Instant, excludedId: Long = -1L) {
+        val maxSimultaneous = configurationService.getTyped<Int>(ConfigurationEntity.Key.ITEM_BOOKING_MAX_SIMULTANEOUS)
+        val overlappingCount = repository.findAllOverlappingForUser(userId, start, end, excludedId).size
+
+        if (overlappingCount + 1 > maxSimultaneous) {
+            throw HttpException.Conflict("User cannot have more than $maxSimultaneous items simultaneously booked.")
+        }
+    }
+
+    // endregion
 
     @Transactional
     fun create(
@@ -33,24 +70,19 @@ class ItemBookingService(
         status: ItemBookingEntity.Status
     ): ItemBookingEntity {
 
-        if(!userRepository.existsById(userId))
-            throw HttpException.BadRequest("User with ID '$userId' does not exist.")
+        val user = userRepository.findById(userId)
+            .orElseThrow { HttpException.BadRequest("User with ID '$userId' does not exist.") }
 
-        if(!itemRepository.existsById(itemId))
-            throw HttpException.BadRequest("Item with ID '$itemId' does not exist.")
+        val item = itemRepository.findById(itemId)
+            .orElseThrow { HttpException.BadRequest("Item with ID '$itemId' does not exist.") }
 
-        if (start == end)
-            throw HttpException.BadRequest("Start '${start}' cannot be the same as end '${end}'.")
-
-        if (start.isAfter(end))
-            throw HttpException.BadRequest("Start '${start}' cannot be after end '${end}'.")
-
-        if (getAllOverlapping(start, end, itemId, -1).isNotEmpty())
-            throw HttpException.Conflict("Item with ID '${itemId}' is already booked between '${start}' and '${end}'")
+        validateDateRange(start, end)
+        validateNoItemOverlap(start, end, itemId)
+        validateMaxSimultaneousBookings(userId, start, end)
 
         val entity = ItemBookingEntity(
-            user = userRepository.findById(userId).get(),
-            item = itemRepository.findById(itemId).get(),
+            user = user,
+            item = item,
             start = start,
             end = end,
             collectedAt = collectedAt,
@@ -74,34 +106,19 @@ class ItemBookingService(
     ): ItemBookingEntity {
         val entity = repository.findById(id).get()
 
-        if(userId != null)
-            if(!userRepository.existsById(userId))
-                throw HttpException.BadRequest("User with ID '$userId' does not exist.")
+        userId?.let { requireUserExists(it) }
+        itemId?.let { requireItemExists(it) }
 
-        if(itemId != null)
-            if(!itemRepository.existsById(itemId))
-                throw HttpException.BadRequest("Item with ID '$itemId' does not exist.")
+        val effectiveUserId = userId ?: entity.user.id
+        val effectiveItemId = itemId ?: entity.item.id
+        val effectiveStart = start ?: entity.start
+        val effectiveEnd = end ?: entity.end
 
-        if (start != null && end != null) {
-            if (start.isAfter(end))
-                throw HttpException.BadRequest("Start '${start}' cannot be after end '${end}'.")
-
-            if (start == end)
-                throw HttpException.BadRequest("Start '${start}' cannot be the same as end '${end}'.")
-
-            if (itemId != null)
-                if (repository.findAllOverlapping(start, end, itemId, id).isNotEmpty())
-                    throw HttpException.Conflict("Item with ID '${itemId}' is already booked between '${start}' and '${end}'")
-
-            if (repository.findAllOverlapping(start, end, entity.item.id, id).isNotEmpty())
-                throw HttpException.Conflict("Item with ID '${entity.item.id}' is already booked between '${start}' and '${end}'")
+        if (start != null || end != null) {
+            validateDateRange(effectiveStart, effectiveEnd)
+            validateNoItemOverlap(effectiveStart, effectiveEnd, effectiveItemId, id)
+            validateMaxSimultaneousBookings(effectiveUserId, effectiveStart, effectiveEnd, id)
         }
-
-        if (start != null && end == null && start.isAfter(entity.end))
-            throw HttpException.BadRequest("Start '${start}' cannot be after end '${entity.end}'.")
-
-        if (start == null && end != null && end.isBefore(entity.start))
-            throw HttpException.BadRequest("End '${end}' cannot be before '${entity.start}'.")
 
         userId?.let { entity.user = userRepository.findById(it).get() }
         itemId?.let { entity.item = itemRepository.findById(it).get() }
@@ -113,6 +130,5 @@ class ItemBookingService(
 
         return repository.save(entity)
     }
-
 
 }

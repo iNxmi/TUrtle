@@ -82,6 +82,7 @@ class ConfigurationEntity(
 
         ITEM_NAME_LENGTH,
         ITEM_DESCRIPTION_LENGTH,
+        ITEM_BOOKING_MAX_SIMULTANEOUS,
 
         ITEM_CATEGORY_NAME_LENGTH,
 

@@ -117,6 +117,7 @@ class DefaultConfiguration(
 
         setDefault(Key.ITEM_NAME_LENGTH, Type.INT, PUBLIC) { 64 }
         setDefault(Key.ITEM_DESCRIPTION_LENGTH, Type.INT, PUBLIC) { 256 }
+        setDefault(Key.ITEM_BOOKING_MAX_SIMULTANEOUS, Type.INT, PUBLIC) { 5 }
 
         setDefault(Key.ITEM_CATEGORY_NAME_LENGTH, Type.INT, PUBLIC) { 64 }
 

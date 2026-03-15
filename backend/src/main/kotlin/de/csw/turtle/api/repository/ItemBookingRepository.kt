@@ -35,4 +35,21 @@ interface ItemBookingRepository : CRUDRepository<ItemBookingEntity> {
         @Param("userId") userId: Long,
         @Param("lockerId") lockerId: Long
     ): Set<ItemBookingEntity>
+
+    @Query(
+        """
+        SELECT r FROM ItemBookingEntity r
+        WHERE ((r.start >= :start AND r.start <= :end)
+        OR    (r.end <= :end AND r.end >= :start))
+        AND   (r.user.id = :userId)
+        AND   (r.id != :excludedId)
+        AND   (r.status NOT IN ('CANCELLED', 'REJECTED', 'RETURNED', 'COMPLETED'))
+    """
+    )
+    fun findAllOverlappingForUser(
+        @Param("userId") userId: Long,
+        @Param("start") start: Instant,
+        @Param("end") end: Instant,
+        @Param("excludedId") excludedId: Long
+    ): Set<ItemBookingEntity>
 }
