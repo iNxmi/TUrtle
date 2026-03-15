@@ -1,8 +1,8 @@
 import {SupportTicketCategories} from "$lib/api";
 
 export async function load({params}) {
-    const category = await getSupportTicketCategory(params.id);
-    return {category: category};
+    const entity = await getSupportTicketCategory(params.id);
+    return {entity: entity};
 }
 
 async function getSupportTicketCategory(id) {

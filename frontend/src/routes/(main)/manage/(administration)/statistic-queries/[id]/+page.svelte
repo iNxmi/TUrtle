@@ -1,6 +1,6 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
-    import {Input, Textarea, Select} from "flowbite-svelte";
+    import {Input, Select, Textarea} from "flowbite-svelte";
     import EntityPage from "$lib/components/EntityPage.svelte"
     import {StatisticQueries} from "$lib/api";
 
@@ -69,4 +69,7 @@
     }]]);
 </script>
 
-<EntityPage items={items} onPatch={(payload) => StatisticQueries.patch(entity.id, payload)}/>
+<EntityPage items={items}
+            onPatch={(payload) => StatisticQueries.patch(entity.id, payload)}
+            onDelete={() => StatisticQueries.delete(entity.id)}
+/>

@@ -2,10 +2,10 @@
     import {m} from "$lib/paraglide/messages.js";
     import {Input, MultiSelect} from "flowbite-svelte";
     import EntityPage from "$lib/components/EntityPage.svelte";
-    import {Roles} from "$lib/api";
+    import {Roles, Users} from "$lib/api";
 
     let {data} = $props();
-    let role = $derived(data.role);
+    let entity = $derived(data.entity);
 
     const permissionItems = $derived(data.permissions.map((permission) => ({
         value: permission,
@@ -17,7 +17,7 @@
         field: "id",
         component: Input,
         props: {
-            value: role.id
+            value: entity.id
         }
     }, {
         label: m.manage_roles_label_name(),
@@ -25,7 +25,7 @@
         editable: true,
         component: Input,
         props: {
-            value: role.name
+            value: entity.name
         }
     }, {
         label: m.manage_roles_label_type(),
@@ -33,7 +33,7 @@
         editable: true,
         component: Input,
         props: {
-            value: role.type
+            value: entity.type
         }
     }, {
         label: m.manage_roles_label_permissions(),
@@ -41,7 +41,7 @@
         editable: true,
         component: MultiSelect,
         props: {
-            value: role.permissions,
+            value: entity.permissions,
             items: permissionItems
         }
     }, [{
@@ -49,16 +49,19 @@
         field: "createdAt",
         component: Input,
         props: {
-            value: role.createdAt
+            value: entity.createdAt
         }
     }, {
         label: m.manage_roles_label_updated_at(),
         field: "updatedAt",
         component: Input,
         props: {
-            value: role.updatedAt
+            value: entity.updatedAt
         }
     }]]);
 </script>
 
-<EntityPage items={items} onPatch={(payload) => Roles.patch(role.id, payload)}/>
+<EntityPage items={items}
+            onPatch={(payload) => Roles.patch(entity.id, payload)}
+            onDelete={() => Roles.delete(entity.id)}
+/>

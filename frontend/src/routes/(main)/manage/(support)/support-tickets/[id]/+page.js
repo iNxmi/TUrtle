@@ -1,13 +1,13 @@
 import {SupportTicketCategories, SupportTickets, SupportTicketUrgencies} from "$lib/api";
 
 export async function load({params}) {
-    const ticket = await getSupportTicket(params.id);
+    const entity = await getSupportTicket(params.id);
     const urgencies = await getSupportTicketUrgencies();
     const categories = await getSupportTicketCategories();
     const statuses = await getSupportTicketStatuses();
 
     return {
-        ticket: ticket,
+        entity: entity,
         urgencies: urgencies,
         categories: categories,
         statuses: statuses

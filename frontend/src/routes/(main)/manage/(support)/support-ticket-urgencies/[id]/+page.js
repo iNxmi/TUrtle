@@ -1,8 +1,8 @@
 import {SupportTicketUrgencies} from "$lib/api";
 
 export async function load({params}) {
-    const urgency = await getSupportTicketUrgency(params.id);
-    return {urgency: urgency};
+    const entity = await getSupportTicketUrgency(params.id);
+    return {entity: entity};
 }
 
 async function getSupportTicketUrgency(id) {

@@ -1,11 +1,11 @@
 import {Permissions, Roles} from "$lib/api";
 
 export async function load({params}) {
-    const role = await getRole(params.id)
+    const entity = await getRole(params.id)
     const permissions = await getPermission()
 
     return {
-        role: role,
+        entity: entity,
         permissions: permissions
     };
 }

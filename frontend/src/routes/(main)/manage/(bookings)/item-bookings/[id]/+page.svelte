@@ -6,7 +6,7 @@
     import EntityPage from "$lib/components/EntityPage.svelte";
 
     let {data} = $props();
-    let booking = $derived(data.booking);
+    let entity = $derived(data.entity);
 
     const itemItems = $derived(data.items.map((item) => ({
         value: item.id,
@@ -30,7 +30,7 @@
         field: "id",
         component: Input,
         props: {
-            value: booking.id
+            value: entity.id
         }
     }, {
         label: m.manage_item_bookings_label_item(),
@@ -38,7 +38,7 @@
         editable: true,
         component: Select,
         props: {
-            value: booking.itemId,
+            value: entity.itemId,
             items: itemItems
         }
     }, {
@@ -47,7 +47,7 @@
         editable: true,
         component: Select,
         props: {
-            value: booking.userId,
+            value: entity.userId,
             items: userItems
         }
     }, [{
@@ -56,7 +56,7 @@
         editable: true,
         component: Input,
         props: {
-            value: booking.start
+            value: entity.start
         }
     }, {
         label: m.manage_item_bookings_label_end(),
@@ -64,7 +64,7 @@
         editable: true,
         component: Input,
         props: {
-            value: booking.end
+            value: entity.end
         }
     }], {
         label: m.manage_item_bookings_label_status(),
@@ -72,7 +72,7 @@
         editable: true,
         component: Select,
         props: {
-            value: booking.status,
+            value: entity.status,
             items: statusItems
         }
     }, [{
@@ -80,14 +80,14 @@
         field: "createdAt",
         component: Input,
         props: {
-            value: booking.createdAt
+            value: entity.createdAt
         }
     }, {
         label: m.manage_item_bookings_label_updated_at(),
         field: "updatedAt",
         component: Input,
         props: {
-            value: booking.updatedAt
+            value: entity.updatedAt
         }
     }]]);
 </script>
@@ -97,5 +97,8 @@
         <Calendar sources={sources}/>
     </Card>
 
-    <EntityPage items={items} onPatch={(payload) => ItemBookings.patch(bookings.id, payload)}/>
+    <EntityPage items={items}
+                onPatch={(payload) => ItemBookings.patch(entity.id, payload)}
+                onDelete={() => ItemBookings.delete(entity.id)}
+    />
 </div>

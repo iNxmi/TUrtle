@@ -2,6 +2,7 @@
     import {Input, Textarea} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
     import EntityPage from "$lib/components/EntityPage.svelte";
+    import {Exceptions} from "$lib/api";
 
     let {data} = $props();
     let entity = $derived(data.entity);
@@ -58,4 +59,6 @@
     }]]);
 </script>
 
-<EntityPage items={items}/>
+<EntityPage items={items}
+            onDelete={() => Exceptions.delete(entity.id)}
+/>

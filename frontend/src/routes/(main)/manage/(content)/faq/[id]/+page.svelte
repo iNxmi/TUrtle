@@ -5,62 +5,65 @@
     import {Faq} from "$lib/api";
 
     let {data} = $props();
-    let faq = $derived(data.faq);
+    let entity = $derived(data.entity);
 
     const items = $derived([{
-        label:m.manage_faq_label_id(),
+        label: m.manage_faq_label_id(),
         field: "id",
         component: Input,
         props: {
-            value: faq.id,
+            value: entity.id,
         }
-    },{
-        label:m.manage_faq_label_name(),
+    }, {
+        label: m.manage_faq_label_name(),
         field: "name",
         editable: true,
         component: Input,
         props: {
-            value: faq.name,
+            value: entity.name,
         }
-    },{
-        label:m.manage_faq_label_title(),
+    }, {
+        label: m.manage_faq_label_title(),
         field: "title",
         editable: true,
         component: Input,
         props: {
-            value: faq.title,
+            value: entity.title,
         }
-    },{
-        label:m.manage_faq_label_content(),
+    }, {
+        label: m.manage_faq_label_content(),
         field: "content",
         editable: true,
         component: Textarea,
         props: {
-            value: faq.content,
+            value: entity.content,
         }
-    },{
-        label:m.manage_faq_label_enabled(),
+    }, {
+        label: m.manage_faq_label_enabled(),
         field: "enabled",
         editable: true,
         component: Input,
         props: {
-            value: faq.enabled,
+            value: entity.enabled,
         }
-    },[{
-        label:m.manage_faq_label_created_at(),
+    }, [{
+        label: m.manage_faq_label_created_at(),
         field: "createdAt",
         component: Input,
         props: {
-            value: faq.createdAt,
+            value: entity.createdAt,
         }
-    },{
-        label:m.manage_faq_label_updated_at(),
+    }, {
+        label: m.manage_faq_label_updated_at(),
         field: "updatedAt",
         component: Input,
         props: {
-            value: faq.updatedAt,
+            value: entity.updatedAt,
         }
     }]]);
 </script>
 
-<EntityPage items={items} onPatch={(payload) => Faq.patch(faq.id, payload)}/>
+<EntityPage items={items}
+            onPatch={(payload) => Faq.patch(entity.id, payload)}
+            onDelete={() => Faq.delete(entity.id)}
+/>

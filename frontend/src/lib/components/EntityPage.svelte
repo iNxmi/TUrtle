@@ -10,12 +10,12 @@
         TrashBinOutline,
         UndoOutline
     } from 'flowbite-svelte-icons';
-    import {invalidateAll} from "$app/navigation";
+    import {goto, invalidateAll} from "$app/navigation";
 
     let {
         items = [],
-        onDelete,
-        onPatch
+        onPatch,
+        onDelete
     } = $props();
 
     const flatItems = $derived(_.flattenDeep(items));
@@ -42,10 +42,10 @@
     async function patch(event) {
         event.preventDefault();
 
-        loading = true;
+        loadingEdit = true;
         const payload = difference(updatedValues, initialValues);
         const response = await onPatch?.(payload);
-        loading = false;
+        loadingEdit = false;
 
         if (response.ok !== true) {
             alert(`Error: ${JSON.stringify(response, null, 2)}`);
@@ -54,6 +54,26 @@
 
         await invalidateAll();
         edit = false;
+    }
+
+    async function remove(event) {
+        event.preventDefault();
+
+        loadingRemove = true;
+        const response = await onDelete?.()
+        loadingRemove = false;
+
+        if (response.ok !== true) {
+            alert(`Error: ${JSON.stringify(response, null, 2)}`);
+            return
+        }
+
+        await invalidateAll();
+
+        const url = window.location.pathname;
+        const newPath = url.substring(0, url.lastIndexOf('/'));
+
+        await goto(newPath);
     }
 
     async function cancel(event) {
@@ -72,7 +92,8 @@
     }
 
     let edit = $state(false);
-    let loading = $state(false);
+    let loadingEdit = $state(false);
+    let loadingRemove = $state(false);
 </script>
 
 {#snippet field(property, edit)}
@@ -124,8 +145,8 @@
             {#if onPatch}
                 <ButtonGroup>
                     {#if edit === true}
-                        <Button color="orange" disabled={loading === true} onclick={patch}>
-                            {#if loading === true}
+                        <Button color="orange" disabled={loadingEdit === true} onclick={patch}>
+                            {#if loadingEdit === true}
                                 <Spinner size="5"/>
                             {:else}
                                 <FloppyDiskAltOutline/>
@@ -143,10 +164,16 @@
             {/if}
         </div>
 
-        <ButtonGroup>
-            <Button color="red" class="w-full">
-                <TrashBinOutline/>
-            </Button>
-        </ButtonGroup>
+        {#if onDelete}
+            <ButtonGroup>
+                <Button color="red" class="w-full" onclick={remove} disabled={loadingRemove}>
+                    {#if loadingRemove === true}
+                        <Spinner size="5"/>
+                    {:else}
+                        <TrashBinOutline/>
+                    {/if}
+                </Button>
+            </ButtonGroup>
+        {/if}
     </Card>
 </div>

@@ -5,14 +5,14 @@
     import {SupportTicketUrgencies} from "$lib/api";
 
     let {data} = $props();
-    let urgency = $derived(data.urgency);
+    let entity = $derived(data.entity);
 
     const items = $derived([{
         label: m.manage_support_ticket_urgencies_label_id(),
         field: "id",
         component: Input,
         props: {
-            value: urgency.id
+            value: entity.id
         }
     }, {
         label: m.manage_support_ticket_urgencies_label_name(),
@@ -20,23 +20,26 @@
         editable: true,
         component: Input,
         props: {
-            value: urgency.name
+            value: entity.name
         }
     }, [{
         label: m.manage_support_ticket_urgencies_label_created_at(),
         field: "createdAt",
         component: Input,
         props: {
-            value: urgency.createdAt
+            value: entity.createdAt
         }
     }, {
         label: m.manage_support_ticket_urgencies_label_updated_at(),
         field: "updatedAt",
         component: Input,
         props: {
-            value: urgency.updatedAt
+            value: entity.updatedAt
         }
     }]]);
 </script>
 
-<EntityPage items={items} onPatch={(payload) => SupportTicketUrgencies.patch(urgency.id, payload)}/>
+<EntityPage items={items}
+            onPatch={(payload) => SupportTicketUrgencies.patch(entity.id, payload)}
+            onDelete={() => SupportTicketUrgencies.delete(entity.id)}
+/>

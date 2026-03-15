@@ -5,7 +5,7 @@
     import {Users} from "$lib/api";
 
     let {data} = $props();
-    let user = $derived(data.user);
+    let entity = $derived(data.entity);
 
     let roleItems = $derived(data.roles.map((role) => ({
         value: role.id,
@@ -22,7 +22,7 @@
         field: "id",
         component: Input,
         props: {
-            value: user.id
+            value: entity.id
         }
     }, {
         label: m.manage_users_label_username(),
@@ -30,7 +30,7 @@
         editable: true,
         component: Input,
         props: {
-            value: user.username
+            value: entity.username
         }
     }, [{
         label: m.manage_users_label_first_name(),
@@ -38,7 +38,7 @@
         editable: true,
         component: Input,
         props: {
-            value: user.firstName
+            value: entity.firstName
         }
     }, {
         label: m.manage_users_label_last_name(),
@@ -46,7 +46,7 @@
         editable: true,
         component: Input,
         props: {
-            value: user.lastName
+            value: entity.lastName
         }
     },], {
         label: m.manage_users_label_email(),
@@ -54,7 +54,7 @@
         editable: true,
         component: Input,
         props: {
-            value: user.email,
+            value: entity.email,
             type: "email"
         }
     }, {
@@ -63,7 +63,7 @@
         editable: true,
         component: Input,
         props: {
-            value: user.emojis
+            value: entity.emojis
         }
     }, {
         label: m.manage_users_label_roles(),
@@ -71,7 +71,7 @@
         editable: true,
         component: MultiSelect,
         props: {
-            value: user.roleIds,
+            value: entity.roleIds,
             items: roleItems
         }
     }, {
@@ -80,7 +80,7 @@
         editable: true,
         component: Select,
         props: {
-            value: user.status,
+            value: entity.status,
             items: statusItems
         }
     }, [{
@@ -88,16 +88,19 @@
         field: "createdAt",
         component: Input,
         props: {
-            value: user.createdAt
+            value: entity.createdAt
         }
     }, {
         label: m.manage_users_label_updated_at(),
         field: "updatedAt",
         component: Input,
         props: {
-            value: user.updatedAt
+            value: entity.updatedAt
         }
     }]]);
 </script>
 
-<EntityPage items={items} onPatch={(payload) => Users.patch(user.id, payload)}/>
+<EntityPage items={items}
+            onPatch={(payload) => Users.patch(entity.id, payload)}
+            onDelete={() => Users.delete(entity.id)}
+/>

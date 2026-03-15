@@ -1,8 +1,8 @@
 import {Lockers} from "$lib/api";
 
 export async function load({params}) {
-    const locker = await getLocker(params.id)
-    return {locker: locker};
+    const entity = await getLocker(params.id)
+    return {entity: entity};
 }
 
 async function getLocker(id) {

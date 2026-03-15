@@ -1,11 +1,11 @@
 import {ContentTemplates} from "$lib/api";
 
 export async function load({params}) {
-    const template = await getContentTemplate(params.id);
+    const entity = await getContentTemplate(params.id);
     const types = await getTypes();
 
     return {
-        template: template,
+        entity: entity,
         types: types
     };
 }

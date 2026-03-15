@@ -2,11 +2,10 @@
     import {ContentTemplates} from "$lib/api";
     import EntityPage from "$lib/components/EntityPage.svelte";
     import {m} from '$lib/paraglide/messages.js';
-    import {Input, Textarea, Select} from "flowbite-svelte";
+    import {Input, Select, Textarea} from "flowbite-svelte";
 
     let {data} = $props();
-
-    let template = $derived(data.template);
+    let entity = $derived(data.entity);
 
     let typeItems = $derived(data.types.map((type) => ({
         value: type,
@@ -18,7 +17,7 @@
         field: "id",
         component: Input,
         props: {
-            value: template.id
+            value: entity.id
         }
     }, {
         label: m.manage_content_templates_label_name(),
@@ -26,15 +25,15 @@
         editable: true,
         component: Input,
         props: {
-            value: template.name
+            value: entity.name
         }
-    },{
+    }, {
         label: m.manage_content_templates_label_type(),
         field: "type",
         editable: true,
         component: Select,
         props: {
-            value: template.type,
+            value: entity.type,
             items: typeItems
         }
     }, {
@@ -43,7 +42,7 @@
         editable: true,
         component: Textarea,
         props: {
-            value: template.description
+            value: entity.description
         }
     }, {
         label: m.manage_content_templates_label_content(),
@@ -51,23 +50,26 @@
         editable: true,
         component: Textarea,
         props: {
-            value: template.content
+            value: entity.content
         }
     }, [{
         label: m.manage_content_templates_label_created_at(),
         field: "createdAt",
         component: Input,
         props: {
-            value: template.createdAt
+            value: entity.createdAt
         }
     }, {
         label: m.manage_content_templates_label_updated_at(),
         field: "updatedAt",
         component: Input,
         props: {
-            value: template.updatedAt
+            value: entity.updatedAt
         }
     }]]);
 </script>
 
-<EntityPage items={items} onPatch={(payload) => ContentTemplates.patch(template.id, payload)}/>
+<EntityPage items={items}
+            onPatch={(payload) => ContentTemplates.patch(entity.id, payload)}
+            onDelete={() => ContentTemplates.delete(entity.id)}
+/>

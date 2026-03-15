@@ -5,7 +5,7 @@
     import EntityPage from "$lib/components/EntityPage.svelte";
 
     let {data} = $props();
-    let item = $derived(data.item);
+    let entity = $derived(data.entity);
 
     const categoryItems = $derived(data.categories.map((category) => ({
         value: category.id,
@@ -22,7 +22,7 @@
         field: "id",
         component: Input,
         props: {
-            value: item.id
+            value: entity.id
         }
     }, {
         label: m.manage_items_label_name(),
@@ -30,7 +30,7 @@
         editable: true,
         component: Input,
         props: {
-            value: item.name
+            value: entity.name
         }
     }, {
         label: m.manage_items_label_category(),
@@ -38,7 +38,7 @@
         editable: true,
         component: Select,
         props: {
-            value: item.categoryId,
+            value: entity.categoryId,
             items: categoryItems
         }
     }, {
@@ -47,7 +47,7 @@
         editable: true,
         component: Select,
         props: {
-            value: item.lockerId,
+            value: entity.lockerId,
             items: lockerItems
         }
     }, {
@@ -56,7 +56,7 @@
         editable: true,
         component: Textarea,
         props: {
-            value: item.description
+            value: entity.description
         }
     }, {
         label: m.manage_items_label_needs_confirmation(),
@@ -64,7 +64,7 @@
         editable: true,
         component: Input,
         props: {
-            value: item.needsConfirmation
+            value: entity.needsConfirmation
         }
     }, {
         label: m.manage_items_label_acquired_at(),
@@ -72,23 +72,26 @@
         editable: true,
         component: Input,
         props: {
-            value: item.acquiredAt
+            value: entity.acquiredAt
         }
     }, [{
         label: m.manage_items_label_created_at(),
         field: "createdAt",
         component: Input,
         props: {
-            value: item.createdAt
+            value: entity.createdAt
         }
     }, {
         label: m.manage_items_label_updated_at(),
         field: "updatedAt",
         component: Input,
         props: {
-            value: item.updatedAt
+            value: entity.updatedAt
         }
     }]]);
 </script>
 
-<EntityPage items={items} onPatch={(payload) => Items.patch(item.id, payload)}/>
+<EntityPage items={items}
+            onPatch={(payload) => Items.patch(entity.id, payload)}
+            onDelete={() => Items.delete(entity.id)}
+/>

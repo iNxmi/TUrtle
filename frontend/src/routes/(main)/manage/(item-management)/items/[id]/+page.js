@@ -1,12 +1,12 @@
 import {Items, ItemCategories, Lockers} from "$lib/api";
 
 export async function load({params}) {
-    const item = await getItem(params.id);
+    const entity = await getItem(params.id);
     const categories = await getItemCategories();
     const lockers = await getLockers();
 
     return {
-        item: item,
+        entity: entity,
         categories: categories,
         lockers: lockers
     };

@@ -1,13 +1,13 @@
 import {RoomBookings, Users} from "$lib/api";
 
 export async function load({params}) {
-    const booking = await getRoomBooking(params.id);
+    const entity = await getRoomBooking(params.id);
     const users = await getUsers();
     const access = await getAccess();
     const status = await getStatus();
 
     return {
-        booking: booking,
+        entity: entity,
         users: users,
         access: access,
         status: status

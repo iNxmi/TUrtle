@@ -1,8 +1,8 @@
 import {ItemCategories} from "$lib/api";
 
 export async function load({params}) {
-    const category = await getItemCategory(params.id);
-    return {category: category};
+    const entity = await getItemCategory(params.id);
+    return {entity: entity};
 }
 
 async function getItemCategory(id) {

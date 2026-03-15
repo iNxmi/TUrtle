@@ -5,14 +5,14 @@
     import {SupportTicketCategories} from "$lib/api";
 
     let {data} = $props();
-    let category = $derived(data.category);
+    let entity = $derived(data.entity);
 
     const items = $derived([{
         label: m.manage_support_ticket_categories_label_id(),
         field: "id",
         component: Input,
         props: {
-            value: category.id
+            value: entity.id
         }
     }, {
         label: m.manage_support_ticket_categories_label_name(),
@@ -20,23 +20,26 @@
         editable: true,
         component: Input,
         props: {
-            value: category.name
+            value: entity.name
         }
     }, [{
         label: m.manage_support_ticket_categories_label_created_at(),
         field: "createdAt",
         component: Input,
         props: {
-            value: category.createdAt
+            value: entity.createdAt
         }
     }, {
         label: m.manage_support_ticket_categories_label_updated_at(),
         field: "updatedAt",
         component: Input,
         props: {
-            value: category.updatedAt
+            value: entity.updatedAt
         }
     }]]);
 </script>
 
-<EntityPage items={items} onPatch={(payload) => SupportTicketCategories.patch(category.id, payload)}/>
+<EntityPage items={items}
+            onPatch={(payload) => SupportTicketCategories.patch(entity.id, payload)}
+            onDelete={() => SupportTicketCategories.delete(entity.id)}
+/>

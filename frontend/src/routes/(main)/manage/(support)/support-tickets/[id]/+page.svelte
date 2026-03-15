@@ -2,9 +2,10 @@
     import {Input, Select, Textarea} from "flowbite-svelte";
     import {m} from '$lib/paraglide/messages.js';
     import EntityPage from "$lib/components/EntityPage.svelte";
+    import {SupportTickets} from "$lib/api";
 
     let {data} = $props();
-    let ticket = $derived(data.ticket);
+    let entity = $derived(data.entity);
 
     const statusItems = $derived(data.statuses.map((status) => ({
         value: status,
@@ -26,14 +27,14 @@
         field: "id",
         component: Input,
         props: {
-            value: ticket.id
+            value: entity.id
         }
     }, [{
         label: m.manage_support_tickets_label_urgency(),
         field: "urgencyId",
         component: Select,
         props: {
-            value: ticket.urgencyId,
+            value: entity.urgencyId,
             items: urgencyItems
         }
     }, {
@@ -41,7 +42,7 @@
         field: "categoryId",
         component: Select,
         props: {
-            value: ticket.categoryId,
+            value: entity.categoryId,
             items: categoryItems
         }
     }], {
@@ -49,21 +50,21 @@
         field: "email",
         component: Input,
         props: {
-            value: ticket.email
+            value: entity.email
         }
     }, {
         label: m.manage_support_tickets_label_subject(),
         field: "subject",
         component: Input,
         props: {
-            value: ticket.subject
+            value: entity.subject
         }
     }, {
         label: m.manage_support_tickets_label_content(),
         field: "content",
         component: Textarea,
         props: {
-            value: ticket.content
+            value: entity.content
         }
     }, {
         label: m.manage_support_tickets_label_status(),
@@ -71,7 +72,7 @@
         editable: true,
         component: Select,
         props: {
-            value: ticket.status,
+            value: entity.status,
             items: statusItems
         }
     }, [{
@@ -79,16 +80,19 @@
         field: "createdAt",
         component: Input,
         props: {
-            value: ticket.createdAt
+            value: entity.createdAt
         }
     }, {
         label: m.manage_support_tickets_label_updated_at(),
         field: "updatedAt",
         component: Input,
         props: {
-            value: ticket.updatedAt
+            value: entity.updatedAt
         }
     }]]);
 </script>
 
-<EntityPage items={items} onPatch={(payload) => SupportTickets.patch(ticket.id, payload)}/>
+<EntityPage items={items}
+            onPatch={(payload) => SupportTickets.patch(entity.id, payload)}
+            onDelete={() => SupportTickets.delete(entity.id)}
+/>

@@ -1,12 +1,12 @@
 import {Roles, Users} from "$lib/api";
 
 export async function load({params}) {
-    const user = await getUser(params.id);
+    const entity = await getUser(params.id);
     const roles = await getRoles();
     const statuses = await getStatuses();
 
     return {
-        user: user,
+        entity: entity,
         roles: roles,
         statuses: statuses
     };

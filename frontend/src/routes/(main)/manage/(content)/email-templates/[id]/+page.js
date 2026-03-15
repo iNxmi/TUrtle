@@ -1,11 +1,11 @@
 import {EmailTemplates} from "$lib/api";
 
 export async function load({params}) {
-    const template = await getEmailTemplate(params.id);
+    const entity = await getEmailTemplate(params.id);
     const types = await getType();
 
     return {
-        template: template,
+        entity: entity,
         types: types
     };
 }
