@@ -47,6 +47,7 @@ services:
       SMTP_PORT: 1025
       SMTP_USERNAME:
       SMTP_PASSWORD:
+      SMTP_SECURE: false
 
   frontend:
     build: frontend

@@ -23,12 +23,9 @@ spring:
     properties:
       mail:
         smtp:
-          auth: false
-          starttls:
-            enable: false
-
-  mustache:
-    check-template-location: false
+          auth: ${SMTP_SECURE}
+          ssl:
+            enable: ${SMTP_SECURE}
 
 server:
   forward-headers-strategy: none

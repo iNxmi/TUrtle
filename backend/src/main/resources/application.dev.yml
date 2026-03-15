@@ -27,9 +27,6 @@ spring:
           starttls:
             enable: false
 
-  mustache:
-    check-template-location: false
-
 server:
   forward-headers-strategy: none
 

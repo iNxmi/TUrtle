@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 import org.thymeleaf.context.Context
 
-private const val FROM = "noreply@csw.du-darmstadt.de"
+private const val FROM = "noreply@mhergh.com"
 
 @Service
 class EmailService(
