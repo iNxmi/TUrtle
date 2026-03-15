@@ -96,7 +96,7 @@ All commands listed here are run in `/frontend`
 
 # Adminbereich
 - Managen von Support tickets
-- Steuerung von Hardware (Tür, schränke) als override
+- Steuerung von Door (Tür, schränke) als override
 - Managen von ausgeliehenen Gegenständen (von anderen Usern) und Database
 - Managen von Veranstaltungskalender
 - Managen von User database (erstellen/editieren/löschen)

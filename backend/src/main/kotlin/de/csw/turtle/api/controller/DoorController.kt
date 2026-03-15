@@ -7,30 +7,29 @@ import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
 import de.csw.turtle.api.service.*
-import de.csw.turtle.api.service.door.DoorControlService
-import de.csw.turtle.api.service.locker.LockerControlService
-import de.csw.turtle.api.service.locker.LockerService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.time.Duration
 import java.time.LocalTime
 
+private const val ENDPOINT = "/api/door"
+
 @RestController
-@RequestMapping("/api/hardware")
-class HardwareController(
-    private val doorControlService: DoorControlService,
-    private val lockerService: LockerService,
-    private val lockerControlService: LockerControlService,
+@RequestMapping(ENDPOINT)
+class DoorController(
     private val userService: UserService,
     private val networkService: NetworkService,
     private val configurationService: ConfigurationService,
-    private val itemBookingService: ItemBookingService,
-    private val roomBookingService: RoomBookingService
+    private val roomBookingService: RoomBookingService,
+    private val doorService: DoorService
 ) {
 
-    @PostMapping("/door/emojis")
+    @PostMapping("/emojis")
     fun door(
         @RequestBody request: OpenDoorEmojisRequest,
         httpRequest: HttpServletRequest
@@ -48,11 +47,11 @@ class HardwareController(
         checkDoorPermissions(user, httpRequest)
 
         val duration = configurationService.getTyped<Duration>(Key.DOOR_OPEN_DURATION)
-        doorControlService.trigger(duration)
+        doorService.unlock(duration)
         return ResponseEntity.ok().build()
     }
 
-    @PostMapping("/door/open")
+    @PostMapping("/unlock")
     fun door(
         @AuthenticationPrincipal user: UserEntity?,
         request: HttpServletRequest
@@ -63,28 +62,7 @@ class HardwareController(
         checkDoorPermissions(user, request)
 
         val duration = configurationService.getTyped<Duration>(Key.DOOR_OPEN_DURATION)
-        doorControlService.trigger(duration)
-        return ResponseEntity.ok().build()
-    }
-
-    @PostMapping("/locker/open")
-    fun locker(
-        @AuthenticationPrincipal user: UserEntity?,
-        @RequestParam id: Long,
-        request: HttpServletRequest
-    ): ResponseEntity<Void> {
-        if (user == null)
-            throw HttpException.Unauthorized()
-
-        if (user.status != Status.ACTIVE)
-            throw HttpException.Forbidden()
-
-        checkLockerPermissions(user, id, request)
-
-        val locker = lockerService.getById(id)
-            ?: throw HttpException.NotFound()
-
-        lockerControlService.trigger(locker = locker)
+        doorService.unlock(duration)
         return ResponseEntity.ok().build()
     }
 
@@ -105,22 +83,7 @@ class HardwareController(
             throw HttpException.Unauthorized("User '${user.id}' not in whitelist for current Room Booking.")
     }
 
-    private fun checkLockerPermissions(user: UserEntity, lockerId: Long, request: HttpServletRequest) {
-        if (user.hasPermission(Permission.MANAGE_LOCKERS))
-            return
-
-        if (!networkService.isLocalNetwork(request))
-            throw HttpException.Forbidden("External network.")
-
-        val start = configurationService.getTyped<LocalTime>(Key.LOCKER_SCHEDULE_START)
-        val end = configurationService.getTyped<LocalTime>(Key.LOCKER_SCHEDULE_END)
-        if (isNowBetween(start, end))
-            throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
-
-        if (itemBookingService.getCurrent(user.id, lockerId).isEmpty())
-            throw HttpException.Forbidden("No Item Bookings found for this locker and user.")
-    }
-
     private fun isNowBetween(start: LocalTime, end: LocalTime, now: LocalTime = LocalTime.now()) =
         now.isBefore(start) || now.isAfter(end)
+
 }

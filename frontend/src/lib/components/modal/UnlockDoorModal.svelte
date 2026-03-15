@@ -1,6 +1,6 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
-    import {Hardware} from "$lib/api";
+    import {Door} from "$lib/api";
     import {Button, Modal, Tooltip, Spinner, Hr} from "flowbite-svelte";
     import {QuestionCircleSolid} from "flowbite-svelte-icons";
 
@@ -16,7 +16,7 @@
         error = "";
 
         loading = true;
-        const response = await Hardware.doorOpen();
+        const response = await Door.unlock();
         loading = false;
 
         if (!response.ok) {

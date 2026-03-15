@@ -31,4 +31,8 @@ export class Lockers {
         return request(`/api/lockers/${id}`, {method: "DELETE"});
     }
 
+    static async unlock(id) {
+        return request(`/api/lockers/${id}/unlock`, {method: "POST"});
+    }
+
 }

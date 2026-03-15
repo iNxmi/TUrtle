@@ -1,6 +1,6 @@
 <script>
     import {Button, Modal, Spinner} from 'flowbite-svelte';
-    import {Hardware} from '$lib/api';
+    import {Lockers} from '$lib/api';
     import {QuestionCircleSolid} from "flowbite-svelte-icons";
 
     let {
@@ -16,7 +16,7 @@
         error = "";
 
         loading = true;
-        const response = await Hardware.lockerOpen(locker.id);
+        const response = await Lockers.unlock(locker.id);
         loading = false;
 
         if (!response.ok) {
