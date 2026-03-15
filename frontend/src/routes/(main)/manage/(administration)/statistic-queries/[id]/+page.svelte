@@ -1,6 +1,7 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
-    import {Input, Select, Textarea} from "flowbite-svelte";
+    import {Button, Input, Select, Textarea} from "flowbite-svelte";
+    import {PlayOutline} from "flowbite-svelte-icons";
     import EntityPage from "$lib/components/EntityPage.svelte"
     import {StatisticQueries} from "$lib/api";
 
@@ -67,9 +68,23 @@
             value: entity.updatedAt,
         }
     }]]);
+
+    const controls = [{
+        component: Button,
+        icon: PlayOutline,
+        props: {
+            color: "green",
+            onclick: async () => {
+                const response = await StatisticQueries.executed(entity.id)
+                const result = await response.json()
+                alert(JSON.stringify(result))
+            }
+        }
+    }];
 </script>
 
 <EntityPage items={items}
+            controls={controls}
             onPatch={(payload) => StatisticQueries.patch(entity.id, payload)}
             onDelete={() => StatisticQueries.delete(entity.id)}
 />

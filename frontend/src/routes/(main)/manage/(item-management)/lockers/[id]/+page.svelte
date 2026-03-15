@@ -1,8 +1,10 @@
 <script>
     import {m} from "$lib/paraglide/messages.js";
-    import {Input} from "flowbite-svelte";
+    import {Button, Input} from "flowbite-svelte";
+    import {LockOpenOutline} from "flowbite-svelte-icons";
     import EntityPage from "$lib/components/EntityPage.svelte";
-    import {Lockers} from "$lib/api";
+    import {Lockers, StatisticQueries} from "$lib/api";
+    import {PlayOutline} from "flowbite-svelte-icons";
 
     let {data} = $props();
     let entity = $derived(data.entity);
@@ -61,9 +63,27 @@
             value: entity.updatedAt
         }
     }]]);
+
+    const controls = [{
+        component: Button,
+        icon: LockOpenOutline,
+        props: {
+            color: "yellow",
+            onclick: async () => {
+                const response = await Lockers.unlock(entity.id)
+                if(!response.ok) {
+                    alert(`Error: ${response.message}`);
+                    return;
+                }
+
+                alert("Success");
+            }
+        }
+    }];
 </script>
 
 <EntityPage items={items}
+            controls={controls}
             onPatch={(payload) => Lockers.patch(entity.id, payload)}
             onDelete={() => Lockers.delete(entity.id)}
 />

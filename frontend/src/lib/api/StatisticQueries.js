@@ -15,7 +15,7 @@ export class StatisticQueries {
     }
 
     static async executed(id) {
-        return request(`/api/statistic-queries/${id}/executed`);
+        return request(`/api/statistic-queries/${id}/execute`);
     }
 
     static async get(id) {

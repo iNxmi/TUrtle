@@ -14,6 +14,7 @@
 
     let {
         items = [],
+        controls = [],
         onPatch,
         onDelete
     } = $props();
@@ -141,6 +142,14 @@
                     <ShareNodesOutline/>
                 </Button>
             </ButtonGroup>
+
+            {#each controls as control}
+                <ButtonGroup>
+                    {@const Component = control.component}
+                    {@const Icon = control.icon}
+                    <Component {...control.props}><Icon/></Component>
+                </ButtonGroup>
+            {/each}
 
             {#if onPatch}
                 <ButtonGroup>
