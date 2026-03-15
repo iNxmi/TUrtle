@@ -1,5 +1,5 @@
 <script>
-    import {Hardware} from "$lib/api";
+    import {Door} from "$lib/api";
 
     import {Hr} from "flowbite-svelte";
 
@@ -48,7 +48,7 @@
         shuffle();
 
         const emojis = code.join("");
-        const response = await Hardware.doorEmojis(emojis);
+        const response = await Door.emojis(emojis);
 
         success = response.ok
 

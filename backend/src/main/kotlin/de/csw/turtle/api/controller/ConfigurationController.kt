@@ -1,5 +1,6 @@
 package de.csw.turtle.api.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.get.GetConfigurationResponse
 import de.csw.turtle.api.dto.patch.PatchConfigurationRequest
@@ -22,7 +23,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/configuration")
 class ConfigurationController(
-    private val configurationService: ConfigurationService
+    private val configurationService: ConfigurationService,
+    private val objectMapper: ObjectMapper
 ) : GetController<ConfigurationEntity, String, GetConfigurationResponse>,
     PatchController<ConfigurationEntity, PatchConfigurationRequest, GetConfigurationResponse> {
 
@@ -31,6 +33,37 @@ class ConfigurationController(
 
     @GetMapping("/enum/type")
     fun getType() = Type.entries.toSortedSet()
+
+    @GetMapping("/{variable}/value")
+    fun getValue(
+        @AuthenticationPrincipal user: UserEntity?,
+        @PathVariable variable: String
+    ): ResponseEntity<Any> {
+        val id = variable.toLongOrNull()
+        val entity = if (id != null) {
+            configurationService.getById(id)
+        } else {
+            try {
+                val key = Key.valueOf(variable.uppercase())
+                configurationService.getByKey(key)
+            } catch (_: Exception) {
+                null
+            }
+        } ?: throw HttpException.NotFound()
+
+        val parsed = configurationService.parse(entity)
+
+        if (entity.visibility == ConfigurationEntity.Visibility.PUBLIC)
+            return ResponseEntity.ok(parsed)
+
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_CONFIGURATION))
+            throw HttpException.Forbidden()
+
+        return ResponseEntity.ok(parsed)
+    }
 
     @GetMapping("/{variable}")
     override fun get(
@@ -41,6 +74,12 @@ class ConfigurationController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<GetConfigurationResponse> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_CONFIGURATION))
+            throw HttpException.Forbidden()
+
         val id = variable.toLongOrNull()
         val entity = if (id != null) {
             configurationService.getById(id)
@@ -50,15 +89,6 @@ class ConfigurationController(
         } ?: throw HttpException.NotFound()
 
         val dto = GetConfigurationResponse(entity)
-        if (entity.visibility == ConfigurationEntity.Visibility.PUBLIC)
-            return ResponseEntity.ok(dto)
-
-        if (user == null)
-            throw HttpException.Unauthorized()
-
-        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_CONFIGURATION))
-            throw HttpException.Forbidden()
-
         return ResponseEntity.ok(dto)
     }
 
@@ -76,14 +106,15 @@ class ConfigurationController(
         httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
 
-        val specification = if (user == null || user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_CONFIGURATION)) {
-            Specification { root, _, builder ->
-                builder.equal(
-                    root.get<ConfigurationEntity.Visibility>("visibility"),
-                    ConfigurationEntity.Visibility.PUBLIC
-                )
-            }
-        } else Specification.unrestricted<ConfigurationEntity>()
+        val specification =
+            if (user == null || user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_CONFIGURATION)) {
+                Specification { root, _, builder ->
+                    builder.equal(
+                        root.get<ConfigurationEntity.Visibility>("visibility"),
+                        ConfigurationEntity.Visibility.PUBLIC
+                    )
+                }
+            } else Specification.unrestricted<ConfigurationEntity>()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)

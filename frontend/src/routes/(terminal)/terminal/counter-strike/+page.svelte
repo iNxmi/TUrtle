@@ -1,7 +1,7 @@
 <script>
     import {onMount, tick} from 'svelte';
     import {Button, Heading} from 'flowbite-svelte';
-    import {Hardware} from "$lib/api"
+    import {Door} from "$lib/api"
 
     const ITEM_WIDTH = 120;
     const VIEWPORT_WIDTH = 360;
@@ -45,7 +45,7 @@
     });
 
     async function openDoor() {
-        const response = await Hardware.doorEmojis("💩💩💩💩💩");
+        const response = await Door.emojis("💩💩💩💩💩");
         const json = await response.json()
     }
 

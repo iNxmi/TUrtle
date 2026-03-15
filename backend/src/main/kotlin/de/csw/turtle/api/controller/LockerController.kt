@@ -4,11 +4,15 @@ import de.csw.turtle.api.Permission
 import de.csw.turtle.api.dto.create.CreateLockerRequest
 import de.csw.turtle.api.dto.get.GetLockerResponse
 import de.csw.turtle.api.dto.patch.PatchLockerRequest
+import de.csw.turtle.api.entity.ConfigurationEntity.Key
 import de.csw.turtle.api.entity.LockerEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.service.locker.LockerService
+import de.csw.turtle.api.service.ConfigurationService
+import de.csw.turtle.api.service.ItemBookingService
+import de.csw.turtle.api.service.LockerService
+import de.csw.turtle.api.service.NetworkService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
@@ -17,13 +21,17 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.net.URI
+import java.time.LocalTime
 
 private const val ENDPOINT = "/api/lockers"
 
 @RestController
 @RequestMapping(ENDPOINT)
 class LockerController(
-    private val lockerService: LockerService
+    private val lockerService: LockerService,
+    private val networkService: NetworkService,
+    private val itemBookingService: ItemBookingService,
+    private val configurationService: ConfigurationService,
 ) : CreateController<LockerEntity, CreateLockerRequest, GetLockerResponse>,
     GetController<LockerEntity, Long, GetLockerResponse>,
     PatchController<LockerEntity, PatchLockerRequest, GetLockerResponse>,
@@ -71,6 +79,49 @@ class LockerController(
         val dto = GetLockerResponse(entity)
         return ResponseEntity.ok(dto)
     }
+
+    @PostMapping("/{id}/unlock")
+    fun unlock(
+        @AuthenticationPrincipal user: UserEntity?,
+
+        @PathVariable id: Long,
+
+        request: HttpServletRequest
+    ): ResponseEntity<GetLockerResponse> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (user.status != Status.ACTIVE)
+            throw HttpException.Forbidden()
+
+        val locker = lockerService.getById(id)
+            ?: throw HttpException.NotFound()
+
+        checkLockerPermissions(user, locker, request)
+
+        lockerService.unlock(id)
+
+        return ResponseEntity.ok().build()
+    }
+
+    private fun checkLockerPermissions(user: UserEntity, locker: LockerEntity, request: HttpServletRequest) {
+        if (user.hasPermission(Permission.MANAGE_LOCKERS))
+            return
+
+        if (!networkService.isLocalNetwork(request))
+            throw HttpException.Forbidden("External network.")
+
+        val start = configurationService.getTyped<LocalTime>(Key.LOCKER_SCHEDULE_START)
+        val end = configurationService.getTyped<LocalTime>(Key.LOCKER_SCHEDULE_END)
+        if (isNowBetween(start, end))
+            throw HttpException.ServiceUnavailable("Outside of schedule. $start to $end.")
+
+        if (itemBookingService.getCurrent(user.id, locker.id).isEmpty())
+            throw HttpException.Forbidden("No Item Bookings found for this locker and user.")
+    }
+
+    private fun isNowBetween(start: LocalTime, end: LocalTime, now: LocalTime = LocalTime.now()) =
+        now.isBefore(start) || now.isAfter(end)
 
     @GetMapping
     override fun getCollection(

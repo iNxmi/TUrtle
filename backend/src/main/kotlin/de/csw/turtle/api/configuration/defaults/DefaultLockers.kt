@@ -1,6 +1,6 @@
 package de.csw.turtle.api.configuration.defaults
 
-import de.csw.turtle.api.service.locker.LockerService
+import de.csw.turtle.api.service.LockerService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.Transactional

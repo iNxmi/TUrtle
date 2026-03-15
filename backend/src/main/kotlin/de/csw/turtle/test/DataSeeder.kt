@@ -3,7 +3,7 @@ package de.csw.turtle.test
 import de.csw.turtle.api.repository.SupportTicketCategoryRepository
 import de.csw.turtle.api.repository.SupportTicketUrgencyRepository
 import de.csw.turtle.api.service.*
-import de.csw.turtle.api.service.locker.LockerService
+import de.csw.turtle.api.service.LockerService
 import io.github.serpro69.kfaker.Faker
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener

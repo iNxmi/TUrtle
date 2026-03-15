@@ -32,6 +32,8 @@ class ConfigurationService(
 
     fun getByKey(key: Key): ConfigurationEntity? = repository.findByKey(key)
 
+    fun parse(entity: ConfigurationEntity): Any = parse(entity.key, entity.type, entity.value)
+
     fun parse(key: Key, type: Type, value: String): Any = try {
         when (type) {
             Type.BOOLEAN -> value.toBooleanStrict()

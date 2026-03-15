@@ -10,8 +10,12 @@ export class Configuration {
         return request("/api/configuration/enum/type")
     }
 
-    static async get(id) {
-        return request(`/api/configuration/${id}`);
+    static async value(variable) {
+        return request(`/api/configuration/${variable}/value`);
+    }
+
+    static async get(variable) {
+        return request(`/api/configuration/${variable}`);
     }
 
     static async getCollection(parameters) {
