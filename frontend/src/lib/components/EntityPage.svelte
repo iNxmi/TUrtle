@@ -14,6 +14,7 @@
 
     let {
         items = [],
+        onDelete,
         onPatch
     } = $props();
 
@@ -46,8 +47,10 @@
         const response = await onPatch?.(payload);
         loading = false;
 
-        if (response.ok !== true)
-            alert(JSON.stringify(response, null, 2));
+        if (response.ok !== true) {
+            alert(`Error: ${JSON.stringify(response, null, 2)}`);
+            return
+        }
 
         await invalidateAll();
         edit = false;
@@ -71,30 +74,6 @@
     let edit = $state(false);
     let loading = $state(false);
 </script>
-
-<!--
- * @component
- * A component for displaying database entries.
- * 
- * ### Usage
- * **title:** the display name of the entity (has to be localized)
- * **entity:** An object that contains information about the properties of the entity
- * The object has the following structure:
- * ```{endpoint, content}```
- * **endpoint** The backend endpoint for the entity
- * **content:** an Array that has the following syntax:
- * ```{name, value, isEditable (optional), inputType (optional), key (optional), enum (optional)}```
- * **name:** The display name of the property
- * **value:** The value of the property 
- * **isEditable (optional):** true, if value should be updatable by the user
- * **inputType (optional):** a HTML input type value e.g. "text", "email". For dates use "datetime-local"
- * **key (optional):** The name of the property in the database, needed if isEditable is set to *true*
- * **enum (optional):** An array containing all possible values for this property
- * 
- * If you want to display multiple properties in one row, you can wrap the objects into an array e.g
- *
- * ```[{prop1}, {prop2}, [{prop3}, {prop4}], {prop5}]```
- -->
 
 {#snippet field(property, edit)}
     <div class="flex flex-col">
@@ -142,24 +121,26 @@
                 </Button>
             </ButtonGroup>
 
-            <ButtonGroup>
-                {#if edit === true}
-                    <Button color="orange" disabled={loading === true} onclick={patch}>
-                        {#if loading === true}
-                            <Spinner size="5"/>
-                        {:else}
-                            <FloppyDiskAltOutline/>
-                        {/if}
-                    </Button>
-                    <Button onclick={cancel}>
-                        <CloseOutline/>
-                    </Button>
-                {:else}
-                    <Button color="orange" onclick={() => edit = true}>
-                        <EditOutline/>
-                    </Button>
-                {/if}
-            </ButtonGroup>
+            {#if onPatch}
+                <ButtonGroup>
+                    {#if edit === true}
+                        <Button color="orange" disabled={loading === true} onclick={patch}>
+                            {#if loading === true}
+                                <Spinner size="5"/>
+                            {:else}
+                                <FloppyDiskAltOutline/>
+                            {/if}
+                        </Button>
+                        <Button onclick={cancel}>
+                            <CloseOutline/>
+                        </Button>
+                    {:else}
+                        <Button color="orange" onclick={() => edit = true}>
+                            <EditOutline/>
+                        </Button>
+                    {/if}
+                </ButtonGroup>
+            {/if}
         </div>
 
         <ButtonGroup>

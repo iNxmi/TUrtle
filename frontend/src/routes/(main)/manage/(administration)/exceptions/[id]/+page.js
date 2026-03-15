@@ -1,8 +1,8 @@
 import {Exceptions} from "$lib/api";
 
 export async function load({params}) {
-    const exception = await getException(params.id);
-    return {exception: exception};
+    const entity = await getException(params.id);
+    return {entity: entity};
 }
 
 async function getException(id) {
