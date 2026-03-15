@@ -125,6 +125,13 @@
   "modal_manage_create_role_label_type": "Type (Optional)",
   "modal_manage_create_role_button": "Create",
 
+  "modal_manage_create_statistic_query_title": "Create Statistic Query",
+  "modal_manage_create_statistic_query_label_name": "Name",
+  "modal_manage_create_statistic_query_label_description": "Description",
+  "modal_manage_create_statistic_query_label_query": "Query",
+  "modal_manage_create_statistic_query_label_type": "Type",
+  "modal_manage_create_statistic_query_button": "Create",
+
   "modal_manage_create_email_template_title": "Create Email Template",
   "modal_manage_create_email_template_label_name": "Name",
   "modal_manage_create_email_template_label_description": "Description",
@@ -186,7 +193,6 @@
   "modal_register_label_first_name": "First Name",
   "modal_register_label_last_name": "Last Name",
   "modal_register_label_email": "Email",
-  "modal_register_label_student_id": "Student ID",
   "modal_register_label_password": "Password",
   "modal_register_label_i_agree_to": "I agree to the ",
   "modal_register_label_tos": "TOS",
@@ -243,7 +249,7 @@
   "user_profile_label_email": "Email",
   "user_profile_label_created_at": "Created At",
 
-  "user_item_bookings_label_id": "ID",
+  "user_item_bookings_label_id": "Item Booking ID",
   "user_item_bookings_label_item": "Item",
   "user_item_bookings_label_start": "Start",
   "user_item_bookings_label_end": "End",
@@ -251,7 +257,7 @@
   "user_item_bookings_label_updated_at": "Updated At",
   "user_item_bookings_label_created_at": "Created At",
 
-  "user_room_bookings_label_id": "ID",
+  "user_room_bookings_label_id": "Room Booking ID",
   "user_room_bookings_label_title": "Title",
   "user_room_bookings_label_description": "Description",
   "user_room_bookings_label_start": "Start",
@@ -260,7 +266,7 @@
   "user_room_bookings_label_updated_at": "Updated At",
   "user_room_bookings_label_created_at": "Created At",
 
-  "manage_items_label_id": "ID",
+  "manage_items_label_id": "Item ID",
   "manage_items_label_name": "Name",
   "manage_items_label_description": "Description",
   "manage_items_label_needs_confirmation": "Needs Confirmation",
@@ -270,22 +276,22 @@
   "manage_items_label_updated_at": "Updated At",
   "manage_items_label_created_at": "Created At",
 
-  "manage_item_categories_label_id": "ID",
+  "manage_item_categories_label_id": "Item Category ID",
   "manage_item_categories_label_name": "Name",
   "manage_item_categories_label_updated_at": "Updated At",
   "manage_item_categories_label_created_at": "Created At",
 
-  "manage_support_ticket_categories_label_id": "ID",
+  "manage_support_ticket_categories_label_id": "Support Ticket Category ID",
   "manage_support_ticket_categories_label_name": "Name",
   "manage_support_ticket_categories_label_updated_at": "Updated At",
   "manage_support_ticket_categories_label_created_at": "Created At",
 
-  "manage_support_ticket_urgencies_label_id": "ID",
+  "manage_support_ticket_urgencies_label_id": "Support Ticket Urgency ID",
   "manage_support_ticket_urgencies_label_name": "Name",
   "manage_support_ticket_urgencies_label_updated_at": "Updated At",
   "manage_support_ticket_urgencies_label_created_at": "Created At",
 
-  "manage_item_bookings_label_id": "ID",
+  "manage_item_bookings_label_id": "Item Booking ID",
   "manage_item_bookings_label_user": "User",
   "manage_item_bookings_label_item": "Item",
   "manage_item_bookings_label_start": "Start",
@@ -294,7 +300,15 @@
   "manage_item_bookings_label_updated_at": "Updated At",
   "manage_item_bookings_label_created_at": "Created At",
 
-  "manage_room_bookings_label_id": "ID",
+  "manage_statistic_queries_label_id": "Statistic Query ID",
+  "manage_statistic_queries_label_name": "Name",
+  "manage_statistic_queries_label_description": "Description",
+  "manage_statistic_queries_label_query": "Query",
+  "manage_statistic_queries_label_type": "Type",
+  "manage_statistic_queries_label_updated_at": "Updated At",
+  "manage_statistic_queries_label_created_at": "Created At",
+
+  "manage_room_bookings_label_id": "Room Booking ID",
   "manage_room_bookings_label_user": "User",
   "manage_room_bookings_label_title": "Title",
   "manage_room_bookings_label_description": "Description",
@@ -306,7 +320,7 @@
   "manage_room_bookings_label_updated_at": "Updated At",
   "manage_room_bookings_label_created_at": "Created At",
 
-  "manage_configuration_label_id": "ID",
+  "manage_configuration_label_id": "Configuration ID",
   "manage_configuration_label_key": "Key",
   "manage_configuration_label_type": "Type",
   "manage_configuration_label_value": "Value",
@@ -314,7 +328,7 @@
   "manage_configuration_label_updated_at": "Updated At",
   "manage_configuration_label_created_at": "Created At",
 
-  "manage_users_label_id": "ID",
+  "manage_users_label_id": "User ID",
   "manage_users_label_username": "Username",
   "manage_users_label_status": "Status",
   "manage_users_label_first_name": "First Name",
@@ -325,7 +339,7 @@
   "manage_users_label_updated_at": "Updated At",
   "manage_users_label_created_at": "Created At",
 
-  "manage_lockers_label_id": "ID",
+  "manage_lockers_label_id": "Locker ID",
   "manage_lockers_label_name": "Name",
   "manage_lockers_label_index": "Index",
   "manage_lockers_label_software_unlockable": "Software Unlockable",
@@ -333,14 +347,14 @@
   "manage_lockers_label_updated_at": "Updated At",
   "manage_lockers_label_created_at": "Created At",
 
-  "manage_roles_label_id": "ID",
+  "manage_roles_label_id": "Role ID",
   "manage_roles_label_name": "Name",
   "manage_roles_label_type": "Type",
   "manage_roles_label_permissions": "Permissions",
   "manage_roles_label_updated_at": "Updated At",
   "manage_roles_label_created_at": "Created At",
 
-  "manage_support_tickets_label_id": "ID",
+  "manage_support_tickets_label_id": "Support Ticket ID",
   "manage_support_tickets_label_urgency": "Urgency",
   "manage_support_tickets_label_category": "Category",
   "manage_support_tickets_label_subject": "Subject",
@@ -350,7 +364,7 @@
   "manage_support_tickets_label_updated_at": "Updated At",
   "manage_support_tickets_label_created_at": "Created At",
 
-  "manage_faq_label_id": "ID",
+  "manage_faq_label_id": "FAQ ID",
   "manage_faq_label_name": "Name",
   "manage_faq_label_title": "Title",
   "manage_faq_label_content": "Content",
@@ -358,7 +372,7 @@
   "manage_faq_label_updated_at": "Updated At",
   "manage_faq_label_created_at": "Created At",
 
-  "manage_exceptions_label_id": "ID",
+  "manage_exceptions_label_id": "Exception ID",
   "manage_exceptions_label_endpoint": "Endpoint",
   "manage_exceptions_label_exception": "Exception",
   "manage_exceptions_label_message": "Message",
@@ -366,7 +380,7 @@
   "manage_exceptions_label_updated_at": "Updated At",
   "manage_exceptions_label_created_at": "Created At",
 
-  "manage_audit_logs_label_id": "ID",
+  "manage_audit_logs_label_id": "Audit Log ID",
   "manage_audit_logs_label_user_id": "User ID",
   "manage_audit_logs_label_ip_address": "IP Address",
   "manage_audit_logs_label_endpoint": "Endpoint",
@@ -375,7 +389,7 @@
   "manage_audit_logs_label_updated_at": "Updated At",
   "manage_audit_logs_label_created_at": "Created At",
 
-  "manage_email_templates_label_id": "ID",
+  "manage_email_templates_label_id": "Email Template ID",
   "manage_email_templates_label_name": "Name",
   "manage_email_templates_label_type": "Type",
   "manage_email_templates_label_description": "Description",
@@ -384,7 +398,7 @@
   "manage_email_templates_label_created_at": "Created At",
   "manage_email_templates_label_updated_at": "Updated At",
 
-  "manage_content_templates_label_id": "ID",
+  "manage_content_templates_label_id": "Content Template ID",
   "manage_content_templates_label_name": "Name",
   "manage_content_templates_label_type": "Type",
   "manage_content_templates_label_description": "Description",

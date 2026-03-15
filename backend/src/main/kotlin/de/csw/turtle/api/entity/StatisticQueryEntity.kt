@@ -18,6 +18,8 @@ class StatisticQueryEntity(
     @Column(columnDefinition = "TEXT")
     var query: String,
 
+    var type: Type,
+
     override var updatedAt: Instant = Instant.MIN,
 
     @Column(updatable = false)
@@ -25,11 +27,16 @@ class StatisticQueryEntity(
 
 ) : CRUDEntity {
 
+    enum class Type {
+        MAP, LIST, SINGLE_VALUE;
+    }
+
     override fun snapshot() = StatisticQueryEntity(
         id = id,
         name = name,
         description = description,
         query = query,
+        type = type,
         updatedAt = updatedAt,
         createdAt = createdAt
     )

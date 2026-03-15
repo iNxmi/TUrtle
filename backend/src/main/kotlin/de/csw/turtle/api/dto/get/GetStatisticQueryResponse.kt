@@ -9,6 +9,7 @@ data class GetStatisticQueryResponse(
     val name: String?,
     val description: String?,
     val query: String?,
+    val type: StatisticQueryEntity.Type?,
 
     override val updatedAt: Instant?,
     override val createdAt: Instant?
@@ -19,6 +20,7 @@ data class GetStatisticQueryResponse(
         name = entity.name,
         description = entity.description,
         query = entity.query,
+        type = entity.type,
         updatedAt = entity.updatedAt,
         createdAt = entity.createdAt
     )

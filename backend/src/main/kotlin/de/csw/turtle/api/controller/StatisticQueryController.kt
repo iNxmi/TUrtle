@@ -5,9 +5,11 @@ import de.csw.turtle.api.dto.create.CreateStatisticQueryRequest
 import de.csw.turtle.api.dto.get.GetStatisticQueryResponse
 import de.csw.turtle.api.dto.patch.PatchStatisticQueryRequest
 import de.csw.turtle.api.entity.StatisticQueryEntity
+import de.csw.turtle.api.entity.StatisticQueryEntity.Type
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
+import de.csw.turtle.api.repository.RawSqlRepository
 import de.csw.turtle.api.service.StatisticQueryService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -23,7 +25,8 @@ private const val ENDPOINT = "/api/statistic-queries"
 @RestController
 @RequestMapping(ENDPOINT)
 class StatisticQueryController(
-    private val statisticQueryService: StatisticQueryService
+    private val statisticQueryService: StatisticQueryService,
+    private val rawSqlRepository: RawSqlRepository
 ) : CreateController<StatisticQueryEntity, CreateStatisticQueryRequest, GetStatisticQueryResponse>,
     GetController<StatisticQueryEntity, Long, GetStatisticQueryResponse>,
     PatchController<StatisticQueryEntity, PatchStatisticQueryRequest, GetStatisticQueryResponse>,
@@ -47,12 +50,39 @@ class StatisticQueryController(
         val entity = statisticQueryService.create(
             name = request.name,
             description = request.description,
-            query = request.query
+            query = request.query,
+            type = request.type
         )
 
         val location = URI.create("$ENDPOINT/${entity.id}")
         val dto = GetStatisticQueryResponse(entity)
         return ResponseEntity.created(location).body(dto)
+    }
+
+    @GetMapping("/enum/type")
+    fun getType() = Type.entries.toSortedSet()
+
+    @GetMapping("/{id}/execute")
+    fun getExecuted(
+        @AuthenticationPrincipal user: UserEntity?,
+        @PathVariable id: Long
+    ): ResponseEntity<Any> {
+        if (user == null)
+            throw HttpException.Unauthorized()
+
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_STATISTIC_QUERIES))
+            throw HttpException.Forbidden()
+
+        val entity = statisticQueryService.getById(id)
+            ?: throw HttpException.NotFound()
+
+        val result = when (entity.type) {
+            Type.SINGLE_VALUE -> rawSqlRepository.executeSingle(entity.query)
+            Type.LIST -> rawSqlRepository.executeListQuery(entity.query)
+            Type.MAP -> rawSqlRepository.executeMapQuery(entity.query)
+        }
+
+        return ResponseEntity.ok(result)
     }
 
     @GetMapping("/{variable}")
@@ -132,7 +162,8 @@ class StatisticQueryController(
             id = id,
             name = request.name,
             description = request.description,
-            query = request.query
+            query = request.query,
+            type = request.type
         )
 
         val dto = GetStatisticQueryResponse(entity)

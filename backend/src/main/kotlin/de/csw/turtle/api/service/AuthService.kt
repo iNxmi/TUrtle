@@ -66,7 +66,10 @@ class AuthService(
             throw HttpException.Unauthorized("Invalid username or password.")
 
         if (user.status == Status.PENDING_VERIFICATION) {
-            val session = verificationSessionService.get(user, Type.VERIFICATION)!!
+            val session = verificationSessionService.get(user, Type.VERIFICATION) ?: verificationSessionService.create(
+                user = user,
+                type = Type.VERIFICATION
+            )
 
             return Authentication(
                 user = user,

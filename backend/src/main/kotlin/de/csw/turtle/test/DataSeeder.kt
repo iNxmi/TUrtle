@@ -30,7 +30,7 @@ class DataSeeder(
 ) {
 
     private val faker = Faker()
-    private val enabled = false
+    private val enabled = true
 
     @EventListener(ApplicationReadyEvent::class)
     @Order(1)

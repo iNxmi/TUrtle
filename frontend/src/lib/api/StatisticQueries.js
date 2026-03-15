@@ -10,6 +10,14 @@ export class StatisticQueries {
         });
     }
 
+    static async type() {
+        return request(`/api/statistic-queries/enum/type`);
+    }
+
+    static async executed(id) {
+        return request(`/api/statistic-queries/${id}/executed`);
+    }
+
     static async get(id) {
         return request(`/api/statistic-queries/${id}`);
     }
