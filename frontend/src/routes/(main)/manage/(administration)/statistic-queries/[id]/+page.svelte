@@ -77,7 +77,7 @@
             onclick: async () => {
                 const response = await StatisticQueries.executed(entity.id)
                 const result = await response.json()
-                alert(JSON.stringify(result))
+                alert(JSON.stringify(result, null, 2))
             }
         }
     }];
