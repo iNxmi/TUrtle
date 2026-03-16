@@ -11,9 +11,9 @@ services:
     networks:
       - network
     environment:
-      POSTGRES_DB: db
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_DB:
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
 
   backend:
     build: backend
@@ -26,13 +26,14 @@ services:
       - network
     environment:
       DATASOURCE_SERVER: postgres:5432
-      DATASOURCE_DATABASE: db
-      DATASOURCE_USERNAME: admin
-      DATASOURCE_PASSWORD: admin
-      SMTP_HOST: mailhog
-      SMTP_PORT: 1025
+      DATASOURCE_DATABASE:
+      DATASOURCE_USERNAME:
+      DATASOURCE_PASSWORD:
+      SMTP_HOST:
+      SMTP_PORT:
       SMTP_USERNAME:
       SMTP_PASSWORD:
+      SMTP_SECURE: true
 
   frontend:
     build: frontend
@@ -52,8 +53,6 @@ services:
     image: nginx:latest
     container_name: csw__turtle_proxy
     restart: unless-stopped
-    ports:
-      - "80:80"
     depends_on:
       - frontend
       - backend
