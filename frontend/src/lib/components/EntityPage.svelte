@@ -93,10 +93,10 @@
     }
 
     async function redirect(enabled, href) {
-        if(!enabled)
+        if (!enabled)
             return;
 
-        if(!href)
+        if (!href)
             return;
 
         await goto(href);
@@ -108,20 +108,24 @@
 </script>
 
 {#snippet field(property, edit)}
+    {@const enabled = (edit === true && property.editable === true)}
+    {@const Component = property.component}
+
     <div class="flex flex-col">
         <div>{property.label}</div>
-        <ButtonGroup>
-            {@const enabled = (edit === true && property.editable === true)}
-            {@const Component = property.component}
-            <Component onclick={() => redirect(!enabled, property.href)} bind:value={updatedValues[property.field]} disabled={!enabled} {...property.props}/>
+        <div class="flex">
+            <div class="grow">
+                <Component class="w-full" onclick={() => redirect(!enabled, property.href)}
+                           bind:value={updatedValues[property.field]} disabled={!enabled} {...property.props}/>
+            </div>
             {#if edit === true && property.editable === true}
                 {@const isEqual = _.isEqual(updatedValues[property.field], initialValues[property.field])}
-                <Button disabled={isEqual}
+                <Button color="alternative" disabled={isEqual}
                         onclick={() => updatedValues[property.field] = initialValues[property.field]}>
                     <UndoOutline/>
                 </Button>
             {/if}
-        </ButtonGroup>
+        </div>
     </div>
 {/snippet}
 
@@ -157,7 +161,9 @@
                 <ButtonGroup>
                     {@const Component = control.component}
                     {@const Icon = control.icon}
-                    <Component {...control.props}><Icon/></Component>
+                    <Component {...control.props}>
+                        <Icon/>
+                    </Component>
                 </ButtonGroup>
             {/each}
 
