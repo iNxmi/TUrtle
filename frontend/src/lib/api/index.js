@@ -7,6 +7,7 @@ export {ContentTemplates} from "./ContentTemplates.js";
 export {EmailTemplates} from "./EmailTemplates.js";
 export {Exceptions} from "./Exceptions.js";
 export {Faq} from "./Faq.js";
+export {Posts} from "./Posts.js";
 export {Door} from "./Door.js";
 export {ItemBookings} from "./ItemBookings.js";
 export {ItemCategories} from "./ItemCategories.js";

@@ -1,7 +1,9 @@
 <script>
     import {marked} from 'marked';
 
-    const {content} = $props();
+    const {
+        content = ""
+    } = $props();
 </script>
 
 <div class="prose max-w-full text-justify">

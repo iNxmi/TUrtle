@@ -1,14 +1,14 @@
 package de.csw.turtle.api.controller
 
 import de.csw.turtle.api.Permission
-import de.csw.turtle.api.dto.create.CreateFAQRequest
-import de.csw.turtle.api.dto.get.GetFAQResponse
-import de.csw.turtle.api.dto.patch.PatchFAQRequest
-import de.csw.turtle.api.entity.FAQEntity
+import de.csw.turtle.api.dto.create.CreatePostRequest
+import de.csw.turtle.api.dto.get.GetPostResponse
+import de.csw.turtle.api.dto.patch.PatchPostRequest
+import de.csw.turtle.api.entity.PostEntity
 import de.csw.turtle.api.entity.UserEntity
 import de.csw.turtle.api.entity.UserEntity.Status
 import de.csw.turtle.api.exception.HttpException
-import de.csw.turtle.api.service.FAQService
+import de.csw.turtle.api.service.PostService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.PageRequest
@@ -19,41 +19,42 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 
-private const val ENDPOINT = "/api/faq"
+private const val ENDPOINT = "/api/posts"
 
 @RestController
 @RequestMapping(ENDPOINT)
-class FAQController(
-    private val faqService: FAQService
-) : CreateController<FAQEntity, CreateFAQRequest, GetFAQResponse>,
-    GetController<FAQEntity, Long, GetFAQResponse>,
-    PatchController<FAQEntity, PatchFAQRequest, GetFAQResponse>,
-    DeleteController<FAQEntity> {
+class PostController(
+    private val postService: PostService
+) : CreateController<PostEntity, CreatePostRequest, GetPostResponse>,
+    GetController<PostEntity, Long, GetPostResponse>,
+    PatchController<PostEntity, PatchPostRequest, GetPostResponse>,
+    DeleteController<PostEntity> {
 
     @PostMapping
     override fun create(
         @AuthenticationPrincipal user: UserEntity?,
 
-        @RequestBody request: CreateFAQRequest,
+        @RequestBody request: CreatePostRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetFAQResponse> {
+    ): ResponseEntity<GetPostResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_FAQ))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_POSTS))
             throw HttpException.Forbidden()
 
-        val entity = faqService.create(
+        val entity = postService.create(
             name = request.name,
+            description = request.description,
             title = request.title,
             content = request.content,
             enabled = request.enabled
         )
 
         val location = URI.create("$ENDPOINT/${entity.id}")
-        val dto = GetFAQResponse(entity)
+        val dto = GetPostResponse(entity)
         return ResponseEntity.created(location).body(dto)
     }
 
@@ -65,8 +66,8 @@ class FAQController(
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetFAQResponse> {
-        val entity = faqService.getById(variable)
+    ): ResponseEntity<GetPostResponse> {
+        val entity = postService.getById(variable)
             ?: throw HttpException.NotFound()
 
         if (!entity.enabled) {
@@ -77,7 +78,7 @@ class FAQController(
                 throw HttpException.Forbidden()
         }
 
-        val dto = GetFAQResponse(entity)
+        val dto = GetPostResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -94,11 +95,11 @@ class FAQController(
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
     ): ResponseEntity<Any> {
-        val specification = if (user == null || user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_FAQ)) {
+        val specification = if (user == null || user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_POSTS)) {
             Specification { root, _, builder ->
                 builder.equal(root.get<Boolean>("enabled"), true)
             }
-        } else Specification.unrestricted<FAQEntity>()
+        } else Specification.unrestricted<PostEntity>()
 
         val sort = sortProperty?.let {
             Sort.by(sortDirection, sortProperty)
@@ -106,13 +107,13 @@ class FAQController(
 
         if (pageNumber != null) {
             val pageable = PageRequest.of(pageNumber, pageSize, sort)
-            val page = faqService.getPage(rsql = rsql, pageable = pageable, specification = specification)
-            val dto = page.map { GetFAQResponse(it) }
+            val page = postService.getPage(rsql = rsql, pageable = pageable, specification = specification)
+            val dto = page.map { GetPostResponse(it) }
             return ResponseEntity.ok(dto)
         }
 
-        val collection = faqService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
-        val dto = collection.map { GetFAQResponse(it) }
+        val collection = postService.getAll(rsql = rsql, sort = sort, specification = specification).toMutableSet()
+        val dto = collection.map { GetPostResponse(it) }
         return ResponseEntity.ok(dto)
     }
 
@@ -121,26 +122,27 @@ class FAQController(
         @AuthenticationPrincipal user: UserEntity?,
 
         @PathVariable id: Long,
-        @RequestBody request: PatchFAQRequest,
+        @RequestBody request: PatchPostRequest,
 
         httpRequest: HttpServletRequest,
         httpResponse: HttpServletResponse
-    ): ResponseEntity<GetFAQResponse> {
+    ): ResponseEntity<GetPostResponse> {
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_FAQ))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_POSTS))
             throw HttpException.Forbidden()
 
-        val entity = faqService.patch(
+        val entity = postService.patch(
             id = id,
             name = request.name,
+            description = request.description,
             title = request.title,
             content = request.content,
             enabled = request.enabled
         )
 
-        val dto = GetFAQResponse(entity)
+        val dto = GetPostResponse(entity)
         return ResponseEntity.ok(dto)
     }
 
@@ -156,10 +158,10 @@ class FAQController(
         if (user == null)
             throw HttpException.Unauthorized()
 
-        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_FAQ))
+        if (user.status != Status.ACTIVE || !user.hasPermission(Permission.MANAGE_POSTS))
             throw HttpException.Forbidden()
 
-        faqService.delete(id)
+        postService.delete(id)
         return ResponseEntity.noContent().build()
     }
 

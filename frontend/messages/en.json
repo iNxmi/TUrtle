@@ -40,6 +40,7 @@
   "main_navigation_item_manage_audit_logs": "Audit Logs",
   "main_navigation_item_manage_lockers": "Lockers",
   "main_navigation_item_manage_faq": "FAQ",
+  "main_navigation_item_manage_posts": "Posts",
   "main_navigation_item_manage_administration": "Administration",
   "main_navigation_item_manage_bookings": "Bookings",
   "main_navigation_item_manage_content": "Content",
@@ -87,6 +88,14 @@
   "modal_manage_create_faq_label_content": "Content",
   "modal_manage_create_faq_label_enabled": "Enabled",
   "modal_manage_create_faq_button": "Submit",
+
+  "modal_manage_create_post_title": "Create Post",
+  "modal_manage_create_post_label_name": "Name",
+  "modal_manage_create_post_label_description": "Description",
+  "modal_manage_create_post_label_title": "Title",
+  "modal_manage_create_post_label_content": "Content",
+  "modal_manage_create_post_label_enabled": "Enabled",
+  "modal_manage_create_post_button": "Submit",
 
   "modal_user_create_room_booking_title": "Create Room Booking",
   "modal_user_create_room_booking_label_title": "Title",
@@ -299,6 +308,15 @@
   "manage_item_bookings_label_status": "Status",
   "manage_item_bookings_label_updated_at": "Updated At",
   "manage_item_bookings_label_created_at": "Created At",
+
+  "manage_posts_label_id": "Item Booking ID",
+  "manage_posts_label_name": "Name",
+  "manage_posts_label_description": "Description",
+  "manage_posts_label_title": "Title",
+  "manage_posts_label_content": "Content",
+  "manage_posts_label_enabled": "Enabled",
+  "manage_posts_label_updated_at": "Updated At",
+  "manage_posts_label_created_at": "Created At",
 
   "manage_statistic_queries_label_id": "Statistic Query ID",
   "manage_statistic_queries_label_name": "Name",

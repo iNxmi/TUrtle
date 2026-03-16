@@ -16,6 +16,10 @@
         title: m.main_navigation_item_manage_faq(),
         href: "/manage/faq",
         permission: "MANAGE_FAQ"
+    }, {
+        title: m.main_navigation_item_manage_posts(),
+        href: "/manage/posts",
+        permission: "MANAGE_POSTS"
     }];
 </script>
 
