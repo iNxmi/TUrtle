@@ -59,7 +59,7 @@
 
         <div>
             <div>{m.modal_manage_create_post_label_description()}</div>
-            <Textarea bind:value={description} required/>
+            <Textarea class="w-full" bind:value={description} required/>
         </div>
 
         <div>

@@ -2,14 +2,13 @@
     import Calendar from "$lib/components/Calendar.svelte";
     import Card from "$lib/components/Card.svelte";
     import {m} from "$lib/paraglide/messages";
-    import {ButtonGroup, CloseButton, Heading, Hr, Input} from "flowbite-svelte";
+    import {ButtonGroup, CloseButton, Heading, Hr, Input, Button} from "flowbite-svelte";
     import {ArrowRightOutline, PlusOutline} from "flowbite-svelte-icons";
     import CreateRoomBookingModal from "$lib/components/modal/user/CreateRoomBookingModal.svelte";
     import CreateItemBookingModal from "$lib/components/modal/user/CreateItemBookingModal.svelte";
     import {goto} from "$app/navigation";
     import _ from "lodash";
     import { resolve } from "$app/paths";
-    import Button from "$lib/components/Button.svelte";
 
     let {data} = $props();
 
@@ -40,7 +39,7 @@
     let sources = $derived([{
         id: "itemBookings",
         events: itemBookingEvents,
-        color: "cyan"
+        color: "purple"
     }, {
         id: "roomBookings",
         events: roomBookingEvents,
@@ -77,7 +76,7 @@
                     {m.user_dashboard_title_current_item_bookings()}
                 </Heading>
                 <ButtonGroup>
-                    <Button color="" onclick={() => createItemBookingModal = true}>
+                    <Button color="orange" onclick={() => createItemBookingModal = true}>
                         <PlusOutline/>
                     </Button>
                 </ButtonGroup>
@@ -112,7 +111,7 @@
                 </Heading>
                 {#if data.permissions.includes('MANAGE_ROOM_BOOKINGS')}
                     <ButtonGroup>
-                        <Button color="" onclick={() => createRoomBookingModal = true}>
+                        <Button color="orange" onclick={() => createRoomBookingModal = true}>
                             <PlusOutline/>
                         </Button>
                     </ButtonGroup>

@@ -17,6 +17,7 @@ class PostEntity(
 
     var title: String,
 
+    @Column(columnDefinition = "text")
     var content: String,
 
     var enabled: Boolean,

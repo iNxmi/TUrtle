@@ -5,8 +5,9 @@
 </script>
 
 <div class="flex justify-between gap-5 p-5 text-sm bg-background-secondary">
-    <A class="flex-1 text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white" href="/">© 2025 CSW
-        TUrtle All Rights Reserved.</A>
+    <A class="flex-1 text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white" href="/">
+        © 2025 CSW TUrtle All Rights Reserved.
+    </A>
 
     <div class="flex flex-1 gap-x-4 justify-center flex-wrap">
         <A class="text-gray-500 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white"

@@ -145,8 +145,7 @@
 
                 <div>
                     <div>{m.modal_user_create_room_booking_label_whitelist()}</div>
-                    <MultiSelect disabled={access !== "WHITELIST"} bind:value={whitelistedUserIds} items={userItems}
-                                 required/>
+                    <MultiSelect disabled={access !== "WHITELIST"} bind:value={whitelistedUserIds} items={userItems}/>
                 </div>
 
                 {#if error.trim()}
