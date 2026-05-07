@@ -18,6 +18,7 @@ class StatisticQueryEntity(
     @Column(columnDefinition = "TEXT")
     var query: String,
 
+    @Enumerated(EnumType.STRING)
     var type: Type,
 
     override var updatedAt: Instant = Instant.MIN,
