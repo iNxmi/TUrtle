@@ -2,7 +2,7 @@ networks:
   network:
 
 services:
-  postgres:
+  database:
     image: postgres:18
     container_name: csw__turtle_database
     restart: unless-stopped
@@ -20,8 +20,7 @@ services:
     container_name: csw__turtle_backend
     restart: unless-stopped
     depends_on:
-      - postgres
-      - mailhog
+      - database
     networks:
       - network
     environment:
@@ -49,7 +48,7 @@ services:
       PROTOCOL_HEADER: x-forwarded-proto
       HOST_HEADER: x-forwarded-host
 
-  nginx:
+  proxy:
     image: nginx:latest
     container_name: csw__turtle_proxy
     restart: unless-stopped
