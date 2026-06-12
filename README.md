@@ -1,3 +1,6 @@
+# Archived
+This repository has been archived due to being merged into the main repository (CSWTeam/TUrtle).
+
 # TUrtle
 This is the official [TUrtle](https://exmaple.com) repository
 
